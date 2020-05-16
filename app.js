@@ -1,3 +1,6 @@
+const Logger = require('./server/Logger.js');
+const RoomPool = require('./server/RoomPool.js');
+
 // SERVER REQUIRE STATEMENTS
 const express = require('express');
 const app = express();
@@ -13,4 +16,6 @@ app.get('/', (req, res) => {
 });
 app.use('/client', express.static(__dirname + '/client'));
 serv.listen(3000);
-console.log('Server started.');
+Logger.logInfo('Server started.');
+
+var roomPool = new RoomPool(sio);
