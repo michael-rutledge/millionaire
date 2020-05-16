@@ -9,9 +9,31 @@
 </head>
 
 <body>
+  <div class="container">
+
   <h1>Millionaire With Friends</h1>
 
-  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <div class="row" id="loginRow">
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+      <h2 class="titleText">Join or create a room:</h2>
+        <label class="entryFormLabel" for="loginUsername">Username</label>
+        <input class="form-control" id="loginUsername" placeholder="Freddy" type="text" maxlength="20" />
+        <label class="entryFormLabel" for="loginRoomCode">Room Code</label>
+        <input class="form-control" id="loginRoomCode" placeholder="abcd" type="text" maxlength="4" />
+        <button type="button" class="btn btn-primary loginButton" id="loginJoinButton">Join Room</button>
+        <button type="button" class="btn btn-primary loginButton" id="loginCreateButton">Create Room</button>
+    </div>
+    <div class="col-lg-8 col-md-6 col-sm-12 col-xs-12">
+        <div class="jumbotron">
+            <h2>Welcome to Millionaire With Friends!</h2>
+            <p>It's Who Wants to Be a Millionaire online.</p>
+        </div>
+    </div>
+  </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
   <script>var socket = io();</script>
 </body>
 

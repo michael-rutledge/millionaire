@@ -4,11 +4,11 @@ const Room = require('./Room.js');
 // Holds all active rooms of Millionaire With Friends.
 class RoomPool {
 
-  // Constructs a new RoomPool and sets listeners and emitters.
-  constructor(sio) {
+  // Constructs a new RoomPool and sets listeners and emitters from the given socket.io instance.
+  constructor(socketIoInstance) {
     this.rooms = {};
 
-    sio.sockets.on('connection', (socket) => {
+    socketIoInstance.sockets.on('connection', (socket) => {
       Logger.logInfo('socket ' + socket.id + ' connected');
 
       socket.emit('clientConnectedToServer', {
