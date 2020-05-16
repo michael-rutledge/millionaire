@@ -1,11 +1,10 @@
-const Logger = require('./server/logging/Logger.js');
-const RoomPool = require('./server/game/RoomPool.js');
-
-// SERVER REQUIRE STATEMENTS
 const express = require('express');
 const app = express();
 const serv = require('http').Server(app);
 const sio = require('socket.io')(serv, {});
+
+const Logger = require(process.cwd() + '/server/logging/Logger.js');
+const RoomPool = require(process.cwd() + '/server/game/RoomPool.js');
 
 // START SERVER
 //
