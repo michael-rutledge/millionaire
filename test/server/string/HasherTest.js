@@ -1,4 +1,3 @@
-const assert = require('chai').assert;
 const expect = require('chai').expect;
 
 const Hasher = require(process.cwd() + '/server/string/Hasher.js');
