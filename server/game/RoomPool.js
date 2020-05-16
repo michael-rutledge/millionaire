@@ -1,5 +1,6 @@
-const Logger = require('./Logger.js');
-const Room = require('./Room.js');
+const Hasher = require(process.cwd() + '/server/string/Hasher.js');
+const Logger = require(process.cwd() + '/server/logging/Logger.js');
+const Room = require(process.cwd() + '/server/game/Room.js');
 
 // Holds all active rooms of Millionaire With Friends.
 class RoomPool {
@@ -15,8 +16,12 @@ class RoomPool {
         socketId: socket.id
       });
 
+      // Default socket.io actions
       socket.on('disconnect', () => { this.onDisconnect(socket); });
       socket.on('disconnecting', () => { this.onDisconnecting(socket); });
+      // Custom actions
+      socket.on('userAttemptCreateRoom', (data) => { this.userAttemptCreateRoom(socket, data) });
+      socket.on('userAttemptJoinRoom', (data) => { this.userAttemptJoinRoom(socket, data) });
     });
   }
 
@@ -28,6 +33,27 @@ class RoomPool {
   // Executes desired actions upon disconnecting the given socket.
   onDisconnecting(socket) {
     Logger.logInfo('socket ' + socket.id + ' disconnecting');
+  }
+
+  // Attempts to create a room for a user using the given socket and data.
+  //
+  // Expected data format:
+  //  {
+  //    string username
+  //  }
+  userAttemptCreateRoom(socket, data) {
+    Logger.logInfo('userAttemptCreateRoom');
+  }
+
+  // Attempts to join a user to a room using the given socket and data.
+  //
+  // Expected data format:
+  //  {
+  //    string username,
+  //    string roomCode
+  //  }
+  userAttemptJoinRoom(socket, data) {
+    Logger.logInfo('userAttemptJoinRoom');
   }
 }
 

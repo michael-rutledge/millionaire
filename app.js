@@ -1,5 +1,5 @@
-const Logger = require('./server/Logger.js');
-const RoomPool = require('./server/RoomPool.js');
+const Logger = require('./server/logging/Logger.js');
+const RoomPool = require('./server/game/RoomPool.js');
 
 // SERVER REQUIRE STATEMENTS
 const express = require('express');
