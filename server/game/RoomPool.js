@@ -2,7 +2,7 @@ const Hasher = require(process.cwd() + '/server/string/Hasher.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
 const Room = require(process.cwd() + '/server/game/Room.js');
 
-const ROOM_CODE_LENGTH= 4;
+const ROOM_CODE_LENGTH = 4;
 
 // Holds all active rooms of Millionaire With Friends.
 class RoomPool {
@@ -10,6 +10,10 @@ class RoomPool {
   // Constructs a new RoomPool and sets listeners and emitters from the given socket.io instance.
   constructor(socketIoInstance) {
     this.rooms = {};
+
+    if (!socketIoInstance || !socketIoInstance.sockets) {
+      return this;
+    }
 
     socketIoInstance.sockets.on('connection', (socket) => {
       Logger.logInfo('socket ' + socket.id + ' connected');
@@ -31,6 +35,11 @@ class RoomPool {
   // the given room code.
   addUserToRoom(socket, username, roomCode) {
     // TODO: implement this.
+  }
+
+  // Returns the number of active rooms within the RoomPool.
+  getNumRooms() {
+    return Object.keys(this.rooms).length;
   }
 
   // Reserves a new room with a new, random, and unused room code.
@@ -69,11 +78,10 @@ class RoomPool {
   //    string username
   //  }
   userAttemptCreateRoom(socket, data) {
-    Logger.logInfo('userAttemptCreateRoom');
     // TODO: report failure back to user
     if (!data || data.username.length < 1) { return; }
     var newRoomCode = this.reserveNewRoom();
-    Logger.logInfo('new room code generated: ' + newRoomCode);
+    Logger.logInfo('New room code generated: ' + newRoomCode);
     this.addUserToRoom(socket, data.username, newRoomCode);
   }
 
