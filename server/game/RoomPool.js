@@ -1,21 +1,19 @@
 const Hasher = require(process.cwd() + '/server/string/Hasher.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
 const Room = require(process.cwd() + '/server/game/Room.js');
+const SafeSocket = require(process.cwd() + '/server/socket/SafeSocket.js');
 
 const ROOM_CODE_LENGTH = 4;
 
-// Holds all active rooms of Millionaire With Friends.
+// Holds all active Rooms of Millionaire With Friends and handles socket communication between
+// clients and their respective Rooms.
 class RoomPool {
 
   // Constructs a new RoomPool and sets listeners and emitters from the given socket.io instance.
   constructor(socketIoInstance) {
     this.rooms = {};
 
-    if (!socketIoInstance || !socketIoInstance.sockets) {
-      return this;
-    }
-
-    socketIoInstance.sockets.on('connection', (socket) => {
+    SafeSocket.socketsOn(socketIoInstance, 'connection', (socket) => {
       Logger.logInfo('socket ' + socket.id + ' connected');
 
       socket.emit('clientConnectedToServer', {
@@ -31,11 +29,23 @@ class RoomPool {
     });
   }
 
+
+  // PRIVATE METHODS
+
   // Attempts to add a user identified by the given username and socket to the room identified by
   // the given room code.
-  addUserToRoom(socket, username, roomCode) {
-    // TODO: implement this.
+  //
+  // Returns true if successful, false if unsuccessful.
+  _addUserToRoom(socket, username, roomCode) {
+    if (!this.roomExists(roomCode)) {
+      return false;
+    }
+
+    return this.rooms[roomCode].addUser(socket, username);
   }
+
+
+  // PUBLIC METHODS
 
   // Returns the number of active rooms within the RoomPool.
   getNumRooms() {
@@ -61,6 +71,9 @@ class RoomPool {
     return this.rooms.hasOwnProperty(roomCode);
   }
 
+
+  // LISTENERS
+
   // Executes desired actions upon finished disconnect of the given socket.
   onDisconnect(socket) {
     Logger.logInfo('socket ' + socket.id + ' disconnected...');
@@ -78,11 +91,27 @@ class RoomPool {
   //    string username
   //  }
   userAttemptCreateRoom(socket, data) {
-    // TODO: report failure back to user
-    if (!data || data.username.length < 1) { return; }
+    if (!data || data.username.length < 1) {
+      Logger.logWarning('Socket ' + socket.id + ' gave invalid data when creating new Room');
+      SafeSocket.emit(socket, 'userCreateRoomFailue', {
+        reason: 'Invalid data'
+      });
+      return;
+    }
+
     var newRoomCode = this.reserveNewRoom();
     Logger.logInfo('New room code generated: ' + newRoomCode);
-    this.addUserToRoom(socket, data.username, newRoomCode);
+    if (this._addUserToRoom(socket, data.username, newRoomCode)) {
+      SafeSocket.emit(socket, 'userCreateRoomSuccess', {
+        username: data.username,
+        roomCode: newRoomCode
+      });
+    } else {
+      Logger.logWarning('Socket ' + socket.id + ' failed to create new Room: ' + newRoomCode);
+      SafeSocket.emit(socket, 'userCreateRoomFailure', {
+        reason: 'Unknown Room creation failure'
+      });
+    }
   }
 
   // Attempts to join a user to a room using the given socket and data.
@@ -93,6 +122,7 @@ class RoomPool {
   //    string roomCode
   //  }
   userAttemptJoinRoom(socket, data) {
+    // TODO: implement this.
     Logger.logInfo('userAttemptJoinRoom');
   }
 }
