@@ -4,19 +4,19 @@ const Player = require(process.cwd() + '/server/game/Player.js');
 const Room = require(process.cwd() + '/server/game/Room.js');
 
 describe('RoomTest', () => {
-  it('addUserShouldAddUserForNewUsername', () => {
+  it('addPlayerShouldAddPlayerForNewUsername', () => {
     var room = new Room('test');
     var mockSocket = {
       id: 'socket_id'
     };
 
-    var result = room.addUser(mockSocket, 'username');
+    var result = room.addPlayer(mockSocket, 'username');
 
     expect(result).to.be.true;
     expect(room.playerMap['socket_id']).to.deep.equal(new Player(mockSocket, 'username'));
   });
 
-  it('addUserShouldNotAddUserForExistingUsername', () => {
+  it('addPlayerShouldNotAddPlayerForExistingUsername', () => {
     var room = new Room('test');
     var mockSocket1 = {
       id: 'socket_id_1'
@@ -25,8 +25,8 @@ describe('RoomTest', () => {
       id: 'socket_id_2'
     }
 
-    room.addUser(mockSocket1, 'username');
-    var result = room.addUser(mockSocket2, 'username');
+    room.addPlayer(mockSocket1, 'username');
+    var result = room.addPlayer(mockSocket2, 'username');
 
     expect(result).to.be.false;
     expect(room.playerMap['socket_id_2']).to.be.undefined;

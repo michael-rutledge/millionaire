@@ -26,10 +26,10 @@ class Room {
 
   // PUBLIC METHODS
 
-  // Attempts to add a user identified by the given information to the current Room.
+  // Attempts to add a Player identified by the given information to the current Room.
   //
   // Returns true if successful, false if unsuccessful.
-  addUser(socket, username) {
+  addPlayer(socket, username) {
     // TODO: deal with games that are underway (i.e. allow people reconnecting)
     if (!this._usernameExistsInRoom(username)) {
       this.playerMap[socket.id] = new Player(socket, username);

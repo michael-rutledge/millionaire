@@ -24,24 +24,26 @@ class RoomPool {
       socket.on('disconnect', () => { this.onDisconnect(socket); });
       socket.on('disconnecting', () => { this.onDisconnecting(socket); });
       // Custom actions
-      socket.on('userAttemptCreateRoom', (data) => { this.userAttemptCreateRoom(socket, data) });
-      socket.on('userAttemptJoinRoom', (data) => { this.userAttemptJoinRoom(socket, data) });
+      socket.on('playerAttemptCreateRoom', (data) => {
+        this.playerAttemptCreateRoom(socket, data)
+      });
+      socket.on('playerAttemptJoinRoom', (data) => { this.playerAttemptJoinRoom(socket, data) });
     });
   }
 
 
   // PRIVATE METHODS
 
-  // Attempts to add a user identified by the given username and socket to the room identified by
+  // Attempts to add a player identified by the given username and socket to the room identified by
   // the given room code.
   //
   // Returns true if successful, false if unsuccessful.
-  _addUserToRoom(socket, username, roomCode) {
+  _addPlayerToRoom(socket, username, roomCode) {
     if (!this.roomExists(roomCode)) {
       return false;
     }
 
-    return this.rooms[roomCode].addUser(socket, username);
+    return this.rooms[roomCode].addPlayer(socket, username);
   }
 
 
@@ -84,16 +86,16 @@ class RoomPool {
     Logger.logInfo('socket ' + socket.id + ' disconnecting');
   }
 
-  // Attempts to create a room for a user using the given socket and data.
+  // Attempts to create a room as requested by the Player indentified by the given socket and data.
   //
   // Expected data format:
   //  {
   //    string username
   //  }
-  userAttemptCreateRoom(socket, data) {
+  playerAttemptCreateRoom(socket, data) {
     if (!data || data.username.length < 1) {
       Logger.logWarning('Socket ' + socket.id + ' gave invalid data when creating new Room');
-      SafeSocket.emit(socket, 'userCreateRoomFailue', {
+      SafeSocket.emit(socket, 'playerCreateRoomFailue', {
         reason: 'Invalid data'
       });
       return;
@@ -101,29 +103,29 @@ class RoomPool {
 
     var newRoomCode = this.reserveNewRoom();
     Logger.logInfo('New room code generated: ' + newRoomCode);
-    if (this._addUserToRoom(socket, data.username, newRoomCode)) {
-      SafeSocket.emit(socket, 'userCreateRoomSuccess', {
+    if (this._addPlayerToRoom(socket, data.username, newRoomCode)) {
+      SafeSocket.emit(socket, 'playerCreateRoomSuccess', {
         username: data.username,
         roomCode: newRoomCode
       });
     } else {
       Logger.logWarning('Socket ' + socket.id + ' failed to create new Room: ' + newRoomCode);
-      SafeSocket.emit(socket, 'userCreateRoomFailure', {
+      SafeSocket.emit(socket, 'playerCreateRoomFailure', {
         reason: 'Unknown Room creation failure'
       });
     }
   }
 
-  // Attempts to join a user to a room using the given socket and data.
+  // Attempts to join a Player to a room using the given socket and data.
   //
   // Expected data format:
   //  {
   //    string username,
   //    string roomCode
   //  }
-  userAttemptJoinRoom(socket, data) {
+  playerAttemptJoinRoom(socket, data) {
     // TODO: implement this.
-    Logger.logInfo('userAttemptJoinRoom');
+    Logger.logInfo('playerAttemptJoinRoom');
   }
 }
 

@@ -27,16 +27,16 @@ describe('RoomPoolTest', () => {
     expect(roomPool.roomExists(badRoomCode)).to.equal(false);
   });
 
-  it('userAttemptCreateRoomShouldSuceedForValidInput', () => {
+  it('playerAttemptCreateRoomShouldSucceedForValidInput', () => {
     var roomPool = new RoomPool(/*socketIoInstance=*/{});
-    roomPool.userAttemptCreateRoom(/*socket=*/{}, /*data=*/{ username: 'foo_username' });
+    roomPool.playerAttemptCreateRoom(/*socket=*/{}, /*data=*/{ username: 'foo_username' });
 
     expect(roomPool.getNumRooms()).to.equal(1);
   });
 
-  it('userAttemptCreateRoomShouldFailForInvalidInput', () => {
+  it('playerAttemptCreateRoomShouldFailForInvalidInput', () => {
     var roomPool = new RoomPool(/*socketIoInstance=*/{});
-    roomPool.userAttemptCreateRoom(/*socket=*/{}, /*data=*/undefined);
+    roomPool.playerAttemptCreateRoom(/*socket=*/{}, /*data=*/undefined);
 
     expect(roomPool.getNumRooms()).to.equal(0);
   });
