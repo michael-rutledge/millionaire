@@ -3,7 +3,7 @@
 
 // Attempts to emit a message from the given socket.
 function emit(socket, message, data) {
-  if (socket.emit) {
+  if (socket && socket.emit) {
     socket.emit(message, data);
   }
 }
