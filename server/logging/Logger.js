@@ -1,3 +1,5 @@
+const colors = require('colors');
+
 const NONE = 0;
 const ERROR = 1;
 const WARN = 2;
@@ -24,19 +26,19 @@ const DEBUG_LEVEL = getDebugLevel();
 
 function logError(message) {
   if (DEBUG_LEVEL >= ERROR) {
-    console.log(message);
+    console.log('ERROR: '.red.bold + message);
   }
 }
 
 function logWarning(message) {
   if (DEBUG_LEVEL >= WARN) {
-    console.log(message);
+    console.log('WARN: '.yellow.bold + message);
   }
 }
 
 function logInfo(message) {
   if (DEBUG_LEVEL >= INFO) {
-    console.log(message);
+    console.log('INFO: '.cyan.bold + message);
   }
 }
 
