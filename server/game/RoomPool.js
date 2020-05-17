@@ -2,6 +2,7 @@ const Hasher = require(process.cwd() + '/server/string/Hasher.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
 const Room = require(process.cwd() + '/server/game/Room.js');
 const SafeSocket = require(process.cwd() + '/server/socket/SafeSocket.js');
+const StringSanitizer = require(process.cwd() + '/server/string/StringSanitizer.js');
 
 const ROOM_CODE_LENGTH = 4;
 
@@ -46,12 +47,31 @@ class RoomPool {
     return this.rooms[roomCode].addPlayer(socket, username);
   }
 
+  // Returns the sanitized username from the given data object.
+  //
+  // Returns empty string if unsuccessful.
+  _getSanitizedUsername(data) {
+    if (!data || !data.username) {
+      return "";
+    }
+
+    return StringSanitizer.getHtmlSanitized(data.username);
+  }
+
 
   // PUBLIC METHODS
 
   // Returns the number of active rooms within the RoomPool.
   getNumRooms() {
     return Object.keys(this.rooms).length;
+  }
+
+  // Removes the Room associated with the given room code from the pool.
+  removeRoom(roomCode) {
+    Logger.logInfo('Removing room: ' + roomCode);
+    if (this.roomExists(roomCode)) {
+      delete this.rooms[roomCode];
+    }
   }
 
   // Reserves a new room with a new, random, and unused room code.
@@ -78,12 +98,12 @@ class RoomPool {
 
   // Executes desired actions upon finished disconnect of the given socket.
   onDisconnect(socket) {
-    Logger.logInfo('socket ' + socket.id + ' disconnected...');
+    Logger.logInfo('socket ' + socket.id + ' disconnected');
   }
 
   // Executes desired actions upon disconnecting the given socket.
   onDisconnecting(socket) {
-    Logger.logInfo('socket ' + socket.id + ' disconnecting');
+    Logger.logInfo('socket ' + socket.id + ' disconnecting...');
   }
 
   // Attempts to create a room as requested by the Player indentified by the given socket and data.
@@ -93,7 +113,9 @@ class RoomPool {
   //    string username
   //  }
   playerAttemptCreateRoom(socket, data) {
-    if (!data || data.username.length < 1) {
+    var username = this._getSanitizedUsername(data);
+
+    if (username.length < 1) {
       Logger.logWarning('Socket ' + socket.id + ' gave invalid data when creating new Room');
       SafeSocket.emit(socket, 'playerCreateRoomFailue', {
         reason: 'Invalid data'
@@ -103,13 +125,15 @@ class RoomPool {
 
     var newRoomCode = this.reserveNewRoom();
     Logger.logInfo('New room code generated: ' + newRoomCode);
-    if (this._addPlayerToRoom(socket, data.username, newRoomCode)) {
+
+    if (this._addPlayerToRoom(socket, username, newRoomCode)) {
       SafeSocket.emit(socket, 'playerCreateRoomSuccess', {
-        username: data.username,
+        username: username,
         roomCode: newRoomCode
       });
     } else {
       Logger.logWarning('Socket ' + socket.id + ' failed to create new Room: ' + newRoomCode);
+      this.removeRoom(newRoomCode);
       SafeSocket.emit(socket, 'playerCreateRoomFailure', {
         reason: 'Unknown Room creation failure'
       });
@@ -124,8 +148,27 @@ class RoomPool {
   //    string roomCode
   //  }
   playerAttemptJoinRoom(socket, data) {
-    // TODO: implement this.
-    Logger.logInfo('playerAttemptJoinRoom');
+    var username = this._getSanitizedUsername(data);
+
+    if (username.length < 1) {
+      Logger.logWarning('Socket ' + socket.id + ' gave invalid data when joining room ' +
+          data.roomCode);
+      SafeSocket.emit(socket, 'playerJoinRoomFailure', {
+        reason: 'Invalid data'
+      });
+      return;
+    }
+
+    if (this._addPlayerToRoom(socket, username, data.roomCode)) {
+      SafeSocket.emit(socket, 'playerJoinRoomSuccess', {
+        username: username,
+        roomCode: data.roomCode
+      });
+    } else {
+      SafeSocket.emit(socket, 'playerJoinRoomFailure', {
+        reason: 'Room code does not exist or username already exists in Room'
+      });
+    }
   }
 }
 

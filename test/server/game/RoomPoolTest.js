@@ -2,6 +2,16 @@ const expect = require('chai').expect;
 
 const RoomPool = require(process.cwd() + '/server/game/RoomPool.js');
 
+// Returns a suitable singleton room code for testing joining rooms.
+function getSingleRoomCode(roomPool) {
+  if (roomPool.getNumRooms() < 1) {
+    roomPool.playerAttemptCreateRoom(/*socket=*/{}, /*data=*/{ username: 'creator' });
+  }
+  for (const roomCode in roomPool.rooms) {
+    return roomCode;
+  }
+}
+
 describe('RoomPoolTest', () => {
   it('reserveNewRoomShouldGiveExpectedResult', () => {
     var roomPool = new RoomPool(/*socketIoInstance=*/{});
@@ -40,4 +50,28 @@ describe('RoomPoolTest', () => {
 
     expect(roomPool.getNumRooms()).to.equal(0);
   });
+
+  it('playerAttemptJoinRoomShouldSucceedForValidInput', () => {
+    var roomPool = new RoomPool(/*socketIoInstance=*/{});
+    var roomCode = getSingleRoomCode(roomPool);
+
+    roomPool.playerAttemptJoinRoom(/*socket*/{ id: 'socket_id' }, /*data=*/{
+      username: 'joiner',
+      roomCode: roomCode
+    });
+
+    expect(roomPool.rooms[roomCode].playerMap['socket_id']).to.not.be.undefined;
+  });
+
+  it('playerAttemptJoinRoomShouldFailForInvalidInput', () => {
+    var roomPool = new RoomPool(/*socketIoInstance=*/{});
+    var roomCode = getSingleRoomCode(roomPool);
+    roomPool.playerAttemptJoinRoom(/*socket=*/{}, /*data=*/{
+      username: '',
+      roomCode: roomCode
+    });
+
+    expect(roomPool.rooms[roomCode].playerMap['socket_id']).to.be.undefined;
+  });
+
 });
