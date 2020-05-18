@@ -24,13 +24,13 @@ loginJoinButton.onclick = () => {
 // Listens for 'playerCreateRoomSuccess' actions coming from the server and executes when a signal
 // is found.
 socket.on('playerCreateRoomSuccess', (data) => {
-  console.log('You have created a room.');
+  console.log('You have created the room: ' + data.roomCode);
   console.log(data);
 });
 
 // Listens for 'playerJoinRoomSuccess' actions coming from the server and executes when a signal is
 // found.
 socket.on('playerJoinRoomSuccess', (data) => {
-  console.log('You have joined a room.');
+  console.log('You have joined the room: ' + data.roomCode);
   console.log(data);
 });

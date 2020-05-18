@@ -23,7 +23,7 @@ class RoomPool {
 
       // Default socket.io actions
       socket.on('disconnect', () => { this.onDisconnect(socket); });
-      socket.on('disconnecting', () => { this.onDisconnecting(socket); });
+      socket.on('disconnecting', () => { this.playerAttemptLeaveRoom(socket); });
       // Custom actions
       socket.on('playerAttemptCreateRoom', (data) => {
         this.playerAttemptCreateRoom(socket, data)
@@ -47,6 +47,17 @@ class RoomPool {
     return this.rooms[roomCode].addPlayer(socket, username);
   }
 
+  // Returns the room code associated with the given socket.
+  //
+  // Returns undefined if none exists.
+  _getRoomCodeFromSocket(socket) {
+    if (socket && socket.rooms) {
+      return socket.rooms[Object.keys(socket.rooms)[1]];
+    }
+
+    return undefined;
+  }
+
   // Returns the sanitized username from the given data object.
   //
   // Returns empty string if unsuccessful.
@@ -66,12 +77,15 @@ class RoomPool {
     return Object.keys(this.rooms).length;
   }
 
+  // Returns the room associated with the given room code.
+  getRoom(roomCode) {
+    return this.rooms[roomCode];
+  }
+
   // Removes the Room associated with the given room code from the pool.
   removeRoom(roomCode) {
     Logger.logInfo('Removing room: ' + roomCode);
-    if (this.roomExists(roomCode)) {
-      delete this.rooms[roomCode];
-    }
+    delete this.rooms[roomCode];
   }
 
   // Reserves a new room with a new, random, and unused room code.
@@ -96,14 +110,31 @@ class RoomPool {
 
   // LISTENERS
 
+  // Attempts to disconnect the player from their respective room.
+  //
+  // If the room no longer has any socket connections, remove it.
+  playerAttemptLeaveRoom(socket) {
+    Logger.logInfo('socket ' + socket.id + ' disconnecting...');
+    var roomCode = this._getRoomCodeFromSocket(socket);
+
+    if (this.roomExists(roomCode)) {
+      this.getRoom(roomCode).disconnectPlayer(socket);
+      socket.emit('playerLeaveRoomSuccess', {});
+    } else {
+      socket.emit('playerLeaveRoomFailure', {
+        reason: 'Room does not exist'
+      });
+      return;
+    }
+
+    if (this.getRoom(roomCode).socketsEmpty()) {
+      this.removeRoom(roomCode);
+    }
+  }
+
   // Executes desired actions upon finished disconnect of the given socket.
   onDisconnect(socket) {
     Logger.logInfo('socket ' + socket.id + ' disconnected');
-  }
-
-  // Executes desired actions upon disconnecting the given socket.
-  onDisconnecting(socket) {
-    Logger.logInfo('socket ' + socket.id + ' disconnecting...');
   }
 
   // Attempts to create a room as requested by the Player indentified by the given socket and data.
@@ -117,7 +148,7 @@ class RoomPool {
 
     if (username.length < 1) {
       Logger.logWarning('Socket ' + socket.id + ' gave invalid data when creating new Room');
-      SafeSocket.emit(socket, 'playerCreateRoomFailue', {
+      SafeSocket.emit(socket, 'playerCreateRoomFailure', {
         reason: 'Invalid data'
       });
       return;
@@ -127,9 +158,12 @@ class RoomPool {
     Logger.logInfo('New room code generated: ' + newRoomCode);
 
     if (this._addPlayerToRoom(socket, username, newRoomCode)) {
-      SafeSocket.emit(socket, 'playerCreateRoomSuccess', {
-        username: username,
-        roomCode: newRoomCode
+      Logger.logInfo('Socket ' + socket.id + ' created and joined room: ' + newRoomCode);
+      SafeSocket.join(socket, newRoomCode, () => {
+        SafeSocket.emit(socket, 'playerCreateRoomSuccess', {
+          username: username,
+          roomCode: newRoomCode
+        });
       });
     } else {
       Logger.logWarning('Socket ' + socket.id + ' failed to create new Room: ' + newRoomCode);
@@ -160,11 +194,15 @@ class RoomPool {
     }
 
     if (this._addPlayerToRoom(socket, username, data.roomCode)) {
-      SafeSocket.emit(socket, 'playerJoinRoomSuccess', {
-        username: username,
-        roomCode: data.roomCode
+      Logger.logInfo('Socket ' + socket.id + ' joined room: ' + data.roomCode);
+      SafeSocket.join(socket, data.roomCode, () => {
+        SafeSocket.emit(socket, 'playerJoinRoomSuccess', {
+          username: username,
+          roomCode: data.roomCode
+        });
       });
     } else {
+      Logger.logWarning('Socket ' + socket.id + ' failed to join room ' + data.roomCode);
       SafeSocket.emit(socket, 'playerJoinRoomFailure', {
         reason: 'Room code does not exist or username already exists in Room'
       });
