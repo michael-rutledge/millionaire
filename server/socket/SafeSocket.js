@@ -8,6 +8,13 @@ function emit(socket, message, data) {
   }
 }
 
+// Attempts to join a socket to the given room code.
+function join(socket, roomCode, callback) {
+  if (socket && socket.join) {
+    socket.join(roomCode, callback);
+  }
+}
+
 // Attempts to set a listener for all sockets for a given socket.io instance.
 //
 // Typically used to set the 'connection' message.
@@ -18,4 +25,5 @@ function socketsOn(socketIoInstance, message, callback) {
 }
 
 module.exports.emit = emit;
+module.exports.join = join;
 module.exports.socketsOn = socketsOn;
