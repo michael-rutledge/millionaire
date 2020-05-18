@@ -5,6 +5,7 @@ class MockSocket {
     this.id = id;         // Id to be used in place of a real socket id
     this.joinedRoomCode;  // Room code that the MockSocket has "joined"
     this.emissions = {};  // Map of messages to arrays of data objects for each emission
+    this.rooms = {};
   }
 
   // Mocks a socket emission and keeps track of the data emitted.
@@ -18,6 +19,10 @@ class MockSocket {
   // Mocks the socket joining a room and calls the callback as expected.
   join(roomCode, callback) {
     this.joinedRoomCode = roomCode;
+    this.rooms = {
+      der: 'f',
+      room: roomCode
+    };
     callback();
   }
 }
