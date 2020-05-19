@@ -10,6 +10,7 @@
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
+    "browserify": "^16.5.1",
     "chai": "^4.2.0",
     "mocha": "^7.1.2"
   },
