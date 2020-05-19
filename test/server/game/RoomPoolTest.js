@@ -123,7 +123,7 @@ describe('RoomPoolTest', () => {
       username: 'username',
       roomCode: roomCode
     });
-    roomPool.playerAttemptLeaveRoom(mockSocket);
+    roomPool.playerAttemptLeaveRoom(mockSocket, {});
 
     expect(mockSocket.emissions['playerLeaveRoomSuccess']).to.not.be.undefined;
     expect(mockSocket.emissions['playerLeaveRoomSuccess']).to.have.lengthOf(1);
@@ -138,7 +138,7 @@ describe('RoomPoolTest', () => {
       username: 'username',
       roomCode: roomCode
     });
-    roomPool.playerAttemptLeaveRoom(mockSocket);
+    roomPool.playerAttemptLeaveRoom(mockSocket, {});
 
     expect(roomPool.rooms).to.be.empty;
   });
@@ -153,7 +153,7 @@ describe('RoomPoolTest', () => {
       roomCode: roomCode
     });
     mockSocket.rooms.room = 'bad_room';
-    roomPool.playerAttemptLeaveRoom(mockSocket);
+    roomPool.playerAttemptLeaveRoom(mockSocket, {});
 
     expect(mockSocket.emissions['playerLeaveRoomFailure']).to.not.be.undefined;
     expect(mockSocket.emissions['playerLeaveRoomFailure']).to.have.lengthOf(1);

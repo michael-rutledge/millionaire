@@ -23,12 +23,13 @@ class RoomPool {
 
       // Default socket.io actions
       socket.on('disconnect', () => { this.onDisconnect(socket); });
-      socket.on('disconnecting', () => { this.playerAttemptLeaveRoom(socket); });
+      socket.on('disconnecting', () => { this.playerAttemptLeaveRoom(socket, {}); });
       // Custom actions
       socket.on('playerAttemptCreateRoom', (data) => {
         this.playerAttemptCreateRoom(socket, data)
       });
       socket.on('playerAttemptJoinRoom', (data) => { this.playerAttemptJoinRoom(socket, data) });
+      socket.on('playerAttemptLeaveRoom', (data) => { this.playerAttemptLeaveRoom(socket, data) });
     });
   }
 
@@ -110,28 +111,6 @@ class RoomPool {
 
   // LISTENERS
 
-  // Attempts to disconnect the player from their respective room.
-  //
-  // If the room no longer has any socket connections, remove it.
-  playerAttemptLeaveRoom(socket) {
-    Logger.logInfo('socket ' + socket.id + ' disconnecting...');
-    var roomCode = this._getRoomCodeFromSocket(socket);
-
-    if (this.roomExists(roomCode)) {
-      this.getRoom(roomCode).disconnectPlayer(socket);
-      socket.emit('playerLeaveRoomSuccess', {});
-    } else {
-      socket.emit('playerLeaveRoomFailure', {
-        reason: 'Room does not exist'
-      });
-      return;
-    }
-
-    if (this.getRoom(roomCode).socketsEmpty()) {
-      this.removeRoom(roomCode);
-    }
-  }
-
   // Executes desired actions upon finished disconnect of the given socket.
   onDisconnect(socket) {
     Logger.logInfo('socket ' + socket.id + ' disconnected');
@@ -206,6 +185,28 @@ class RoomPool {
       SafeSocket.emit(socket, 'playerJoinRoomFailure', {
         reason: 'Room code does not exist or username already exists in Room'
       });
+    }
+  }
+
+  // Attempts to disconnect the player from their respective room.
+  //
+  // If the room no longer has any socket connections, remove it.
+  playerAttemptLeaveRoom(socket, data) {
+    Logger.logInfo('socket ' + socket.id + ' disconnecting...');
+    var roomCode = this._getRoomCodeFromSocket(socket);
+
+    if (this.roomExists(roomCode)) {
+      this.getRoom(roomCode).disconnectPlayer(socket);
+      socket.emit('playerLeaveRoomSuccess', {});
+    } else {
+      socket.emit('playerLeaveRoomFailure', {
+        reason: 'Room does not exist'
+      });
+      return;
+    }
+
+    if (this.getRoom(roomCode).socketsEmpty()) {
+      this.removeRoom(roomCode);
     }
   }
 }
