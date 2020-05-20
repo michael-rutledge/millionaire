@@ -1,5 +1,5 @@
 // Encapsulates the instance of a running client of Millionaire With Friends.
-class MillionaireClient {
+class AppClient {
 
   constructor(socket, htmlDocument, htmlWindow) {
     // Assign fields
@@ -98,4 +98,4 @@ class MillionaireClient {
   }
 }
 
-module.exports = MillionaireClient;
+module.exports = AppClient;

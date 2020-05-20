@@ -15,7 +15,7 @@
     "mocha": "^7.1.2"
   },
   "scripts": {
-    "build": "browserify client/js/client.js -o client/js/bundle.js",
+    "build": "browserify client/js/clientMain.js -o client/js/bundle.js",
     "clean": "npm run build && node app.js",
     "clean_error": "npm run build && node app.js debug:error",
     "clean_info": "npm run build && node app.js debug:info",
