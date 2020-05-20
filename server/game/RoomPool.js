@@ -197,7 +197,9 @@ class RoomPool {
 
     if (this.roomExists(roomCode)) {
       this.getRoom(roomCode).disconnectPlayer(socket);
-      socket.emit('playerLeaveRoomSuccess', {});
+      socket.leave(roomCode, () =>  {
+        socket.emit('playerLeaveRoomSuccess', {});
+      });
     } else {
       socket.emit('playerLeaveRoomFailure', {
         reason: 'Room does not exist'

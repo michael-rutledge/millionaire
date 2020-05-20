@@ -31,6 +31,9 @@ class AppClient {
     this.socket.on('playerLeaveRoomSuccess', (data) => {
       this.onPlayerLeaveRoomSuccess(data);
     });
+    this.socket.on('playerLeaveRoomFailure', (data) => {
+      this.onPlayerLeaveRoomFailure(data);
+    });
   }
 
 
@@ -95,6 +98,12 @@ class AppClient {
   onPlayerLeaveRoomSuccess(data) {
     console.log('You have left the room.');
     this._goFromGameRoomToLogin();
+  }
+
+  // Handles a failed room leave for this client.
+  onPlayerLeaveRoomFailure(data) {
+    console.log('Failed to leave room.');
+    console.log(data);
   }
 }
 

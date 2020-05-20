@@ -13,8 +13,9 @@ class MockSocket {
   emit(message, data) {
     if (this.emissions.hasOwnProperty(message)) {
       this.emissions[message].push(data);
+    } else {
+      this.emissions[message] = [data];
     }
-    this.emissions[message] = [data];
   }
 
   // Mocks the socket joining a room and calls the callback as expected.
@@ -30,6 +31,13 @@ class MockSocket {
   // Mocks the socket adding a listener for a certain message.
   on(message, callback) {
     this.listens[message] = callback;
+  }
+
+  // Mocks the socket leaving its room.
+  leave(roomCode, callback) {
+    this.joinedRoomCode = undefined;
+    this.rooms = {};
+    callback();
   }
 }
 
