@@ -49,6 +49,52 @@ describe('RoomPoolTest', () => {
   });
 
   // LISTENER TESTS
+  it('hostAttemptStartGameShouldFailForNonExistentRoom', () => {
+    var roomPool = new RoomPool(/*socketIoInstance=*/{});
+    var mockSocket = new MockSocket('socket_id');
+
+    roomPool.hostAttemptStartGame(mockSocket, /*gameOptions=*/{});
+
+    expect(mockSocket.emissions['hostStartGameFailure']).to.not.be.undefined;
+    expect(mockSocket.emissions['hostStartGameFailure']).to.have.lengthOf(1);
+    expect(mockSocket.emissions['hostStartGameFailure'][0].reason).to.have.string(
+        'Room does not exist');
+  });
+
+   it('hostAttemptStartGameShouldFailIfRoomFailsToStartGame', () => {
+    var roomPool = new RoomPool(/*socketIoInstance=*/{});
+    var mockSocket = new MockSocket('socket_id');
+    var newRoomCode = roomPool.reserveNewRoom();
+    roomPool.getRoom(newRoomCode).attemptStartGame = (socket, gameOptions) => { return false };
+    roomPool.playerAttemptJoinRoom(mockSocket, {
+      username: 'username',
+      roomCode: newRoomCode
+    });
+
+    roomPool.hostAttemptStartGame(mockSocket, /*gameOptions=*/{});
+
+    expect(mockSocket.emissions['hostStartGameFailure']).to.not.be.undefined;
+    expect(mockSocket.emissions['hostStartGameFailure']).to.have.lengthOf(1);
+    expect(mockSocket.emissions['hostStartGameFailure'][0].reason).to.have.string(
+        'room.attemptStartGame() failed');
+  });
+
+  it('hostAttemptStartGameShouldSucceedIfRoomSucceedsInStartingGame', () => {
+    var roomPool = new RoomPool(/*socketIoInstance=*/{});
+    var mockSocket = new MockSocket('socket_id');
+    var newRoomCode = roomPool.reserveNewRoom();
+    roomPool.getRoom(newRoomCode).attemptStartGame = (socket, gameOptions) => { return true };
+    roomPool.playerAttemptJoinRoom(mockSocket, {
+      username: 'username',
+      roomCode: newRoomCode
+    });
+
+    roomPool.hostAttemptStartGame(mockSocket, /*gameOptions=*/{});
+
+    expect(mockSocket.emissions['hostStartGameSuccess']).to.not.be.undefined;
+    expect(mockSocket.emissions['hostStartGameSuccess']).to.have.lengthOf(1);
+  });
+
   it('playerAttemptCreateRoomShouldSucceedForValidInput', () => {
     var roomPool = new RoomPool(/*socketIoInstance=*/{});
     var mockSocket = new MockSocket('socket_id');
@@ -143,7 +189,7 @@ describe('RoomPoolTest', () => {
     expect(roomPool.rooms).to.be.empty;
   });
 
-  it('playerAttemptLeaveRoomShouldFailForNonExistent', () => {
+  it('playerAttemptLeaveRoomShouldFailForNonExistentRoom', () => {
     var roomPool = new RoomPool(/*socketIoInstance=*/{});
     var roomCode = roomPool.reserveNewRoom();
     var mockSocket = new MockSocket('socket_id');

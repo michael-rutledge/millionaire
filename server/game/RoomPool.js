@@ -25,6 +25,7 @@ class RoomPool {
       socket.on('disconnect', () => { this.onDisconnect(socket); });
       socket.on('disconnecting', () => { this.playerAttemptLeaveRoom(socket, {}); });
       // Custom actions
+      socket.on('hostAttemptStartGame', (data) => { this.hostAttemptStartGame(socket, data) });
       socket.on('playerAttemptCreateRoom', (data) => {
         this.playerAttemptCreateRoom(socket, data)
       });
@@ -110,6 +111,33 @@ class RoomPool {
 
 
   // LISTENERS
+
+  // Attempts to start a game for the room associated with the given socket.
+  //
+  // Expected data format for gameOptions:
+  // {
+  //   string showHostUsername
+  // }
+  hostAttemptStartGame(socket, gameOptions) {
+    Logger.logInfo('Socket ' + socket.id + ' attempting to start game');
+    var roomCode = this._getRoomCodeFromSocket(socket);
+
+    if (this.roomExists(roomCode)) {
+      if (this.rooms[roomCode].attemptStartGame(socket, gameOptions)) {
+        socket.emit('hostStartGameSuccess', {});
+      } else {
+        Logger.logWarning('Socket ' + socket.id + ' failed to start game');
+        socket.emit('hostStartGameFailure', {
+          reason: 'room.attemptStartGame() failed'
+        });
+      }
+    } else {
+      Logger.logWarning('Socket ' + socket.id + ' failed to start game');
+      socket.emit('hostStartGameFailure', {
+        reason: 'Room does not exist'
+      });
+    }
+  }
 
   // Executes desired actions upon finished disconnect of the given socket.
   onDisconnect(socket) {
