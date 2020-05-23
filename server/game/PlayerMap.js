@@ -75,7 +75,9 @@ class PlayerMap {
     return activePlayers;
   }
 
-  // Returns 
+  // Returns the username of the Player associated with the given socket.
+  //
+  // Returns undefined if no such Player exists.
   getUsernameBySocket(socket) {
     if (this.containsSocket(socket)) {
       return this.socketIdToUsernameMap[socket.id];

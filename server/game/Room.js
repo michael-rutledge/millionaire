@@ -42,7 +42,7 @@ class Room {
   //  Returns true if successful, false if unsuccessful.
   attemptStartGame(socket, gameOptions) {
     if (this.socketIsHost(socket) && !this.gameServer.isInGame() &&
-        this.gameOptionsAreValid(gameOptions)) {
+        this.gameServer.gameOptionsAreValid(gameOptions)) {
       this.gameServer.startGame(gameOptions);
       return true;
     }
@@ -66,11 +66,6 @@ class Room {
     if (!this.gameServer.isInGame()) {
       this.playerMap.removePlayerByUsername(username);
     }
-  }
-
-  // Returns whether the given game options are valid.
-  gameOptionsAreValid(gameOptions) {
-    return gameOptions.showHostUsername === undefined || this.playerMap.getActivePlayerCount() > 1;
   }
 
   // Assigns the role of room host to a new socket if possible.

@@ -29,6 +29,36 @@ describe('GameServerTest', () => {
     expect(Object.keys(socket.listeners)).to.be.empty;
   });
 
+  it('gameOptionsAreValidShouldAllowNoShowHost', () => {
+    var gameServer = new GameServer(new PlayerMap());
+    var gameOptions = { showHostUsername: undefined };
+
+    var result = gameServer.gameOptionsAreValid(gameOptions);
+
+    expect(result).to.be.true;
+  });
+
+  it('gameOptionsAreValidShouldNotAllowShowHostForOnePlayer', () => {
+    var gameServer = new GameServer(new PlayerMap());
+    gameServer.playerMap.putPlayer(new Player(new MockSocket('socket_id'), 'username'));
+    var gameOptions = { showHostUsername: 'username' };
+
+    var result = gameServer.gameOptionsAreValid(gameOptions);
+
+    expect(result).to.be.false;
+  });
+
+  it('gameOptionsAreValidShouldAllowShowHostForMoreThanOnePlayer', () => {
+    var gameServer = new GameServer(new PlayerMap());
+    gameServer.playerMap.putPlayer(new Player(new MockSocket('socket_id'), 'username'));
+    gameServer.playerMap.putPlayer(new Player(new MockSocket('socket_id_2'), 'username_2'));
+    var gameOptions = { showHostUsername: 'username' };
+
+    var result = gameServer.gameOptionsAreValid(gameOptions);
+
+    expect(result).to.be.true;
+  });
+
   it('startGameShouldGiveExpectedResult', () => {
     var gameServer = new GameServer(new PlayerMap());
 

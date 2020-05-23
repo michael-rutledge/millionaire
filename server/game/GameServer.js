@@ -1,6 +1,6 @@
 const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 
-// Socket event names to allow for dynamic setting of listeners.
+// Socket event names to allow for dynamic activation and deactivation of listeners.
 const SOCKET_EVENTS = [
   'showHostShowFastestFingerRules',
   'showHostCueFastestFingerQuestion',
@@ -59,6 +59,11 @@ class GameServer {
   // Ends the game for this GameServer.
   endGame() {
     this.serverState = undefined;
+  }
+
+  // Returns whether the given game options are valid.
+  gameOptionsAreValid(gameOptions) {
+    return gameOptions.showHostUsername === undefined || this.playerMap.getActivePlayerCount() > 1;
   }
 
   // Returns whether the GameServer is ingame.
