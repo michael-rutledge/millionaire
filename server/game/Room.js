@@ -1,30 +1,17 @@
 const GameServer = require(process.cwd() + '/server/game/GameServer.js');
 const Player = require(process.cwd() + '/server/game/Player.js');
+const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
 
 // Encapsulates a room of Millionaire With Friends.
 class Room {
 
   // Constructs a new Room using the given room code.
   constructor(roomCode) {
-    this.roomCode = roomCode;         // Room code (e.g. 'abcd' or 'foo1')
-    this.usernameToPlayerMap = {};    // Map of usernames to Players
-    this.socketIdToUsernameMap = {};  // Map of socket ids to usernames
-    this.host = undefined;            // Reference to host player
-    this.gameServer =                 // Game server that will handle game interactions
-        new GameServer(this.usernameToPlayerMap, this.socketIdToUsernameMap);
-  }
-
-
-  // PRIVATE METHODS
-
-  // Returns whether the given sock is presently connected to the room.
-  _socketExistsInRoom(socket) {
-    return this.socketIdToUsernameMap.hasOwnProperty(socket.id);
-  }
-
-  // Returns whether the given username is being used in the room.
-  _usernameExistsInRoom(username) {
-    return this.usernameToPlayerMap.hasOwnProperty(username);
+    this.roomCode = roomCode;           // Room code (e.g. 'abcd' or 'foo1')
+    this.playerMap = new PlayerMap();   // PlayerMap of the room
+    this.hostSocket = undefined;        // Reference to host socket
+    this.gameServer =                   // Game server that will handle game interactions
+        new GameServer(this.playerMap);
   }
 
 
@@ -34,18 +21,29 @@ class Room {
   //
   // Returns true if successful, false if unsuccessful.
   addPlayer(socket, username) {
-    if (!this._usernameExistsInRoom(username) && !this.gameServer.isInGame()) {
-      var player = new Player(socket, username);
-      this.usernameToPlayerMap[username] = player;
-      this.socketIdToUsernameMap[socket.id] = username;
-      if (this.host === undefined) {
-        this.host = player;
+    if (!this.playerMap.containsUsername(username) && !this.gameServer.isInGame()) {
+      this.playerMap.putPlayer(new Player(socket, username));
+
+      if (this.hostSocket === undefined) {
+        this.hostSocket = socket;
       }
       return true;
-    } else if (this._usernameExistsInRoom(username) && this.gameServer.isInGame() &&
-               this.getPlayerByUsername(username).socket === undefined) {
-      this.getPlayerByUsername(username).socket = socket;
-      this.socketIdToUsernameMap[socket.id] = username;
+    } else if (this.playerMap.containsUsername(username) && this.gameServer.isInGame() &&
+               !this.playerMap.isUsernameActive(username)) {
+      this.playerMap.updatePlayerSocket(username, socket);
+      return true;
+    }
+
+    return false;
+  }
+
+  //  Attempts to start a game, as triggered by the given socket with the given game options.
+  //
+  //  Returns true if successful, false if unsuccessful.
+  attemptStartGame(socket, gameOptions) {
+    if (this.socketIsHost(socket) && !this.gameServer.isInGame() &&
+        this.gameOptionsAreValid(gameOptions)) {
+      this.gameServer.startGame(gameOptions);
       return true;
     }
 
@@ -58,58 +56,40 @@ class Room {
   // while the game is running should merely disconnect the socket, making the player appear
   // offline.
   disconnectPlayer(socket) {
-    var username = this.getUsernameBySocket(socket);
+    var username = this.playerMap.getUsernameBySocket(socket);
 
-    if (this._socketExistsInRoom(socket)) {
-      var player = this.getPlayerBySocket(socket);
-      // Host leaving means a new host is needed.
-      if (this.socketIsHost(socket)) {
-        this.host = undefined;
-        delete this.socketIdToUsernameMap[socket.id];
-        this.reassignHost();
-        player.socket = undefined;
-      } else {
-        delete this.socketIdToUsernameMap[socket.id];
-        player.socket = undefined;
-      }
+    this.playerMap.removePlayerSocket(username);
+
+    if (this.socketIsHost(socket)) {
+      this.reassignHostSocket();
     }
-    if (this._usernameExistsInRoom(username) && !this.gameServer.isInGame()) {
-      delete this.usernameToPlayerMap[username];
+    if (!this.gameServer.isInGame()) {
+      this.playerMap.removePlayerByUsername(username);
     }
   }
 
-  // Returns the username associated with the given socket.
-  getUsernameBySocket(socket) {
-    return this.socketIdToUsernameMap[socket.id];
-  }
-
-  // Returns the player associated with the given socket.
-  getPlayerBySocket(socket) {
-    return this.getPlayerByUsername(this.socketIdToUsernameMap[socket.id]);
-  }
-
-  // Returns the player associated with the given username.
-  getPlayerByUsername(username) {
-    return this.usernameToPlayerMap[username];
+  // Returns whether the given game options are valid.
+  gameOptionsAreValid(gameOptions) {
+    return gameOptions.showHostUsername === undefined || this.playerMap.getActivePlayerCount() > 1;
   }
 
   // Assigns the role of room host to a new socket if possible.
-  reassignHost() {
-    this.host = undefined;
-    if (!this.socketsEmpty()) {
-      this.host = this.usernameToPlayerMap[
-          this.socketIdToUsernameMap[Object.keys(this.socketIdToUsernameMap)[0]]];
-    }
-  }
+  reassignHostSocket() {
+    this.hostSocket = undefined;
 
-  // Returns whether the amount of sockets connected is empty.
-  socketsEmpty() {
-    return Object.keys(this.socketIdToUsernameMap).length < 1;
+    if (this.playerMap.getActivePlayerCount() > 0) {
+      this.hostSocket = this.playerMap.getActivePlayerList()[0].socket;
+    }
   }
 
   // Returns whether the given socket is the socket of the Room's host.
   socketIsHost(socket) {
-    return this._socketExistsInRoom(socket) && this.getPlayerBySocket(socket) == this.host;
+    return socket == this.hostSocket;
+  }
+
+  // Returns whether no sockets are currently present in the PlayerMap.
+  socketsEmpty() {
+    return this.playerMap.getActivePlayerCount() < 1;
   }
 }
 

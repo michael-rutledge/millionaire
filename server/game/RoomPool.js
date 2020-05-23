@@ -110,7 +110,7 @@ class RoomPool {
   }
 
 
-  // LISTENERS
+  // SOCKET LISTENERS
 
   // Attempts to start a game for the room associated with the given socket.
   //

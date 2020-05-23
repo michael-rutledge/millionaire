@@ -19,7 +19,7 @@ describe('RoomTest', () => {
     var result = room.addPlayer(mockSocket, 'username');
 
     expect(result).to.be.true;
-    expect(room.getPlayerBySocket(mockSocket)).to.deep.equal(expectedPlayer);
+    expect(room.playerMap.getPlayerBySocket(mockSocket)).to.deep.equal(expectedPlayer);
   });
 
   it('addPlayerShouldSetHostForFirstUsernameInLobby', () => {
@@ -27,12 +27,11 @@ describe('RoomTest', () => {
     var mockSocket1 = new MockSocket('socket_id_1');
     var mockSocket2 = new MockSocket('socket_id_2');
     setRoomInGame(room, false);
-    var expectedHost = new Player(mockSocket1, 'host');
 
     room.addPlayer(mockSocket1, 'host');
     room.addPlayer(mockSocket2, 'joiner');
 
-    expect(room.host).to.deep.equal(expectedHost);
+    expect(room.hostSocket).to.deep.equal(mockSocket1);
   });
 
   it('addPlayerShouldNotAddPlayerForExistingUsernameInLobby', () => {
@@ -45,7 +44,7 @@ describe('RoomTest', () => {
     var result = room.addPlayer(mockSocket2, 'username');
 
     expect(result).to.be.false;
-    expect(room.getPlayerBySocket(mockSocket2)).to.be.undefined;
+    expect(room.playerMap.getPlayerBySocket(mockSocket2)).to.be.undefined;
   });
 
   it('addPlayerShouldAddPlayerForExistingUsernameWithoutSocketInGame', () => {
@@ -59,7 +58,8 @@ describe('RoomTest', () => {
     var result = room.addPlayer(mockSocket, 'username');
 
     expect(result).to.be.true;
-    expect(room.getPlayerBySocket(mockSocket)).to.deep.equal(new Player(mockSocket, 'username'));
+    expect(room.playerMap.getPlayerBySocket(mockSocket)).to.deep.equal(
+        new Player(mockSocket, 'username'));
   });
 
   it('addPlayerShouldNotAddPlayerForExistingUsernameWithSocketInGame', () => {
@@ -73,7 +73,7 @@ describe('RoomTest', () => {
     var result = room.addPlayer(mockSocket2, 'username');
 
     expect(result).to.be.false;
-    expect(room.getPlayerBySocket(mockSocket2)).to.be.undefined;
+    expect(room.playerMap.getPlayerBySocket(mockSocket2)).to.be.undefined;
   });
 
   it('addPlayerShouldNotAddPlayerForNonExistentUsernameInGame', () => {
@@ -84,7 +84,7 @@ describe('RoomTest', () => {
     var result = room.addPlayer(mockSocket, 'username');
 
     expect(result).to.be.false;
-    expect(room.getPlayerBySocket(mockSocket)).to.be.undefined;
+    expect(room.playerMap.getPlayerBySocket(mockSocket)).to.be.undefined;
   });
 
   it('disconnectPlayerShouldRemoveEntirePlayerInLobby', () => {
@@ -95,8 +95,8 @@ describe('RoomTest', () => {
 
     room.disconnectPlayer(mockSocket);
 
-    expect(room.getPlayerBySocket(mockSocket)).to.be.undefined;
-    expect(room.getPlayerByUsername('username')).to.be.undefined;
+    expect(room.playerMap.getPlayerBySocket(mockSocket)).to.be.undefined;
+    expect(room.playerMap.getPlayerByUsername('username')).to.be.undefined;
   });
 
   it('disconnectPlayerShouldRemoveSocketButKeepPlayerByUsernameInGame', () => {
@@ -108,8 +108,9 @@ describe('RoomTest', () => {
     setRoomInGame(room, true);
     room.disconnectPlayer(mockSocket);
 
-    expect(room.getPlayerBySocket(mockSocket)).to.be.undefined;
-    expect(room.getPlayerByUsername('username')).to.deep.equal(new Player(undefined, 'username'));
+    expect(room.playerMap.getPlayerBySocket(mockSocket).socket).to.be.undefined;
+    expect(room.playerMap.getPlayerByUsername('username')).to.deep.equal(
+        new Player(undefined, 'username'));
   });
 
   it('disconnectPlayerShouldSetNewHostIfHostDisconnects', () => {
@@ -122,13 +123,14 @@ describe('RoomTest', () => {
 
     room.disconnectPlayer(mockSocket);
 
-    expect(room.host).to.not.deep.equal(new Player(mockSocket, 'firstHost'));
-    expect(room.host).to.deep.equal(new Player(mockSocket2, 'newHost'));
+    expect(room.hostSocket).to.not.deep.equal(mockSocket);
+    expect(room.hostSocket).to.deep.equal(mockSocket2);
   });
 
   it('socketsEmptyShouldGiveExpectedResult', () => {
     var room = new Room('test');
     var mockSocket = new MockSocket('socket_id');
+    setRoomInGame(room, false);
     var emptyBeforeAdd, emptyAfterAdd;
 
     emptyBeforeAdd = room.socketsEmpty();
