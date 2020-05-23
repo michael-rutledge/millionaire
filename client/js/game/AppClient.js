@@ -11,6 +11,8 @@ class AppClient {
 
     // Assign HTML elements
     this.gameRow = this.htmlDocument.getElementById('gameRow');
+    this.gameCanvas = this.htmlDocument.getElementById('gameCanvas');
+    this.gameEndButton = this.htmlDocument.getElementById('gameEndButton');
     this.gameLeaveButton = this.htmlDocument.getElementById('gameLeaveButton');
     this.gameStartButton = this.htmlDocument.getElementById('gameStartButton');
     this.loginRow = this.htmlDocument.getElementById('loginRow');
@@ -20,16 +22,24 @@ class AppClient {
     this.loginCreateButton = this.htmlDocument.getElementById('loginCreateButton');
 
     // Assign HTML functions
+    this.gameEndButton.onclick = () => { this.hostAttemptEndGame(); }
     this.gameLeaveButton.onclick = () => { this.playerAttemptLeaveRoom(); };
+    this.gameStartButton.onclick = () => { this.hostAttemptStartGame(); }
     this.loginCreateButton.onclick = () => { this.playerAttemptCreateRoom() };
     this.loginJoinButton.onclick = () => { this.playerAttemptJoinRoom(); };
 
     // Assign socket listeners
+    this.socket.on('hostEndGameSuccess', (data) => {
+      this.onHostEndGameSuccess(data);
+    });
+    this.socket.on('hostEndGameFailure', (data) => {
+      this.onHostEndGameFailure(data);
+    });
     this.socket.on('hostStartGameSuccess', (data) => {
-      // TODO: add method call here
+      this.onHostStartGameSuccess(data);
     });
     this.socket.on('hostStartGameFailure', (data) => {
-      // TODO: add method call here
+      this.onHostStartGameFailure(data);
     });
     this.socket.on('playerBecomeHost', (data) => {
       this.onPlayerBecomeHost(data);
@@ -39,6 +49,9 @@ class AppClient {
     });
     this.socket.on('playerJoinRoomSuccess', (data) => {
       this.onPlayerJoinRoomSuccess(data);
+    });
+    this.socket.on('playerJoinRoomFailure', (data) => {
+      this.onPlayerJoinRoomFailure(data);
     });
     this.socket.on('playerLeaveRoomSuccess', (data) => {
       this.onPlayerLeaveRoomSuccess(data);
@@ -51,6 +64,11 @@ class AppClient {
 
   // PRIVATE METHODS
   
+  // Returns whether this client is in game.
+  _isInGame() {
+    return this.gameCanvas.style.display !== 'none';
+  }
+
   // Changes display of the html page to show the login view.
   _goFromGameRoomToLogin() {
     this.loginRow.style.display = '';
@@ -65,6 +83,21 @@ class AppClient {
 
 
   //  HTML METHODS
+
+  // Attempts to end the current game from this client.
+  hostAttemptEndGame() {
+    this.socket.emit('hostAttemptEndGame', {});
+  }
+
+  // Attempts to start a game from this client.
+  hostAttemptStartGame() {
+    // TODO: get actual options in here
+    this.socket.emit('hostAttemptStartGame', {
+      gameOptions: {
+        showHostUsername: undefined
+      }
+    });
+  }
 
   // Attempts to create a room from this client.
   playerAttemptCreateRoom() {
@@ -92,10 +125,47 @@ class AppClient {
 
   // SOCKET LISTENERS
 
+  // Handles a successful game end for this client.
+  onHostEndGameSuccess(data) {
+    console.log('Game ended, thisClientIsHost: ' + data.thisClientIsHost);
+    this.gameCanvas.style.display = 'none';
+    this.gameEndButton.style.display = 'none';
+
+    if (data.thisClientIsHost) {
+      this.gameStartButton.style.display = '';
+    }
+  }
+
+  // Handles a failed game end for this client.
+  onHostEndGameFailure(data) {
+    console.log('Game failed to end: ' + data.reason);
+  }
+
+  // Handles a successful game start for this client.
+  onHostStartGameSuccess(data) {
+    console.log('Game started.');
+    this.gameCanvas.style.display = '';
+    this.gameStartButton.style.display = 'none';
+
+    if (data.thisClientIsHost) {
+      this.gameEndButton.style.display = '';
+    }
+  }
+
+  // Handles a failed game start for this client.
+  onHostStartGameFailure(data) {
+    console.log('Game failed to start: ' + data.reason);
+  }
+
   // Handles the player associated with this AppClient becoming host of the Room.
   onPlayerBecomeHost(data) {
     console.log('You just became host.');
-    this.gameStartButton.style.display = '';
+    console.log('We in game: ' + this._isInGame());
+    if (this._isInGame()) {
+      this.gameEndButton.style.display = '';
+    } else {
+      this.gameStartButton.style.display = '';
+    }
   }
 
   // Handles a successful room creation for this client.
@@ -112,10 +182,17 @@ class AppClient {
     this._goFromLoginToGameRoom();
   }
 
+  // Handles a successful room join for this client.
+  onPlayerJoinRoomFailure(data) {
+    console.log('Failed to join room: ' + data.reason);
+  }
+
   // Handles a successful room leave for this client.
   onPlayerLeaveRoomSuccess(data) {
     console.log('You have left the room.');
+    this.gameCanvas.style.display = 'none';
     this.gameStartButton.style.display = 'none';
+    this.gameEndButton.style.display = 'none';
     this._goFromGameRoomToLogin();
   }
 

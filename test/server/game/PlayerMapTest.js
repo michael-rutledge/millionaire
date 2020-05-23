@@ -31,6 +31,21 @@ describe('PlayerMapTest', () => {
     expect(absentResult).to.be.false;
   });
 
+  it('emitToAllShouldGiveExpectedResult', () => {
+    var playerMap = new PlayerMap();
+    var player1 = new Player(new MockSocket('socket_id_1'), 'player1');
+    var player2 = new Player(new MockSocket('socket_id_2'), 'player2');
+    playerMap.putPlayer(player1);
+    playerMap.putPlayer(player2);
+
+    playerMap.emitToAll('someMessage', { message: 'message' });
+
+    expect(player1.socket.emissions['someMessage']).to.have.lengthOf(1);
+    expect(player1.socket.emissions['someMessage'][0].message).to.equal('message');
+    expect(player2.socket.emissions['someMessage']).to.have.lengthOf(1);
+    expect(player2.socket.emissions['someMessage'][0].message).to.equal('message');
+  });
+
   it('getActivePlayerListAndCountShouldGiveExpectedResult', () => {
     var playerMap = new PlayerMap();
     var activePlayer = new Player(new MockSocket('socket_id'), 'active');
@@ -88,6 +103,19 @@ describe('PlayerMapTest', () => {
 
     expect(playerMap.isUsernameActive('active')).to.be.true;
     expect(playerMap.isUsernameActive('inactive')).to.be.false;
+  });
+
+  it('removeInactivePlayersShouldGiveExpectedResult', () => {
+    var playerMap = new PlayerMap();
+    var activePlayer = new Player(new MockSocket('socket_id'), 'active');
+    var inactivePlayer = new Player(/*socket=*/undefined, 'inactive');
+    playerMap.putPlayer(activePlayer);
+    playerMap.putPlayer(inactivePlayer);
+
+    playerMap.removeInactivePlayers();
+
+    expect(playerMap.getPlayerCount()).to.equal(1);
+    expect(playerMap.getPlayerByUsername('active')).to.not.be.undefined;
   });
 
   it('removePlayerByUsernameShouldGiveExpectedResult', () => {

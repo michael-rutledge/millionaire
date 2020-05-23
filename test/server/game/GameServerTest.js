@@ -29,6 +29,15 @@ describe('GameServerTest', () => {
     expect(Object.keys(socket.listeners)).to.be.empty;
   });
 
+  it('endGameShouldGiveExpectedResult', () => {
+    var gameServer = new GameServer(new PlayerMap());
+    gameServer.startGame(/*gameOptions=*/{});
+
+    gameServer.endGame();
+
+    expect(gameServer.serverState).to.be.undefined;
+  });
+
   it('gameOptionsAreValidShouldAllowNoShowHost', () => {
     var gameServer = new GameServer(new PlayerMap());
     var gameOptions = { showHostUsername: undefined };

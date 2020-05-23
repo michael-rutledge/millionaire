@@ -25,6 +25,7 @@ class RoomPool {
       socket.on('disconnect', () => { this.onDisconnect(socket); });
       socket.on('disconnecting', () => { this.playerAttemptLeaveRoom(socket, {}); });
       // Custom actions
+      socket.on('hostAttemptEndGame', (data) => { this.hostAttemptEndGame(socket, data) });
       socket.on('hostAttemptStartGame', (data) => { this.hostAttemptStartGame(socket, data) });
       socket.on('playerAttemptCreateRoom', (data) => {
         this.playerAttemptCreateRoom(socket, data)
@@ -112,19 +113,45 @@ class RoomPool {
 
   // SOCKET LISTENERS
 
-  // Attempts to start a game for the room associated with the given socket.
-  //
-  // Expected data format for gameOptions:
-  // {
-  //   string showHostUsername
-  // }
-  hostAttemptStartGame(socket, gameOptions) {
+  // Attempts to end a game for the Room associated with the given socket.
+  hostAttemptEndGame(socket, data) {
     Logger.logInfo('Socket ' + socket.id + ' attempting to start game');
     var roomCode = this._getRoomCodeFromSocket(socket);
 
     if (this.roomExists(roomCode)) {
-      if (this.rooms[roomCode].attemptStartGame(socket, gameOptions)) {
-        socket.emit('hostStartGameSuccess', {});
+        if (this.getRoom(roomCode).attemptEndGame(socket)) {
+          Logger.logInfo('Game at room ' + roomCode + ' started');
+          this.getRoom(roomCode).emitHostEndGameSuccess();
+        } else {
+          Logger.logWarning('Socket ' + socket.id + ' failed to end game');
+          socket.emit('hostEndGameFailure', {
+            reason: 'room.attemptEndGame() failed'
+          });
+        }
+    } else {
+      Logger.logWarning('Socket ' + socket.id + ' failed to end game');
+      socket.emit('hostEndGameFailure', {
+        reason: 'Room does not exist'
+      });
+    }
+  }
+
+  // Attempts to start a game for the Room associated with the given socket.
+  //
+  // Expected data format for data:
+  // {
+  //   obj    gameOptions {
+  //     string: showHostUsername
+  //   }
+  // }
+  hostAttemptStartGame(socket, data) {
+    Logger.logInfo('Socket ' + socket.id + ' attempting to start game');
+    var roomCode = this._getRoomCodeFromSocket(socket);
+
+    if (this.roomExists(roomCode)) {
+      if (this.getRoom(roomCode).attemptStartGame(socket, data.gameOptions)) {
+        Logger.logInfo('Game at room ' + roomCode + ' started');
+        this.getRoom(roomCode).emitHostStartGameSuccess();
       } else {
         Logger.logWarning('Socket ' + socket.id + ' failed to start game');
         socket.emit('hostStartGameFailure', {

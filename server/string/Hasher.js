@@ -1,4 +1,4 @@
-const choices = 'abcdefghijklmnopqrstuvwxyz0123456789';
+const choices = 'abcdefghijklmnopqrstuvwxyz';
 const DEFAULT_LENGTH = 7;
 
 function genHash(length) {

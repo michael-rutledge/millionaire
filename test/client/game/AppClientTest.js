@@ -14,12 +14,33 @@ describe('AppClientTest', () => {
 
     appClient.gameLeaveButton.onclick();
 
-    expect(mockSocket.emissions['playerAttemptLeaveRoom']).to.not.be.undefined;
     expect(mockSocket.emissions['playerAttemptLeaveRoom']).to.have.lengthOf(1);
     expect(mockSocket.emissions['playerAttemptLeaveRoom'][0].username).to.equal(
         appClient.loginUsername.value);
     expect(mockSocket.emissions['playerAttemptLeaveRoom'][0].roomCode).to.equal(
         appClient.loginRoomCode.value);
+  });
+
+  it('gameEndButtonOnClickShouldAttemptEndGame', () => {
+    var mockSocket = new MockSocket('socket_id');
+    var mockHtmlDocument = new MockHtmlDocument();
+    var appClient = new AppClient(mockSocket, mockHtmlDocument, /*window=*/{});
+
+    appClient.gameEndButton.onclick();
+
+    expect(mockSocket.emissions['hostAttemptEndGame']).to.have.lengthOf(1);
+  });
+
+
+  it('gameStartButtonOnClickShouldAttemptStartGame', () => {
+    var mockSocket = new MockSocket('socket_id');
+    var mockHtmlDocument = new MockHtmlDocument();
+    var appClient = new AppClient(mockSocket, mockHtmlDocument, /*window=*/{});
+
+    appClient.gameStartButton.onclick();
+
+    expect(mockSocket.emissions['hostAttemptStartGame']).to.have.lengthOf(1);
+    expect(mockSocket.emissions['hostAttemptStartGame'][0].showHostUsername).to.be.undefined;
   });
 
   it('loginCreateButtonOnClickShouldAttemptCreateRoom', () => {
@@ -30,7 +51,6 @@ describe('AppClientTest', () => {
 
     appClient.loginCreateButton.onclick();
 
-    expect(mockSocket.emissions['playerAttemptCreateRoom']).to.not.be.undefined;
     expect(mockSocket.emissions['playerAttemptCreateRoom']).to.have.lengthOf(1);
     expect(mockSocket.emissions['playerAttemptCreateRoom'][0].username).to.equal(
         appClient.loginUsername.value);
@@ -45,7 +65,6 @@ describe('AppClientTest', () => {
 
     appClient.loginJoinButton.onclick();
 
-    expect(mockSocket.emissions['playerAttemptJoinRoom']).to.not.be.undefined;
     expect(mockSocket.emissions['playerAttemptJoinRoom']).to.have.lengthOf(1);
     expect(mockSocket.emissions['playerAttemptJoinRoom'][0].username).to.equal(
         appClient.loginUsername.value);

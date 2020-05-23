@@ -19,6 +19,15 @@ class PlayerMap {
     return this.usernameToPlayerMap.hasOwnProperty(username);
   }
 
+  // Emits a message to all active Players in the map.
+  emitToAll(message, data) {
+    var activePlayers = this.getActivePlayerList();
+
+    for (var i = 0; i < activePlayers.length; i++) {
+      activePlayers[i].socket.emit(message, data);
+    }
+  }
+
   // Returns the count of active Players.
   getActivePlayerCount() {
     return this.getActivePlayerList().length;
@@ -99,6 +108,15 @@ class PlayerMap {
       this.usernameToPlayerMap[player.username] = player;
       if (player.socket !== undefined) {
         this.socketIdToUsernameMap[player.socket.id] = player.username;
+      }
+    }
+  }
+
+  // Removes all inactive players from the PlayerMap.
+  removeInactivePlayers() {
+    for (const username in this.usernameToPlayerMap) {
+      if (!this.isUsernameActive(username)) {
+        this.removePlayerByUsername(username);
       }
     }
   }

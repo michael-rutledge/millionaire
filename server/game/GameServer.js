@@ -59,6 +59,7 @@ class GameServer {
   // Ends the game for this GameServer.
   endGame() {
     this.serverState = undefined;
+    this.playerMap.removeInactivePlayers();
   }
 
   // Returns whether the given game options are valid.
