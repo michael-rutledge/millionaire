@@ -6,7 +6,7 @@ const RoomPool = require(process.cwd() + '/server/game/RoomPool.js');
 // Returns a suitable singleton room code for testing joining rooms.
 function getSingleRoomCode(roomPool) {
   if (roomPool.getNumRooms() < 1) {
-    roomPool.playerAttemptCreateRoom(/*socket=*/{}, /*data=*/{ username: 'creator' });
+    roomPool.playerAttemptCreateRoom(new MockSocket(''), /*data=*/{ username: 'creator' });
   }
   for (const roomCode in roomPool.rooms) {
     return roomCode;

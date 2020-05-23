@@ -25,7 +25,7 @@ class Room {
       this.playerMap.putPlayer(new Player(socket, username));
 
       if (this.hostSocket === undefined) {
-        this.hostSocket = socket;
+        this.setHostSocketAndNotify(socket);
       }
       return true;
     } else if (this.playerMap.containsUsername(username) && this.gameServer.isInGame() &&
@@ -78,8 +78,14 @@ class Room {
     this.hostSocket = undefined;
 
     if (this.playerMap.getActivePlayerCount() > 0) {
-      this.hostSocket = this.playerMap.getActivePlayerList()[0].socket;
+      this.setHostSocketAndNotify(this.playerMap.getActivePlayerList()[0].socket);
     }
+  }
+
+  // Sets the host socket of the room and notifies the associated socket client side. 
+  setHostSocketAndNotify(socket) {
+    this.hostSocket = socket;
+    this.hostSocket.emit('playerBecomeHost', {});
   }
 
   // Returns whether the given socket is the socket of the Room's host.

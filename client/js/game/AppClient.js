@@ -1,4 +1,6 @@
 // Encapsulates the instance of a running client of Millionaire With Friends.
+//
+// Only handles interactions at the room level. Is not responsible for game-related interactions.
 class AppClient {
 
   constructor(socket, htmlDocument, htmlWindow) {
@@ -10,6 +12,7 @@ class AppClient {
     // Assign HTML elements
     this.gameRow = this.htmlDocument.getElementById('gameRow');
     this.gameLeaveButton = this.htmlDocument.getElementById('gameLeaveButton');
+    this.gameStartButton = this.htmlDocument.getElementById('gameStartButton');
     this.loginRow = this.htmlDocument.getElementById('loginRow');
     this.loginUsername = this.htmlDocument.getElementById('loginUsername');
     this.loginRoomCode = this.htmlDocument.getElementById('loginRoomCode');
@@ -22,6 +25,15 @@ class AppClient {
     this.loginJoinButton.onclick = () => { this.playerAttemptJoinRoom(); };
 
     // Assign socket listeners
+    this.socket.on('hostStartGameSuccess', (data) => {
+      // TODO: add method call here
+    });
+    this.socket.on('hostStartGameFailure', (data) => {
+      // TODO: add method call here
+    });
+    this.socket.on('playerBecomeHost', (data) => {
+      this.onPlayerBecomeHost(data);
+    });
     this.socket.on('playerCreateRoomSuccess', (data) => {
       this.onPlayerCreateRoomSuccess(data);
     });
@@ -37,7 +49,7 @@ class AppClient {
   }
 
 
-  // PRIVATE FUNCTIONS
+  // PRIVATE METHODS
   
   // Changes display of the html page to show the login view.
   _goFromGameRoomToLogin() {
@@ -52,7 +64,7 @@ class AppClient {
   }
 
 
-  //  HTML FUNCTIONS
+  //  HTML METHODS
 
   // Attempts to create a room from this client.
   playerAttemptCreateRoom() {
@@ -80,6 +92,12 @@ class AppClient {
 
   // SOCKET LISTENERS
 
+  // Handles the player associated with this AppClient becoming host of the Room.
+  onPlayerBecomeHost(data) {
+    console.log('You just became host.');
+    this.gameStartButton.style.display = '';
+  }
+
   // Handles a successful room creation for this client.
   onPlayerCreateRoomSuccess(data) {
     console.log('You have created the room: ' + data.roomCode);
@@ -97,6 +115,7 @@ class AppClient {
   // Handles a successful room leave for this client.
   onPlayerLeaveRoomSuccess(data) {
     console.log('You have left the room.');
+    this.gameStartButton.style.display = 'none';
     this._goFromGameRoomToLogin();
   }
 

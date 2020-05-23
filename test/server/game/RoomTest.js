@@ -32,6 +32,8 @@ describe('RoomTest', () => {
     room.addPlayer(mockSocket2, 'joiner');
 
     expect(room.hostSocket).to.deep.equal(mockSocket1);
+    expect(room.hostSocket.emissions['playerBecomeHost']).to.not.be.undefined;
+    expect(room.hostSocket.emissions['playerBecomeHost']).to.have.lengthOf(1);
   });
 
   it('addPlayerShouldNotAddPlayerForExistingUsernameInLobby', () => {
@@ -125,6 +127,8 @@ describe('RoomTest', () => {
 
     expect(room.hostSocket).to.not.deep.equal(mockSocket);
     expect(room.hostSocket).to.deep.equal(mockSocket2);
+    expect(room.hostSocket.emissions['playerBecomeHost']).to.not.be.undefined;
+    expect(room.hostSocket.emissions['playerBecomeHost']).to.have.lengthOf(1);
   });
 
   it('socketsEmptyShouldGiveExpectedResult', () => {
