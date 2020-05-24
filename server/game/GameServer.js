@@ -44,16 +44,16 @@ class GameServer {
 
   // Activates all game-related socket listeners for the given socket.
   activateListenersForSocket(socket) {
-    for (var i = 0; i < SOCKET_EVENTS.length; i++) {
-      socket.on(SOCKET_EVENTS[i], (data) => { this[SOCKET_EVENTS[i]](data) });
-    }
+    SOCKET_EVENTS.forEach((message, index) => {
+      socket.on(message, (data) => { this[message](data) });
+    });
   }
 
   // Deactivates all game-related socket listeners for the given socket.
   deactivateListenersForSocket(socket) {
-    for (var i = 0; i < SOCKET_EVENTS.length; i++) {
-      socket.removeAllListeners(SOCKET_EVENTS[i]);
-    }
+    SOCKET_EVENTS.forEach((message, index) => {
+      socket.removeAllListeners(message);
+    });
   }
 
   // Ends the game for this GameServer.

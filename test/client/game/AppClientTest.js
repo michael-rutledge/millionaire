@@ -5,6 +5,14 @@ const MockHtmlDocument = require(process.cwd() + '/client/js/test/MockHtmlDocume
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 
 describe('AppClientTest', () => {
+  it('constructorShouldSetSocketListeners', () => {
+    var mockSocket = new MockSocket('socket_id');
+    var mockHtmlDocument = new MockHtmlDocument();
+    var appClient = new AppClient(mockSocket, mockHtmlDocument, /*window=*/{});
+
+    expect(Object.keys(mockSocket.listeners)).to.deep.equal(AppClient.SOCKET_EVENTS);
+  });
+
   it('gameLeaveButtonOnClickShouldAttemptLeaveRoom', () => {
     var mockSocket = new MockSocket('socket_id');
     var mockHtmlDocument = new MockHtmlDocument();

@@ -1,3 +1,20 @@
+// Socket event names to allow for dynamic activation of listeners.
+//
+// Each string here maps to a method within the class below.
+const SOCKET_EVENTS = [
+  'hostEndGameSuccess',
+  'hostEndGameFailure',
+  'hostStartGameSuccess',
+  'hostStartGameFailure',
+  'playerBecomeHost',
+  'playerCreateRoomSuccess',
+  'playerJoinRoomSuccess',
+  'playerJoinRoomFailure',
+  'playerLeaveRoomSuccess',
+  'playerLeaveRoomFailure',
+  'updateLobby',
+];
+
 // Encapsulates the instance of a running client of Millionaire With Friends.
 //
 // Only handles interactions at the room level. Is not responsible for game-related interactions.
@@ -25,39 +42,12 @@ class AppClient {
     this.gameEndButton.onclick = () => { this.hostAttemptEndGame(); }
     this.gameLeaveButton.onclick = () => { this.playerAttemptLeaveRoom(); };
     this.gameStartButton.onclick = () => { this.hostAttemptStartGame(); }
-    this.loginCreateButton.onclick = () => { this.playerAttemptCreateRoom() };
+    this.loginCreateButton.onclick = () => { this.playerAttemptCreateRoom(); };
     this.loginJoinButton.onclick = () => { this.playerAttemptJoinRoom(); };
 
     // Assign socket listeners
-    this.socket.on('hostEndGameSuccess', (data) => {
-      this.onHostEndGameSuccess(data);
-    });
-    this.socket.on('hostEndGameFailure', (data) => {
-      this.onHostEndGameFailure(data);
-    });
-    this.socket.on('hostStartGameSuccess', (data) => {
-      this.onHostStartGameSuccess(data);
-    });
-    this.socket.on('hostStartGameFailure', (data) => {
-      this.onHostStartGameFailure(data);
-    });
-    this.socket.on('playerBecomeHost', (data) => {
-      this.onPlayerBecomeHost(data);
-    });
-    this.socket.on('playerCreateRoomSuccess', (data) => {
-      this.onPlayerCreateRoomSuccess(data);
-    });
-    this.socket.on('playerJoinRoomSuccess', (data) => {
-      this.onPlayerJoinRoomSuccess(data);
-    });
-    this.socket.on('playerJoinRoomFailure', (data) => {
-      this.onPlayerJoinRoomFailure(data);
-    });
-    this.socket.on('playerLeaveRoomSuccess', (data) => {
-      this.onPlayerLeaveRoomSuccess(data);
-    });
-    this.socket.on('playerLeaveRoomFailure', (data) => {
-      this.onPlayerLeaveRoomFailure(data);
+    SOCKET_EVENTS.forEach((message, index) => {
+      this.socket.on(message, (data) => { this[message](data) });
     });
   }
 
@@ -73,12 +63,14 @@ class AppClient {
   _goFromGameRoomToLogin() {
     this.loginRow.style.display = '';
     this.gameRow.style.display = 'none';
+    this.gameLeaveButton.style.display = 'none';
   }
 
   // Changes display of the html page to show the game view.
   _goFromLoginToGameRoom() {
     this.loginRow.style.display = 'none';
     this.gameRow.style.display = '';
+    this.gameLeaveButton.style.display = '';
   }
 
 
@@ -126,7 +118,7 @@ class AppClient {
   // SOCKET LISTENERS
 
   // Handles a successful game end for this client.
-  onHostEndGameSuccess(data) {
+  hostEndGameSuccess(data) {
     console.log('Game ended, thisClientIsHost: ' + data.thisClientIsHost);
     this.gameCanvas.style.display = 'none';
     this.gameEndButton.style.display = 'none';
@@ -137,12 +129,12 @@ class AppClient {
   }
 
   // Handles a failed game end for this client.
-  onHostEndGameFailure(data) {
+  hostEndGameFailure(data) {
     console.log('Game failed to end: ' + data.reason);
   }
 
   // Handles a successful game start for this client.
-  onHostStartGameSuccess(data) {
+  hostStartGameSuccess(data) {
     console.log('Game started.');
     this.gameCanvas.style.display = '';
     this.gameStartButton.style.display = 'none';
@@ -153,12 +145,12 @@ class AppClient {
   }
 
   // Handles a failed game start for this client.
-  onHostStartGameFailure(data) {
+  hostStartGameFailure(data) {
     console.log('Game failed to start: ' + data.reason);
   }
 
   // Handles the player associated with this AppClient becoming host of the Room.
-  onPlayerBecomeHost(data) {
+  playerBecomeHost(data) {
     console.log('You just became host.');
     console.log('We in game: ' + this._isInGame());
     if (this._isInGame()) {
@@ -169,26 +161,26 @@ class AppClient {
   }
 
   // Handles a successful room creation for this client.
-  onPlayerCreateRoomSuccess(data) {
+  playerCreateRoomSuccess(data) {
     console.log('You have created the room: ' + data.roomCode);
     console.log(data);
     this._goFromLoginToGameRoom();
   }
 
   // Handles a successful room join for this client.
-  onPlayerJoinRoomSuccess(data) {
+  playerJoinRoomSuccess(data) {
     console.log('You have joined the room: ' + data.roomCode);
     console.log(data);
     this._goFromLoginToGameRoom();
   }
 
   // Handles a successful room join for this client.
-  onPlayerJoinRoomFailure(data) {
+  playerJoinRoomFailure(data) {
     console.log('Failed to join room: ' + data.reason);
   }
 
   // Handles a successful room leave for this client.
-  onPlayerLeaveRoomSuccess(data) {
+  playerLeaveRoomSuccess(data) {
     console.log('You have left the room.');
     this.gameCanvas.style.display = 'none';
     this.gameStartButton.style.display = 'none';
@@ -197,10 +189,16 @@ class AppClient {
   }
 
   // Handles a failed room leave for this client.
-  onPlayerLeaveRoomFailure(data) {
+  playerLeaveRoomFailure(data) {
     console.log('Failed to leave room.');
     console.log(data);
+  }
+
+  // Handles any change to the lobby state.
+  updateLobby(data) {
+    console.log('Lobby updated.');
   }
 }
 
 module.exports = AppClient;
+AppClient.SOCKET_EVENTS = SOCKET_EVENTS;
