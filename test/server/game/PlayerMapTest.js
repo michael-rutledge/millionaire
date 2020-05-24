@@ -31,6 +31,25 @@ describe('PlayerMapTest', () => {
     expect(absentResult).to.be.false;
   });
 
+  it('emitCustomToAllShouldGiveExpectedResult', () => {
+    var playerMap = new PlayerMap();
+    var player1 = new Player(new MockSocket('socket_id_1'), 'player1');
+    var player2 = new Player(new MockSocket('socket_id_2'), 'player2');
+    playerMap.putPlayer(player1);
+    playerMap.putPlayer(player2);
+
+    playerMap.emitCustomToAll('someMessage', (socket) => {
+      return {
+        socketId: socket.id
+      }
+    });
+
+    expect(player1.socket.emissions['someMessage']).to.have.lengthOf(1);
+    expect(player1.socket.emissions['someMessage'][0].socketId).to.equal('socket_id_1');
+    expect(player2.socket.emissions['someMessage']).to.have.lengthOf(1);
+    expect(player2.socket.emissions['someMessage'][0].socketId).to.equal('socket_id_2');
+  });
+
   it('emitToAllShouldGiveExpectedResult', () => {
     var playerMap = new PlayerMap();
     var player1 = new Player(new MockSocket('socket_id_1'), 'player1');

@@ -219,38 +219,6 @@ describe('RoomTest', () => {
     expect(room.hostSocket.emissions['playerBecomeHost']).to.have.lengthOf(1);
   });
 
-  it('emitHostEndGameSuccessShouldGiveExpectedResult', () => {
-    var room = new Room('test');
-    var hostSocket = new MockSocket('host_socket');
-    var otherSocket = new MockSocket('other_socket');
-    setRoomInGame(room, false);
-    room.addPlayer(hostSocket, 'host');
-    room.addPlayer(otherSocket, 'other');
-
-    room.emitHostEndGameSuccess();
-
-    expect(hostSocket.emissions['hostEndGameSuccess']).to.have.lengthOf(1);
-    expect(hostSocket.emissions['hostEndGameSuccess'][0].thisClientIsHost).to.be.true;
-    expect(otherSocket.emissions['hostEndGameSuccess']).to.have.lengthOf(1);
-    expect(otherSocket.emissions['hostEndGameSuccess'][0].thisClientIsHost).to.be.false;
-  });
-
-  it('emitHostStartGameSuccessShouldGiveExpectedResult', () => {
-    var room = new Room('test');
-    var hostSocket = new MockSocket('host_socket');
-    var otherSocket = new MockSocket('other_socket');
-    setRoomInGame(room, false);
-    room.addPlayer(hostSocket, 'host');
-    room.addPlayer(otherSocket, 'other');
-
-    room.emitHostStartGameSuccess();
-
-    expect(hostSocket.emissions['hostStartGameSuccess']).to.have.lengthOf(1);
-    expect(hostSocket.emissions['hostStartGameSuccess'][0].thisClientIsHost).to.be.true;
-    expect(otherSocket.emissions['hostStartGameSuccess']).to.have.lengthOf(1);
-    expect(otherSocket.emissions['hostStartGameSuccess'][0].thisClientIsHost).to.be.false;
-  });
-
   it('socketsEmptyShouldGiveExpectedResult', () => {
     var room = new Room('test');
     var mockSocket = new MockSocket('socket_id');

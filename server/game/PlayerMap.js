@@ -19,6 +19,16 @@ class PlayerMap {
     return this.usernameToPlayerMap.hasOwnProperty(username);
   }
 
+  // Emits a message to all active players in the map, customized using the given data function,
+  // which expects a socket as input.
+  emitCustomToAll(message, dataFunc) {
+    var activePlayers = this.getActivePlayerList();
+
+    for (var i = 0; i < activePlayers.length; i++) {
+      activePlayers[i].socket.emit(message, dataFunc(activePlayers[i].socket));
+    }
+  }
+
   // Emits a message to all active Players in the map.
   emitToAll(message, data) {
     var activePlayers = this.getActivePlayerList();

@@ -49,7 +49,6 @@ class Room {
     return false;
   }
 
-
   //  Attempts to start a game, as triggered by the given socket with the given game options.
   //
   //  Returns true if successful, false if unsuccessful.
@@ -78,30 +77,6 @@ class Room {
     }
     if (!this.gameServer.isInGame()) {
       this.playerMap.removePlayerByUsername(username);
-    }
-  }
-
-  // Emits a hostEndGameSuccess message to all active players, noting whether they are host or
-  // not.
-  emitHostEndGameSuccess() {
-    var activePlayers = this.playerMap.getActivePlayerList();
-
-    for (var i = 0; i < activePlayers.length; i++) {
-      activePlayers[i].socket.emit('hostEndGameSuccess', {
-        thisClientIsHost: this.socketIsHost(activePlayers[i].socket)
-      });
-    }
-  }
-
-  // Emits a hostStartGameSuccess message to all active players, noting whether they are host or
-  // not.
-  emitHostStartGameSuccess() {
-    var activePlayers = this.playerMap.getActivePlayerList();
-
-    for (var i = 0; i < activePlayers.length; i++) {
-      activePlayers[i].socket.emit('hostStartGameSuccess', {
-        thisClientIsHost: this.socketIsHost(activePlayers[i].socket)
-      });
     }
   }
 

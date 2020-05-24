@@ -115,19 +115,24 @@ class RoomPool {
 
   // Attempts to end a game for the Room associated with the given socket.
   hostAttemptEndGame(socket, data) {
-    Logger.logInfo('Socket ' + socket.id + ' attempting to start game');
+    Logger.logInfo('Socket ' + socket.id + ' attempting to end game');
     var roomCode = this._getRoomCodeFromSocket(socket);
 
     if (this.roomExists(roomCode)) {
-        if (this.getRoom(roomCode).attemptEndGame(socket)) {
-          Logger.logInfo('Game at room ' + roomCode + ' started');
-          this.getRoom(roomCode).emitHostEndGameSuccess();
-        } else {
-          Logger.logWarning('Socket ' + socket.id + ' failed to end game');
-          socket.emit('hostEndGameFailure', {
-            reason: 'room.attemptEndGame() failed'
-          });
-        }
+      var room = this.getRoom(roomCode);
+      if (room.attemptEndGame(socket)) {
+        Logger.logInfo('Game at room ' + roomCode + ' ended');
+        room.playerMap.emitCustomToAll('hostEndGameSuccess', (socket) => {
+          return {
+            thisClientIsHost: room.socketIsHost(socket)
+          }
+        });
+      } else {
+        Logger.logWarning('Socket ' + socket.id + ' failed to end game');
+        socket.emit('hostEndGameFailure', {
+          reason: 'room.attemptEndGame() failed'
+        });
+      }
     } else {
       Logger.logWarning('Socket ' + socket.id + ' failed to end game');
       socket.emit('hostEndGameFailure', {
@@ -149,9 +154,14 @@ class RoomPool {
     var roomCode = this._getRoomCodeFromSocket(socket);
 
     if (this.roomExists(roomCode)) {
-      if (this.getRoom(roomCode).attemptStartGame(socket, data.gameOptions)) {
+      var room = this.getRoom(roomCode);
+      if (room.attemptStartGame(socket, data.gameOptions)) {
         Logger.logInfo('Game at room ' + roomCode + ' started');
-        this.getRoom(roomCode).emitHostStartGameSuccess();
+        room.playerMap.emitCustomToAll('hostStartGameSuccess', (socket) => {
+            return {
+              thisClientIsHost: room.socketIsHost(socket)
+            }
+          });
       } else {
         Logger.logWarning('Socket ' + socket.id + ' failed to start game');
         socket.emit('hostStartGameFailure', {
