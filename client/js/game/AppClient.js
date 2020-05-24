@@ -1,3 +1,5 @@
+const HtmlElementBuilder = require('../html/HtmlElementBuilder.js');
+
 // Socket event names to allow for dynamic activation of listeners.
 //
 // Each string here maps to a method within the class below.
@@ -28,10 +30,15 @@ class AppClient {
 
     // Assign HTML elements
     this.gameRow = this.htmlDocument.getElementById('gameRow');
+    this.gameRoomHeader = this.htmlDocument.getElementById('gameRoomHeader');
     this.gameCanvas = this.htmlDocument.getElementById('gameCanvas');
     this.gameEndButton = this.htmlDocument.getElementById('gameEndButton');
     this.gameLeaveButton = this.htmlDocument.getElementById('gameLeaveButton');
     this.gameStartButton = this.htmlDocument.getElementById('gameStartButton');
+    this.gameLobbyPane = this.htmlDocument.getElementById('gameLobbyPane');
+    this.gameLobbyPlayerList = this.htmlDocument.getElementById('gameLobbyPlayerList');
+    this.gameOptionsHost = this.htmlDocument.getElementById('gameOptionsHost');
+    this.gameOptionsPlayer = this.htmlDocument.getElementById('gameOptionsPlayer');
     this.loginRow = this.htmlDocument.getElementById('loginRow');
     this.loginUsername = this.htmlDocument.getElementById('loginUsername');
     this.loginRoomCode = this.htmlDocument.getElementById('loginRoomCode');
@@ -71,6 +78,26 @@ class AppClient {
     this.loginRow.style.display = 'none';
     this.gameRow.style.display = '';
     this.gameLeaveButton.style.display = '';
+  }
+
+  // Sets the visibility of certain elements for the client based on whether they are host.
+  _setHostVisibility(thisClientIsHost) {
+    if (thisClientIsHost) {
+      this.gameOptionsPlayer.style.display = 'none';
+      this.gameOptionsHost.style.display = '';
+      if (this._isInGame()) {
+        this.gameStartButton.style.display = 'none';
+        this.gameEndButton.style.display = '';
+      } else {
+        this.gameStartButton.style.display = '';
+        this.gameEndButton.style.display = 'none';
+      }
+    } else {
+      this.gameOptionsPlayer.style.display = '';
+      this.gameOptionsHost.style.display = 'none';
+      this.gameStartButton.style.display = 'none';
+      this.gameEndButton.style.display = 'none';
+    }
   }
 
 
@@ -121,11 +148,7 @@ class AppClient {
   hostEndGameSuccess(data) {
     console.log('Game ended, thisClientIsHost: ' + data.thisClientIsHost);
     this.gameCanvas.style.display = 'none';
-    this.gameEndButton.style.display = 'none';
-
-    if (data.thisClientIsHost) {
-      this.gameStartButton.style.display = '';
-    }
+    this._setHostVisibility(data.thisClientIsHost);
   }
 
   // Handles a failed game end for this client.
@@ -137,11 +160,7 @@ class AppClient {
   hostStartGameSuccess(data) {
     console.log('Game started.');
     this.gameCanvas.style.display = '';
-    this.gameStartButton.style.display = 'none';
-
-    if (data.thisClientIsHost) {
-      this.gameEndButton.style.display = '';
-    }
+    this._setHostVisibility(data.thisClientIsHost);
   }
 
   // Handles a failed game start for this client.
@@ -152,18 +171,14 @@ class AppClient {
   // Handles the player associated with this AppClient becoming host of the Room.
   playerBecomeHost(data) {
     console.log('You just became host.');
-    console.log('We in game: ' + this._isInGame());
-    if (this._isInGame()) {
-      this.gameEndButton.style.display = '';
-    } else {
-      this.gameStartButton.style.display = '';
-    }
+    this._setHostVisibility(true);
   }
 
   // Handles a successful room creation for this client.
   playerCreateRoomSuccess(data) {
     console.log('You have created the room: ' + data.roomCode);
     console.log(data);
+    this._setHostVisibility(true);
     this._goFromLoginToGameRoom();
   }
 
@@ -171,6 +186,7 @@ class AppClient {
   playerJoinRoomSuccess(data) {
     console.log('You have joined the room: ' + data.roomCode);
     console.log(data);
+    this._setHostVisibility(false);
     this._goFromLoginToGameRoom();
   }
 
@@ -183,8 +199,8 @@ class AppClient {
   playerLeaveRoomSuccess(data) {
     console.log('You have left the room.');
     this.gameCanvas.style.display = 'none';
-    this.gameStartButton.style.display = 'none';
     this.gameEndButton.style.display = 'none';
+    this.gameStartButton.style.display = 'none';
     this._goFromGameRoomToLogin();
   }
 
@@ -197,6 +213,20 @@ class AppClient {
   // Handles any change to the lobby state.
   updateLobby(data) {
     console.log('Lobby updated.');
+    console.log(data);
+    this.gameRoomHeader.innerHTML = 'Room: ' + data.roomCode;
+    this.gameLobbyPlayerList.innerHTML = '';
+
+    data.players.forEach((username, index) => {
+      this.gameLobbyPlayerList.innerHTML +=
+        new HtmlElementBuilder()
+          .setTag('div')
+          .setClassList(['gameLobbyPlayerBanner'])
+          .setInnerHTML(username)
+          .toInnerHTML();
+    });
+
+    this._setHostVisibility(data.thisClientIsHost);
   }
 }
 

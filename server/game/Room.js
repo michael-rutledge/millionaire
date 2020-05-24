@@ -80,6 +80,16 @@ class Room {
     }
   }
 
+  // Returns a suitable JSON object to be sent in the 'updateLobby' socket emission.
+  getLobbyData(socket) {
+    return {
+      players: this.playerMap.getUsernameList(),
+      roomCode: this.roomCode,
+      isInGame: this.gameServer.isInGame(),
+      thisClientIsHost: this.socketIsHost(socket)
+    };
+  }
+
   // Assigns the role of room host to a new socket if possible.
   reassignHostSocket() {
     this.hostSocket = undefined;

@@ -127,6 +127,9 @@ class RoomPool {
             thisClientIsHost: room.socketIsHost(socket)
           }
         });
+        room.playerMap.emitCustomToAll('updateLobby', (socket) => {
+          return room.getLobbyData(socket);
+        });
       } else {
         Logger.logWarning('Socket ' + socket.id + ' failed to end game');
         socket.emit('hostEndGameFailure', {
@@ -208,6 +211,9 @@ class RoomPool {
           username: username,
           roomCode: newRoomCode
         });
+        this.getRoom(newRoomCode).playerMap.emitCustomToAll('updateLobby', (socket) => {
+          return this.getRoom(newRoomCode).getLobbyData(socket);
+        });
       });
     } else {
       Logger.logWarning('Socket ' + socket.id + ' failed to create new Room: ' + newRoomCode);
@@ -244,6 +250,9 @@ class RoomPool {
           username: username,
           roomCode: data.roomCode
         });
+        this.getRoom(data.roomCode).playerMap.emitCustomToAll('updateLobby', (socket) => {
+          return this.getRoom(data.roomCode).getLobbyData(socket);
+        });
       });
     } else {
       Logger.logWarning('Socket ' + socket.id + ' failed to join room ' + data.roomCode);
@@ -265,6 +274,9 @@ class RoomPool {
       socket.leave(roomCode, () =>  {
         socket.emit('playerLeaveRoomSuccess', {});
       });
+      this.getRoom(roomCode).playerMap.emitCustomToAll('updateLobby', (socket) => {
+          return this.getRoom(roomCode).getLobbyData(socket);
+        });
     } else {
       socket.emit('playerLeaveRoomFailure', {
         reason: 'Room does not exist'

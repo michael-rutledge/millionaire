@@ -113,6 +113,16 @@ describe('PlayerMapTest', () => {
     expect(playerMap.getUsernameBySocket(mockSocket)).to.equal('username');
   });
 
+  it('getUsernameListShouldGiveExpectedResult', () => {
+    var playerMap = new PlayerMap();
+    var player1 = new Player(new MockSocket('socket_id_1'), 'username1');
+    var player2 = new Player(new MockSocket('socket_id_1'), 'username2');
+    playerMap.putPlayer(player1);
+    playerMap.putPlayer(player2);
+
+    expect(playerMap.getUsernameList()).to.deep.equal(['username1', 'username2']);
+  });
+
   it('isUsernameActiveShouldGiveExpectedResult', () => {
     var playerMap = new PlayerMap();
     var activePlayer = new Player(new MockSocket('socket_id'), 'active');

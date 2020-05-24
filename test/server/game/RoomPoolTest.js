@@ -91,6 +91,7 @@ describe('RoomPoolTest', () => {
 
     expect(mockSocket.emissions['hostEndGameSuccess']).to.have.lengthOf(1);
     expect(mockSocket.emissions['hostEndGameSuccess'][0].thisClientIsHost).to.be.true;
+    expect(mockSocket.emissions['updateLobby']).to.have.lengthOf(2);
   });
 
   it('hostAttemptStartGameShouldFailForNonExistentRoom', () => {
@@ -145,6 +146,7 @@ describe('RoomPoolTest', () => {
 
     expect(roomPool.getNumRooms()).to.equal(1);
     expect(mockSocket.emissions['playerCreateRoomSuccess']).to.have.lengthOf(1);
+    expect(mockSocket.emissions['updateLobby']).to.have.lengthOf(1);
   });
 
   it('playerAttemptCreateRoomShouldFailForInvalidInput', () => {
@@ -168,6 +170,7 @@ describe('RoomPoolTest', () => {
     });
 
     expect(mockSocket.emissions['playerJoinRoomSuccess']).to.have.lengthOf(1);
+    expect(mockSocket.emissions['updateLobby']).to.have.lengthOf(1);
   });
 
   it('playerAttemptJoinRoomShouldFailForInvalidInput', () => {
@@ -209,6 +212,7 @@ describe('RoomPoolTest', () => {
     roomPool.playerAttemptLeaveRoom(mockSocket, {});
 
     expect(mockSocket.emissions['playerLeaveRoomSuccess']).to.have.lengthOf(1);
+    expect(mockSocket.emissions['updateLobby']).to.have.lengthOf(1);
   });
 
   it('playerAttemptLeaveRoomShouldRemoveRoomForLastPlayer', () => {

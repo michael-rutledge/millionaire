@@ -20,8 +20,8 @@ class HtmlElementBuilder {
     return this;
   }
 
-  setInnerHtml(innerHtml) {
-    this.htmlElement.innerHtml = innerHtml;
+  setInnerHTML(innerHTML) {
+    this.htmlElement.innerHTML = innerHTML;
     return this;
   }
 
@@ -30,23 +30,23 @@ class HtmlElementBuilder {
     return this;
   }
 
-  // Returns the innerHtml string representation of the html element.
-  toInnerHtml() {
-    var innerHtml = '<' + this.htmlElement.tag;
+  // Returns the innerHTML string representation of the html element.
+  toInnerHTML() {
+    var innerHTML = '<' + this.htmlElement.tag;
 
     if (this.htmlElement.classList !== undefined) {
-      innerHtml += ' class="' + this.htmlElement.classList.join(' ') + '"';
+      innerHTML += ' class="' + this.htmlElement.classList.join(' ') + '"';
     }
     if (this.htmlElement.id) {
-      innerHtml += ' id="' + this.htmlElement.id + '"';
+      innerHTML += ' id="' + this.htmlElement.id + '"';
     }
-    innerHtml += '>';
-    if (this.htmlElement.innerHtml !== undefined) {
-      innerHtml += this.htmlElement.innerHtml;
+    innerHTML += '>';
+    if (this.htmlElement.innerHTML !== undefined) {
+      innerHTML += this.htmlElement.innerHTML;
     }
-    innerHtml += '</' + this.htmlElement.tag + '>';
+    innerHTML += '</' + this.htmlElement.tag + '>';
 
-    return innerHtml;
+    return innerHTML;
   }
 }
 

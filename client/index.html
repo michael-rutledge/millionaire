@@ -6,12 +6,11 @@
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <title>Millionaire With Friends</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+    <link rel="stylesheet" href="client/style/style.css">
 </head>
 
 <body>
   <div class="container">
-
-  <h1>Millionaire With Friends</h1>
 
   <div class="row" id="loginRow">
     <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -32,11 +31,30 @@
   </div>
 
   <div class="row" id="gameRow" style="display: none">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <h2 id="gameRoomHeader"></h2>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+      <div id="gameLobbyPlayerList"></div>
+    </div>
+    <div class="col-lg-8 col-md-6 col-sm-12 col-xs-12">
+      <h3 id="gameLobbyStatusMessage" style="text-align: center">gameLobbyStatusMessage</h3>
+      <div id="gameOptionsHost" style="display: none">
+        <label>Show Host</label>
+        <select class="form-control" id="gameOptionsHostShowHostUsername"></select>
+      </div>
+      <div id="gameOptionsPlayer">
+        <label id="gameOptionsPlayerShowHostUsername">Show Host:</label><br>
+      </div>
+    </div>
+
     <canvas id="gameCanvas" style="border: 1px solid black; display: none">Your browser does not support the HTML canvas tag. :(</canvas>
-    <button type="button" class="btn btn-primary gameLeaveButton" id="gameLeaveButton">Leave Room
-    <button type="button" class="btn btn-primary gameStartButton" id="gameStartButton" style="display: none">Start Game</button>
-    <button type="button" class="btn btn-primary gameEndButton" id="gameEndButton" style="display: none">End Game</button>
   </div>
+
+  <button type="button" class="btn btn-primary gameLeaveButton" id="gameLeaveButton" style="display: none">Leave Room
+  <button type="button" class="btn btn-primary gameStartButton" id="gameStartButton" style="display: none">Start Game</button>
+  <button type="button" class="btn btn-primary gameEndButton" id="gameEndButton" style="display: none">End Game</button>
 
   </div>
 

@@ -219,6 +219,22 @@ describe('RoomTest', () => {
     expect(room.hostSocket.emissions['playerBecomeHost']).to.have.lengthOf(1);
   });
 
+  it('getLobbyDataShouldGiveExpectedResult', () => {
+    var room = new Room('test');
+    var mockSocket = new MockSocket('socket_id');
+    setRoomInGame(room, false);
+    room.addPlayer(mockSocket, 'username');
+
+    var result = room.getLobbyData(mockSocket);
+
+    expect(result).to.deep.equal({
+      players: ['username'],
+      roomCode: 'test',
+      isInGame: false,
+      thisClientIsHost: true
+    });
+  });
+
   it('socketsEmptyShouldGiveExpectedResult', () => {
     var room = new Room('test');
     var mockSocket = new MockSocket('socket_id');

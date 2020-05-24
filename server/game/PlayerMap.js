@@ -105,6 +105,11 @@ class PlayerMap {
     return undefined;
   }
 
+  // Returns a list of the usernames present in the PlayerMap.
+  getUsernameList() {
+    return Object.keys(this.usernameToPlayerMap);
+  }
+
   // Returns whether the given username has an active Player associated with it.
   isUsernameActive(username) {
     return this.containsUsername(username) &&
