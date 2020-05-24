@@ -245,13 +245,15 @@ class RoomPool {
 
     if (this._addPlayerToRoom(socket, username, data.roomCode)) {
       Logger.logInfo('Socket ' + socket.id + ' joined room: ' + data.roomCode);
+      var room = this.getRoom(data.roomCode);
       SafeSocket.join(socket, data.roomCode, () => {
         SafeSocket.emit(socket, 'playerJoinRoomSuccess', {
           username: username,
-          roomCode: data.roomCode
+          roomCode: data.roomCode,
+          isInGame: room.gameServer.isInGame()
         });
-        this.getRoom(data.roomCode).playerMap.emitCustomToAll('updateLobby', (socket) => {
-          return this.getRoom(data.roomCode).getLobbyData(socket);
+        room.playerMap.emitCustomToAll('updateLobby', (socket) => {
+          return room.getLobbyData(socket);
         });
       });
     } else {

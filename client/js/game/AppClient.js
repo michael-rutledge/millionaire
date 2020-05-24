@@ -35,6 +35,7 @@ class AppClient {
     this.gameEndButton = this.htmlDocument.getElementById('gameEndButton');
     this.gameLeaveButton = this.htmlDocument.getElementById('gameLeaveButton');
     this.gameStartButton = this.htmlDocument.getElementById('gameStartButton');
+    this.gameLobbyRow = this.htmlDocument.getElementById('gameLobbyRow');
     this.gameLobbyPane = this.htmlDocument.getElementById('gameLobbyPane');
     this.gameLobbyPlayerList = this.htmlDocument.getElementById('gameLobbyPlayerList');
     this.gameOptionsHost = this.htmlDocument.getElementById('gameOptionsHost');
@@ -100,6 +101,18 @@ class AppClient {
     }
   }
 
+  // Sets the visibility of certain elements for the client based on whether the game is in
+  // progress.
+  _setGameVisibility(isInGame) {
+    if (isInGame) {
+      this.gameCanvas.style.display = '';
+      this.gameLobbyRow.style.display = 'none';
+    } else {
+      this.gameCanvas.style.display = 'none';
+      this.gameLobbyRow.style.display = '';
+    }
+  }
+
 
   //  HTML METHODS
 
@@ -147,7 +160,7 @@ class AppClient {
   // Handles a successful game end for this client.
   hostEndGameSuccess(data) {
     console.log('Game ended, thisClientIsHost: ' + data.thisClientIsHost);
-    this.gameCanvas.style.display = 'none';
+    this._setGameVisibility(false);
     this._setHostVisibility(data.thisClientIsHost);
   }
 
@@ -159,7 +172,7 @@ class AppClient {
   // Handles a successful game start for this client.
   hostStartGameSuccess(data) {
     console.log('Game started.');
-    this.gameCanvas.style.display = '';
+    this._setGameVisibility(true);
     this._setHostVisibility(data.thisClientIsHost);
   }
 
@@ -178,16 +191,18 @@ class AppClient {
   playerCreateRoomSuccess(data) {
     console.log('You have created the room: ' + data.roomCode);
     console.log(data);
-    this._setHostVisibility(true);
     this._goFromLoginToGameRoom();
+    this._setGameVisibility(false);
+    this._setHostVisibility(true);
   }
 
   // Handles a successful room join for this client.
   playerJoinRoomSuccess(data) {
     console.log('You have joined the room: ' + data.roomCode);
     console.log(data);
-    this._setHostVisibility(false);
     this._goFromLoginToGameRoom();
+    this._setHostVisibility(false);
+    this._setGameVisibility(data.isInGame);
   }
 
   // Handles a successful room join for this client.
@@ -198,9 +213,9 @@ class AppClient {
   // Handles a successful room leave for this client.
   playerLeaveRoomSuccess(data) {
     console.log('You have left the room.');
-    this.gameCanvas.style.display = 'none';
     this.gameEndButton.style.display = 'none';
     this.gameStartButton.style.display = 'none';
+    this._setGameVisibility(false);
     this._goFromGameRoomToLogin();
   }
 

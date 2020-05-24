@@ -170,6 +170,11 @@ describe('RoomPoolTest', () => {
     });
 
     expect(mockSocket.emissions['playerJoinRoomSuccess']).to.have.lengthOf(1);
+    expect(mockSocket.emissions['playerJoinRoomSuccess'][0]).to.deep.equal({
+      username: 'joiner',
+      roomCode: roomCode,
+      isInGame: roomPool.getRoom(roomCode).gameServer.isInGame()
+    });
     expect(mockSocket.emissions['updateLobby']).to.have.lengthOf(1);
   });
 
