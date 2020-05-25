@@ -1,0 +1,29 @@
+.gameLobbyPlayerBanner {
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+    margin: 5px 0px 5px 0px;
+    background-color: #dcdcdc;
+}
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+.divider {
+    background-color: #696969;
+    width: 100%;
+    height: 1px;
+    margin-bottom: 5px;
+}
+
+.entryButton {
+    margin-top: 20px;
+}
+
+/*.gameCanvas {
+    background-color: #ffffff;
+    border: 2px solid #696969;
+    border-radius: 5px;
+}
+*/
