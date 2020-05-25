@@ -1,3 +1,5 @@
 node_modules/
 
 client/js/bundle.js
+
+server/question/FastestFingerQuestions.json
