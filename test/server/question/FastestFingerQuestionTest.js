@@ -23,9 +23,9 @@ describe('FastestFingerQuestionTest', () => {
     ffq.shuffledChoices = ['choice_2', 'choice_1', 'choice_4', 'choice_3'];
 
     var correctResult = ffq.getAnswerScore([Choices.B, Choices.A, Choices.D, Choices.C]);
-    var incorretResult = ffq.getAnswerScore([Choices.B, Choices.C, Choices.D, Choices.A]);
+    var incorrectResult = ffq.getAnswerScore([Choices.B, Choices.C, Choices.D, Choices.A]);
 
     expect(correctResult).to.equal(4);
-    expect(incorretResult).to.equal(2);
+    expect(incorrectResult).to.equal(2);
   });
 });

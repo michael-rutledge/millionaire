@@ -6,7 +6,8 @@ describe('FastestFingerSessionTest', () => {
   it('constructorShouldRefreshQuestions', () => {
     var session = new FastestFingerSession();
 
-    expect(session.questionsAvailable()).to.equal(FastestFingerSession.QUESTIONS.length);
+    expect(Object.keys(session.openQuestions)).to.have.lengthOf(
+        FastestFingerSession.QUESTIONS.length);
   });
 
   it('getNewQuestionShouldGiveExpectedResult', () => {
