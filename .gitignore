@@ -1,5 +1,8 @@
-node_modules/
-
 client/js/bundle.js
 
+node_modules/
+
 server/question/FastestFingerQuestions.json
+server/question/HotSeatQuestions*\.json
+
+script/

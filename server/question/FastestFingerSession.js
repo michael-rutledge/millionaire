@@ -43,12 +43,6 @@ class FastestFingerSession {
     }
     return new FastestFingerQuestion(QUESTIONS[openIndex]);
   }
-
-  // Returns the count of questions currently available in this session before a refresh is
-  // required.
-  questionsAvailable() {
-    return Object.keys(this.openQuestions).length;
-  }
 }
 
 module.exports = FastestFingerSession;
