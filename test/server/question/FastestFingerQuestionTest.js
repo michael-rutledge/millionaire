@@ -4,17 +4,6 @@ const Choices = require(process.cwd() + '/server/question/Choices.js');
 const FastestFingerQuestion = require(process.cwd() + '/server/question/FastestFingerQuestion.js');
 
 describe('FastestFingerQuestionTest', () => {
-  it('constructorShouldGiveExpectedResult', () => {
-    var ffq = new FastestFingerQuestion({
-      text: 'question_text',
-      orderedChoices: ['a', 'b', 'c', 'd']
-    });
-
-    expect(ffq.text).to.equal('question_text');
-    expect(ffq.orderedChoices).to.deep.equal(['a', 'b', 'c', 'd']);
-    expect(ffq.shuffledChoices).to.have.lengthOf(4);
-  });
-
   it('getAnswerScoreShouldGiveExpectedResult', () => {
     var ffq = new FastestFingerQuestion({
       text: 'question_text',
