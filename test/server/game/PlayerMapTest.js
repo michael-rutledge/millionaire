@@ -31,6 +31,21 @@ describe('PlayerMapTest', () => {
     expect(absentResult).to.be.false;
   });
 
+  it('doAllShouldGiveExpectedResult', () => {
+    var playerMap = new PlayerMap();
+    var player1 = new Player(new MockSocket('socket_id_1'), 'player1');
+    var player2 = new Player(new MockSocket('socket_id_2'), 'player2');
+    playerMap.putPlayer(player1);
+    playerMap.putPlayer(player2);
+
+    playerMap.doAll((player) => {
+      player.username += 'more';
+    });
+
+    expect(player1.username).to.equal('player1more');
+    expect(player2.username).to.equal('player2more');
+  });
+
   it('emitCustomToAllShouldGiveExpectedResult', () => {
     var playerMap = new PlayerMap();
     var player1 = new Player(new MockSocket('socket_id_1'), 'player1');

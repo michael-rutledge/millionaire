@@ -19,8 +19,19 @@ class PlayerMap {
     return this.usernameToPlayerMap.hasOwnProperty(username);
   }
 
+  // Executes the given function for all Players present in the map.
+  //
+  // Expected form of func: (player) => {...}
+  doAll(func) {
+    for (const username in this.usernameToPlayerMap) {
+      func(this.getPlayerByUsername(username));
+    }
+  }
+
   // Emits a message to all active players in the map, customized using the given data function,
   // which expects a socket as input.
+  //
+  // Expected form of dataFunc: (socket) => {...}
   emitCustomToAll(message, dataFunc) {
     var activePlayers = this.getActivePlayerList();
 
