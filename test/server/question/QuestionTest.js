@@ -15,6 +15,20 @@ describe('QuestionTest', () => {
     expect(question.revealedChoices).to.be.empty;
   });
 
+  it('allChoicesRevealedShouldGiveExpectedResult', () => {
+    var question = new Question({
+      text: 'question_text',
+      orderedChoices: ['a', 'b', 'c', 'd']
+    });
+
+    var resultNotRevealed = question.allChoicesRevealed();
+    question.revealAllChoices();
+    var resultAllRevealed = question.allChoicesRevealed();
+
+    expect(resultNotRevealed).to.be.false;
+    expect(resultAllRevealed).to.be.true;
+  });
+
   it('revealAllChoicesShouldGiveExpectedResult', () => {
     var question = new Question({
       text: 'question_text',

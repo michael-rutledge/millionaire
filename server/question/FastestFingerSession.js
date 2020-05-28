@@ -15,7 +15,7 @@ class FastestFingerSession {
 
   // PRIVATE METHODS
 
-  // 
+  // Refreshes the index map of open questions to refresh the session's question generation.
   _refreshQuestions() {
     this.openQuestions = {};
     for (var i = 0; i < QUESTIONS.length; i++) {
@@ -23,6 +23,7 @@ class FastestFingerSession {
     }
   }
 
+  // Returns a new random index of a question that hasn't been used yet.
   _getNewOpenIdex() {
     var openIndexindex = Math.trunc(Math.random() * Object.keys(this.openQuestions).length);
     return Object.values(this.openQuestions)[openIndexindex];

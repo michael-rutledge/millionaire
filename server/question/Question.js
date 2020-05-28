@@ -31,6 +31,11 @@ class Question {
 
   // PUBLIC METHODS
 
+  // Returns whether all choices for this Question have been revealed.
+  allChoicesRevealed() {
+    return this.revealedChoices.length >= this.shuffledChoices.length;
+  }
+
   // Reveals all choices at once.
   revealAllChoices() {
     this.revealedChoices = this.shuffledChoices;
@@ -38,7 +43,7 @@ class Question {
 
   // Reveals the next available choice if possible.
   revealChoice() {
-    if (this.revealedChoices.length < this.shuffledChoices.length) {
+    if (!this.allChoicesRevealed()) {
       this.revealedChoices.push(this.shuffledChoices[this.revealedChoices.length]);
     }
   }

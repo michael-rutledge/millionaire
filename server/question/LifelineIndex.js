@@ -1,0 +1,7 @@
+const FIFTY_FIFTY = 0;
+const PHONE_A_FRIEND = 1;
+const ASK_THE_AUDIENCE = 2;
+
+module.exports.FIFTY_FIFTY = FIFTY_FIFTY;
+module.exports.PHONE_A_FRIEND = PHONE_A_FRIEND;
+module.exports.ASK_THE_AUDIENCE = ASK_THE_AUDIENCE;
