@@ -125,10 +125,15 @@ class AppClient {
 
   // Attempts to start a game from this client.
   hostAttemptStartGame() {
-    // TODO: get actual options in here
+    var showHostUsername = undefined;
+
+    if (this.gameOptionsHostShowHostUsername.selectedIndex !== 0) {
+      showHostUsername = this.gameOptionsHostShowHostUsername.value;
+    }
+
     this.socket.emit('hostAttemptStartGame', {
       gameOptions: {
-        showHostUsername: undefined
+        showHostUsername: showHostUsername
       }
     });
   }
@@ -233,7 +238,11 @@ class AppClient {
     console.log(data);
     this.gameRoomHeader.innerHTML = 'Room: ' + data.roomCode;
     this.gameLobbyPlayerList.innerHTML = '';
-    this.gameOptionsHostShowHostUsername.innerHTML = '';
+    this.gameOptionsHostShowHostUsername.innerHTML =
+      new HtmlElementBuilder()
+          .setTag('option')
+          .setInnerHTML('None (play with AI host)')
+          .toInnerHTML();
 
     data.players.forEach((username, index) => {
       this.gameLobbyPlayerList.innerHTML +=

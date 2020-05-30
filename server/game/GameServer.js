@@ -51,6 +51,10 @@ class GameServer {
 
     // Reference to a setTimeout function that can be cancelled
     this.cancellableTimer = undefined;
+
+    // Whatever socket event was last listened to. Stored so people who left can rejoin without a
+    // problem.
+    this.currentSocketEvent = undefined;
   }
 
 
@@ -82,9 +86,9 @@ class GameServer {
   }
 
   // Updates the game client-side by emitting a customized, compressed ClientState to each player.
-  _updateGame(currentSocketEvent) {
+  _updateGame() {
     this.playerMap.emitCustomToAll('updateGame', (socket) => {
-      return this.serverState.toCompressedClientState(socket, currentSocketEvent);
+      return this.serverState.toCompressedClientState(socket, this.currentSocketEvent);
     });
   }
 
@@ -133,13 +137,19 @@ class GameServer {
     this.showHostShowFastestFingerRules();
   }
 
+  // Updates the game solely for the given socket. Intended for use during players rejoining a game.
+  updateGameForSocket(socket) {
+    socket.emit('updateGame',
+      this.serverState.toCompressedClientState(socket, this.currentSocketEvent));
+  }
+
 
   // SOCKET LISTENERS
 
   // Response to client asking to show fastest finger rules.
   showHostShowFastestFingerRules(data) {
-    var currentSocketEvent = 'showHostShowFastestFingerRules';
-    Logger.logInfo(currentSocketEvent);
+    this.currentSocketEvent = 'showHostShowFastestFingerRules';
+    Logger.logInfo(this.currentSocketEvent);
 
     // This is the first part of any game, so we start a new round for the server state
     this.serverState.startNewRound();
@@ -150,15 +160,15 @@ class GameServer {
       hostButtonMessage: LocalizedStrings.CUE_FASTEST_FINGER_MUSIC,
       aiTimeout: 5000
     }));
-    this._updateGame(currentSocketEvent);
+    this._updateGame();
   }
 
   // Response to client asking to cue the fastest finger question.
   //
   // This should not really do much other than remove any rules on the screen and do an audio cue.
   showHostCueFastestFingerQuestion(data) {
-    var currentSocketEvent = 'showHostCueFastestFingerQuestion';
-    Logger.logInfo(currentSocketEvent);
+    this.currentSocketEvent = 'showHostCueFastestFingerQuestion';
+    Logger.logInfo(this.currentSocketEvent);
 
     // Human host will control flow, or 3 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -166,7 +176,7 @@ class GameServer {
       hostButtonMessage: LocalizedStrings.SHOW_FASTEST_FINGER_QUESTION,
       aiTimeout: 3000
     }));
-    this._updateGame(currentSocketEvent);
+    this._updateGame();
   }
 
   // Response to client asking to show fastest finger question text.
@@ -174,8 +184,8 @@ class GameServer {
   // This should query fastestFingerSession for a new question, as this is the first time
   // information from a new question is to be shown.
   showHostShowFastestFingerQuestionText(data) {
-    var currentSocketEvent = 'showHostShowFastestFingerQuestionText';
-    Logger.logInfo(currentSocketEvent);
+    this.currentSocketEvent = 'showHostShowFastestFingerQuestionText';
+    Logger.logInfo(this.currentSocketEvent);
 
     this.serverState.fastestFingerQuestion = this.fastestFingerSession.getNewQuestion();
 
@@ -185,19 +195,20 @@ class GameServer {
       hostButtonMessage: LocalizedStrings.REVEAL_FASTEST_FINGER_CHOICE,
       aiTimeout: 8000
     }));
-    this._updateGame(currentSocketEvent);
+    this._updateGame();
   }
 
   // Response to client asking to reveal fastest finger choices.
   //
   // This should cue the three strikes audio cue and wait accordingly before starting the fastest
   // finger background music and revealing the choices.
-  showHostRevealFastestFingerQuestionChoices(data, currentSocketEvent) {
-    Logger.logInfo(currentSocketEvent);
+  showHostRevealFastestFingerQuestionChoices(data) {
+    this.currentSocketEvent = 'showHostRevealFastestFingerQuestionChoices';
+    Logger.logInfo(this.currentSocketEvent);
 
     // First we cue the audio with no possible host step action.
     this.serverState.setShowHostStepDialog(undefined);
-    this._updateGame(currentSocketEvent);
+    this._updateGame();
 
     // Next we reveal all choices on the fastest finger question, and update the client again once
     // the timer for allowance of the three strike audio cue is done.
