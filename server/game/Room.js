@@ -80,6 +80,13 @@ class Room {
     }
   }
 
+  // Forcefully ends the game.
+  forceEndGame() {
+    if (this.gameServer.isInGame()) {
+      this.gameServer.endGame();
+    }
+  }
+
   // Returns a suitable JSON object to be sent in the 'updateLobby' socket emission.
   getLobbyData(socket) {
     return {

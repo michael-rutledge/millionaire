@@ -169,8 +169,9 @@ describe('RoomTest', () => {
     var room = new Room('test');
     var hostSocket = new MockSocket('host_socket');
     setRoomInGame(room, false);
-    room.gameServer.gameOptionsAreValid = (gameOptions) => { return true; };
     room.addPlayer(hostSocket, 'host');
+    // startGame needs to be nullified to prevent timers starting in GameServer
+    room.gameServer.startGame = () => {};
 
     var result = room.attemptStartGame(hostSocket, /*gameOptions=*/{});
 
@@ -217,6 +218,16 @@ describe('RoomTest', () => {
     expect(room.hostSocket).to.deep.equal(mockSocket2);
     expect(room.hostSocket.emissions['playerBecomeHost']).to.not.be.undefined;
     expect(room.hostSocket.emissions['playerBecomeHost']).to.have.lengthOf(1);
+  });
+
+  it('forceEndGameShouldEndGameWhileInGame', () => {
+    var room = new Room('test');
+    var mockSocket = new MockSocket('socket_id');
+    setRoomInGame(room, true);
+
+    room.forceEndGame();
+
+    expect(room.gameServer.serverState).to.be.undefined;
   });
 
   it('getLobbyDataShouldGiveExpectedResult', () => {

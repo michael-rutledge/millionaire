@@ -88,6 +88,7 @@ class RoomPool {
   // Removes the Room associated with the given room code from the pool.
   removeRoom(roomCode) {
     Logger.logInfo('Removing room: ' + roomCode);
+    this.rooms[roomCode].forceEndGame();
     delete this.rooms[roomCode];
   }
 

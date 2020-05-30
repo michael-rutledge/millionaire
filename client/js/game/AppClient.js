@@ -41,6 +41,8 @@ class AppClient {
     this.gameOptionsHost = this.htmlDocument.getElementById('gameOptionsHost');
     this.gameOptionsPlayer = this.htmlDocument.getElementById('gameOptionsPlayer');
     this.loginRow = this.htmlDocument.getElementById('loginRow');
+    this.gameOptionsHostShowHostUsername =
+      this.htmlDocument.getElementById('gameOptionsHostShowHostUsername');
     this.loginUsername = this.htmlDocument.getElementById('loginUsername');
     this.loginRoomCode = this.htmlDocument.getElementById('loginRoomCode');
     this.loginJoinButton = this.htmlDocument.getElementById('loginJoinButton');
@@ -231,12 +233,18 @@ class AppClient {
     console.log(data);
     this.gameRoomHeader.innerHTML = 'Room: ' + data.roomCode;
     this.gameLobbyPlayerList.innerHTML = '';
+    this.gameOptionsHostShowHostUsername.innerHTML = '';
 
     data.players.forEach((username, index) => {
       this.gameLobbyPlayerList.innerHTML +=
         new HtmlElementBuilder()
           .setTag('div')
           .setClassList(['gameLobbyPlayerBanner'])
+          .setInnerHTML(username)
+          .toInnerHTML();
+      this.gameOptionsHostShowHostUsername.innerHTML +=
+        new HtmlElementBuilder()
+          .setTag('option')
           .setInnerHTML(username)
           .toInnerHTML();
     });
