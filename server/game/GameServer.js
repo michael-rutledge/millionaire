@@ -107,7 +107,9 @@ class GameServer {
 
   // Ends the game for this GameServer.
   endGame() {
-    this.serverState.clearTimers();
+    if (this.serverState !== undefined) {
+      this.serverState.clearTimers();
+    }
     this.serverState = undefined;
     this.playerMap.removeInactivePlayers();
     this.playerMap.doAll((player) => { player.reset(); });

@@ -11,7 +11,7 @@ class StepDialog {
   // timeoutData can be undefined in the instance that no hard timer on a dialog is necessary.
   constructor(actions = [], timeoutFunc = undefined, timeoutMs = undefined, header = '') {
     this.actions = actions;
-    this.header = '';
+    this.header = header;
 
     if (timeoutFunc !== undefined && timeoutMs !== undefined) {
       this.timeout = setTimeout(timeoutFunc, timeoutMs);
@@ -21,12 +21,22 @@ class StepDialog {
 
   // PUBLIC METHODS
 
+  // Clears the timeout of this StepDialog so it will no longer fire.
+  clearTimeout() {
+    clearTimeout(this.timeout);
+  }
+
   // Compresses the StepAction to digestable JSON for the client to unpack for rendering.
   toCompressed() {
     return {
       actions: this.actions,
       header: this.header
     };
+  }
+
+  // Returns whether a timeout is active for this StepDialog.
+  timeoutActive() {
+    return this.timeout !== undefined && this.timeout._idleTimeout > 0;
   }
 }
 

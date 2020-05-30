@@ -32,7 +32,9 @@ class ServerState {
 
   // Clears the timers associated with this server state.
   clearTimers() {
-    clearTimeout(this.showHostStepDialog.timeout);
+    if (this.showHostStepDialog !== undefined) {
+      this.showHostStepDialog.clearTimeout();
+    }
   }
 
   // Returns whether a player is acting as show host.
@@ -90,7 +92,7 @@ class ServerState {
     compressed.clientIsShowHost = (this.showHost !== undefined && player == this.showHost);
     compressed.clientIsHotSeat = (this.hotSeatPlayer !== undefined && player == this.hotSeatPlayer);
     // The host might need to have a dialog that can step the game through.
-    if (compressed.clientIsShowHost) {
+    if (compressed.clientIsShowHost && this.showHostStepDialog !== undefined) {
       compressed.showHostStepDialog = this.showHostStepDialog.toCompressed();
     }
     // The hot seat player might need to have a dialog that can step the game through.

@@ -76,13 +76,17 @@ describe('GameServerTest', () => {
     expect(result).to.be.true;
   });
 
-  it('startGameShouldGiveExpectedResult', () => {
+  it('startGameShouldGiveExpectedResultAndShowFastestFingerRules', () => {
     var gameServer = newGameServerWithPlayerShowHost(true);
+    var showHostShowFastestFingerRulesCalled = false;
+    gameServer.showHostShowFastestFingerRules = (data) => {
+      showHostShowFastestFingerRulesCalled = true;
+    };
 
     gameServer.startGame(/*gameOptions=*/{});
-    clearTimeout(gameServer.serverState.showHostStepDialog.timeout);
 
     expect(gameServer.serverState).to.not.be.undefined;
+    expect(showHostShowFastestFingerRulesCalled).to.be.true;
   });
 
   it('showHostShowFastestFingerRulesShouldShowCorrectDialogForHumanShowHost', () => {
@@ -110,7 +114,7 @@ describe('GameServerTest', () => {
       header: ''
     });
     expect(gameServer.serverState.showHostStepDialog.timeout).to.not.be.undefined;
-    clearTimeout(gameServer.serverState.showHostStepDialog.timeout);
+    gameServer.serverState.showHostStepDialog.clearTimeout();
   });
 
   it('showHostCueFastestFingerQuestionShouldShowCorrectDialogForHumanShowHost', () => {
@@ -138,7 +142,7 @@ describe('GameServerTest', () => {
       header: ''
     });
     expect(gameServer.serverState.showHostStepDialog.timeout).to.not.be.undefined;
-    clearTimeout(gameServer.serverState.showHostStepDialog.timeout);
+    gameServer.serverState.showHostStepDialog.clearTimeout();
   });
 
   it('showHostShowFastestFingerQuestionTextShouldShowCorrectDialogForHumanShowHost', () => {
