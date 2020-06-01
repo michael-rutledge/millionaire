@@ -35,9 +35,9 @@ class BackgroundElement extends CanvasElement {
     // Border
     var lineGradient = context.createLinearGradient(params.startX, params.topY, params.startX,
       params.bottomY);
-    lineGradient.addColorStop(0, Colors.SIDE_PANEL_BASE);
-    lineGradient.addColorStop(0.5, Colors.SIDE_PANEL_SHINE);
-    lineGradient.addColorStop(1, Colors.SIDE_PANEL_BASE);
+    lineGradient.addColorStop(0, Colors.SIDE_PANEL_LINE_BASE);
+    lineGradient.addColorStop(0.5, Colors.SIDE_PANEL_LINE_SHINE);
+    lineGradient.addColorStop(1, Colors.SIDE_PANEL_LINE_BASE);
     context.strokeStyle = lineGradient;
     context.lineWidth = Constants.SIDE_PANEL_LINE_WIDTH;
     context.beginPath();
