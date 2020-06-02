@@ -10,7 +10,7 @@ describe('AppClientTest', () => {
     var mockHtmlDocument = new MockHtmlDocument();
     var appClient = new AppClient(mockSocket, mockHtmlDocument, /*window=*/{});
 
-    expect(Object.keys(mockSocket.listeners)).to.deep.equal(AppClient.SOCKET_EVENTS);
+    expect(Object.keys(mockSocket.listeners)).to.include.members(AppClient.SOCKET_EVENTS);
   });
 
   it('gameLeaveButtonOnClickShouldAttemptLeaveRoom', () => {

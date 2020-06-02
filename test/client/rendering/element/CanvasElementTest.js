@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 
 const CanvasElement = require(process.cwd() + '/client/js/rendering/element/CanvasElement.js');
-const MockCanvas = require(process.cwd() + '/client/js/test/MockCanvas.js')
+const MockCanvas = require(process.cwd() + '/client/js/test/MockCanvas.js');
 
 describe('CanvasElementTest', () => {
   it('isClickableShouldReturnTrueForOnClickPresent', () => {

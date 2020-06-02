@@ -96,7 +96,7 @@ class ServerState {
       compressed.showHostStepDialog = this.showHostStepDialog.toCompressed();
     }
     // The hot seat player might need to have a dialog that can step the game through.
-    if (compressed.clientIsHotSeat) {
+    if (compressed.clientIsHotSeat && this.hotSeatStepDialog !== undefined) {
       compressed.hotSeatStepDialog = this.hotSeatStepDialog.toCompressed();
     }
     // If we are in an event that allows for choosing, make choice buttons active by setting choice
@@ -105,6 +105,13 @@ class ServerState {
       compressed.choiceAction = 'hotSeatChoose';
     } else if (!compressed.clientIsShowHost && contestantChoosableEvents.has(currentSocketEvent)) {
       compressed.choiceAction = 'contestantChoose';
+    }
+    // Fastest finger question
+    if (this.fastestFingerQuestion) {
+      compressed.question = {
+        text: this.fastestFingerQuestion.text,
+        revealedChoices: this.fastestFingerQuestion.revealedChoices
+      };
     }
 
     return compressed;

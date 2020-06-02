@@ -1,3 +1,5 @@
+const GameClient = require('./GameClient.js');
+const GameRenderer = require('../rendering/GameRenderer.js');
 const HtmlElementBuilder = require('../html/HtmlElementBuilder.js');
 
 // Socket event names to allow for dynamic activation of listeners.
@@ -47,6 +49,8 @@ class AppClient {
     this.loginRoomCode = this.htmlDocument.getElementById('loginRoomCode');
     this.loginJoinButton = this.htmlDocument.getElementById('loginJoinButton');
     this.loginCreateButton = this.htmlDocument.getElementById('loginCreateButton');
+
+    this.gameClient = new GameClient(socket, new GameRenderer(this.gameCanvas, this.htmlDocument));
 
     // Assign HTML functions
     this.gameEndButton.onclick = () => { this.hostAttemptEndGame(); }

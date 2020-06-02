@@ -12,6 +12,13 @@ class MockCanvas extends MockHtmlElement {
 
 
   // PUBLIC METHODS
+  getBoundingClientRect() {
+    return {
+      width: this.width,
+      height: this.height
+    };
+  }
+
   getContext(dimension = '2d') {
     return new MockCanvasContext();
   }

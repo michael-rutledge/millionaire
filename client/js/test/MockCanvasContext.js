@@ -4,6 +4,10 @@ class MockCanvasContext {
   constructor() {
 
   }
+
+
+  // PUBLIC METHODS
+  clearRect() {}
 }
 
 module.exports = MockCanvasContext;

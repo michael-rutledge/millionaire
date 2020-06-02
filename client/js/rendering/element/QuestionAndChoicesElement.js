@@ -1,23 +1,23 @@
 const CanvasElement = require('./CanvasElement.js');
+const Choices = require('../../../../server/question/Choices.js');
 const Colors = require('../Colors.js');
 const Constants = require('../Constants.js');
+const TextElement = require('./TextElement.js');
 
 // Encapsulates the background element of the game canvas.
 class QuestionAndChoicesElement extends CanvasElement {
-  constructor() {
-    // x and y will be ignored upon drawOnCanvas
-    super(/*x=*/0, /*y=*/0, /*onClick=*/(x, y) => {
-      this._onClick(x, y);
-    });
+  constructor(canvas) {
+    // x and y will be ignored upon draw
+    super(canvas, /*x=*/0, /*y=*/0);
+    this.questionText = undefined;
+    this.revealedChoices = undefined;
+    this.choiceBubbles = [];
   }
 
 
   // PRIVATE METHODS
 
-  // Draws a classic Millionaire style bubble for the given context using the given params.
-  //
-  // Expects context to be in a good position, noted by startX and startY, to start drawing the
-  // element.
+  // Draws a classic Millionaire style bubble using the given params.
   //
   // Expected params format {
   //   int startX
@@ -25,91 +25,130 @@ class QuestionAndChoicesElement extends CanvasElement {
   //   int width
   //   int height
   // }
-  _drawMillionaireBubble(context, params) {
-    context.lineTo(params.startX + params.height / 2, params.startY - params.height / 2);
-    context.lineTo(params.startX + params.width - params.height / 2,
+  _drawMillionaireBubble(params) {
+    var bubble = new Path2D();
+    bubble.moveTo(params.startX, params.startY);
+    bubble.lineTo(params.startX + params.height / 2, params.startY - params.height / 2);
+    bubble.lineTo(params.startX + params.width - params.height / 2,
       params.startY - params.height / 2);
-    context.lineTo(params.startX + params.width, params.startY);
-    context.lineTo(params.startX + params.width - params.height / 2,
+    bubble.lineTo(params.startX + params.width, params.startY);
+    bubble.lineTo(params.startX + params.width - params.height / 2,
       params.startY + params.height / 2);
-    context.lineTo(params.startX + params.height / 2, params.startY + params.height / 2);
-    context.lineTo(params.startX, params.startY);
-    context.stroke();
-    context.fill();
-    context.moveTo(params.startX + params.width, params.startY);
+    bubble.lineTo(params.startX + params.height / 2, params.startY + params.height / 2);
+    bubble.lineTo(params.startX, params.startY);
+    bubble.closePath();
+    this.context.stroke(bubble);
+    this.context.fill(bubble);
+    return bubble;
   }
 
   // Draws the big bubble where the question text will sit.
-  _drawQuestionBubble(canvas, context, percentUpBottomSide) {
-    var bottomSidePanelWidth = canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO;
-    var questionMidLineY = canvas.height - bottomSidePanelWidth * percentUpBottomSide;
-    var startX = canvas.width * Constants.BACKGROUND_SIDE_RATIO;
-    context.beginPath();
-    context.moveTo(bottomSidePanelWidth, questionMidLineY);
-    context.lineTo(startX, questionMidLineY);
-    this._drawMillionaireBubble(context, {
+  _drawQuestionBubble(percentUpBottomSide, questionText) {
+    var bubbleLine = new Path2D();
+    var bottomSidePanelWidth = this.canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO;
+    var questionMidLineY = this.canvas.height - bottomSidePanelWidth * percentUpBottomSide;
+    var questionHeight = this.canvas.height * Constants.QUESTION_HEIGHT_RATIO;
+    var questionWidth = this.canvas.width * Constants.QUESTION_WIDTH_RATIO;
+    var startX = this.canvas.width * Constants.WIDTH_SQUARE_RATIO;
+
+    bubbleLine.moveTo(bottomSidePanelWidth, questionMidLineY);
+    bubbleLine.lineTo(startX, questionMidLineY);
+    this._drawMillionaireBubble({
       startX: startX,
       startY: questionMidLineY,
-      width: canvas.width * Constants.QUESTION_WIDTH_RATIO,
-      height: canvas.height * Constants.QUESTION_HEIGHT_RATIO
+      width: questionWidth,
+      height: questionHeight
     });
-    context.lineTo(canvas.width - bottomSidePanelWidth, questionMidLineY);
-    context.stroke();
+    bubbleLine.moveTo(startX + questionWidth, questionMidLineY);
+    bubbleLine.lineTo(this.canvas.width - bottomSidePanelWidth, questionMidLineY);
+    this.context.stroke(bubbleLine);
+
+    // Question and choice text
+    if (questionText) {
+      new TextElement(this.canvas, startX + questionWidth / 2, questionMidLineY, questionText,
+        /*style=*/{
+          textAlign: 'center',
+          maxWidth: questionWidth - questionHeight,
+          maxHeight: questionHeight
+        }).draw();
+    }
   }
 
   // Draws a row of two choice bubbles where choice text will sit.
-  _drawChoiceBubbleRow(canvas, context, percentUpBottomSide) {
-    var bottomSidePanelWidth = canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO;
-    var questionMidLineY = canvas.height - bottomSidePanelWidth * percentUpBottomSide;
-    var startX = canvas.width * Constants.BACKGROUND_SIDE_RATIO +
-      (canvas.height * Constants.QUESTION_HEIGHT_RATIO / 2 -
-        canvas.height * Constants.QUESTION_CHOICE_HEIGHT_RATIO / 2)
-    context.beginPath();
-    context.moveTo(bottomSidePanelWidth, questionMidLineY);
-    context.lineTo(startX, questionMidLineY);
-    this._drawMillionaireBubble(context, {
+  _drawChoiceBubbleRow(percentUpBottomSide) {
+    var bubbleLine = new Path2D();
+    var bottomSidePanelWidth = this.canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO;
+    var questionMidLineY = this.canvas.height - bottomSidePanelWidth * percentUpBottomSide;
+    var startX = this.canvas.width * Constants.WIDTH_SQUARE_RATIO +
+      (this.canvas.height * Constants.QUESTION_HEIGHT_RATIO / 2 -
+        this.canvas.height * Constants.QUESTION_CHOICE_HEIGHT_RATIO / 2);
+
+    bubbleLine.moveTo(bottomSidePanelWidth, questionMidLineY);
+    bubbleLine.lineTo(startX, questionMidLineY);
+    this.choiceBubbles.push(this._drawMillionaireBubble({
       startX: startX,
       startY: questionMidLineY,
-      width: canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO,
-      height: canvas.height * Constants.QUESTION_CHOICE_HEIGHT_RATIO
-    });
-    startX = canvas.width - startX - canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO
-    context.lineTo(startX, questionMidLineY);
-    context.stroke();
-    this._drawMillionaireBubble(context, {
+      width: this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO,
+      height: this.canvas.height * Constants.QUESTION_CHOICE_HEIGHT_RATIO
+    }));
+    bubbleLine.moveTo(startX + this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO,
+      questionMidLineY);
+    startX = this.canvas.width - startX - this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO
+    bubbleLine.lineTo(startX, questionMidLineY);
+    this.choiceBubbles.push(this._drawMillionaireBubble({
       startX: startX,
       startY: questionMidLineY,
-      width: canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO,
-      height: canvas.height * Constants.QUESTION_CHOICE_HEIGHT_RATIO
-    });
-    context.lineTo(canvas.width - bottomSidePanelWidth, questionMidLineY);
-    context.stroke();
+      width: this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO,
+      height: this.canvas.height * Constants.QUESTION_CHOICE_HEIGHT_RATIO
+    }));
+    bubbleLine.moveTo(startX + this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO,
+      questionMidLineY);
+    bubbleLine.lineTo(this.canvas.width - bottomSidePanelWidth, questionMidLineY);
+    this.context.stroke(bubbleLine);
   }
 
   _onClick(x, y) {
-    console.log('QuestionAndChoicesElement._onClick()');
+    // TODO: make this emit a desired action
+    this.choiceBubbles.forEach((bubble, index) => {
+      console.log('  HIT ' + index + ': ' + this.context.isPointInPath(bubble, x, y));
+    });
   }
 
 
   // PUBLIC METHODS
 
-  // Draws the element on the given canvas context.
-  drawOnCanvas(canvas) {
-    var context = canvas.getContext('2d');
-    var bottomSidePanelWidth = canvas.height * 1 / 3;
-    var lineGradient = context.createLinearGradient(bottomSidePanelWidth, 0,
-      canvas.width - bottomSidePanelWidth, 0);
+  // Draws the element on the canvas.
+  draw() {
+    var bottomSidePanelWidth = this.canvas.height * 1 / 3;
+    var lineGradient = this.context.createLinearGradient(bottomSidePanelWidth, 0,
+      this.canvas.width - bottomSidePanelWidth, 0);
     lineGradient.addColorStop(0, Colors.QUESTION_AND_CHOICES_LINE_BASE);
     lineGradient.addColorStop(0.5, Colors.QUESTION_AND_CHOICES_LINE_SHINE);
     lineGradient.addColorStop(1, Colors.QUESTION_AND_CHOICES_LINE_BASE);
-    context.strokeStyle = lineGradient;
-    context.lineWidth = Constants.SIDE_PANEL_LINE_WIDTH;
-    context.fillStyle = Colors.QUESTION_AND_CHOICES_FILL;
-    // Question
-    this._drawQuestionBubble(canvas, context, 0.9);
-    // Top row of choices
-    this._drawChoiceBubbleRow(canvas, context, 0.55);
-    this._drawChoiceBubbleRow(canvas, context, 0.27);
+    this.context.strokeStyle = lineGradient;
+    this.context.lineWidth = Constants.SIDE_PANEL_LINE_WIDTH;
+    this.context.fillStyle = Colors.QUESTION_AND_CHOICES_FILL;
+    // Question bubble
+    this._drawQuestionBubble(/*percentUpBottomSide=*/0.78, this.questionText);
+    // A + B bubbles
+    this._drawChoiceBubbleRow(/*percentUpBottomSide=*/0.43);
+    // C + D bubbles
+    this._drawChoiceBubbleRow(/*percentUpBottomSide=*/0.15);
+  }
+
+  // Sets the question information for this element from the given question.
+  //
+  // Expected to be called before draw().
+  setQuestion(question) {
+    this.questionText = question.text;
+    this.revealedChoices = question.revealedChoices;
+
+    // Choices should only be clickable when all are revealed
+    if (this.revealedChoices.length >= Choices.MAX_CHOICES) {
+      this.onClick = (x, y) => {
+        this._onClick(x, y);
+      };
+    }
   }
 }
 
