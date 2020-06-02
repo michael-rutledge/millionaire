@@ -1,6 +1,8 @@
 // Encapsulates an element that is to be drawn on the game canvas.
 class CanvasElement {
-  constructor(x = 0, y = 0, onClick = undefined) {
+  constructor(canvas, x = 0, y = 0, onClick = undefined) {
+    this.canvas = canvas;
+    this.context = canvas.getContext('2d');
     this.x = x;
     this.y = y;
     this.onClick = onClick;
@@ -11,8 +13,13 @@ class CanvasElement {
     return this.onClick !== undefined;
   }
 
-  // Draws the element on the given canvas context.
-  drawOnCanvas(canvas) {
+  // Returns whether the mouse is hovering over this element.
+  isMouseHovering(x, y) {
+    return false;
+  }
+
+  // Draws the element on the canvas.
+  draw() {
     // unimplemented; placed here purely for safeguarding against misuse
   }
 }
