@@ -84,4 +84,29 @@ describe('PlayerTest', () => {
     expect(player.hotSeatChoice).to.be.undefined;
     expect(player.hotSeatTime).to.be.undefined;
   });
+
+  it('hasFastestFingerChoicesLeftShouldGiveExpectedResult', () => {
+    var player = new Player(new MockSocket('socket_id'), 'username');
+    player.chooseFastestFinger(Choices.A);
+    player.chooseFastestFinger(Choices.B);
+    player.chooseFastestFinger(Choices.C);
+
+    var expectedTrueResult = player.hasFastestFingerChoicesLeft();
+    player.chooseFastestFinger(Choices.D);
+    var expectedFalseResult = player.hasFastestFingerChoicesLeft();
+
+    expect(expectedTrueResult).to.be.true;
+    expect(expectedFalseResult).to.be.false;
+  });
+
+  it('hasAlreadyChosenFastestFingerChoiceShouldGiveExpectedResult', () => {
+    var player = new Player(new MockSocket('socket_id'), 'username');
+    player.chooseFastestFinger(Choices.A);
+
+    var expectedTrueResult = player.hasAlreadyChosenFastestFingerChoice(Choices.A);
+    var expectedFalseResult = player.hasAlreadyChosenFastestFingerChoice(Choices.B);
+
+    expect(expectedTrueResult).to.be.true;
+    expect(expectedFalseResult).to.be.false;
+  });
 });

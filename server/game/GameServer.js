@@ -13,8 +13,8 @@ const SOCKET_EVENTS = [
   'showHostRevealFastestFingerQuestionChoices',
   'contestantFastestFingerChoose',
   'fastestFingerTimeUp',
-  'showHostReshowFastestFingerQuestionText',
-  'showHostShowFastestFingerAnswer',
+  'showHostCueFastestFingerAnswerRevealAudio',
+  'showHostRevealFastestFingerAnswer',
   'showHostAcceptHotSeatPlayer',
   'showHostCueHotSeatRules',
   'showHostHighlightLifeline',
@@ -100,7 +100,7 @@ class GameServer {
   // Activates all game-related socket listeners for the given socket.
   activateListenersForSocket(socket) {
     SOCKET_EVENTS.forEach((socketEvent, index) => {
-      socket.on(socketEvent, (data) => { this[message](data) });
+      socket.on(socketEvent, (data) => { this[message](socket, data) });
     });
   }
 
@@ -139,7 +139,7 @@ class GameServer {
     this.showHostShowFastestFingerRules();
   }
 
-  // Updates the game solely for the given socket. Intended for use during players rejoining a game.
+  // Updates the game solely for the given socket.
   updateGameForSocket(socket) {
     socket.emit('updateGame',
       this.serverState.toCompressedClientState(socket, this.currentSocketEvent));
@@ -149,7 +149,7 @@ class GameServer {
   // SOCKET LISTENERS
 
   // Response to client asking to show fastest finger rules.
-  showHostShowFastestFingerRules(data) {
+  showHostShowFastestFingerRules(socket, data) {
     this.currentSocketEvent = 'showHostShowFastestFingerRules';
     Logger.logInfo(this.currentSocketEvent);
 
@@ -168,7 +168,7 @@ class GameServer {
   // Response to client asking to cue the fastest finger question.
   //
   // This should not really do much other than remove any rules on the screen and do an audio cue.
-  showHostCueFastestFingerQuestion(data) {
+  showHostCueFastestFingerQuestion(socket, data) {
     this.currentSocketEvent = 'showHostCueFastestFingerQuestion';
     Logger.logInfo(this.currentSocketEvent);
 
@@ -185,7 +185,7 @@ class GameServer {
   //
   // This should query fastestFingerSession for a new question, as this is the first time
   // information from a new question is to be shown.
-  showHostShowFastestFingerQuestionText(data) {
+  showHostShowFastestFingerQuestionText(socket, data) {
     this.currentSocketEvent = 'showHostShowFastestFingerQuestionText';
     Logger.logInfo(this.currentSocketEvent);
 
@@ -201,7 +201,7 @@ class GameServer {
   }
 
   // Response to client asking to cue the three strikes audio for fastest finger.
-  showHostCueFastestFingerThreeStrikes(data) {
+  showHostCueFastestFingerThreeStrikes(socket, data) {
     this.currentSocketEvent = 'showHostCueFastestFingerThreeStrikes';
     Logger.logInfo(this.currentSocketEvent);
 
@@ -216,7 +216,7 @@ class GameServer {
   }
 
   // Response to client asking to reveal fastest finger choices.
-  showHostRevealFastestFingerQuestionChoices(data) {
+  showHostRevealFastestFingerQuestionChoices(socket, data) {
     this.currentSocketEvent = 'showHostRevealFastestFingerQuestionChoices';
     Logger.logInfo(this.currentSocketEvent);
 
@@ -229,21 +229,45 @@ class GameServer {
   }
 
   // Response to contestant from client locking in a fastest finger choice.
-  contestantFastestFingerChoose(data) {
+  //
+  // Expected data format: {
+  //   Choice choice
+  // }
+  contestantFastestFingerChoose(socket, data) {
     this.currentSocketEvent = 'contestantFastestFingerChoose';
     Logger.logInfo(this.currentSocketEvent);
+
+    var player = this.playerMap.getPlayerBySocket(socket);
+    player.chooseFastestFinger(data.choice);
+    this.updateGameForSocket(socket);
+
+    if (!player.hasFastestFingerChoicesLeft()) {
+      this.serverState.addPlayerDoneWithFastestFinger(player);
+    }
+    if (this.serverState.allPlayersDoneWithFastestFinger()) {
+      this.serverState.clearAllPlayerAnswers();
+      this.fastestFingerTimeUp(socket, data);
+    }
   }
 
   // Response to client reaching the end of fastest finger.
   //
   // Can be triggered before timer runs out by everyone getting in answers.
-  fastestFingerTimeUp(data) {
+  fastestFingerTimeUp(socket, data) {
     this.currentSocketEvent = 'fastestFingerTimeUp';
     Logger.logInfo(this.currentSocketEvent);
 
     // Even if this was triggered by the timeout expiring, we will be safe and clear the timeout, as
     // it may have been triggered by everyone answering.
     clearTimeout(this.currentForcedTimer);
+
+    // Human host will control flow, or 8 seconds will pass until choices are revealed
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostCueFastestFingerAnswerRevealAudio',
+      hostButtonMessage: LocalizedStrings.CUE_FASTEST_FINGER_ANSWER_REVEAL_AUDIO,
+      aiTimeout: 2500
+    }));
+    this._updateGame();
   }
 }
 

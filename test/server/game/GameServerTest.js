@@ -94,7 +94,7 @@ describe('GameServerTest', () => {
   it('showHostShowFastestFingerRulesShouldShowCorrectDialogForHumanShowHost', () => {
     var gameServer = newGameServerWithPlayerShowHost(true);
 
-    gameServer.showHostShowFastestFingerRules(/*data=*/{});
+    gameServer.showHostShowFastestFingerRules(new MockSocket(), /*data=*/{});
 
     expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
       actions: [{
@@ -109,7 +109,7 @@ describe('GameServerTest', () => {
   it('showHostShowFastestFingerRulesShouldSetTimerForNoShowHost', () => {
     var gameServer = newGameServerWithPlayerShowHost(false);
 
-    gameServer.showHostShowFastestFingerRules(/*data=*/{});
+    gameServer.showHostShowFastestFingerRules(new MockSocket(), /*data=*/{});
 
     expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
       actions: [],
@@ -122,7 +122,7 @@ describe('GameServerTest', () => {
   it('showHostCueFastestFingerQuestionShouldShowCorrectDialogForHumanShowHost', () => {
     var gameServer = newGameServerWithPlayerShowHost(true);
 
-    gameServer.showHostCueFastestFingerQuestion(/*data=*/{});
+    gameServer.showHostCueFastestFingerQuestion(new MockSocket(), /*data=*/{});
 
     expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
       actions: [{
@@ -137,7 +137,7 @@ describe('GameServerTest', () => {
   it('showHostCueFastestFingerQuestionShouldSetTimerForNoShowHost', () => {
     var gameServer = newGameServerWithPlayerShowHost(false);
 
-    gameServer.showHostCueFastestFingerQuestion(/*data=*/{});
+    gameServer.showHostCueFastestFingerQuestion(new MockSocket(), /*data=*/{});
 
     expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
       actions: [],
@@ -150,7 +150,7 @@ describe('GameServerTest', () => {
   it('showHostShowFastestFingerQuestionTextShouldShowCorrectDialogForHumanShowHost', () => {
     var gameServer = newGameServerWithPlayerShowHost(true);
 
-    gameServer.showHostShowFastestFingerQuestionText(/*data=*/{});
+    gameServer.showHostShowFastestFingerQuestionText(new MockSocket(), /*data=*/{});
 
     expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
       actions: [{
@@ -167,7 +167,7 @@ describe('GameServerTest', () => {
     var questionBefore, questionAfter;
 
     questionBefore = gameServer.serverState.fastestFingerQuestion;
-    gameServer.showHostShowFastestFingerQuestionText(/*data=*/{});
+    gameServer.showHostShowFastestFingerQuestionText(new MockSocket(), /*data=*/{});
     questionAfter = gameServer.serverState.fastestFingerQuestion;
 
     expect(questionBefore).to.be.undefined;
@@ -177,7 +177,7 @@ describe('GameServerTest', () => {
   it('showHostCueFastestFingerThreeStrikesShouldGiveExpectedResult', () => {
     var gameServer = newGameServerWithPlayerShowHost(true);
 
-    gameServer.showHostCueFastestFingerThreeStrikes(/*data=*/{});
+    gameServer.showHostCueFastestFingerThreeStrikes(new MockSocket(), /*data=*/{});
 
     expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
     expect(gameServer.currentForcedTimer._onTimeout).to.not.be.undefined;
@@ -191,12 +191,72 @@ describe('GameServerTest', () => {
       orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
     });
 
-    gameServer.showHostRevealFastestFingerQuestionChoices(/*data=*/{});
+    gameServer.showHostRevealFastestFingerQuestionChoices(new MockSocket(), /*data=*/{});
 
     expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
     expect(gameServer.serverState.fastestFingerQuestion.revealedChoices).to.have.lengthOf(
       Choices.MAX_CHOICES);
     expect(gameServer.currentForcedTimer._onTimeout).to.not.be.undefined;
     clearTimeout(gameServer.currentForcedTimer);
+  });
+
+  it('contestantFastestFingerChooseShouldNotCompleteIfChoicesLeft', () => {
+    var gameServer = newGameServerWithPlayerShowHost(false);
+    var socket = new MockSocket('socket_id');
+    var player = new Player(socket, 'username');
+    gameServer.playerMap.putPlayer(player);
+    var fastestFingerTimeUpTriggered = false;
+    gameServer.fastestFingerTimeUp = () => { fastestFingerTimeUpTriggered = true; };
+
+    gameServer.contestantFastestFingerChoose(socket, /*data=*/{
+      choice: Choices.A
+    });
+
+    expect(fastestFingerTimeUpTriggered).to.be.false;
+  });
+
+  it('contestantFastestFingerChooseShouldCompleteIfAllChoicesMade', () => {
+    var gameServer = newGameServerWithPlayerShowHost(false);
+    var socket = new MockSocket('socket_id');
+    var player = new Player(socket, 'username');
+    player.fastestFingerChoices = [Choices.A, Choices.B, Choices.C];
+    gameServer.playerMap.putPlayer(player);
+    var fastestFingerTimeUpTriggered = false;
+    gameServer.fastestFingerTimeUp = () => { fastestFingerTimeUpTriggered = true; };
+
+    gameServer.contestantFastestFingerChoose(socket, /*data=*/{
+      choice: Choices.D
+    });
+
+    expect(fastestFingerTimeUpTriggered).to.be.true;
+    expect(gameServer.serverState.allPlayersDoneWithFastestFinger()).to.be.false;
+  });
+
+  it('fastestFingerTimeUpShouldShowCorrectDialogForHumanShowHost', () => {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+
+    gameServer.fastestFingerTimeUp(new MockSocket(), /*data=*/{});
+
+    expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+      actions: [{
+        socketEvent: 'showHostCueFastestFingerAnswerRevealAudio',
+        text: LocalizedStrings.CUE_FASTEST_FINGER_ANSWER_REVEAL_AUDIO
+      }],
+      header: ''
+    });
+    expect(gameServer.serverState.showHostStepDialog.timeout).to.be.undefined;
+  });
+
+  it('fastestFingerTimeUpShouldSetTimerForNoShowHost', () => {
+    var gameServer = newGameServerWithPlayerShowHost(false);
+
+    gameServer.fastestFingerTimeUp(new MockSocket(), /*data=*/{});
+
+    expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+      actions: [],
+      header: ''
+    });
+    expect(gameServer.serverState.showHostStepDialog.timeout).to.not.be.undefined;
+    gameServer.serverState.showHostStepDialog.clearTimeout();
   });
 });

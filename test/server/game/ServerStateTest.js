@@ -8,11 +8,66 @@ const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 const StepDialog = require(process.cwd() + '/server/game/StepDialog.js');
 
 describe('ServerStateTest', () => {
+  it('addPlayerDoneWithFastestFingerShouldAddForPlayerNotDoneYet', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var player = new Player(new MockSocket('socket_id_1'), 'username1');
+    serverState.playerMap.putPlayer(player);
+
+    serverState.addPlayerDoneWithFastestFinger(player);
+
+    expect(serverState.fastestFingerResults[player.username]).to.not.be.undefined;
+  });
+
+  it('addPlayerDoneWithFastestFingerShouldNotAddForPlayerAlreadyDone', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var player = new Player(new MockSocket('socket_id_1'), 'username1');
+    serverState.playerMap.putPlayer(player);
+    player.fastestFingerTime = 1;
+    serverState.addPlayerDoneWithFastestFinger(player);
+    var originalTime = serverState.fastestFingerResults[player.username].elapsedTimeMs;
+    player.fastestFingerTime = 0;
+
+    serverState.addPlayerDoneWithFastestFinger(player);
+
+    expect(serverState.fastestFingerResults[player.username].elapsedTimeMs).to.equal(originalTime);
+  });
+
+  it('allPlayersDoneWithFastestFingerShouldGiveExpectedResultForShowHostAbsent', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var player = new Player(new MockSocket('socket_id_1'), 'username1');
+    serverState.playerMap.putPlayer(player);
+
+    var beforeResult = serverState.allPlayersDoneWithFastestFinger();
+    serverState.addPlayerDoneWithFastestFinger(player);
+    var afterResult = serverState.allPlayersDoneWithFastestFinger();
+
+    expect(beforeResult).to.be.false;
+    expect(afterResult).to.be.true;
+  });
+
+  it('allPlayersDoneWithFastestFingerShouldGiveExpectedResultForShowHostPresent', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var hostPlayer = new Player(new MockSocket('host_socket'), 'host');
+    var otherPlayer = new Player(new MockSocket('other_socket'), 'other');
+    serverState.playerMap.putPlayer(hostPlayer);
+    serverState.playerMap.putPlayer(otherPlayer);
+    serverState.showHost = hostPlayer;
+
+    var beforeResult = serverState.allPlayersDoneWithFastestFinger();
+    serverState.addPlayerDoneWithFastestFinger(otherPlayer);
+    var afterResult = serverState.allPlayersDoneWithFastestFinger();
+
+    expect(beforeResult).to.be.false;
+    expect(afterResult).to.be.true;
+  });
+
   it('clearAllPlayerAnswersShouldGiveExpectedResult', () => {
     var serverState = new ServerState(new PlayerMap());
+    serverState.playerMap.putPlayer(new Player(new MockSocket('socket_id_1'), 'username1'));
+    serverState.playerMap.putPlayer(new Player(new MockSocket('socket_id_2'), 'username2'));
     serverState.playerMap.doAll((player) => {
       player.chooseFastestFinger(Choices.A);
-      player.chooseHotSeat(Choice.A);
+      player.chooseHotSeat(Choices.A);
     });
 
     serverState.clearAllPlayerAnswers();

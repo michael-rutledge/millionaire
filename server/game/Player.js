@@ -21,8 +21,8 @@ class Player {
   //
   // The choice is expected to be a value from Choices.js.
   chooseFastestFinger(choice) {
-    if (!this.fastestFingerChoices.includes(choice) &&
-        this.fastestFingerChoices.length < Choices.MAX_CHOICES) {
+    if (Choices.isValidChoice(choice) &&
+        !this.hasAlreadyChosenFastestFingerChoice(choice) && this.hasFastestFingerChoicesLeft()) {
       this.fastestFingerChoices.push(choice);
       // Last choice should keep track of the time to allow for calculating elapsed time
       if (this.fastestFingerChoices.length == Choices.MAX_CHOICES) {
@@ -35,7 +35,7 @@ class Player {
   //
   // Time of answer is tracked in calculation of contestant money.
   chooseHotSeat(choice) {
-    if (this.hotSeatChoice === undefined) {
+    if (Choices.isValidChoice(choice) && this.hotSeatChoice === undefined) {
       this.hotSeatChoice = choice;
       this.hotSeatTime = new Date().getTime();
     }
@@ -47,6 +47,17 @@ class Player {
     this.fastestFingerTime = undefined;
     this.hotSeatChoice = undefined;
     this.hotSeatTime = undefined;
+  }
+
+  // Returns whether the player is able to add another choice to their fastest finger choice
+  // selection.
+  hasFastestFingerChoicesLeft() {
+    return this.fastestFingerChoices.length < Choices.MAX_CHOICES;
+  }
+
+  // Returns whether the player has already selected the given choice on fastest finger.
+  hasAlreadyChosenFastestFingerChoice(choice) {
+    return this.fastestFingerChoices.includes(choice);
   }
 
   // Resets the player to base stats.

@@ -7,6 +7,7 @@ const contestantChoosableEvents = new Set([
   'hotSeatUseLifeline'
 ]);
 const hotSeatChoosableEvents = new Set(['showHostShowHotSeatOptionD']);
+const fastestFingerChoosableEvents = new Set(['showHostRevealFastestFingerQuestionChoices']);
 
 // Encapsulates the state of a running game on the server side.
 class ServerState {
@@ -25,8 +26,28 @@ class ServerState {
 
   // PUBLIC METHODS
 
+  // Adds a username to the list of players done with their respective fastest finger choices.
+  addPlayerDoneWithFastestFinger(player) {
+    var now = new Date().getTime();
+
+    if (this.fastestFingerResults[player.username] === undefined) {
+      this.fastestFingerResults[player.username] = {
+        elapsedTimeMs: now - player.fastestFingerTime,
+        choices: player.fastestFingerChoices
+      };
+    }
+  }
+
+  // Returns whether all contestant players are done with their fastest finger choices.
+  allPlayersDoneWithFastestFinger() {
+    var showHostOffset = this.showHost === undefined ? 0 : 1;
+    return Object.keys(this.fastestFingerResults).length >=
+      this.playerMap.getPlayerCount() - showHostOffset;
+  }
+
   // Clears all player answers, regardless of question type.
   clearAllPlayerAnswers() {
+    this.fastestFingerResults = {};
     this.playerMap.doAll((player) => { player.clearAllAnswers(); });
   }
 
@@ -82,6 +103,11 @@ class ServerState {
 
     // Reference to the current fastest finger question
     this.fastestFingerQuestion = undefined;
+
+    // Set of all usernames done with fastest finger.
+    //
+    // Used in triggering of fastest finger end.
+    this.fastestFingerResults = {};
   }
 
   // Returns a compressed, JSON-formatted version of ClientState to pass to the client via socket.
@@ -98,6 +124,11 @@ class ServerState {
     // The hot seat player might need to have a dialog that can step the game through.
     if (compressed.clientIsHotSeat && this.hotSeatStepDialog !== undefined) {
       compressed.hotSeatStepDialog = this.hotSeatStepDialog.toCompressed();
+    }
+    // If we are in an event that allows for fastest finger choosing, make choice buttons active by
+    // setting choice actions.
+    if (fastestFingerChoosableEvents.has(currentSocketEvent)) {
+      compressed.choiceAction = 'contestantFastestFingerChoose';
     }
     // If we are in an event that allows for choosing, make choice buttons active by setting choice
     // actions.
