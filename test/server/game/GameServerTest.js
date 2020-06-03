@@ -1,5 +1,7 @@
 const expect = require('chai').expect;
 
+const Choices = require(process.cwd() + '/server/question/Choices.js');
+const FastestFingerQuestion = require(process.cwd() + '/server/question/FastestFingerQuestion.js');
 const GameServer = require(process.cwd() + '/server/game/GameServer.js');
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
@@ -152,7 +154,7 @@ describe('GameServerTest', () => {
 
     expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
       actions: [{
-        socketEvent: 'showHostRevealFastestFingerQuestionChoices',
+        socketEvent: 'showHostCueFastestFingerThreeStrikes',
         text: LocalizedStrings.REVEAL_FASTEST_FINGER_CHOICE
       }],
       header: ''
@@ -170,5 +172,31 @@ describe('GameServerTest', () => {
 
     expect(questionBefore).to.be.undefined;
     expect(questionAfter).to.not.be.undefined;
+  });
+
+  it('showHostCueFastestFingerThreeStrikesShouldGiveExpectedResult', () => {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+
+    gameServer.showHostCueFastestFingerThreeStrikes(/*data=*/{});
+
+    expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
+    expect(gameServer.currentForcedTimer._onTimeout).to.not.be.undefined;
+    clearTimeout(gameServer.currentForcedTimer);
+  });
+
+  it('showHostRevealFastestFingerQuestionChoicesShouldGiveExpectedResult', () => {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+    gameServer.serverState.fastestFingerQuestion = new FastestFingerQuestion({
+      text: 'questionText',
+      orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+    });
+
+    gameServer.showHostRevealFastestFingerQuestionChoices(/*data=*/{});
+
+    expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
+    expect(gameServer.serverState.fastestFingerQuestion.revealedChoices).to.have.lengthOf(
+      Choices.MAX_CHOICES);
+    expect(gameServer.currentForcedTimer._onTimeout).to.not.be.undefined;
+    clearTimeout(gameServer.currentForcedTimer);
   });
 });

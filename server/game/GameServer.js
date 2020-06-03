@@ -9,7 +9,10 @@ const SOCKET_EVENTS = [
   'showHostShowFastestFingerRules',
   'showHostCueFastestFingerQuestion',
   'showHostShowFastestFingerQuestionText',
+  'showHostCueFastestFingerThreeStrikes',
   'showHostRevealFastestFingerQuestionChoices',
+  'contestantFastestFingerChoose',
+  'fastestFingerTimeUp',
   'showHostReshowFastestFingerQuestionText',
   'showHostShowFastestFingerAnswer',
   'showHostAcceptHotSeatPlayer',
@@ -26,7 +29,6 @@ const SOCKET_EVENTS = [
   'showHostPhoneAFriend',
   'showHostRevealHotSeatQuestionOutcome',
   'showHostShowScores',
-  'contestantFastestFingerChoose',
   'contestantChoose',
   'contestantSetConfidence',
   'hotSeatChoose',
@@ -49,8 +51,8 @@ class GameServer {
     // FastestFingerSession which can keep generating unused questions for this server
     this.fastestFingerSession = new FastestFingerSession();
 
-    // Reference to a setTimeout function that can be cancelled
-    this.cancellableTimer = undefined;
+    // Reference to a setTimeout function that is forced upon the GameServer.
+    this.currentForcedTimer = undefined;
 
     // Whatever socket event was last listened to. Stored so people who left can rejoin without a
     // problem.
@@ -191,28 +193,57 @@ class GameServer {
 
     // Human host will control flow, or 8 seconds will pass until choices are revealed
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
-      nextSocketEvent: 'showHostRevealFastestFingerQuestionChoices',
+      nextSocketEvent: 'showHostCueFastestFingerThreeStrikes',
       hostButtonMessage: LocalizedStrings.REVEAL_FASTEST_FINGER_CHOICE,
       aiTimeout: 8000
     }));
     this._updateGame();
   }
 
-  // Response to client asking to reveal fastest finger choices.
-  //
-  // This should cue the three strikes audio cue and wait accordingly before starting the fastest
-  // finger background music and revealing the choices.
-  showHostRevealFastestFingerQuestionChoices(data) {
-    this.currentSocketEvent = 'showHostRevealFastestFingerQuestionChoices';
+  // Response to client asking to cue the three strikes audio for fastest finger.
+  showHostCueFastestFingerThreeStrikes(data) {
+    this.currentSocketEvent = 'showHostCueFastestFingerThreeStrikes';
     Logger.logInfo(this.currentSocketEvent);
 
     // First we cue the audio with no possible host step action.
     this.serverState.setShowHostStepDialog(undefined);
     this._updateGame();
 
-    // Next we reveal all choices on the fastest finger question, and update the client again once
-    // the timer for allowance of the three strike audio cue is done.
+    // After a small waiting period, we reveal all choices.
+    this.currentForcedTimer = setTimeout(() => {
+      this.showHostRevealFastestFingerQuestionChoices(data);
+    }, /*timeoutMs*/2500);
+  }
+
+  // Response to client asking to reveal fastest finger choices.
+  showHostRevealFastestFingerQuestionChoices(data) {
+    this.currentSocketEvent = 'showHostRevealFastestFingerQuestionChoices';
+    Logger.logInfo(this.currentSocketEvent);
+
     this.serverState.fastestFingerQuestion.revealAllChoices();
+    this._updateGame();
+
+    this.currentForcedTimer = setTimeout(() => {
+      this.fastestFingerTimeUp(data);
+    }, /*timeoutMs*/10000);
+  }
+
+  // Response to contestant from client locking in a fastest finger choice.
+  contestantFastestFingerChoose(data) {
+    this.currentSocketEvent = 'contestantFastestFingerChoose';
+    Logger.logInfo(this.currentSocketEvent);
+  }
+
+  // Response to client reaching the end of fastest finger.
+  //
+  // Can be triggered before timer runs out by everyone getting in answers.
+  fastestFingerTimeUp(data) {
+    this.currentSocketEvent = 'fastestFingerTimeUp';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // Even if this was triggered by the timeout expiring, we will be safe and clear the timeout, as
+    // it may have been triggered by everyone answering.
+    clearTimeout(this.currentForcedTimer);
   }
 }
 

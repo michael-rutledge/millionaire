@@ -10,7 +10,7 @@ class QuestionAndChoicesElement extends CanvasElement {
     // x and y will be ignored upon draw
     super(canvas, /*x=*/0, /*y=*/0);
     this.questionText = undefined;
-    this.revealedChoices = undefined;
+    this.revealedChoices = [];
     this.choiceBubbles = [];
   }
 
@@ -75,34 +75,53 @@ class QuestionAndChoicesElement extends CanvasElement {
   }
 
   // Draws a row of two choice bubbles where choice text will sit.
-  _drawChoiceBubbleRow(percentUpBottomSide) {
+  _drawChoiceBubbleRow(percentUpBottomSide, leftBubbleText, rightBubbleText) {
     var bubbleLine = new Path2D();
     var bottomSidePanelWidth = this.canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO;
     var questionMidLineY = this.canvas.height - bottomSidePanelWidth * percentUpBottomSide;
+    var bubbleHeight = this.canvas.height * Constants.QUESTION_CHOICE_HEIGHT_RATIO;
+    var bubbleWidth = this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO;
     var startX = this.canvas.width * Constants.WIDTH_SQUARE_RATIO +
-      (this.canvas.height * Constants.QUESTION_HEIGHT_RATIO / 2 -
-        this.canvas.height * Constants.QUESTION_CHOICE_HEIGHT_RATIO / 2);
+      (this.canvas.height * Constants.QUESTION_HEIGHT_RATIO / 2 - bubbleHeight / 2);
 
     bubbleLine.moveTo(bottomSidePanelWidth, questionMidLineY);
     bubbleLine.lineTo(startX, questionMidLineY);
     this.choiceBubbles.push(this._drawMillionaireBubble({
       startX: startX,
       startY: questionMidLineY,
-      width: this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO,
-      height: this.canvas.height * Constants.QUESTION_CHOICE_HEIGHT_RATIO
+      width: bubbleWidth,
+      height: bubbleHeight
     }));
-    bubbleLine.moveTo(startX + this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO,
-      questionMidLineY);
-    startX = this.canvas.width - startX - this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO
+
+    if (leftBubbleText) {
+      new TextElement(this.canvas, startX + bubbleHeight / 2, questionMidLineY, leftBubbleText,
+        /*style=*/{
+          textAlign: 'left',
+          maxWidth: bubbleWidth - bubbleHeight,
+          maxHeight: bubbleHeight
+        }).draw();
+    }
+
+    bubbleLine.moveTo(startX + bubbleWidth, questionMidLineY);
+    startX = this.canvas.width - startX - bubbleWidth;
     bubbleLine.lineTo(startX, questionMidLineY);
     this.choiceBubbles.push(this._drawMillionaireBubble({
       startX: startX,
       startY: questionMidLineY,
-      width: this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO,
-      height: this.canvas.height * Constants.QUESTION_CHOICE_HEIGHT_RATIO
+      width: bubbleWidth,
+      height: bubbleHeight
     }));
-    bubbleLine.moveTo(startX + this.canvas.width * Constants.QUESTION_CHOICE_WIDTH_RATIO,
-      questionMidLineY);
+
+    if (rightBubbleText) {
+      new TextElement(this.canvas, startX + bubbleHeight / 2, questionMidLineY, rightBubbleText,
+        /*style=*/{
+          textAlign: 'left',
+          maxWidth: bubbleWidth - bubbleHeight,
+          maxHeight: bubbleHeight
+        }).draw();
+    }
+
+    bubbleLine.moveTo(startX + bubbleWidth, questionMidLineY);
     bubbleLine.lineTo(this.canvas.width - bottomSidePanelWidth, questionMidLineY);
     this.context.stroke(bubbleLine);
   }
@@ -131,9 +150,13 @@ class QuestionAndChoicesElement extends CanvasElement {
     // Question bubble
     this._drawQuestionBubble(/*percentUpBottomSide=*/0.78, this.questionText);
     // A + B bubbles
-    this._drawChoiceBubbleRow(/*percentUpBottomSide=*/0.43);
+    this._drawChoiceBubbleRow(/*percentUpBottomSide=*/0.43,
+      this.revealedChoices[Choices.A],
+      this.revealedChoices[Choices.B]);
     // C + D bubbles
-    this._drawChoiceBubbleRow(/*percentUpBottomSide=*/0.15);
+    this._drawChoiceBubbleRow(/*percentUpBottomSide=*/0.15,
+      this.revealedChoices[Choices.C],
+      this.revealedChoices[Choices.D]);
   }
 
   // Sets the question information for this element from the given question.
