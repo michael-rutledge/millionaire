@@ -21,28 +21,33 @@ describe('GameClientTest', () => {
   });
 
   it('getNewCanvasElementsShouldAddQuestionAndChoicesElementNoMatterWhat', () => {
-    var gameClient = new GameClient(new MockSocket('socket_id'),
+    var mockSocket = new MockSocket('socket_id');
+    var gameClient = new GameClient(mockSocket,
       new GameRenderer(new MockCanvas(), new MockHtmlDocument()));
     var canvas = gameClient.gameRenderer.canvas;
 
     var newCanvasElements = gameClient.getNewCanvasElements(/*compressedClientState=*/{});
 
-    expect(newCanvasElements).to.deep.include(new QuestionAndChoicesElement(canvas));
+    expect(newCanvasElements).to.deep.include(new QuestionAndChoicesElement(canvas, mockSocket));
   });
 
   it('getNewCanvasElementsShouldSetQuestionForQuestionAndChoicesElementIfPresent', () => {
-    var gameClient = new GameClient(new MockSocket('socket_id'),
+    var mockSocket = new MockSocket('socket_id');
+    var gameClient = new GameClient(mockSocket,
       new GameRenderer(new MockCanvas(), new MockHtmlDocument()));
     var canvas = gameClient.gameRenderer.canvas;
     var question = {
       text: 'text',
-      revealedChoices: [ 'choice 1' ]
+      revealedChoices: [ 'choice 1' ],
+      madeChoices: []
     };
-    var expectedQuestionAndChoicesElement = new QuestionAndChoicesElement(canvas);
+    var expectedQuestionAndChoicesElement = new QuestionAndChoicesElement(canvas, mockSocket);
     expectedQuestionAndChoicesElement.setQuestion(question);
+    expectedQuestionAndChoicesElement.choiceAction = 'choiceAction';
 
     var newCanvasElements = gameClient.getNewCanvasElements(/*compressedClientState=*/{
-      question: question
+      question: question,
+      choiceAction: 'choiceAction'
     });
 
     expect(newCanvasElements).to.deep.include(expectedQuestionAndChoicesElement);

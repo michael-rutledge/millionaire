@@ -50,7 +50,7 @@ class AppClient {
     this.loginJoinButton = this.htmlDocument.getElementById('loginJoinButton');
     this.loginCreateButton = this.htmlDocument.getElementById('loginCreateButton');
 
-    this.gameClient = new GameClient(socket, new GameRenderer(this.gameCanvas, this.htmlDocument));
+    this.gameClient = new GameClient(this.socket, new GameRenderer(this.gameCanvas, this.htmlDocument));
 
     // Assign HTML functions
     this.gameEndButton.onclick = () => { this.hostAttemptEndGame(); }

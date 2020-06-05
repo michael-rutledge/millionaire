@@ -141,7 +141,8 @@ class ServerState {
     if (this.fastestFingerQuestion) {
       compressed.question = {
         text: this.fastestFingerQuestion.text,
-        revealedChoices: this.fastestFingerQuestion.revealedChoices
+        revealedChoices: this.fastestFingerQuestion.revealedChoices,
+        madeChoices: player.fastestFingerChoices
       };
     }
 

@@ -23,11 +23,12 @@ class GameClient {
   getNewCanvasElements(compressedClientState) {
     var canvas = this.gameRenderer.canvas;
     var newCanvasElements = [new BackgroundElement(canvas)];
-    var questionAndChoicesElement = new QuestionAndChoicesElement(canvas);
+    var questionAndChoicesElement = new QuestionAndChoicesElement(canvas, this.socket);
     newCanvasElements.push(questionAndChoicesElement);
 
     if (compressedClientState.question !== undefined) {
       questionAndChoicesElement.setQuestion(compressedClientState.question);
+      questionAndChoicesElement.choiceAction = compressedClientState.choiceAction;
     }
 
     return newCanvasElements;

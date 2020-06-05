@@ -229,7 +229,7 @@ describe('GameServerTest', () => {
     });
 
     expect(fastestFingerTimeUpTriggered).to.be.true;
-    expect(gameServer.serverState.allPlayersDoneWithFastestFinger()).to.be.false;
+    expect(gameServer.serverState.allPlayersDoneWithFastestFinger()).to.be.true;
   });
 
   it('fastestFingerTimeUpShouldShowCorrectDialogForHumanShowHost', () => {

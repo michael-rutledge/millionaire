@@ -100,7 +100,7 @@ class GameServer {
   // Activates all game-related socket listeners for the given socket.
   activateListenersForSocket(socket) {
     SOCKET_EVENTS.forEach((socketEvent, index) => {
-      socket.on(socketEvent, (data) => { this[message](socket, data) });
+      socket.on(socketEvent, (data) => { this[socketEvent](socket, data) });
     });
   }
 
@@ -234,8 +234,8 @@ class GameServer {
   //   Choice choice
   // }
   contestantFastestFingerChoose(socket, data) {
-    this.currentSocketEvent = 'contestantFastestFingerChoose';
-    Logger.logInfo(this.currentSocketEvent);
+    Logger.logInfo('contestantFastestFingerChoose');
+    Logger.logInfo('  choice: ' + data.choice);
 
     var player = this.playerMap.getPlayerBySocket(socket);
     player.chooseFastestFinger(data.choice);
@@ -245,7 +245,6 @@ class GameServer {
       this.serverState.addPlayerDoneWithFastestFinger(player);
     }
     if (this.serverState.allPlayersDoneWithFastestFinger()) {
-      this.serverState.clearAllPlayerAnswers();
       this.fastestFingerTimeUp(socket, data);
     }
   }
