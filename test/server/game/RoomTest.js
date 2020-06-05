@@ -1,5 +1,6 @@
 const expect = require('chai').expect;
 
+const GameServer = require(process.cwd() + '/server/game/GameServer.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 const Player = require(process.cwd() + '/server/game/Player.js');
 const Room = require(process.cwd() + '/server/game/Room.js');
@@ -20,6 +21,16 @@ describe('RoomTest', () => {
 
     expect(result).to.be.true;
     expect(room.playerMap.getPlayerBySocket(mockSocket)).to.deep.equal(expectedPlayer);
+  });
+
+  it('addPlayerShouldActivateGameServerListeners', () => {
+    var room = new Room('test');
+    var mockSocket = new MockSocket('socket_id');
+    setRoomInGame(room, false);
+
+    var result = room.addPlayer(mockSocket, 'username');
+
+    expect(Object.keys(mockSocket.listeners)).to.deep.equal(GameServer.SOCKET_EVENTS);
   });
 
   it('addPlayerShouldSetHostForFirstUsernameInLobby', () => {
@@ -188,6 +199,17 @@ describe('RoomTest', () => {
 
     expect(room.playerMap.getPlayerBySocket(mockSocket)).to.be.undefined;
     expect(room.playerMap.getPlayerByUsername('username')).to.be.undefined;
+  });
+
+  it('disconnectPlayerShouldDeactivateGameServerListeners', () => {
+    var room = new Room('test');
+    var mockSocket = new MockSocket('socket_id');
+    setRoomInGame(room, false);
+    room.addPlayer(mockSocket, 'username');
+
+    room.disconnectPlayer(mockSocket);
+
+    expect(Object.keys(mockSocket.listeners)).to.be.empty;
   });
 
   it('disconnectPlayerShouldRemoveSocketButKeepPlayerByUsernameInGame', () => {

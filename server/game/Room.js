@@ -27,10 +27,12 @@ class Room {
       if (this.hostSocket === undefined) {
         this.setHostSocketAndNotify(socket);
       }
+      this.gameServer.activateListenersForSocket(socket);
       return true;
     } else if (this.playerMap.containsUsername(username) && this.gameServer.isInGame() &&
                !this.playerMap.isUsernameActive(username)) {
       this.playerMap.updatePlayerSocket(username, socket);
+      this.gameServer.activateListenersForSocket(socket);
       return true;
     }
 
@@ -71,6 +73,7 @@ class Room {
     var username = this.playerMap.getUsernameBySocket(socket);
 
     this.playerMap.removePlayerSocket(username);
+    this.gameServer.deactivateListenersForSocket(socket);
 
     if (this.socketIsHost(socket)) {
       this.reassignHostSocket();
