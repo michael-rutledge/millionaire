@@ -3,9 +3,9 @@ const Choices = require('../../../../server/question/Choices.js');
 const Colors = require('../Colors.js');
 const Constants = require('../Constants.js');
 const MillionaireBubble = require('./MillionaireBubble.js');
+const MillionaireBubbleBuilder = require('./MillionaireBubbleBuilder.js');
 
 // Encapsulates the background element of the game canvas.
-// TODO: use MillionaireBubbleBuilder here.
 class QuestionAndChoicesElement extends CanvasElement {
   constructor(canvas, socket, choiceAction = undefined) {
     // x and y will be ignored upon draw
@@ -57,10 +57,15 @@ class QuestionAndChoicesElement extends CanvasElement {
 
     bubbleLine.moveTo(bottomSidePanelWidth, questionMidLineY);
     bubbleLine.lineTo(startX, questionMidLineY);
-    new MillionaireBubble(this.canvas, startX, questionMidLineY, questionWidth, questionHeight,
-      questionText, /*style=*/{
-      textAlign: 'center'
-    }).draw();
+
+    new MillionaireBubbleBuilder(this.canvas)
+      .setPosition(startX, questionMidLineY)
+      .setDimensions(questionWidth, questionHeight)
+      .setText(questionText)
+      .setTextAlign('center')
+      .build()
+      .draw();
+
     bubbleLine.moveTo(startX + questionWidth, questionMidLineY);
     bubbleLine.lineTo(this.canvas.width - bottomSidePanelWidth, questionMidLineY);
     this.context.stroke(bubbleLine);
@@ -79,13 +84,17 @@ class QuestionAndChoicesElement extends CanvasElement {
     // Left bubble
     bubbleLine.moveTo(bottomSidePanelWidth, questionMidLineY);
     bubbleLine.lineTo(startX, questionMidLineY);
-    var choiceBubble = new MillionaireBubble(this.canvas, startX, questionMidLineY, bubbleWidth,
-      bubbleHeight, this.revealedChoices[leftChoice], /*style=*/{
-        choice: this.choiceBubbles.length,
-        state: this.madeChoices.includes(leftChoice) ?
-          MillionaireBubble.State.SELECTED : MillionaireBubble.State.DEFAULT,
-        textAlign: 'left'
-      });
+
+    var choiceBubble =
+      new MillionaireBubbleBuilder(this.canvas)
+        .setPosition(startX, questionMidLineY)
+        .setDimensions(bubbleWidth, bubbleHeight)
+        .setText(this.revealedChoices[leftChoice])
+        .setChoice(this.choiceBubbles.length)
+        .setState(this.madeChoices.includes(leftChoice) ?
+          MillionaireBubble.State.SELECTED : MillionaireBubble.State.DEFAULT)
+        .setTextAlign('left')
+        .build();
     choiceBubble.draw();
     this.choiceBubbles.push(choiceBubble);
 
@@ -93,13 +102,17 @@ class QuestionAndChoicesElement extends CanvasElement {
     bubbleLine.moveTo(startX + bubbleWidth, questionMidLineY);
     startX = this.canvas.width - startX - bubbleWidth;
     bubbleLine.lineTo(startX, questionMidLineY);
-    var choiceBubble = new MillionaireBubble(this.canvas, startX, questionMidLineY, bubbleWidth,
-      bubbleHeight, this.revealedChoices[rightChoice], /*style=*/{
-        choice: this.choiceBubbles.length,
-        state: this.madeChoices.includes(rightChoice) ?
-          MillionaireBubble.State.SELECTED : MillionaireBubble.State.DEFAULT,
-        textAlign: 'left'
-      });
+
+    var choiceBubble =
+      new MillionaireBubbleBuilder(this.canvas)
+        .setPosition(startX, questionMidLineY)
+        .setDimensions(bubbleWidth, bubbleHeight)
+        .setText(this.revealedChoices[rightChoice])
+        .setChoice(this.choiceBubbles.length)
+        .setState(this.madeChoices.includes(rightChoice) ?
+          MillionaireBubble.State.SELECTED : MillionaireBubble.State.DEFAULT)
+        .setTextAlign('left')
+        .build();
     choiceBubble.draw();
     this.choiceBubbles.push(choiceBubble);
 

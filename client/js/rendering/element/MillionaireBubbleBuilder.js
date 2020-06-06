@@ -10,6 +10,11 @@ class MillionaireBubbleBuilder {
     return this._millionaireBubble;
   }
 
+  setChoice(choice) {
+    this._millionaireBubble.choice = choice;
+    return this;
+  }
+
   setDimensions(width, height) {
     this._millionaireBubble.width = width;
     this._millionaireBubble.height = height;
@@ -23,7 +28,7 @@ class MillionaireBubbleBuilder {
   }
 
   setState(state) {
-    this._millionaireBubble.style.state = state;
+    this._millionaireBubble.state = state;
     return this;
   }
 
@@ -33,7 +38,7 @@ class MillionaireBubbleBuilder {
   }
 
   setTextAlign(textAlign) {
-    this._millionaireBubble.style.textAlign = textAlign;
+    this._millionaireBubble.textAlign = textAlign;
     return this;
   }
 }

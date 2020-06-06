@@ -3,29 +3,19 @@ const Colors = require('../Colors.js');
 
 class TextElement extends CanvasElement {
 
-  // Expected style format:
-  // {
-  //   obj fillStyle
-  //   obj font
-  //   string textAlign
-  //   int maxWidth
-  //   int maxHeight
-  //   int verticalPadding
-  // }
-  constructor(canvas, x, y, text = '', style = {}) {
-    // TODO: deprecate style object and use Builder for all constructions.
+  // Some fields are left default here. It is strongly recommended to use TextElementBuilder to
+  // construct a TextElement.
+  constructor(canvas, x, y, text = '') {
     super(canvas, x, y);
     this.text = text;
-    this.style = style;
 
     // Default style attributes
-    this.style.fillStyle = style.fillStyle === undefined ?
-      Colors.DEFAULT_TEXT_COLOR : style.fillStyle;
-    this.style.font = style.font === undefined ? '30px Arial' : style.font;
-    this.style.textAlign = style.textAlign === undefined ? 'left' : style.textAlign;
-    this.style.maxWidth = style.maxWidth === undefined ? canvas.width : style.maxWidth;
-    this.style.maxHeight = style.maxHeight === undefined ? canvas.height : style.maxHeight;
-    this.style.verticalPadding = style.verticalPadding === undefined ? 0 : style.verticalPadding;
+    this.fillStyle = Colors.DEFAULT_TEXT_COLOR;
+    this.font = '30px Arial';
+    this.textAlign = 'left';
+    this.maxWidth = canvas.width;
+    this.maxHeight = canvas.height;
+    this.verticalPadding = 0;
   }
 
 
@@ -62,13 +52,13 @@ class TextElement extends CanvasElement {
     var oldFont = this.context.font;
     var oldTextAlign = this.context.textAlign;
 
-    this.context.fillStyle = this.style.fillStyle;
-    this.context.font = this.style.font;
-    this.context.textAlign = this.style.textAlign;
+    this.context.fillStyle = this.fillStyle;
+    this.context.font = this.font;
+    this.context.textAlign = this.textAlign;
 
-    var lineHeight = 30 + this.style.verticalPadding;
-    var maxLines = Math.floor(this.style.maxHeight / lineHeight);
-    var wrappedLines = this._getWrappedLines(this.text, this.style.maxWidth, this.style.maxHeight);
+    var lineHeight = 30 + this.verticalPadding;
+    var maxLines = Math.floor(this.maxHeight / lineHeight);
+    var wrappedLines = this._getWrappedLines(this.text, this.maxWidth, this.maxHeight);
     var numLines = Math.min(maxLines, wrappedLines.length);
     var yOffset = numLines * lineHeight / 2;
 

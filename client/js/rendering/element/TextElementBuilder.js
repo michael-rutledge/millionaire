@@ -12,22 +12,22 @@ class TextElementBuilder {
   }
 
   setFillStyle(fillStyle) {
-    this._textElement.style.fillStyle = fillStyle;
+    this._textElement.fillStyle = fillStyle;
     return this;
   }
 
   setFont(font) {
-    this._textElement.style.font = font;
+    this._textElement.font = font;
     return this;
   }
 
   setMaxWidth(maxWidth) {
-    this._textElement.style.maxWidth = maxWidth;
+    this._textElement.maxWidth = maxWidth;
     return this;
   }
 
   setMaxHeight(maxHeight) {
-    this._textElement.style.maxHeight = maxHeight;
+    this._textElement.maxHeight = maxHeight;
     return this;
   }
 
@@ -43,12 +43,12 @@ class TextElementBuilder {
   }
 
   setTextAlign(textAlign) {
-    this._textElement.style.textAlign = textAlign;
+    this._textElement.textAlign = textAlign;
     return this;
   }
 
   setVerticalPadding(verticalPadding) {
-    this._textElement.style.verticalPadding = verticalPadding;
+    this._textElement.verticalPadding = verticalPadding;
     return this;
   }
 }

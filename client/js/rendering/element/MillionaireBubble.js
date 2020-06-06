@@ -37,20 +37,15 @@ const textFillStyles = [
 // Bubble UI element used for question text, question choices, and more.
 class MillionaireBubble extends CanvasElement {
   
-  // Expected style format {
-  //   Choice choice
-  //   int state
-  //   string textAlign
-  // }
-  constructor(canvas, x = 0, y = 0, width = 0, height = 0, text = undefined, style = {}) {
-    // TODO: deprecate style object and use Builder for all constructions.
+  // Some fields are left default here. It is strongly recommended to use MillionaireBubbleBuilder
+  // to construct a MillionaireBubble.
+  constructor(canvas, x = 0, y = 0, width = 0, height = 0, text = undefined) {
     super(canvas, x, y);
     this.width = width;
     this.height = height;
     this.text = text;
-    this.style = style;
-    this.style.textAlign = style.textAlign === undefined ? 'left' : style.textAlign;
-    this.style.state = style.state === undefined ? State.DEFAULT : style.state;
+    this.textAlign = 'left';
+    this.state = State.DEFAULT;
     this.xOffsets = {
       'left': () => { return this.height / 2 },
       'right': () => { return this.width - this.height / 2},
@@ -71,9 +66,10 @@ class MillionaireBubble extends CanvasElement {
     var oldFillStyle = this.context.fillStyle;
     var oldStrokeStyle = this.context.strokeStyle;
 
-    var textFillStyle = textFillStyles[this.style.state];
-    this.context.fillStyle = bubbleFillStyles[this.style.state];
+    var textFillStyle = textFillStyles[this.state];
+    this.context.fillStyle = bubbleFillStyles[this.state];
 
+    // TODO: update the shape to recreate the curves in the show.
     this.path.moveTo(this.x, this.y);
     this.path.lineTo(this.x + this.height / 2, this.y - this.height / 2);
     this.path.lineTo(this.x + this.width - this.height / 2, this.y - this.height / 2);
@@ -86,16 +82,16 @@ class MillionaireBubble extends CanvasElement {
     this.context.fill(this.path);
 
     if (this.text !== undefined) {
-      var xOffset = this.xOffsets[this.style.textAlign]();
+      var xOffset = this.xOffsets[this.textAlign]();
 
-      if (this.style.choice) {
+      if (this.choice !== undefined) {
         // Draw choice letter
       }
 
       new TextElementBuilder(this.canvas)
         .setPosition(this.x + xOffset, this.y)
         .setText(this.text)
-        .setTextAlign(this.style.textAlign)
+        .setTextAlign(this.textAlign)
         .setFillStyle(textFillStyle)
         .setMaxWidth(this.width - this.height)
         .setMaxHeight(this.height)
