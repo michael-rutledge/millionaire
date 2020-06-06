@@ -1,5 +1,6 @@
 const TextElement = require('./TextElement.js');
 
+// Builds a TextElement.
 class TextElementBuilder {
 
   constructor(canvas) {
@@ -11,22 +12,22 @@ class TextElementBuilder {
   }
 
   setFillStyle(fillStyle) {
-    this._textElement.fillStyle = fillStyle;
+    this._textElement.style.fillStyle = fillStyle;
     return this;
   }
 
   setFont(font) {
-    this._textElement.font = font;
+    this._textElement.style.font = font;
     return this;
   }
 
   setMaxWidth(maxWidth) {
-    this._textElement.maxWidth = maxWidth;
+    this._textElement.style.maxWidth = maxWidth;
     return this;
   }
 
   setMaxHeight(maxHeight) {
-    this._textElement.maxHeight = maxHeight;
+    this._textElement.style.maxHeight = maxHeight;
     return this;
   }
 
@@ -42,12 +43,12 @@ class TextElementBuilder {
   }
 
   setTextAlign(textAlign) {
-    this._textElement.textAlign = textAlign;
+    this._textElement.style.textAlign = textAlign;
     return this;
   }
 
   setVerticalPadding(verticalPadding) {
-    this._textElement.verticalPadding = verticalPadding;
+    this._textElement.style.verticalPadding = verticalPadding;
     return this;
   }
 }

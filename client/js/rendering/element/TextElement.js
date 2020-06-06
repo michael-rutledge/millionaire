@@ -13,6 +13,7 @@ class TextElement extends CanvasElement {
   //   int verticalPadding
   // }
   constructor(canvas, x, y, text = '', style = {}) {
+    // TODO: deprecate style object and use Builder for all constructions.
     super(canvas, x, y);
     this.text = text;
     this.style = style;

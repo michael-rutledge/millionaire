@@ -3,9 +3,9 @@ const Choices = require('../../../../server/question/Choices.js');
 const Colors = require('../Colors.js');
 const Constants = require('../Constants.js');
 const MillionaireBubble = require('./MillionaireBubble.js');
-const TextElement = require('./TextElement.js');
 
 // Encapsulates the background element of the game canvas.
+// TODO: use MillionaireBubbleBuilder here.
 class QuestionAndChoicesElement extends CanvasElement {
   constructor(canvas, socket, choiceAction = undefined) {
     // x and y will be ignored upon draw

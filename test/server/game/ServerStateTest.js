@@ -90,6 +90,16 @@ describe('ServerStateTest', () => {
     expect(serverState.showHostStepDialog.timeoutActive()).to.be.false;
   });
 
+  it('setHotSeatPlayerByUsernameShouldGiveExpectedResult', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var player = new Player(new MockSocket('socket_id'), 'player');
+    serverState.playerMap.putPlayer(player);
+
+    serverState.setHotSeatPlayerByUsername('player');
+
+    expect(serverState.hotSeatPlayer).to.equal(player);
+  });
+
   it('setShowHostByUsernameShouldGiveExpectedResult', () => {
     var serverState = new ServerState(new PlayerMap());
     var player = new Player(new MockSocket('socket_id'), 'player');
@@ -132,4 +142,26 @@ describe('ServerStateTest', () => {
     expect(compressedHostClientState.showHostStepDialog).to.not.be.undefined;
     expect(compressedOtherClientState.showHostStepDialog).to.be.undefined;
   });
+
+  it('toCompressedClientStateShouldOnlyGiveHotSeatStepDialogForHotSeatPlayer', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var hotSeatSocket = new MockSocket('socket_hot_seat');
+    var hotSeatPlayer = new Player(hotSeatSocket, 'hot_seat');
+    var otherSocket = new MockSocket('socket_other');
+    var otherPlayer = new Player(otherSocket, 'other');
+    serverState.playerMap.putPlayer(hotSeatPlayer);
+    serverState.playerMap.putPlayer(otherPlayer);
+    serverState.setHotSeatPlayerByUsername('hot_seat');
+    serverState.setHotSeatStepDialog(new StepDialog(/*actions=*/[]));
+
+    var compressedHotSeatClientState = serverState.toCompressedClientState(hotSeatSocket,
+      /*currenSocketEvent=*/undefined);
+    var compressedOtherClientState = serverState.toCompressedClientState(otherSocket,
+      /*currenSocketEvent=*/undefined);
+
+    expect(compressedHotSeatClientState.hotSeatStepDialog).to.not.be.undefined;
+    expect(compressedOtherClientState.hotSeatStepDialog).to.be.undefined;
+  });
+
+  // TODO: add more tests here for toCompressedClientState.
 });

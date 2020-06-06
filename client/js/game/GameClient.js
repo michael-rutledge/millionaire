@@ -1,4 +1,5 @@
 const BackgroundElement = require('../rendering/element/BackgroundElement.js');
+const PlayerListElement = require('../rendering/element/PlayerListElement.js');
 const QuestionAndChoicesElement = require('../rendering/element/QuestionAndChoicesElement.js');
 
 // Handles top level socket interactions between the game window of the client and the server.
@@ -23,6 +24,8 @@ class GameClient {
   getNewCanvasElements(compressedClientState) {
     var canvas = this.gameRenderer.canvas;
     var newCanvasElements = [new BackgroundElement(canvas)];
+    var playerListElement = new PlayerListElement(canvas, compressedClientState.playerList);
+    newCanvasElements.push(playerListElement);
     var questionAndChoicesElement = new QuestionAndChoicesElement(canvas, this.socket);
     newCanvasElements.push(questionAndChoicesElement);
 

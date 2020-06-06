@@ -2,6 +2,7 @@ const DEFAULT_TEXT_COLOR = '#ffffff';
 
 module.exports.BACKGROUND_VOID = '#150023';
 module.exports.BACKGROUND_SIDE_GRADIENT = '#00134d';
+module.exports.BUBBLE_FILL_DEFAULT = '#000000'
 module.exports.BUBBLE_FILL_SELECTED = 'orange';
 module.exports.BUBBLE_FILL_CORRECT = 'green';
 module.exports.BUBBLE_TEXT_LIGHT = DEFAULT_TEXT_COLOR;

@@ -52,7 +52,6 @@ class GameRenderer {
     for (var i = 0; i < this.canvasElements.length; i++) {
       if (this.canvasElements[i].isClickable() &&
           this.canvasElements[i].isMouseHovering(localPos.x, localPos.y)) {
-        console.log('MOUSE HOVERING');
         this.htmlDocument.body.style.cursor = 'pointer';
         return;
       }

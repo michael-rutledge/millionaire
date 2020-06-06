@@ -23,7 +23,7 @@ class MillionaireBubbleBuilder {
   }
 
   setState(state) {
-    this._millionaireBubble.state = state;
+    this._millionaireBubble.style.state = state;
     return this;
   }
 
@@ -33,7 +33,7 @@ class MillionaireBubbleBuilder {
   }
 
   setTextAlign(textAlign) {
-    this._millionaireBubble.textAlign = textAlign;
+    this._millionaireBubble.style.textAlign = textAlign;
     return this;
   }
 }

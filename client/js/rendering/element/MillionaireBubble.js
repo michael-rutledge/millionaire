@@ -1,6 +1,7 @@
 const CanvasElement = require('./CanvasElement.js');
 const Colors = require('../Colors.js');
 const TextElement = require('./TextElement.js');
+const TextElementBuilder = require('./TextElementBuilder.js');
 
 // Enum for possible states affecting fill style of the bubble
 const State = {
@@ -41,7 +42,8 @@ class MillionaireBubble extends CanvasElement {
   //   int state
   //   string textAlign
   // }
-  constructor(canvas, x, y, width, height, text = undefined, style = {}) {
+  constructor(canvas, x = 0, y = 0, width = 0, height = 0, text = undefined, style = {}) {
+    // TODO: deprecate style object and use Builder for all constructions.
     super(canvas, x, y);
     this.width = width;
     this.height = height;
@@ -50,13 +52,17 @@ class MillionaireBubble extends CanvasElement {
     this.style.textAlign = style.textAlign === undefined ? 'left' : style.textAlign;
     this.style.state = style.state === undefined ? State.DEFAULT : style.state;
     this.xOffsets = {
-      'left': this.height / 2,
-      'right': this.width - this.height / 2,
-      'center': this.width / 2
+      'left': () => { return this.height / 2 },
+      'right': () => { return this.width - this.height / 2},
+      'center': () => { return this.width / 2 }
     };
     this.path = new Path2D();
   }
 
+
+  // PUBLIC METHODS
+
+  // Returns whether the given point is within the bubble.
   isPointInPath(x, y) {
     return this.context.isPointInPath(this.path, x, y);
   }
@@ -80,19 +86,21 @@ class MillionaireBubble extends CanvasElement {
     this.context.fill(this.path);
 
     if (this.text !== undefined) {
-      var xOffset = this.xOffsets[this.style.textAlign];
+      var xOffset = this.xOffsets[this.style.textAlign]();
 
       if (this.style.choice) {
         // Draw choice letter
       }
 
-      new TextElement(this.canvas, this.x + xOffset, this.y, this.text,
-        /*style=*/{
-          textAlign: this.style.textAlign,
-          fillStyle: textFillStyle,
-          maxWidth: this.width - this.height,
-          maxHeight: this.height
-        }).draw();
+      new TextElementBuilder(this.canvas)
+        .setPosition(this.x + xOffset, this.y)
+        .setText(this.text)
+        .setTextAlign(this.style.textAlign)
+        .setFillStyle(textFillStyle)
+        .setMaxWidth(this.width - this.height)
+        .setMaxHeight(this.height)
+        .build()
+        .draw();
     }
 
     this.context.fillStyle = oldFillStyle;

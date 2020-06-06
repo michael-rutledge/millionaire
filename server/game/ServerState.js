@@ -24,6 +24,20 @@ class ServerState {
   }
 
 
+  // PRIVATE METHODS
+
+  // Returns a list of all Players, compressed for transfer over a socket message.
+  _getCompressedPlayerList() {
+    var compressedPlayerList = [];
+
+    this.playerMap.getPlayerList().forEach((player, index) => {
+      compressedPlayerList.push(player.toCompressed());
+    });
+
+    return compressedPlayerList;
+  }
+
+
   // PUBLIC METHODS
 
   // Adds a username to the list of players done with their respective fastest finger choices.
@@ -63,6 +77,21 @@ class ServerState {
     return this.showHost !== undefined;
   }
 
+  // Sets the hot seat player of this game using the given username.
+  setHotSeatPlayerByUsername(hotSeatPlayerUsername) {
+    this.hotSeatPlayer = this.playerMap.getPlayerByUsername(hotSeatPlayerUsername);
+  }
+
+  // Sets the next action to be taken when the host steps the game.
+  //
+  // Expected action format: {
+  //   array actions,
+  //   string header
+  // }
+  setHotSeatStepDialog(action) {
+    this.hotSeatStepDialog = action;
+  }
+
   // Sets the show host of this game using the given username.
   setShowHostByUsername(showHostUsername) {
     this.showHost = this.playerMap.getPlayerByUsername(showHostUsername);
@@ -71,8 +100,8 @@ class ServerState {
   // Sets the next action to be taken when the host steps the game.
   //
   // Expected action format: {
-  //   string socketMessage,
-  //   string buttonMessage
+  //   array actions,
+  //   string header
   // }
   setShowHostStepDialog(action) {
     this.showHostStepDialog = action;
@@ -127,7 +156,7 @@ class ServerState {
     }
     // If we are in an event that allows for fastest finger choosing, make choice buttons active by
     // setting choice actions.
-    if (fastestFingerChoosableEvents.has(currentSocketEvent)) {
+    if (!compressed.clientIsShowHost && fastestFingerChoosableEvents.has(currentSocketEvent)) {
       compressed.choiceAction = 'contestantFastestFingerChoose';
     }
     // If we are in an event that allows for choosing, make choice buttons active by setting choice
@@ -145,6 +174,8 @@ class ServerState {
         madeChoices: player.fastestFingerChoices
       };
     }
+    // Player list will always show up.
+    compressed.playerList = this._getCompressedPlayerList();
 
     return compressed;
   }

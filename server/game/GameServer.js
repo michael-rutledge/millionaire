@@ -113,9 +113,12 @@ class GameServer {
 
   // Ends the game for this GameServer.
   endGame() {
+    // All timers must be cleared to prevent against server crashes during prematurely ended games.
     if (this.serverState !== undefined) {
       this.serverState.clearTimers();
+      clearTimeout(this.currentForcedTimer);
     }
+
     this.serverState = undefined;
     this.playerMap.removeInactivePlayers();
     this.playerMap.doAll((player) => { player.reset(); });
