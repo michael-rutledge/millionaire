@@ -65,6 +65,14 @@ class Player {
     this.money = 0;
     this.clearAllAnswers();
   }
+
+  // Returns a compressed version of the Player, suitable for transfer over a socket message.
+  toCompressed() {
+    return {
+      username: this.username,
+      money: this.money
+    };
+  }
 }
 
 module.exports = Player;

@@ -109,4 +109,14 @@ describe('PlayerTest', () => {
     expect(expectedTrueResult).to.be.true;
     expect(expectedFalseResult).to.be.false;
   });
+
+  it('toCompressedShouldGiveExpectedResult', () => {
+    var player = new Player(new MockSocket('socket_id'), 'username');
+    player.money = 100;
+
+    expect(player.toCompressed()).to.deep.equal({
+      username: 'username',
+      money: 100
+    });
+  });
 });
