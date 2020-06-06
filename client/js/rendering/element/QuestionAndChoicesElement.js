@@ -109,7 +109,6 @@ class QuestionAndChoicesElement extends CanvasElement {
   }
 
   _onClick(x, y) {
-    // TODO: make this emit a desired action
     this.choiceBubbles.forEach((bubble, index) => {
       if (bubble.isPointInPath(x, y) && this.choiceAction !== undefined) {
         this.socket.emit(this.choiceAction, {
@@ -139,6 +138,17 @@ class QuestionAndChoicesElement extends CanvasElement {
     this._drawChoiceBubbleRow(/*percentUpBottomSide=*/0.43, Choices.A, Choices.B);
     // C + D bubbles
     this._drawChoiceBubbleRow(/*percentUpBottomSide=*/0.15, Choices.C, Choices.D);
+  }
+
+  // Returns whether the given coordinates are hovering over any of the choice bubbles.
+  isMouseHovering(x, y) {
+    for (var i = 0; i < this.choiceBubbles.length; i++) {
+      if (this.choiceBubbles[i].isPointInPath(x, y) && this.choiceAction !== undefined) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   // Sets the question information for this element from the given question.

@@ -15,6 +15,9 @@ class GameRenderer {
       this.canvas.onmousedown = (event) => {
         this.onClick(event);
       };
+      this.canvas.onmousemove = (event) => {
+        this.onMouseMove(event);
+      };
     }
   }
 
@@ -41,6 +44,20 @@ class GameRenderer {
         element.onClick(localPos.x, localPos.y);
       }
     });
+  }
+
+  // Executes when the user moves their mouse.
+  onMouseMove(event) {
+    var localPos = this._getLocalCursorPosition(this.canvas, event);
+    for (var i = 0; i < this.canvasElements.length; i++) {
+      if (this.canvasElements[i].isClickable() &&
+          this.canvasElements[i].isMouseHovering(localPos.x, localPos.y)) {
+        console.log('MOUSE HOVERING');
+        this.htmlDocument.body.style.cursor = 'pointer';
+        return;
+      }
+    }
+    this.htmlDocument.body.style.cursor = 'initial';
   }
 
   // Updates the game canvas with new CanvasElements.
