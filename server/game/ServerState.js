@@ -146,6 +146,7 @@ class ServerState {
 
     compressed.clientIsShowHost = (this.showHost !== undefined && player == this.showHost);
     compressed.clientIsHotSeat = (this.hotSeatPlayer !== undefined && player == this.hotSeatPlayer);
+    compressed.clientIsContestant = !compressed.clientIsShowHost && !compressed.clientIsHotSeat;
     // The host might need to have a dialog that can step the game through.
     if (compressed.clientIsShowHost && this.showHostStepDialog !== undefined) {
       compressed.showHostStepDialog = this.showHostStepDialog.toCompressed();
@@ -163,11 +164,11 @@ class ServerState {
     // actions.
     if (compressed.clientIsHotSeat && hotSeatChoosableEvents.has(currentSocketEvent)) {
       compressed.choiceAction = 'hotSeatChoose';
-    } else if (!compressed.clientIsShowHost && contestantChoosableEvents.has(currentSocketEvent)) {
+    } else if (compressed.clientIsContestant && contestantChoosableEvents.has(currentSocketEvent)) {
       compressed.choiceAction = 'contestantChoose';
     }
     // Fastest finger question
-    if (this.fastestFingerQuestion) {
+    if (this.fastestFingerQuestion !== undefined) {
       compressed.question = {
         text: this.fastestFingerQuestion.text,
         revealedChoices: this.fastestFingerQuestion.revealedChoices,

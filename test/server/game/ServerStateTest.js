@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 
 const Choices = require(process.cwd() + '/server/question/Choices.js');
+const FastestFingerQuestion = require(process.cwd() + '/server/question/FastestFingerQuestion.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 const Player = require(process.cwd() + '/server/game/Player.js');
 const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
@@ -163,5 +164,162 @@ describe('ServerStateTest', () => {
     expect(compressedOtherClientState.hotSeatStepDialog).to.be.undefined;
   });
 
-  // TODO: add more tests here for toCompressedClientState.
+  it('toCompressedClientStateShouldSetFastestFingerChoiceActionOnGoodEvent', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'showHostRevealFastestFingerQuestionChoices');
+
+    expect(compressedClientState.choiceAction).to.equal('contestantFastestFingerChoose');
+  });
+
+  it('toCompressedClientStateShouldNotSetFastestFingerChoiceActionOnBadEvent', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket, 'badEvent');
+
+    expect(compressedClientState.choiceAction).to.be.undefined;
+  });
+
+  it('toCompressedClientStateShouldNotSetFastestFingerChoiceActionForShowHost', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var showHostSocket = new MockSocket('socket_show_host');
+    var showHostPlayer = new Player(showHostSocket, 'showHost');
+    serverState.playerMap.putPlayer(showHostPlayer);
+    serverState.setShowHostByUsername('showHost');
+
+    var compressedClientState = serverState.toCompressedClientState(showHostSocket,
+      'showHostRevealFastestFingerQuestionChoices');
+
+    expect(compressedClientState.choiceAction).to.be.undefined;
+  });
+
+  it('toCompressedClientStateShouldSetHotSeatChoiceActionOnGoodEventForHotSeatPlayer', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+    serverState.setHotSeatPlayerByUsername('username');
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'showHostShowHotSeatOptionD');
+
+    expect(compressedClientState.choiceAction).to.equal('hotSeatChoose');
+  });
+
+  it('toCompressedClientStateShouldNotSetHotSeatChoiceActionOnBadEvent', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+    serverState.setHotSeatPlayerByUsername('username');
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket, 'badEvent');
+
+    expect(compressedClientState.choiceAction).to.not.equal('hotSeatChoose');
+  });
+
+  it('toCompressedClientStateShouldNotSetHotSeatChoiceActionForNonHotSeatPlayer', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'showHostShowHotSeatOptionD');
+
+    expect(compressedClientState.choiceAction).to.not.equal('hotSeatChoose');
+  });
+
+  it('toCompressedClientStateShouldSetContestantChooseActionOnGoodEventForContestant', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'showHostShowHotSeatOptionD');
+
+    expect(compressedClientState.choiceAction).to.equal('contestantChoose');
+  });
+
+  it('toCompressedClientStateShouldNotSetContestantChooseActionOnBadEvent', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'badEvent');
+
+    expect(compressedClientState.choiceAction).to.not.equal('contestantChoose');
+  });
+
+  it('toCompressedClientStateShouldNotSetContestantChooseActionForShowHost', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+    serverState.setShowHostByUsername('username');
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'showHostShowHotSeatOptionD');
+
+    expect(compressedClientState.choiceAction).to.not.equal('contestantChoose');
+  });
+
+  it('toCompressedClientStateShouldNotSetContestantChooseActionForHotSeatPlayer', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+    serverState.setHotSeatPlayerByUsername('username');
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'hotSeatChoose');
+
+    expect(compressedClientState.choiceAction).to.not.equal('contestantChoose');
+  });
+
+  it('toCompressedClientStateShouldSetQuestionForFastestFingerQuestion', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+    serverState.fastestFingerQuestion = new FastestFingerQuestion({
+      text: 'question',
+      orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+    });
+    serverState.fastestFingerQuestion.revealAllChoices();
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      /*currentSocketEvent=*/undefined);
+
+    expect(compressedClientState.question).to.deep.equal({
+      text: 'question',
+      revealedChoices: serverState.fastestFingerQuestion.revealedChoices,
+      madeChoices: player.fastestFingerChoices
+    });
+  });
+
+  it('toCompressedShouldSetPlayerList', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      /*currentSocketEvent=*/undefined);
+
+    expect(compressedClientState.playerList).to.deep.equal([{
+      username: player.username,
+      money: player.money
+    }]);
+  });
 });
