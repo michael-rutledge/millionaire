@@ -100,6 +100,18 @@ describe('RoomTest', () => {
     expect(room.playerMap.getPlayerBySocket(mockSocket)).to.be.undefined;
   });
 
+  it('addPlayerShouldNotAddPlayerWhenMaxPlayersAlreadyPresent', () => {
+    var room = new Room('test');
+    setRoomInGame(room, false);
+
+    for (var i = 0; i < Room.MAX_PLAYERS; i++) {
+      room.addPlayer(new MockSocket('socket_id' + i), 'username' + i);
+    }
+    var result = room.addPlayer(new MockSocket('bad_socket'), 'bad_username');
+
+    expect(result).to.be.false;
+  });
+
   it('attemptEndGameShouldFailIfSocketIsNotHost', () => {
     var room = new Room('test');
     var hostSocket = new MockSocket('host_socket');

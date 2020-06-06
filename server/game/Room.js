@@ -2,6 +2,8 @@ const GameServer = require(process.cwd() + '/server/game/GameServer.js');
 const Player = require(process.cwd() + '/server/game/Player.js');
 const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
 
+const MAX_PLAYERS = 9;
+
 // Encapsulates a room of Millionaire With Friends.
 class Room {
 
@@ -21,6 +23,10 @@ class Room {
   //
   // Returns true if successful, false if unsuccessful.
   addPlayer(socket, username) {
+    if (this.playerMap.getPlayerCount() >= MAX_PLAYERS) {
+      return false;
+    }
+
     if (!this.playerMap.containsUsername(username) && !this.gameServer.isInGame()) {
       this.playerMap.putPlayer(new Player(socket, username));
 
@@ -127,3 +133,4 @@ class Room {
 }
 
 module.exports = Room;
+Room.MAX_PLAYERS = MAX_PLAYERS;
