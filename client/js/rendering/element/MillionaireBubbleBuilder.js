@@ -21,6 +21,11 @@ class MillionaireBubbleBuilder {
     return this;
   }
 
+  setFont(font) {
+    this._millionaireBubble.font = font;
+    return this;
+  }
+
   setPosition(x, y) {
     this._millionaireBubble.x = x;
     this._millionaireBubble.y = y;

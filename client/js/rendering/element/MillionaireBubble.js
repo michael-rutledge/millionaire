@@ -1,5 +1,6 @@
 const CanvasElement = require('./CanvasElement.js');
 const Colors = require('../Colors.js');
+const Fonts = require('../Fonts.js');
 const TextElement = require('./TextElement.js');
 const TextElementBuilder = require('./TextElementBuilder.js');
 
@@ -45,6 +46,7 @@ class MillionaireBubble extends CanvasElement {
     this.height = height;
     this.text = text;
     this.textAlign = 'left';
+    this.font = Fonts.DEFAULT_FONT;
     this.state = State.DEFAULT;
     this.xOffsets = {
       'left': () => { return this.height / 2 },
@@ -92,6 +94,7 @@ class MillionaireBubble extends CanvasElement {
         .setPosition(this.x + xOffset, this.y)
         .setText(this.text)
         .setTextAlign(this.textAlign)
+        .setFont(this.font)
         .setFillStyle(textFillStyle)
         .setMaxWidth(this.width - this.height)
         .setMaxHeight(this.height)

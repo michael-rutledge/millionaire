@@ -1,5 +1,6 @@
 const CanvasElement = require('./CanvasElement.js');
 const Colors = require('../Colors.js');
+const Fonts = require('../Fonts.js');
 
 class TextElement extends CanvasElement {
 

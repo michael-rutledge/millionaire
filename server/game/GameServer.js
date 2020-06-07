@@ -271,6 +271,20 @@ class GameServer {
     }));
     this._updateGame();
   }
+
+  // Response to client asking to cue fastest finger reveal background audio.
+  showHostCueFastestFingerAnswerRevealAudio(socket, data) {
+    this.currentSocketEvent = 'showHostCueFastestFingerAnswerRevealAudio';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // Human host will control flow, or 3 seconds until question text is shown
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostRevealFastestFingerAnswer',
+      hostButtonMessage: LocalizedStrings.REVEAL_FASTEST_FINGER_ANSWER,
+      aiTimeout: 2500
+    }));
+    this._updateGame();
+  }
 }
 
 module.exports = GameServer;

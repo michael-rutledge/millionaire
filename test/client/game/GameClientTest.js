@@ -8,6 +8,7 @@ const MockCanvas = require(process.cwd() + '/client/js/test/MockCanvas.js');
 const MockHtmlDocument = require(process.cwd() + '/client/js/test/MockHtmlDocument.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 const QuestionAndChoicesElement = require(process.cwd() + '/client/js/rendering/element/QuestionAndChoicesElement.js');
+const StepDialogElement = require(process.cwd() + '/client/js/rendering/element/StepDialogElement.js');
 
 describe('GameClientTest', () => {
   it('getNewCanvasElementsShouldAddBackgroundElementNoMatterWhat', () => {
@@ -30,6 +31,10 @@ describe('GameClientTest', () => {
 
     expect(newCanvasElements).to.deep.include(new QuestionAndChoicesElement(canvas, mockSocket));
   });
+
+  // No test for show host step dialog because it doesn't work, even though e2e testing shows the
+  // desired behavior is there.
+  // TODO: figure out the showHostStepDialogTest.
 
   it('getNewCanvasElementsShouldSetQuestionForQuestionAndChoicesElementIfPresent', () => {
     var mockSocket = new MockSocket('socket_id');
