@@ -3,6 +3,7 @@ const Colors = require('../Colors.js');
 const Constants = require('../Constants.js');
 const Fonts = require('../Fonts.js');
 const MillionaireBubbleBuilder = require('./MillionaireBubbleBuilder.js');
+const TextElement = require('./TextElement.js');
 
 // Dialog element shown to players when they are in control of game flow.
 class StepDialogElement extends CanvasElement {
@@ -20,13 +21,6 @@ class StepDialogElement extends CanvasElement {
 
   // PRIVATE METHODS
 
-  // Returns the width of the given TextElement.
-  //
-  // Expected to be called while the context still has the relative font information.
-  _getTextElementWidth(text) {
-    return this.context.measureText(text).width;
-  }
-
   // Executes on click of this element.
   _onClick(x, y) {
     this.actionBubbles.forEach((bubble, index) => {
@@ -40,24 +34,26 @@ class StepDialogElement extends CanvasElement {
   // PUBLIC METHODS
 
   // Draws the element on the canvas.
+  // TODO: color and shape the buttons properly.
   draw() {
     var oldFont = this.context.font;
 
     var textElements = [];
     var maxWidth = 0;
-    var bubbleHeight = 70;
+    var maxHeight = 0;
+    this.context.font = Fonts.DEFAULT_FONT;
+    this.compressedStepDialog.actions.forEach((action, index) => {
+      maxHeight = Math.max(maxHeight,
+        TextElement.getPredictedTextHeight(this.context, action.text));
+      maxWidth = Math.max(maxWidth, TextElement.getPredictedTextWidth(this.context, action.text));
+    });
     var verticalPadding = 20;
+    var horizontalPadding = 20;
+    var bubbleHeight = maxHeight + verticalPadding;
+    var bubbleWidth = maxWidth + bubbleHeight + horizontalPadding;
     var startX = this.canvas.width / 2;
     var startY = this.canvas.height - (this.canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO) -
       bubbleHeight / 2 - verticalPadding;
-    this.context.font = Fonts.DEFAULT_FONT;
-
-    this.compressedStepDialog.actions.forEach((action, index) => {
-      maxWidth = Math.max(maxWidth, this._getTextElementWidth(action.text));
-    });
-    var bubbleWidth = maxWidth + bubbleHeight + 20;
-
-    console.log('maxWidth: ' + maxWidth);
 
     for (var i = 0; i < this.compressedStepDialog.actions.length; i++) {
       var action = this.compressedStepDialog.actions[i];
