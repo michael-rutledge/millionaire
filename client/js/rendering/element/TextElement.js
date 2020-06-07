@@ -23,7 +23,7 @@ class TextElement extends CanvasElement {
 
     // Default style attributes
     this.fillStyle = Colors.DEFAULT_TEXT_COLOR;
-    this.font = '30px Arial';
+    this.font = Fonts.DEFAULT_FONT;
     this.textAlign = 'left';
     this.maxWidth = canvas.width;
     this.maxHeight = canvas.height;

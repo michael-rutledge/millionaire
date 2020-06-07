@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'itc_conduit';
+    src: url(../assets/fonts/Conduit-ITC-Bold.woff) format('woff'),
+         url(../assets/fonts/Conduit-ITC-Bold.ttf) format('truetype');
+    font-style: normal;
+}
+
 .gameLobbyPlayerBanner {
     border-radius: 5px;
     padding: 5px 10px 5px 10px;
@@ -8,6 +15,10 @@
 .col-centered {
     float: none;
     margin: 0 auto;
+}
+
+.container {
+    font-family: itc_conduit;
 }
 
 .divider {
