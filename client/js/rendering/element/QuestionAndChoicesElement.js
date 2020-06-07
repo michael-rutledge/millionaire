@@ -144,7 +144,6 @@ class QuestionAndChoicesElement extends CanvasElement {
     lineGradient.addColorStop(1, Colors.QUESTION_AND_CHOICES_LINE_BASE);
     this.context.strokeStyle = lineGradient;
     this.context.lineWidth = Constants.SIDE_PANEL_LINE_WIDTH;
-    this.context.fillStyle = Colors.QUESTION_AND_CHOICES_FILL;
     // Question bubble
     this._drawQuestionBubble(/*percentUpBottomSide=*/0.78, this.questionText);
     // A + B bubbles

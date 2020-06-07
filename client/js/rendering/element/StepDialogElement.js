@@ -21,6 +21,13 @@ class StepDialogElement extends CanvasElement {
 
   // PRIVATE METHODS
 
+  // Returns the horizontal lione gradient to be used for the stroke style of the dialog.
+  _getHorizontalLineGradient(startX, endX) {
+    var lineGradient = this.context.createLinearGradient(startX, 0, endX, 0);
+    lineGradient.addColorStop(0, Colors.BUBBLE_BORDER_DIALOG_BASE);
+    return lineGradient;
+  }
+
   // Executes on click of this element.
   _onClick(x, y) {
     this.actionBubbles.forEach((bubble, index) => {
@@ -34,9 +41,9 @@ class StepDialogElement extends CanvasElement {
   // PUBLIC METHODS
 
   // Draws the element on the canvas.
-  // TODO: color and shape the buttons properly.
   draw() {
     var oldFont = this.context.font;
+    var oldStrokeStyle = this.context.strokeStyle;
 
     var textElements = [];
     var maxWidth = 0;
@@ -54,6 +61,7 @@ class StepDialogElement extends CanvasElement {
     var startX = this.canvas.width / 2;
     var startY = this.canvas.height - (this.canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO) -
       bubbleHeight / 2 - verticalPadding;
+    this.context.strokeStyle = this._getHorizontalLineGradient(startX, startX + bubbleWidth);
 
     for (var i = 0; i < this.compressedStepDialog.actions.length; i++) {
       var action = this.compressedStepDialog.actions[i];
@@ -69,6 +77,7 @@ class StepDialogElement extends CanvasElement {
       this.actionBubbles.push(bubble);
     }
 
+    this.context.strokeStyle = oldStrokeStyle;
     this.context.font = oldFont;
   }
 

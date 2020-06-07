@@ -21,10 +21,10 @@ const State = {
 
 // Array of fill styles for the background of the bubble, indexed by State.
 const bubbleFillStyles = [
-  Colors.QUESTION_AND_CHOICES_FILL,
+  Colors.BUBBLE_FILL_DEFAULT,
   Colors.BUBBLE_FILL_SELECTED,
   Colors.BUBBLE_FILL_CORRECT,
-  Colors.QUESTION_AND_CHOICES_FILL
+  Colors.BUBBLE_FILL_DEFAULT
 ];
 
 // Array of text fill styles for the bubble text, indexed by State.
