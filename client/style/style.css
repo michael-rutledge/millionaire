@@ -5,6 +5,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'copperplate_gothic';
+    src: url(../assets/fonts/Copperplate-Gothic-Bold.woff) format('woff'),
+         url(../assets/fonts/Copperplate-Gothic-Bold.ttf) format('truetype');
+    font-style: normal;
+}
+
 .gameLobbyPlayerBanner {
     border-radius: 5px;
     padding: 5px 10px 5px 10px;

@@ -48,7 +48,7 @@ class StepDialogElement extends CanvasElement {
     var textElements = [];
     var maxWidth = 0;
     var maxHeight = 0;
-    this.context.font = Fonts.DEFAULT_FONT;
+    this.context.font = Fonts.STEP_DIALOG_FONT;
     this.compressedStepDialog.actions.forEach((action, index) => {
       maxHeight = Math.max(maxHeight,
         TextElement.getPredictedTextHeight(this.context, action.text));
