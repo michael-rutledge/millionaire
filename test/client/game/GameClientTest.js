@@ -2,6 +2,8 @@ const expect = require('chai').expect;
 
 const BackgroundElement = require(process.cwd() + '/client/js/rendering/element/BackgroundElement.js');
 const CanvasElement = require(process.cwd() + '/client/js/rendering/element/CanvasElement.js');
+const Choices = require(process.cwd() + '/server/question/Choices.js');
+const FastestFingerAnswersElement = require(process.cwd() + '/client/js/rendering/element/FastestFingerAnswersElement.js');
 const GameClient = require(process.cwd() + '/client/js/game/GameClient.js');
 const GameRenderer = require(process.cwd() + '/client/js/rendering/GameRenderer.js');
 const MockCanvas = require(process.cwd() + '/client/js/test/MockCanvas.js');
@@ -56,6 +58,25 @@ describe('GameClientTest', () => {
     });
 
     expect(newCanvasElements).to.deep.include(expectedQuestionAndChoicesElement);
+  });
+
+  it('getNewCanvasElementsShouldSetFastestFingerAnswersElementForRevealedAnswers', () => {
+    var mockSocket = new MockSocket('socket_id');
+    var gameClient = new GameClient(mockSocket,
+      new GameRenderer(new MockCanvas(), new MockHtmlDocument()));
+    var canvas = gameClient.gameRenderer.canvas;
+    var revealedAnswers = [{
+      text: 'Answer',
+      choice: Choices.A
+    }];
+    var expectedFastestFingerAnswersElement = new FastestFingerAnswersElement(canvas,
+      revealedAnswers);
+
+    var newCanvasElements = gameClient.getNewCanvasElements(/*compressedClientState=*/{
+      fastestFingerRevealedAnswers: revealedAnswers
+    });
+
+    expect(newCanvasElements).to.deep.include(expectedFastestFingerAnswersElement);
   });
 
   it('updateGameShouldUpdateCanvasElementsInGameRenderer', () => {

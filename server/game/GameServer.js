@@ -15,6 +15,7 @@ const SOCKET_EVENTS = [
   'fastestFingerTimeUp',
   'showHostCueFastestFingerAnswerRevealAudio',
   'showHostRevealFastestFingerAnswer',
+  'showHostRevealFastestFingerResults',
   'showHostAcceptHotSeatPlayer',
   'showHostCueHotSeatRules',
   'showHostHighlightLifeline',
@@ -237,8 +238,7 @@ class GameServer {
   //   Choice choice
   // }
   contestantFastestFingerChoose(socket, data) {
-    Logger.logInfo('contestantFastestFingerChoose');
-    Logger.logInfo('  choice: ' + data.choice);
+    Logger.logInfo('contestantFastestFingerChoose: ' + data.choice);
 
     var player = this.playerMap.getPlayerBySocket(socket);
     player.chooseFastestFinger(data.choice);
@@ -283,6 +283,31 @@ class GameServer {
       hostButtonMessage: LocalizedStrings.REVEAL_FASTEST_FINGER_ANSWER,
       aiTimeout: 2500
     }));
+    this._updateGame();
+  }
+
+  // Response to client asking to reveal a fastest finger answer.
+  showHostRevealFastestFingerAnswer(socket, data) {
+    this.currentSocketEvent = 'showHostRevealFastestFingerAnswer';
+    Logger.logInfo(this.currentSocketEvent);
+
+    this.serverState.fastestFingerQuestion.revealAnswer();
+
+    if (this.serverState.fastestFingerQuestion.revealedAllAnswers()) {
+      // If all answers are revealed, move on to the results.
+      this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+        nextSocketEvent: 'showHostRevealFastestFingerResults',
+        hostButtonMessage: LocalizedStrings.REVEAL_FASTEST_FINGER_RESULTS,
+        aiTimeout: 2000
+      }));
+    } else {
+      // Otherwise, repeat the same logic.
+      this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+        nextSocketEvent: 'showHostRevealFastestFingerAnswer',
+        hostButtonMessage: LocalizedStrings.REVEAL_FASTEST_FINGER_ANSWER,
+        aiTimeout: 2000
+      }));
+    }
     this._updateGame();
   }
 }

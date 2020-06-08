@@ -1,4 +1,5 @@
 const BackgroundElement = require('../rendering/element/BackgroundElement.js');
+const FastestFingerAnswersElement = require('../rendering/element/FastestFingerAnswersElement.js');
 const PlayerListElement = require('../rendering/element/PlayerListElement.js');
 const QuestionAndChoicesElement = require('../rendering/element/QuestionAndChoicesElement.js');
 const StepDialogElement = require('../rendering/element/StepDialogElement.js');
@@ -38,6 +39,11 @@ class GameClient {
     if (compressedClientState.question !== undefined) {
       questionAndChoicesElement.setQuestion(compressedClientState.question);
       questionAndChoicesElement.choiceAction = compressedClientState.choiceAction;
+    }
+
+    if (compressedClientState.fastestFingerRevealedAnswers !== undefined) {
+      newCanvasElements.push(new FastestFingerAnswersElement(canvas,
+        compressedClientState.fastestFingerRevealedAnswers));
     }
 
     return newCanvasElements;

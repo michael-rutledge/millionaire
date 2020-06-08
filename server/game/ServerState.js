@@ -174,6 +174,10 @@ class ServerState {
         revealedChoices: this.fastestFingerQuestion.revealedChoices,
         madeChoices: player.fastestFingerChoices
       };
+      // Fastest finger answer results
+      if (this.fastestFingerQuestion.revealedAnswers.length > 0) {
+        compressed.fastestFingerRevealedAnswers = this.fastestFingerQuestion.revealedAnswers;
+      }
     }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();

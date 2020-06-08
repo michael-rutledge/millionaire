@@ -259,4 +259,55 @@ describe('GameServerTest', () => {
     expect(gameServer.serverState.showHostStepDialog.timeout).to.not.be.undefined;
     gameServer.serverState.showHostStepDialog.clearTimeout();
   });
+
+  it('showHostRevealFastestFingerAnswerShouldRevealAnswer', () => {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+    gameServer.serverState.fastestFingerQuestion = new FastestFingerQuestion({
+      text: 'questionText',
+      orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+    });
+
+    gameServer.showHostRevealFastestFingerAnswer(new MockSocket(), /*data=*/{});
+
+    expect(gameServer.serverState.fastestFingerQuestion.revealedAnswers).to.have.lengthOf(1);
+  });
+
+  it('showHostRevealFastestFingerAnswerShouldSendSameDialogForAnswersLeft', () => {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+    gameServer.serverState.fastestFingerQuestion = new FastestFingerQuestion({
+      text: 'questionText',
+      orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+    });
+
+    gameServer.showHostRevealFastestFingerAnswer(new MockSocket(), /*data=*/{});
+
+    expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+      actions: [{
+        socketEvent: 'showHostRevealFastestFingerAnswer',
+        text: LocalizedStrings.REVEAL_FASTEST_FINGER_ANSWER
+      }],
+      header: ''
+    });
+  });
+
+  it('showHostRevealFastestFingerAnswerShouldSendNewDialogForNoAnswersLeft', () => {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+    gameServer.serverState.fastestFingerQuestion = new FastestFingerQuestion({
+      text: 'questionText',
+      orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+    });
+    gameServer.serverState.fastestFingerQuestion.shuffledChoices.forEach((choice, index) => {
+      gameServer.serverState.fastestFingerQuestion.revealAnswer();
+    });
+
+    gameServer.showHostRevealFastestFingerAnswer(new MockSocket(), /*data=*/{});
+
+    expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+      actions: [{
+        socketEvent: 'showHostRevealFastestFingerResults',
+        text: LocalizedStrings.REVEAL_FASTEST_FINGER_RESULTS
+      }],
+      header: ''
+    });
+  });
 });
