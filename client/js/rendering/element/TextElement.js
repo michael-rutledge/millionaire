@@ -3,14 +3,29 @@ const Colors = require('../Colors.js');
 const Fonts = require('../Fonts.js');
 
 // Returns the predicted height of the given text in the given context.
-function getPredictedTextHeight(context, text) {
+function getPredictedTextHeight(context, text, font = undefined) {
+  var oldFont = context.font;
+  if (font !== undefined) {
+    context.font = font;
+  }
+
   var metrics = context.measureText(text);
+
+  context.font = oldFont;
   return metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
 }
 
 // Returns the predicted width of the given text in the given context.
-function getPredictedTextWidth(context, text) {
-  return context.measureText(text).width;
+function getPredictedTextWidth(context, text, font = undefined) {
+  var oldFont = context.font;
+  if (font !== undefined) {
+    context.font = font;
+  }
+
+  var predictedWidth = context.measureText(text).width;
+
+  context.font = oldFont;
+  return predictedWidth;
 }
 
 class TextElement extends CanvasElement {

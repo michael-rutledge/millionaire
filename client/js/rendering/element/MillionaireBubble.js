@@ -1,4 +1,5 @@
 const CanvasElement = require('./CanvasElement.js');
+const Choices = require('../../../../server/question/Choices.js');
 const Colors = require('../Colors.js');
 const Fonts = require('../Fonts.js');
 const TextElement = require('./TextElement.js');
@@ -33,6 +34,14 @@ const textFillStyles = [
   Colors.BUBBLE_TEXT_DARK,
   Colors.BUBBLE_TEXT_DARK,
   Colors.BUBBLE_TEXT_LIGHT
+];
+
+// Array of fill styles for the choice letter of a bubble, indexed by State.
+const choiceLetterFillStyles = [
+  Colors.BUBBLE_TEXT_ORANGE,
+  Colors.BUBBLE_TEXT_LIGHT,
+  Colors.BUBBLE_TEXT_LIGHT,
+  Colors.BUBBLE_TEXT_ORANGE
 ];
 
 // Bubble UI element used for question text, question choices, and more.
@@ -86,10 +95,24 @@ class MillionaireBubble extends CanvasElement {
     if (this.text !== undefined) {
       var xOffset = this.xOffsets[this.textAlign]();
 
+      // Draw choice letter if necessary.
       if (this.choice !== undefined) {
-        // Draw choice letter
+        var choiceLetterText = Choices.getString(this.choice) + ': ';
+        var choiceLetterFont = Fonts.CHOICE_LETTER_FONT;
+        new TextElementBuilder(this.canvas)
+          .setPosition(this.x + xOffset, this.y)
+          .setText(choiceLetterText)
+          .setTextAlign('left')
+          .setFont(choiceLetterFont)
+          .setFillStyle(choiceLetterFillStyles[this.state])
+          .setMaxHeight(this.height)
+          .build()
+          .draw();
+        xOffset += TextElement.getPredictedTextWidth(this.context, choiceLetterText,
+          choiceLetterFont);
       }
 
+      // Draw text.
       new TextElementBuilder(this.canvas)
         .setPosition(this.x + xOffset, this.y)
         .setText(this.text)
