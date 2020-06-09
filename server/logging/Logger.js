@@ -6,15 +6,11 @@ const WARN = 2;
 const INFO = 3;
 
 function getDebugLevel() {
-  if (process.argv.length < 3) {
-    return NONE;
-  }
-
-  if (process.argv[2] == 'debug:error') {
+  if (process.argv.includes('debug:error')) {
     return ERROR;
-  } else if (process.argv[2] == 'debug:warn') {
+  } else if (process.argv.includes('debug:warn')) {
     return WARN;
-  } else if (process.argv[2] == 'debug:info') {
+  } else if (process.argv.includes('debug:info')) {
     return INFO;
   }
 

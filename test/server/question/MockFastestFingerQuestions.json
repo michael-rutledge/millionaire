@@ -1,0 +1,38 @@
+[
+  {
+    "text": "The answer is 1,2,3,4",
+    "orderedChoices": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ]
+  },
+  {
+    "text": "The answer is 2,1,3,4",
+    "orderedChoices": [
+      "2",
+      "1",
+      "3",
+      "4"
+    ]
+  },
+  {
+    "text": "The answer is 3,1,2,4",
+    "orderedChoices": [
+      "3",
+      "1",
+      "2",
+      "4"
+    ]
+  },
+  {
+    "text": "The answer is 4,1,3,2",
+    "orderedChoices": [
+      "4",
+      "1",
+      "3",
+      "2"
+    ]
+  }
+]

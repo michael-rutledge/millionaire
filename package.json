@@ -18,10 +18,15 @@
   "scripts": {
     "build": "browserify client/js/clientMain.js -o client/js/bundle.js",
     "clean": "npm run build && node app.js",
-    "clean_error": "npm run build && node app.js debug:error",
-    "clean_info": "npm run build && node app.js debug:info",
-    "clean_warn": "npm run build && node app.js debug:warn",
-    "test": "mocha 'test/**/*.js' --recursive"
+    "clean_prod": "npm run build && node app.js data_level:prod",
+    "clean_prod_info": "npm run build && node app.js data_level:prod debug:info",
+    "clean_prod_warn": "npm run build && node app.js data_level:prod debug:warn",
+    "clean_prod_error": "npm run build && node app.js data_level:prod debug:error",
+    "clean_dev": "npm run build && node app.js data_level:dev",
+    "clean_dev_info": "npm run build && node app.js data_level:dev debug:info",
+    "clean_dev_warn": "npm run build && node app.js data_level:dev debug:warn",
+    "clean_dev_error": "npm run build && node app.js data_level:dev debug:error",
+    "test": "mocha 'test/**/*.js' --recursive data_level:dev"
   },
   "author": "",
   "license": "ISC"

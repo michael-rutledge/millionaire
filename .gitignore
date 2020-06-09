@@ -1,9 +1,30 @@
+# Asset binary files (be it fonts, audio, or images) that are not integral to
+# the functioning of the game and could possibly be copyright infringing.
 client/assets/
+
+# Compiled with the browserify library automatically on certain npm run
+# commands. See package.json for those commands.
 client/js/bundle.js
 
+# Node dependencies. These would take up way too much unnecessary space on the
+# repo. Run npm install to get dependencies.
 node_modules/
 
+# The questions used in the game.
+#
+# These are in the gitignore for a few reasons:
+#
+# First, because some questions I ripped from the show and might infringe on
+# some copyrights, and second, because all hot seat questions are from Open
+# Trivia DB in my personal build and I do not want most of their multiple choice
+# DB to be hosted on my repo.
+#
+# However, I have left testing files intact which exhibit the correct structure
+# expected by the question generators. Use that structure to make your own
+# question banks if you wish.
 server/question/FastestFingerQuestions.json
 server/question/HotSeatQuestions*\.json
 
+# Directory for personal scripts that help me in development. They serve no
+# function in the actual app.
 script/

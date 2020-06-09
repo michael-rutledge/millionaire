@@ -1,18 +1,19 @@
 const fs = require('fs');
 
+const DataLevel = require(process.cwd() + '/server/question/DataLevel.js');
 const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
 
 // If we are testing, use the mock question file.
-const inTest = process.argv[1].includes('mocha');
-const FILE_PATH_PREFIX = inTest ?
+const inDevBuild = DataLevel.isDev();
+const FILE_PATH_PREFIX = inDevBuild ?
     process.cwd() + '/test/server/question/MockHotSeatQuestions' :
     process.cwd() + '/server/question/HotSeatQuestions';
 const EASY_QUESTIONS = JSON.parse(fs.readFileSync(FILE_PATH_PREFIX +
-    (inTest ? '.json' : 'Easy.json'), 'utf8'));
+    (inDevBuild ? '.json' : 'Easy.json'), 'utf8'));
 const MEDIUM_QUESTIONS = JSON.parse(fs.readFileSync(FILE_PATH_PREFIX +
-    (inTest ? '.json' : 'Medium.json'), 'utf8'));
+    (inDevBuild ? '.json' : 'Medium.json'), 'utf8'));
 const HARD_QUESTIONS = JSON.parse(fs.readFileSync(FILE_PATH_PREFIX +
-    (inTest ? '.json' : 'Hard.json'), 'utf8'));
+    (inDevBuild ? '.json' : 'Hard.json'), 'utf8'));
 
 // Generates HotSeatQuestions within a session.
 //

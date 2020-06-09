@@ -1,8 +1,11 @@
 const fs = require('fs');
 
+const DataLevel = require(process.cwd() + '/server/question/DataLevel.js');
 const FastestFingerQuestion = require(process.cwd() + '/server/question/FastestFingerQuestion.js');
 
-const FILE_PATH = process.cwd() + '/server/question/FastestFingerQuestions.json';
+const FILE_PATH = DataLevel.isDev() ?
+  process.cwd() + '/test/server/question/MockFastestFingerQuestions.json' :
+  process.cwd() + '/server/question/FastestFingerQuestions.json';
 const QUESTIONS = JSON.parse(fs.readFileSync(FILE_PATH, 'utf8'));
 
 // Generates FastestFingerQuestions within a session.
