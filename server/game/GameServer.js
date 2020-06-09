@@ -225,6 +225,7 @@ class GameServer {
     Logger.logInfo(this.currentSocketEvent);
 
     this.serverState.fastestFingerQuestion.revealAllChoices();
+    this.serverState.fastestFingerStartTime = Date.now();
     this._updateGame();
 
     this.currentForcedTimer = setTimeout(() => {
@@ -244,9 +245,6 @@ class GameServer {
     player.chooseFastestFinger(data.choice);
     this.updateGameForSocket(socket);
 
-    if (!player.hasFastestFingerChoicesLeft()) {
-      this.serverState.addPlayerDoneWithFastestFinger(player);
-    }
     if (this.serverState.allPlayersDoneWithFastestFinger()) {
       this.fastestFingerTimeUp(socket, data);
     }
@@ -277,7 +275,7 @@ class GameServer {
     this.currentSocketEvent = 'showHostCueFastestFingerAnswerRevealAudio';
     Logger.logInfo(this.currentSocketEvent);
 
-    // Human host will control flow, or 3 seconds until question text is shown
+    // Human host will control flow, or 2.5 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
       nextSocketEvent: 'showHostRevealFastestFingerAnswer',
       hostButtonMessage: LocalizedStrings.REVEAL_FASTEST_FINGER_ANSWER,
@@ -308,6 +306,27 @@ class GameServer {
         aiTimeout: 2000
       }));
     }
+    this._updateGame();
+  }
+
+  // Response to client asking to reveal fastest finger results.
+  showHostRevealFastestFingerResults(socket, data) {
+    this.currentSocketEvent = 'showHostRevealFastestFingerResults';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // Grade every answer; the winner will be determined by whoever gets the highest score.
+    // Tiebreaker is on answer time.
+    this.playerMap.doAll((player) => {
+      player.fastestFingerScore = this.serverState.fastestFingerQuestion.getAnswerScore(
+        player.fastestFingerChoices);
+    });
+
+    // Human host will control flow, or 3 seconds until hot seat player is accepted.
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostAcceptHotSeatPlayer',
+      hostButtonMessage: LocalizedStrings.ACCEPT_HOT_SEAT_PLAYER,
+      aiTimeout: 3000
+    }));
     this._updateGame();
   }
 }

@@ -32,11 +32,11 @@ class FastestFingerQuestion extends Question {
 
   // Grades the given score by returning how many answers matched the ordered choices of this
   // question.
-  getAnswerScore(answer) {
+  getAnswerScore(fastestFingerChoices) {
     var score = 0;
 
-    for (let i = 0; i < answer.length; i++) {
-      if (this.shuffledChoices[answer[i]] == this.orderedChoices[i]) {
+    for (let i = 0; i < fastestFingerChoices.length; i++) {
+      if (this.shuffledChoices[fastestFingerChoices[i]] == this.orderedChoices[i]) {
         score++;
       }
     }

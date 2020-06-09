@@ -200,6 +200,19 @@ describe('GameServerTest', () => {
     clearTimeout(gameServer.currentForcedTimer);
   });
 
+  it('showHostRevealFastestFingerQuestionChoicesShouldSetFastestFingerStartTime', () => {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+    gameServer.serverState.fastestFingerQuestion = new FastestFingerQuestion({
+      text: 'questionText',
+      orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+    });
+
+    gameServer.showHostRevealFastestFingerQuestionChoices(new MockSocket(), /*data=*/{});
+
+    expect(gameServer.serverState.fastestFingerStartTime).to.not.be.undefined;
+    clearTimeout(gameServer.currentForcedTimer);
+  });
+
   it('contestantFastestFingerChooseShouldNotCompleteIfChoicesLeft', () => {
     var gameServer = newGameServerWithPlayerShowHost(false);
     var socket = new MockSocket('socket_id');
@@ -310,4 +323,41 @@ describe('GameServerTest', () => {
       header: ''
     });
   });
+
+  it('showHostRevealFastestFingerResultsShouldSetPlayerAnswerScores', () => {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+    gameServer.serverState.fastestFingerQuestion = new FastestFingerQuestion({
+      text: 'questionText',
+      orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+    });
+    gameServer.serverState.fastestFingerQuestion.shuffledChoices = [
+      'choice 2', 'choice 1', 'choice 4', 'choice 3'
+    ];
+    var player = new Player(new MockSocket('socket_id'), 'username');
+    player.fastestFingerChoices = [Choices.B, Choices.A, Choices.D, Choices.C];
+    gameServer.playerMap.putPlayer(player);
+
+    gameServer.showHostRevealFastestFingerResults(new MockSocket('socket_id'), /*data=*/{});
+
+    expect(player.fastestFingerScore).to.equal(4);
+  });
+
+  it('showHostRevealFastestFingerResultsShouldSetExpectedDialog', () => {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+    gameServer.serverState.fastestFingerQuestion = new FastestFingerQuestion({
+      text: 'questionText',
+      orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+    });
+
+    gameServer.showHostRevealFastestFingerResults(new MockSocket(), /*data=*/{});
+
+    expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+      actions: [{
+        socketEvent: 'showHostAcceptHotSeatPlayer',
+        text: LocalizedStrings.ACCEPT_HOT_SEAT_PLAYER
+      }],
+      header: ''
+    });
+  });
+
 });

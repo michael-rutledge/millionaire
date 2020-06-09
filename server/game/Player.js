@@ -9,6 +9,7 @@ class Player {
     this.username = username;
     this.money = 0;
     this.fastestFingerChoices = [];
+    this.fastestFingerScore = 0;
     this.fastestFingerTime = undefined;
     this.hotSeatChoice = undefined;
     this.hotSeatTime = undefined;
@@ -26,7 +27,7 @@ class Player {
       this.fastestFingerChoices.push(choice);
       // Last choice should keep track of the time to allow for calculating elapsed time
       if (this.fastestFingerChoices.length == Choices.MAX_CHOICES) {
-        this.fastestFingerTime = new Date().getTime();
+        this.fastestFingerTime = Date.now();
       }
     }
   }
@@ -37,7 +38,7 @@ class Player {
   chooseHotSeat(choice) {
     if (Choices.isValidChoice(choice) && this.hotSeatChoice === undefined) {
       this.hotSeatChoice = choice;
-      this.hotSeatTime = new Date().getTime();
+      this.hotSeatTime = Date.now();
     }
   }
 

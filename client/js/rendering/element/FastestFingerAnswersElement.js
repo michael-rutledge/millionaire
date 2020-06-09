@@ -5,7 +5,7 @@ const Constants = require('../Constants.js');
 const MillionaireBubble = require('./MillionaireBubble.js');
 const MillionaireBubbleBuilder = require('./MillionaireBubbleBuilder.js');
 
-// Displays fastest finger results to contestants
+// Displays fastest finger answers to contestants.
 class FastestFingerAnswersElement extends CanvasElement {
 
   constructor(canvas, revealedAnswers) {

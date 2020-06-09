@@ -40,28 +40,22 @@ class ServerState {
 
   // PUBLIC METHODS
 
-  // Adds a username to the list of players done with their respective fastest finger choices.
-  addPlayerDoneWithFastestFinger(player) {
-    var now = new Date().getTime();
-
-    if (this.fastestFingerResults[player.username] === undefined) {
-      this.fastestFingerResults[player.username] = {
-        elapsedTimeMs: now - player.fastestFingerTime,
-        choices: player.fastestFingerChoices
-      };
-    }
-  }
-
   // Returns whether all contestant players are done with their fastest finger choices.
   allPlayersDoneWithFastestFinger() {
     var showHostOffset = this.showHost === undefined ? 0 : 1;
-    return Object.keys(this.fastestFingerResults).length >=
-      this.playerMap.getPlayerCount() - showHostOffset;
+    var doneCount = 0;
+
+    this.playerMap.doAll((player) => {
+      if (!player.hasFastestFingerChoicesLeft()) {
+        doneCount++;
+      }
+    });
+
+    return doneCount >= this.playerMap.getPlayerCount() - showHostOffset;
   }
 
   // Clears all player answers, regardless of question type.
   clearAllPlayerAnswers() {
-    this.fastestFingerResults = {};
     this.playerMap.doAll((player) => { player.clearAllAnswers(); });
   }
 
@@ -70,6 +64,51 @@ class ServerState {
     if (this.showHostStepDialog !== undefined) {
       this.showHostStepDialog.clearTimeout();
     }
+  }
+
+  // Returns an array of fastest finger player results for client display using the given player
+  // map.
+  getFastestFingerResults(playerMap, startTime) {
+    var fastestFingerResults = [];
+
+    playerMap.doAll((player) => {
+      if (!this.playerIsShowHost(player)) {
+        var elapsedTime = player.fastestFingerTime - startTime;
+
+        fastestFingerResults.push({
+          username: player.username,
+          score: player.fastestFingerScore,
+          time: elapsedTime
+        });
+      }
+    });
+
+    return fastestFingerResults;
+  }
+
+  // Returns the winning player from the given fastest finger results so they can become the hot
+  // seat player.
+  getHotSeatPlayerFromFastestFingerResults(fastestFingerResults) {
+    var hotSeatPlayer = undefined;
+    var bestScore = 0;
+    var bestTime = undefined;
+
+    fastestFingerResults.forEach((result, index) => {
+      if (result.score >= bestScore) {
+        bestScore = result.score;
+        if (bestTime === undefined || result.time < bestTime) {
+          bestTime = result.time;
+          hotSeatPlayer = this.playerMap.getPlayerByUsername(result.username);
+        }
+      }
+    });
+
+    return hotSeatPlayer;
+  }
+
+  // Returns whether the given player is host.
+  playerIsShowHost(player) {
+    return player == this.showHost;
   }
 
   // Returns whether a player is acting as show host.
@@ -133,13 +172,10 @@ class ServerState {
     // Reference to the current fastest finger question
     this.fastestFingerQuestion = undefined;
 
-    // Set of all usernames done with fastest finger.
-    //
-    // Used in triggering of fastest finger end.
-    this.fastestFingerResults = {};
+    this.fastestFingerStartTime = undefined;
   }
 
-  // Returns a compressed, JSON-formatted version of ClientState to pass to the client via socket.
+  // Returns a compressed, JSON-formatted version of client state to pass to the client via socket.
   toCompressedClientState(socket, currentSocketEvent) {
     var compressed = {};
     var player = this.playerMap.getPlayerBySocket(socket);
@@ -178,6 +214,15 @@ class ServerState {
       if (this.fastestFingerQuestion.revealedAnswers.length > 0) {
         compressed.fastestFingerRevealedAnswers = this.fastestFingerQuestion.revealedAnswers;
       }
+    }
+    // Fastest finger results
+    if (currentSocketEvent == 'showHostRevealFastestFingerResults') {
+      compressed.fastestFingerRevealedAnswers = undefined;
+      compressed.fastestFingerResults = this.getFastestFingerResults(this.playerMap,
+        this.fastestFingerStartTime);
+      this.hotSeatPlayer = this.getHotSeatPlayerFromFastestFingerResults(
+        compressed.fastestFingerResults);
+      compressed.fastestFingerBestScore = this.hotSeatPlayer.fastestFingerScore;
     }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();

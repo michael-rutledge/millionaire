@@ -9,7 +9,7 @@ function getPredictedTextHeight(context, text, font = undefined) {
     context.font = font;
   }
 
-  var metrics = context.measureText(text);
+  var metrics = context.measureText('MC');
 
   context.font = oldFont;
   return metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
@@ -74,8 +74,7 @@ class TextElement extends CanvasElement {
   // element vertically.
   _getYOffset(numLines, lineHeight) {
     var totalHeight = lineHeight * numLines;
-    var pixelPadding = 3;
-    return -(totalHeight / 2) + lineHeight - pixelPadding;
+    return -(totalHeight / 2) + lineHeight;
   }
 
 
