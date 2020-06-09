@@ -5,6 +5,7 @@ const SafeSocket = require(process.cwd() + '/server/socket/SafeSocket.js');
 const StringSanitizer = require(process.cwd() + '/server/string/StringSanitizer.js');
 
 const ROOM_CODE_LENGTH = 4;
+const MAX_USERNAME_LENGTH = 15;
 
 // Holds all active Rooms of Millionaire With Friends and handles socket communication between
 // clients and their respective Rooms.
@@ -69,7 +70,7 @@ class RoomPool {
       return "";
     }
 
-    return StringSanitizer.getHtmlSanitized(data.username);
+    return StringSanitizer.getHtmlSanitized(data.username).substring(0, MAX_USERNAME_LENGTH);
   }
 
 

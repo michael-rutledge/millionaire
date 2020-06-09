@@ -2,6 +2,7 @@ const expect = require('chai').expect;
 
 const BackgroundElement = require(process.cwd() + '/client/js/rendering/element/BackgroundElement.js');
 const CanvasElement = require(process.cwd() + '/client/js/rendering/element/CanvasElement.js');
+const CelebrationBanner = require(process.cwd() + '/client/js/rendering/element/CelebrationBanner.js');
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const FastestFingerAnswersElement = require(process.cwd() + '/client/js/rendering/element/FastestFingerAnswersElement.js');
 const FastestFingerResultsElement = require(process.cwd() + '/client/js/rendering/element/FastestFingerResultsElement.js');
@@ -83,6 +84,24 @@ describe('GameClientTest', () => {
   // No test for fastest finger results because it doesn't work, even though e2e testing shows the
   // desired behavior is there.
   // TODO: figure out the fastestFingerResultsElement test.
+
+  it('getNewCanvasElementsShouldSetCelebrationBannerIfPresent', () => {
+    var mockSocket = new MockSocket('socket_id');
+    var gameClient = new GameClient(mockSocket,
+      new GameRenderer(new MockCanvas(), new MockHtmlDocument()));
+    var canvas = gameClient.gameRenderer.canvas;
+    var celebrationBanner = {
+      header: 'header',
+      text: 'text'
+    };
+    var expectedCelebrationBanner = new CelebrationBanner(canvas, celebrationBanner);
+
+    var newCanvasElements = gameClient.getNewCanvasElements(/*compressedClientState=*/{
+      celebrationBanner: celebrationBanner
+    });
+
+    expect(newCanvasElements).to.deep.include(expectedCelebrationBanner);
+  });
 
   it('updateGameShouldUpdateCanvasElementsInGameRenderer', () => {
     var gameClient = new GameClient(new MockSocket('socket_id'),

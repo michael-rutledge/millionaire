@@ -360,4 +360,17 @@ describe('GameServerTest', () => {
     });
   });
 
+  it('showHostAcceptHotSeatPlayerShouldSetExpectedDialog', () => {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+
+    gameServer.showHostAcceptHotSeatPlayer(new MockSocket(), /*data=*/{});
+
+    expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+      actions: [{
+        socketEvent: 'showHostCueHotSeatRules',
+        text: LocalizedStrings.SHOW_HOT_SEAT_RULES
+      }],
+      header: ''
+    });
+  });
 });

@@ -1,4 +1,5 @@
 const LifelineIndex = require(process.cwd() + '/server/question/LifelineIndex.js');
+const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
 
 const contestantChoosableEvents = new Set([
@@ -8,6 +9,10 @@ const contestantChoosableEvents = new Set([
 ]);
 const hotSeatChoosableEvents = new Set(['showHostShowHotSeatOptionD']);
 const fastestFingerChoosableEvents = new Set(['showHostRevealFastestFingerQuestionChoices']);
+const showFastestFingerResultsEvents = new Set([
+  'showHostRevealFastestFingerResults',
+  'showHostAcceptHotSeatPlayer'
+  ]);
 
 // Encapsulates the state of a running game on the server side.
 class ServerState {
@@ -216,13 +221,20 @@ class ServerState {
       }
     }
     // Fastest finger results
-    if (currentSocketEvent == 'showHostRevealFastestFingerResults') {
+    if (showFastestFingerResultsEvents.has(currentSocketEvent)) {
       compressed.fastestFingerRevealedAnswers = undefined;
       compressed.fastestFingerResults = this.getFastestFingerResults(this.playerMap,
         this.fastestFingerStartTime);
       this.hotSeatPlayer = this.getHotSeatPlayerFromFastestFingerResults(
         compressed.fastestFingerResults);
       compressed.fastestFingerBestScore = this.hotSeatPlayer.fastestFingerScore;
+    }
+    // New player in the hot seat
+    if (currentSocketEvent == 'showHostAcceptHotSeatPlayer') {
+      compressed.celebrationBanner = {
+        header: LocalizedStrings.FASTEST_FINGER_WINNER,
+        text: this.hotSeatPlayer.username
+      };
     }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();

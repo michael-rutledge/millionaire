@@ -1,4 +1,5 @@
 const BackgroundElement = require('../rendering/element/BackgroundElement.js');
+const CelebrationBanner = require('../rendering/element/CelebrationBanner.js');
 const FastestFingerAnswersElement = require('../rendering/element/FastestFingerAnswersElement.js');
 const FastestFingerResultsElement = require('../rendering/element/FastestFingerResultsElement.js');
 const PlayerListElement = require('../rendering/element/PlayerListElement.js');
@@ -30,7 +31,13 @@ class GameClient {
     var playerListElement = new PlayerListElement(canvas, compressedClientState.playerList);
     newCanvasElements.push(playerListElement);
     var questionAndChoicesElement = new QuestionAndChoicesElement(canvas, this.socket);
-    newCanvasElements.push(questionAndChoicesElement);
+
+    if (compressedClientState.celebrationBanner === undefined) {
+      newCanvasElements.push(questionAndChoicesElement);
+    } else {
+      newCanvasElements.push(new CelebrationBanner(canvas,
+        compressedClientState.celebrationBanner));
+    }
 
     if (compressedClientState.showHostStepDialog !== undefined) {
       newCanvasElements.push(new StepDialogElement(canvas, this.socket,

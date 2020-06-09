@@ -329,6 +329,24 @@ class GameServer {
     }));
     this._updateGame();
   }
+
+  // Response to client asking to accept the hot seat player.
+  //
+  // This is a celebration screen where fanfare should play.
+  showHostAcceptHotSeatPlayer(socket, data) {
+    this.currentSocketEvent = 'showHostAcceptHotSeatPlayer';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // Nothing much happens here other than triggering the audio cue.
+
+    // Human host will control flow, or 10 seconds until hot seat rules start.
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostCueHotSeatRules',
+      hostButtonMessage: LocalizedStrings.SHOW_HOT_SEAT_RULES,
+      aiTimeout: 10000
+    }));
+    this._updateGame();
+  }
 }
 
 module.exports = GameServer;

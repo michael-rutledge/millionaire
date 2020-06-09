@@ -2,6 +2,7 @@ const expect = require('chai').expect;
 
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const FastestFingerQuestion = require(process.cwd() + '/server/question/FastestFingerQuestion.js');
+const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 const Player = require(process.cwd() + '/server/game/Player.js');
 const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
@@ -411,5 +412,21 @@ describe('ServerStateTest', () => {
       username: player.username,
       money: player.money
     }]);
+  });
+
+  it('toCompressedClientStateShouldSetCelebrationBannerIfAcceptingHotSeatPlayer', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+    serverState.setHotSeatPlayerByUsername(player.username);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'showHostAcceptHotSeatPlayer');
+
+    expect(compressedClientState.celebrationBanner).to.deep.equal({
+      header: LocalizedStrings.FASTEST_FINGER_WINNER,
+      text: player.username
+    });
   });
 });

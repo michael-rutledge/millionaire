@@ -17,15 +17,20 @@ const State = {
   CORRECT: 2,
 
   // Gradient backgrount and orange font
-  WINNINGS: 3
+  CELEBRATION: 3
 }
 
 // Array of fill styles for the background of the bubble, indexed by State.
 const bubbleFillStyles = [
-  Colors.BUBBLE_FILL_DEFAULT,
-  Colors.BUBBLE_FILL_SELECTED,
-  Colors.BUBBLE_FILL_CORRECT,
-  Colors.BUBBLE_FILL_DEFAULT
+  (bubble) => { return Colors.BUBBLE_FILL_DEFAULT; },
+  (nubble) => { return Colors.BUBBLE_FILL_SELECTED; },
+  (bubble) => { return Colors.BUBBLE_FILL_CORRECT; },
+  (bubble) => {
+    var fillGradient = bubble.context.createLinearGradient(bubble.x, 0, bubble.x + bubble.width, 0);
+    fillGradient.addColorStop(0, Colors.BUBBLE_FILL_CELEBRATION_LEFT);
+    fillGradient.addColorStop(1, Colors.BUBBLE_FILL_CELEBRATION_RIGHT);
+    return fillGradient;
+  }
 ];
 
 // Array of text fill styles for the bubble text, indexed by State.
@@ -33,7 +38,7 @@ const textFillStyles = [
   Colors.BUBBLE_TEXT_LIGHT,
   Colors.BUBBLE_TEXT_DARK,
   Colors.BUBBLE_TEXT_DARK,
-  Colors.BUBBLE_TEXT_LIGHT
+  Colors.BUBBLE_TEXT_ORANGE
 ];
 
 // Array of fill styles for the choice letter of a bubble, indexed by State.
@@ -78,7 +83,7 @@ class MillionaireBubble extends CanvasElement {
     var oldStrokeStyle = this.context.strokeStyle;
 
     var textFillStyle = textFillStyles[this.state];
-    this.context.fillStyle = bubbleFillStyles[this.state];
+    this.context.fillStyle = bubbleFillStyles[this.state](this);
 
     // TODO: update the shape to recreate the curves in the show.
     this.path.moveTo(this.x, this.y);
