@@ -429,4 +429,16 @@ describe('ServerStateTest', () => {
       text: player.username
     });
   });
+
+  it('toCompressedClientStateShouldSetInfoTextOnCueHotSeatRules', function () {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'showHostCueHotSeatRules');
+
+    expect(compressedClientState.infoText).to.deep.equal(LocalizedStrings.HOT_SEAT_RULES,);
+  });
 });

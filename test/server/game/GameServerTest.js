@@ -373,4 +373,18 @@ describe('GameServerTest', () => {
       header: ''
     });
   });
+
+  it('showHostCueHotSeatRulesShouldSetExpectedDialog', function () {
+    var gameServer = newGameServerWithPlayerShowHost(true);
+
+    gameServer.showHostCueHotSeatRules(new MockSocket(), /*data=*/{});
+
+    expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+      actions: [{
+        socketEvent: 'showHostCueHotSeatQuestion',
+        text: LocalizedStrings.CUE_HOT_SEAT_QUESTION
+      }],
+      header: ''
+    });
+  });
 });

@@ -347,6 +347,25 @@ class GameServer {
     }));
     this._updateGame();
   }
+
+  // Response to client asking to show hot seat rules to all players.
+  //
+  // This should not really do much other than show text on screen and do an audio cue.
+  showHostCueHotSeatRules(socket, data) {
+    this.currentSocketEvent = 'showHostCueHotSeatRules';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // Nothing much happens here other than triggering the audio cue.
+    this.serverState.resetFastestFinger();
+
+    // Human host will control flow, or 3 seconds until question text is shown
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostCueHotSeatQuestion',
+      hostButtonMessage: LocalizedStrings.CUE_HOT_SEAT_QUESTION,
+      aiTimeout: 5000
+    }));
+    this._updateGame();
+  }
 }
 
 module.exports = GameServer;

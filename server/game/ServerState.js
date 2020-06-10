@@ -121,6 +121,13 @@ class ServerState {
     return this.showHost !== undefined;
   }
 
+  // Resets the fastest finger question state back to default.
+  resetFastestFinger() {
+    this.fastestFingerQuestion = undefined;
+    this.fastestFingerStartTime = undefined;
+    this.clearAllPlayerAnswers();
+  }
+
   // Sets the hot seat player of this game using the given username.
   setHotSeatPlayerByUsername(hotSeatPlayerUsername) {
     this.hotSeatPlayer = this.playerMap.getPlayerByUsername(hotSeatPlayerUsername);
@@ -235,6 +242,10 @@ class ServerState {
         header: LocalizedStrings.FASTEST_FINGER_WINNER,
         text: this.hotSeatPlayer.username
       };
+    }
+    // Hot seat rules
+    if (currentSocketEvent == 'showHostCueHotSeatRules') {
+      compressed.infoText = LocalizedStrings.HOT_SEAT_RULES;
     }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();

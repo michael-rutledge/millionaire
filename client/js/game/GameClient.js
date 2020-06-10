@@ -2,6 +2,7 @@ const BackgroundElement = require('../rendering/element/BackgroundElement.js');
 const CelebrationBanner = require('../rendering/element/CelebrationBanner.js');
 const FastestFingerAnswersElement = require('../rendering/element/FastestFingerAnswersElement.js');
 const FastestFingerResultsElement = require('../rendering/element/FastestFingerResultsElement.js');
+const InfoTextElement = require('../rendering/element/InfoTextElement.js');
 const PlayerListElement = require('../rendering/element/PlayerListElement.js');
 const QuestionAndChoicesElement = require('../rendering/element/QuestionAndChoicesElement.js');
 const StepDialogElement = require('../rendering/element/StepDialogElement.js');
@@ -39,6 +40,10 @@ class GameClient {
         compressedClientState.celebrationBanner));
     }
 
+    if (compressedClientState.infoText !== undefined) {
+      newCanvasElements.push(new InfoTextElement(canvas, compressedClientState.infoText));
+    }
+
     if (compressedClientState.showHostStepDialog !== undefined) {
       newCanvasElements.push(new StepDialogElement(canvas, this.socket,
         compressedClientState.showHostStepDialog));
@@ -54,7 +59,7 @@ class GameClient {
         compressedClientState.fastestFingerRevealedAnswers));
     }
 
-    if (compressedClientState.fastestFingerResults) {
+    if (compressedClientState.fastestFingerResults !== undefined) {
       newCanvasElements.push(new FastestFingerResultsElement(canvas,
         compressedClientState.fastestFingerResults, compressedClientState.fastestFingerBestScore));
     }

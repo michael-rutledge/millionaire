@@ -8,6 +8,7 @@ const FastestFingerAnswersElement = require(process.cwd() + '/client/js/renderin
 const FastestFingerResultsElement = require(process.cwd() + '/client/js/rendering/element/FastestFingerResultsElement.js');
 const GameClient = require(process.cwd() + '/client/js/game/GameClient.js');
 const GameRenderer = require(process.cwd() + '/client/js/rendering/GameRenderer.js');
+const InfoTextElement = require(process.cwd() + '/client/js/rendering/element/InfoTextElement.js');
 const MockCanvas = require(process.cwd() + '/client/js/test/MockCanvas.js');
 const MockHtmlDocument = require(process.cwd() + '/client/js/test/MockHtmlDocument.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
@@ -101,6 +102,21 @@ describe('GameClientTest', () => {
     });
 
     expect(newCanvasElements).to.deep.include(expectedCelebrationBanner);
+  });
+
+  it('getNewCanvasElementsShouldSetCelebrationBannerIfPresent', function () {
+    var mockSocket = new MockSocket('socket_id');
+    var gameClient = new GameClient(mockSocket,
+      new GameRenderer(new MockCanvas(), new MockHtmlDocument()));
+    var canvas = gameClient.gameRenderer.canvas;
+    var infoText = 'infoText';
+    var expectedInfoTextElement = new InfoTextElement(canvas, infoText);
+
+    var newCanvasElements = gameClient.getNewCanvasElements(/*compressedClientState=*/{
+      infoText: infoText
+    });
+
+    expect(newCanvasElements).to.deep.include(expectedInfoTextElement);
   });
 
   it('updateGameShouldUpdateCanvasElementsInGameRenderer', () => {
