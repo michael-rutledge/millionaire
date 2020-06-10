@@ -355,14 +355,30 @@ class GameServer {
     this.currentSocketEvent = 'showHostCueHotSeatRules';
     Logger.logInfo(this.currentSocketEvent);
 
-    // Nothing much happens here other than triggering the audio cue.
+    // Fastest finger question is reset, as its job is finished.
     this.serverState.resetFastestFinger();
 
-    // Human host will control flow, or 3 seconds until question text is shown
+    // Human host will control flow, or 5 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
       nextSocketEvent: 'showHostCueHotSeatQuestion',
       hostButtonMessage: LocalizedStrings.CUE_HOT_SEAT_QUESTION,
       aiTimeout: 5000
+    }));
+    this._updateGame();
+  }
+
+  // Response to client asking to show cue a hot seat question.
+  showHostCueHotSeatQuestion(socket, data) {
+    this.currentSocketEvent = 'showHostCueHotSeatQuestion';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // Nothing much happens here other than triggering the "Let's Play" audio cue.
+
+    // Human host will control flow, or 7 seconds until question text is shown
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostShowHotSeatQuestionText',
+      hostButtonMessage: LocalizedStrings.SHOW_HOT_SEAT_QUESTION,
+      aiTimeout: 7000
     }));
     this._updateGame();
   }
