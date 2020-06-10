@@ -385,7 +385,7 @@ class GameServer {
   }
 
   // Response to the client asking to show hot seat question text.
-  showHostShowHotSeatQuestionText() {
+  showHostShowHotSeatQuestionText(socket, data) {
     this.currentSocketEvent = 'showHostShowHotSeatQuestionText';
     Logger.logInfo(this.currentSocketEvent);
 
@@ -393,12 +393,33 @@ class GameServer {
     this.serverState.hotSeatQuestion = this.hotSeatSession.getNewQuestion(
       this.serverState.hotSeatQuestionIndex);
 
-    // Human host will control flow, or 7 seconds until question text is shown
+    // Human host will control flow, or 4 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
       nextSocketEvent: 'showHostRevealHotSeatChoice',
       hostButtonMessage: LocalizedStrings.REVEAL_HOT_SEAT_CHOICE,
-      aiTimeout: 1500
+      aiTimeout: 4000
     }));
+    this._updateGame();
+  }
+
+  // Response to the client asking to show hot seat question text.
+  showHostRevealHotSeatChoice(socket, data) {
+    this.currentSocketEvent = 'showHostRevealHotSeatChoice';
+    Logger.logInfo(this.currentSocketEvent);
+
+    this.serverState.hotSeatQuestion.revealChoice();
+
+    // Only reveal more choices if choices are left.
+    if (!this.serverState.hotSeatQuestion.allChoicesRevealed()) {
+      this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+        nextSocketEvent: 'showHostRevealHotSeatChoice',
+        hostButtonMessage: LocalizedStrings.REVEAL_HOT_SEAT_CHOICE,
+        aiTimeout: 1500
+      }));
+    } else {
+      // Once all choices are revealed, the show host must wait for hot seat player input.
+      this.serverState.setShowHostStepDialog(undefined);
+    }
     this._updateGame();
   }
 }

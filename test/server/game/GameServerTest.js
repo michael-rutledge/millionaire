@@ -3,6 +3,7 @@ const expect = require('chai').expect;
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const FastestFingerQuestion = require(process.cwd() + '/server/question/FastestFingerQuestion.js');
 const GameServer = require(process.cwd() + '/server/game/GameServer.js');
+const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 const Player = require(process.cwd() + '/server/game/Player.js');
@@ -423,6 +424,51 @@ describe('GameServerTest', () => {
       gameServer.showHostShowHotSeatQuestionText(new MockSocket(), /*data=*/{});
 
       expect(gameServer.serverState.hotSeatQuestion).to.not.be.undefined;
+    });
+  });
+
+  describe('showHostRevealHotSeatChoicehoice', function () {
+    it('shouldRevealChoice', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+
+      gameServer.showHostRevealHotSeatChoice(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.hotSeatQuestion.revealedChoices).to.have.lengthOf(1);
+    });
+
+    it('shouldSetExpectedDialogWhenChoicesLeft', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+
+      gameServer.showHostRevealHotSeatChoice(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostRevealHotSeatChoice',
+          text: LocalizedStrings.REVEAL_HOT_SEAT_CHOICE
+        }],
+        header: ''
+      });
+    });
+
+    it('shouldSetNoDialogWhenNoChoicesLeft', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+      gameServer.serverState.hotSeatQuestion.revealAllChoices();
+
+      gameServer.showHostRevealHotSeatChoice(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
     });
   });
 });
