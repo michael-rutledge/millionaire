@@ -2,6 +2,7 @@ const expect = require('chai').expect;
 
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const FastestFingerQuestion = require(process.cwd() + '/server/question/FastestFingerQuestion.js');
+const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 const Player = require(process.cwd() + '/server/game/Player.js');
@@ -68,6 +69,35 @@ describe('ServerStateTest', () => {
     serverState.clearTimers();
 
     expect(serverState.showHostStepDialog.timeoutActive()).to.be.false;
+  });
+
+  describe('contestantCanChoose', function () {
+    it('shouldReturnFalseForBadEvent', function () {
+      var serverState = new ServerState(new PlayerMap());
+
+      expect(serverState.contestantCanChoose('badEvent')).to.be.false;
+    });
+
+    it('shouldReturnFalseForNotAllHotSeatChoicesRevealed', function () {
+      var serverState = new ServerState(new PlayerMap());
+      serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'question',
+        orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+      });
+
+      expect(serverState.contestantCanChoose('showHostRevealHotSeatChoice')).to.be.false;
+    });
+
+    it('shouldReturnTrueForGoodEventAndAllHotSeatChoicesRevealed', function () {
+      var serverState = new ServerState(new PlayerMap());
+      serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'question',
+        orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+      });
+      serverState.hotSeatQuestion.revealAllChoices();
+
+      expect(serverState.contestantCanChoose('showHostRevealHotSeatChoice')).to.be.true;
+    });
   });
 
   it('getFastestFingerResultsShouldGiveExpectedResultForPlayer', () => {
@@ -142,6 +172,35 @@ describe('ServerStateTest', () => {
     var hotSeatPlayer = serverState.getHotSeatPlayerFromFastestFingerResults(fastestFingerResults);
 
     expect(hotSeatPlayer).to.equal(winningPlayer);
+  });
+
+  describe('hotSeatPlayerCanChoose', function () {
+    it('shouldReturnFalseForBadEvent', function () {
+      var serverState = new ServerState(new PlayerMap());
+
+      expect(serverState.hotSeatPlayerCanChoose('badEvent')).to.be.false;
+    });
+
+    it('shouldReturnFalseForNotAllHotSeatChoicesRevealed', function () {
+      var serverState = new ServerState(new PlayerMap());
+      serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'question',
+        orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+      });
+
+      expect(serverState.hotSeatPlayerCanChoose('showHostRevealHotSeatChoice')).to.be.false;
+    });
+
+    it('shouldReturnTrueForGoodEventAndAllHotSeatChoicesRevealed', function () {
+      var serverState = new ServerState(new PlayerMap());
+      serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'question',
+        orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+      });
+      serverState.hotSeatQuestion.revealAllChoices();
+
+      expect(serverState.hotSeatPlayerCanChoose('showHostRevealHotSeatChoice')).to.be.true;
+    });
   });
 
   it('setHotSeatPlayerByUsernameShouldGiveExpectedResult', () => {
@@ -253,15 +312,20 @@ describe('ServerStateTest', () => {
     expect(compressedClientState.choiceAction).to.be.undefined;
   });
 
-  it('toCompressedClientStateShouldSetHotSeatChoiceActionOnGoodEventForHotSeatPlayer', () => {
+  it('toCompressedClientStateShouldSetHotSeatChoiceActionOnGoodInputForHotSeatPlayer', () => {
     var serverState = new ServerState(new PlayerMap());
     var mockSocket = new MockSocket('socket_id');
     var player = new Player(mockSocket, 'username');
     serverState.playerMap.putPlayer(player);
     serverState.setHotSeatPlayerByUsername('username');
+    serverState.hotSeatQuestion = new HotSeatQuestion({
+      text: 'question',
+      orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+    });
+    serverState.hotSeatQuestion.revealAllChoices();
 
     var compressedClientState = serverState.toCompressedClientState(mockSocket,
-      'showHostShowHotSeatOptionD');
+      'showHostRevealHotSeatChoice');
 
     expect(compressedClientState.choiceAction).to.equal('hotSeatChoose');
   });
@@ -285,7 +349,7 @@ describe('ServerStateTest', () => {
     serverState.playerMap.putPlayer(player);
 
     var compressedClientState = serverState.toCompressedClientState(mockSocket,
-      'showHostShowHotSeatOptionD');
+      'showHostRevealHotSeatChoice');
 
     expect(compressedClientState.choiceAction).to.not.equal('hotSeatChoose');
   });
@@ -295,9 +359,14 @@ describe('ServerStateTest', () => {
     var mockSocket = new MockSocket('socket_id');
     var player = new Player(mockSocket, 'username');
     serverState.playerMap.putPlayer(player);
+    serverState.hotSeatQuestion = new HotSeatQuestion({
+      text: 'question',
+      orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+    });
+    serverState.hotSeatQuestion.revealAllChoices();
 
     var compressedClientState = serverState.toCompressedClientState(mockSocket,
-      'showHostShowHotSeatOptionD');
+      'showHostRevealHotSeatChoice');
 
     expect(compressedClientState.choiceAction).to.equal('contestantChoose');
   });
@@ -322,7 +391,7 @@ describe('ServerStateTest', () => {
     serverState.setShowHostByUsername('username');
 
     var compressedClientState = serverState.toCompressedClientState(mockSocket,
-      'showHostShowHotSeatOptionD');
+      'showHostRevealHotSeatChoice');
 
     expect(compressedClientState.choiceAction).to.not.equal('contestantChoose');
   });
@@ -440,5 +509,26 @@ describe('ServerStateTest', () => {
       'showHostCueHotSeatRules');
 
     expect(compressedClientState.infoText).to.deep.equal(LocalizedStrings.HOT_SEAT_RULES,);
+  });
+
+  it('toCompressedClientStateShouldSetQuestionForHotSeatQuestion', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+    serverState.hotSeatQuestion = new HotSeatQuestion({
+      text: 'question',
+      orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+    });
+    serverState.hotSeatQuestion.revealAllChoices();
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      /*currentSocketEvent=*/undefined);
+
+    expect(compressedClientState.question).to.deep.equal({
+      text: 'question',
+      revealedChoices: serverState.hotSeatQuestion.revealedChoices,
+      madeChoices: [ player.hotSeatChoice ]
+    });
   });
 });

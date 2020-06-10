@@ -1,6 +1,7 @@
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
 const FastestFingerSession = require(process.cwd() + '/server/question/FastestFingerSession.js');
+const HotSeatSession = require(process.cwd() + '/server/question/HotSeatSession.js');
 const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 const StepDialog = require(process.cwd() + '/server/game/StepDialog.js');
 
@@ -21,10 +22,7 @@ const SOCKET_EVENTS = [
   'showHostHighlightLifeline',
   'showHostCueHotSeatQuestion',
   'showHostShowHotSeatQuestionText',
-  'showHostRevealHotSeatChoiceA',
-  'showHostRevealHotSeatChoiceB',
-  'showHostRevealHotSeatChoiceC',
-  'showHostRevealHotSeatChoiceD',
+  'showHostRevealHotSeatChoice',
   'showHostAskTheAudience',
   'showHostDoFiftyFifty',
   'showHostPhoneAFriend',
@@ -43,14 +41,17 @@ const SOCKET_EVENTS = [
 class GameServer {
 
   constructor(playerMap) {
-    // PlayerMap of the game
+    // PlayerMap of the game.
     this.playerMap = playerMap;
 
-    // ServerState of this game
+    // ServerState of this game.
     this.serverState = undefined;
 
-    // FastestFingerSession which can keep generating unused questions for this server
+    // FastestFingerSession which can keep generating unused questions for this server.
     this.fastestFingerSession = new FastestFingerSession();
+
+    // HotSeatSession which can keep generating unused questions for this server.
+    this.hotSeatSession = new HotSeatSession();
 
     // Reference to a setTimeout function that is forced upon the GameServer.
     this.currentForcedTimer = undefined;
@@ -379,6 +380,24 @@ class GameServer {
       nextSocketEvent: 'showHostShowHotSeatQuestionText',
       hostButtonMessage: LocalizedStrings.SHOW_HOT_SEAT_QUESTION,
       aiTimeout: 7000
+    }));
+    this._updateGame();
+  }
+
+  // Response to the client asking to show hot seat question text.
+  showHostShowHotSeatQuestionText() {
+    this.currentSocketEvent = 'showHostShowHotSeatQuestionText';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // Get a new hot seat question, because this is the first we so of it.
+    this.serverState.hotSeatQuestion = this.hotSeatSession.getNewQuestion(
+      this.serverState.hotSeatQuestionIndex);
+
+    // Human host will control flow, or 7 seconds until question text is shown
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostRevealHotSeatChoice',
+      hostButtonMessage: LocalizedStrings.REVEAL_HOT_SEAT_CHOICE,
+      aiTimeout: 1500
     }));
     this._updateGame();
   }

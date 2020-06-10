@@ -11,6 +11,7 @@ module.exports.SHOW_HOT_SEAT_RULES = 'Go over the rules';
 module.exports.CUE_HOT_SEAT_QUESTION = 'Cue question';
 module.exports.HOT_SEAT_RULES = 'Answer 15 questions of increasing difficulty to get to a million dollars. Other contestants can answer on their own for cash. Using lifelines will help them out. Good luck!';
 module.exports.SHOW_HOT_SEAT_QUESTION = 'Show question text';
+module.exports.REVEAL_HOT_SEAT_CHOICE = 'Reveal choice';
 
 module.exports.YES = 'Yes';
 module.exports.NO = 'No';

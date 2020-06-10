@@ -401,4 +401,28 @@ describe('GameServerTest', () => {
       header: ''
     });
   });
+
+  describe('showHostShowHotSeatQuestionText', function () {
+    it('shouldSetExpectedDialog', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+
+      gameServer.showHostShowHotSeatQuestionText(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostRevealHotSeatChoice',
+          text: LocalizedStrings.REVEAL_HOT_SEAT_CHOICE
+        }],
+        header: ''
+      });
+    });
+
+    it('shouldSetHotSeatQuestion', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+
+      gameServer.showHostShowHotSeatQuestionText(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.hotSeatQuestion).to.not.be.undefined;
+    });
+  });
 });

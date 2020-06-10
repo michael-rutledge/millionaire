@@ -3,11 +3,11 @@ const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
 
 const contestantChoosableEvents = new Set([
-  'showHostShowHotSeatOptionD',
+  'showHostRevealHotSeatChoice',
   'hotSeatChoose',
   'hotSeatUseLifeline'
 ]);
-const hotSeatChoosableEvents = new Set(['showHostShowHotSeatOptionD']);
+const hotSeatChoosableEvents = new Set(['showHostRevealHotSeatChoice']);
 const fastestFingerChoosableEvents = new Set(['showHostRevealFastestFingerQuestionChoices']);
 const showFastestFingerResultsEvents = new Set([
   'showHostRevealFastestFingerResults',
@@ -71,6 +71,12 @@ class ServerState {
     }
   }
 
+  // Returns whether a contestant can choose during the given socket event.
+  contestantCanChoose(currentSocketEvent) {
+    return contestantChoosableEvents.has(currentSocketEvent) &&
+      this.hotSeatQuestion !== undefined && this.hotSeatQuestion.allChoicesRevealed();
+  }
+
   // Returns an array of fastest finger player results for client display using the given player
   // map.
   getFastestFingerResults(playerMap, startTime) {
@@ -109,6 +115,12 @@ class ServerState {
     });
 
     return hotSeatPlayer;
+  }
+
+  // Returns whether the hot seat player can choose during the given socket event.
+  hotSeatPlayerCanChoose(currentSocketEvent) {
+    return hotSeatChoosableEvents.has(currentSocketEvent) &&
+      this.hotSeatQuestion !== undefined && this.hotSeatQuestion.allChoicesRevealed();
   }
 
   // Returns whether the given player is host.
@@ -210,9 +222,9 @@ class ServerState {
     }
     // If we are in an event that allows for choosing, make choice buttons active by setting choice
     // actions.
-    if (compressed.clientIsHotSeat && hotSeatChoosableEvents.has(currentSocketEvent)) {
+    if (compressed.clientIsHotSeat && this.hotSeatPlayerCanChoose(currentSocketEvent)) {
       compressed.choiceAction = 'hotSeatChoose';
-    } else if (compressed.clientIsContestant && contestantChoosableEvents.has(currentSocketEvent)) {
+    } else if (compressed.clientIsContestant && this.contestantCanChoose(currentSocketEvent)) {
       compressed.choiceAction = 'contestantChoose';
     }
     // Fastest finger question
@@ -246,6 +258,14 @@ class ServerState {
     // Hot seat rules
     if (currentSocketEvent == 'showHostCueHotSeatRules') {
       compressed.infoText = LocalizedStrings.HOT_SEAT_RULES;
+    }
+    // Hot seat question
+    if (this.hotSeatQuestion !== undefined) {
+      compressed.question = {
+        text: this.hotSeatQuestion.text,
+        revealedChoices: this.hotSeatQuestion.revealedChoices,
+        madeChoices: [ player.hotSeatChoice ]
+      };
     }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();
