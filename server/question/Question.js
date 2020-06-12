@@ -60,6 +60,15 @@ class Question {
       this.revealedChoices.push(this.shuffledChoices[this.revealedChoices.length]);
     }
   }
+
+  // Returns a compressed version of the question that can be passed through a socket.
+  toCompressed(madeChoices) {
+    return {
+      text: this.text,
+      revealedChoices: this.revealedChoices,
+      madeChoices: madeChoices
+    };
+  }
 }
 
 module.exports = Question;

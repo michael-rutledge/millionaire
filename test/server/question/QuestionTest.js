@@ -1,5 +1,6 @@
 const expect = require('chai').expect;
 
+const Choices = require(process.cwd() + '/server/question/Choices.js');
 const Question = require(process.cwd() + '/server/question/Question.js');
 
 describe('QuestionTest', () => {
@@ -87,5 +88,22 @@ describe('QuestionTest', () => {
     question.revealChoice();
 
     expect(question.revealedChoices).to.deep.equal(question.shuffledChoices);
+  });
+
+  describe('toCompressed', function () {
+    it('shouldGiveExpectedResult', function () {
+      var question = new Question({
+        text: 'question_text',
+        orderedChoices: ['correct', 'incorrect_1', 'incorrect_2', 'incorrect_3']
+      });
+
+      var result = question.toCompressed(/*madeChoices=*/[Choices.A]);
+
+      expect(result).to.deep.equal({
+        text: question.text,
+        revealedChoices: question.revealedChoices,
+        madeChoices: [Choices.A]
+      });
+    });
   });
 });
