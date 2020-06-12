@@ -242,7 +242,7 @@ class GameServer {
     Logger.logInfo(this.currentSocketEvent);
 
     this.serverState.fastestFingerQuestion.revealAllChoices();
-    this.serverState.fastestFingerStartTime = Date.now();
+    this.serverState.fastestFingerQuestion.markStartTime();
     this._updateGame();
 
     this.currentForcedTimer = setTimeout(() => {
@@ -435,6 +435,8 @@ class GameServer {
         aiTimeout: 1500
       }));
     } else {
+      // Once all choices are revealed, start the clock for timing contestant answers.
+      this.serverState.hotSeatQuestion.markStartTime();
       // Once all choices are revealed, the show host must wait for hot seat player input.
       this.serverState.setShowHostStepDialog(undefined);
       this.serverState.setHotSeatStepDialog(undefined);
@@ -461,6 +463,17 @@ class GameServer {
       this.serverState.setHotSeatStepDialog(dialog);
     }
     this._updateGame();
+  }
+
+  // Response to the client making a contestant choice on a hot seat question.
+  //
+  // Expected to only come from contestant sockets.
+  contestantChoose(socket, data) {
+    Logger.logInfo('contestantChoose: ' + data.choice);
+
+    var player = this.playerMap.getPlayerBySocket(socket);
+    player.chooseHotSeat(data.choice);
+    this.updateGameForSocket(socket);
   }
 }
 

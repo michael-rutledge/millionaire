@@ -210,7 +210,7 @@ describe('GameServerTest', () => {
 
     gameServer.showHostRevealFastestFingerQuestionChoices(new MockSocket(), /*data=*/{});
 
-    expect(gameServer.serverState.fastestFingerStartTime).to.not.be.undefined;
+    expect(gameServer.serverState.fastestFingerQuestion.startTime).to.not.be.undefined;
     clearTimeout(gameServer.currentForcedTimer);
   });
 
@@ -553,6 +553,19 @@ describe('GameServerTest', () => {
         header: LocalizedStrings.HOT_SEAT_FINAL_ANSWER
       });
       expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
+    });
+  });
+
+  describe('contestantChoose', function () {
+    it('shouldChooseForGivenPlayer', () => {
+      var gameServer = newGameServerWithPlayerShowHost(false);
+      var mockSocket = new MockSocket('socket_id');
+      var player = new Player(mockSocket, 'username');
+      gameServer.playerMap.putPlayer(player);
+
+      gameServer.contestantChoose(mockSocket, { choice: Choices.A });
+
+      expect(player.hotSeatChoice).to.equal(Choices.A);
     });
   });
 });

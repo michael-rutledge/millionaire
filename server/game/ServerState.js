@@ -12,7 +12,7 @@ const fastestFingerChoosableEvents = new Set(['showHostRevealFastestFingerQuesti
 const showFastestFingerResultsEvents = new Set([
   'showHostRevealFastestFingerResults',
   'showHostAcceptHotSeatPlayer'
-  ]);
+]);
 
 // Encapsulates the state of a running game on the server side.
 class ServerState {
@@ -79,12 +79,12 @@ class ServerState {
 
   // Returns an array of fastest finger player results for client display using the given player
   // map.
-  getFastestFingerResults(playerMap, startTime) {
+  getFastestFingerResults(playerMap, question) {
     var fastestFingerResults = [];
 
     playerMap.doAll((player) => {
       if (!this.playerIsShowHost(player)) {
-        var elapsedTime = player.fastestFingerTime - startTime;
+        var elapsedTime = player.fastestFingerTime - question.startTime;
 
         fastestFingerResults.push({
           username: player.username,
@@ -136,7 +136,6 @@ class ServerState {
   // Resets the fastest finger question state back to default.
   resetFastestFinger() {
     this.fastestFingerQuestion = undefined;
-    this.fastestFingerStartTime = undefined;
     this.clearAllPlayerAnswers();
   }
 
@@ -195,8 +194,6 @@ class ServerState {
 
     // Reference to the current fastest finger question
     this.fastestFingerQuestion = undefined;
-
-    this.fastestFingerStartTime = undefined;
   }
 
   // Returns a compressed, JSON-formatted version of client state to pass to the client via socket.
@@ -243,7 +240,7 @@ class ServerState {
     if (showFastestFingerResultsEvents.has(currentSocketEvent)) {
       compressed.fastestFingerRevealedAnswers = undefined;
       compressed.fastestFingerResults = this.getFastestFingerResults(this.playerMap,
-        this.fastestFingerStartTime);
+        this.fastestFingerQuestion);
       this.hotSeatPlayer = this.getHotSeatPlayerFromFastestFingerResults(
         compressed.fastestFingerResults);
       compressed.fastestFingerBestScore = this.hotSeatPlayer.fastestFingerScore;

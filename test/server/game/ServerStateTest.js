@@ -103,13 +103,17 @@ describe('ServerStateTest', () => {
   it('getFastestFingerResultsShouldGiveExpectedResultForPlayer', () => {
     var serverState = new ServerState(new PlayerMap());
     var player = new Player(new MockSocket('socket_id'), 'player');
-    var startTime = new Date().getTime();
+    var question = new FastestFingerQuestion({
+        text: 'question',
+        orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+      });
+    question.markStartTime();
     player.fastestFingerScore = 2;
-    player.fastestFingerTime = startTime + 2000;
+    player.fastestFingerTime = question.startTime + 2000;
     serverState.playerMap.putPlayer(player);
 
     var fastestFingerResults = serverState.getFastestFingerResults(serverState.playerMap,
-      startTime);
+      question);
 
     expect(fastestFingerResults).to.deep.equal([{
       username: player.username,
@@ -487,6 +491,10 @@ describe('ServerStateTest', () => {
     var serverState = new ServerState(new PlayerMap());
     var mockSocket = new MockSocket('socket_id');
     var player = new Player(mockSocket, 'username');
+    serverState.fastestFingerQuestion = new FastestFingerQuestion({
+      text: 'question',
+      orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+    });
     serverState.playerMap.putPlayer(player);
     serverState.setHotSeatPlayerByUsername(player.username);
 
