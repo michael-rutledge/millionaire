@@ -4,6 +4,7 @@ const Constants = require('../Constants.js');
 const Fonts = require('../Fonts.js');
 const MillionaireBubbleBuilder = require('./MillionaireBubbleBuilder.js');
 const TextElement = require('./TextElement.js');
+const TextElementBuilder = require('./TextElementBuilder.js');
 
 // Dialog element shown to players when they are in control of game flow.
 class StepDialogElement extends CanvasElement {
@@ -63,6 +64,7 @@ class StepDialogElement extends CanvasElement {
       bubbleHeight / 2 - verticalPadding;
     this.context.strokeStyle = this._getHorizontalLineGradient(startX, startX + bubbleWidth);
 
+    // Button elements
     for (var i = 0; i < this.compressedStepDialog.actions.length; i++) {
       var action = this.compressedStepDialog.actions[i];
       var bubble =
@@ -76,6 +78,16 @@ class StepDialogElement extends CanvasElement {
       bubble.draw();
       this.actionBubbles.push(bubble);
     }
+
+    // Header text element
+    new TextElementBuilder(this.canvas)
+      .setPosition(startX,
+        startY - this.compressedStepDialog.actions.length * (bubbleHeight + verticalPadding))
+      .setText(this.compressedStepDialog.header)
+      .setFont(Fonts.STEP_DIALOG_HEADER_FONT)
+      .setTextAlign('center')
+      .build()
+      .draw();
 
     this.context.strokeStyle = oldStrokeStyle;
     this.context.font = oldFont;

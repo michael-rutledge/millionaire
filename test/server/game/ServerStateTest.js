@@ -531,4 +531,29 @@ describe('ServerStateTest', () => {
       madeChoices: [ player.hotSeatChoice ]
     });
   });
+
+  it('toCompressedClientStateShouldGiveHostHotSeatPlayerChoiceOnHotSeatQuestion', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var hotSeatSocket = new MockSocket('socket_hot_seat');
+    var hotSeatPlayer = new Player(hotSeatSocket, 'hot_seat');
+    var showHostSocket = new MockSocket('socket_show_host');
+    var showHostPlayer = new Player(showHostSocket, 'show_host');
+    serverState.playerMap.putPlayer(hotSeatPlayer);
+    serverState.playerMap.putPlayer(showHostPlayer);
+    serverState.hotSeatQuestion = new HotSeatQuestion({
+      text: 'question',
+      orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+    });
+    serverState.hotSeatQuestion.revealAllChoices();
+    serverState.setShowHostByUsername(showHostPlayer.username);
+    serverState.setHotSeatPlayerByUsername(hotSeatPlayer.username);
+    hotSeatPlayer.chooseHotSeat(Choices.A);
+
+    var compressedClientState = serverState.toCompressedClientState(showHostSocket,
+      /*currentSocketEvent=*/undefined);
+
+    expect(compressedClientState.question.madeChoices).to.deep.equal([
+      hotSeatPlayer.hotSeatChoice
+    ]);
+  });
 });

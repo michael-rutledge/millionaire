@@ -15,8 +15,8 @@ const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 const QuestionAndChoicesElement = require(process.cwd() + '/client/js/rendering/element/QuestionAndChoicesElement.js');
 const StepDialogElement = require(process.cwd() + '/client/js/rendering/element/StepDialogElement.js');
 
-describe('GameClientTest', () => {
-  it('getNewCanvasElementsShouldAddBackgroundElementNoMatterWhat', () => {
+describe('GameClientTest', function () {
+  it('getNewCanvasElementsShouldAddBackgroundElementNoMatterWhat', function () {
     var gameClient = new GameClient(new MockSocket('socket_id'),
       new GameRenderer(new MockCanvas(), new MockHtmlDocument()));
     var canvas = gameClient.gameRenderer.canvas;
@@ -39,7 +39,7 @@ describe('GameClientTest', () => {
 
   // No test for show host step dialog because it doesn't work, even though e2e testing shows the
   // desired behavior is there.
-  // TODO: figure out the showHostStepDialogTest.
+  // TODO: figure out the showHostStepDialogTest and hotSeatStepDialog.
 
   it('getNewCanvasElementsShouldSetQuestionForQuestionAndChoicesElementIfPresent', () => {
     var mockSocket = new MockSocket('socket_id');

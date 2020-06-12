@@ -266,6 +266,10 @@ class ServerState {
         revealedChoices: this.hotSeatQuestion.revealedChoices,
         madeChoices: [ player.hotSeatChoice ]
       };
+      // Hot seat player choice should show for show host.
+      if (compressed.clientIsShowHost) {
+        compressed.question.madeChoices = [ this.hotSeatPlayer.hotSeatChoice ];
+      }
     }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();

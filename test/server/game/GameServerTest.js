@@ -434,6 +434,9 @@ describe('GameServerTest', () => {
         text: 'questionText',
         orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
       });
+      var player = new Player(new MockSocket(), 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
 
       gameServer.showHostRevealHotSeatChoice(new MockSocket(), /*data=*/{});
 
@@ -446,6 +449,9 @@ describe('GameServerTest', () => {
         text: 'questionText',
         orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
       });
+      var player = new Player(new MockSocket(), 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
 
       gameServer.showHostRevealHotSeatChoice(new MockSocket(), /*data=*/{});
 
@@ -458,16 +464,94 @@ describe('GameServerTest', () => {
       });
     });
 
-    it('shouldSetNoDialogWhenNoChoicesLeft', function () {
+    it('shouldSetNoShowHostStepDialogWhenNoChoicesLeft', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
       gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
         text: 'questionText',
         orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
       });
+      var player = new Player(new MockSocket(), 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
       gameServer.serverState.hotSeatQuestion.revealAllChoices();
 
       gameServer.showHostRevealHotSeatChoice(new MockSocket(), /*data=*/{});
 
+      expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
+    });
+
+    it('shouldSetNoHotSeatStepDialogWhenNoChoicesLeft', function () {
+      var gameServer = newGameServerWithPlayerShowHost(false);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+      var player = new Player(new MockSocket(), 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
+      gameServer.serverState.hotSeatQuestion.revealAllChoices();
+      gameServer.serverState.hotSeatStepDialog = {};
+
+      gameServer.showHostRevealHotSeatChoice(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.hotSeatStepDialog).to.be.undefined;
+    });
+  });
+
+  describe('hotSeatChoose', function () {
+    it('shouldChooseHotSeatChoiceForPlayer', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var mockSocket = new MockSocket('socket_id');
+      var player = new Player(mockSocket, 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
+
+      gameServer.hotSeatChoose(mockSocket, { choice: Choices.A });
+
+      expect(player.hotSeatChoice).to.equal(Choices.A);
+    });
+
+    it('shouldSetHostDialogWhenShowHostPresent', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var mockSocket = new MockSocket('socket_id');
+      var player = new Player(mockSocket, 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
+
+      gameServer.hotSeatChoose(mockSocket, { choice: Choices.A });
+
+      expect(gameServer.serverState.showHostStepDialog).to.deep.equal({
+        actions: [{
+          socketEvent: 'hotSeatFinalAnswer',
+          text: LocalizedStrings.YES
+        }, {
+          socketEvent: 'showHostRevealHotSeatChoice',
+          text: LocalizedStrings.NO
+        }],
+        header: LocalizedStrings.HOT_SEAT_FINAL_ANSWER
+      });
+      expect(gameServer.serverState.hotSeatStepDialog).to.be.undefined;
+    });
+
+    it('shouldHotSeatDialogWhenShowHostNotPresent', function () {
+      var gameServer = newGameServerWithPlayerShowHost(false);
+      var mockSocket = new MockSocket('socket_id');
+      var player = new Player(mockSocket, 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
+
+      gameServer.hotSeatChoose(mockSocket, { choice: Choices.A });
+
+      expect(gameServer.serverState.hotSeatStepDialog).to.deep.equal({
+        actions: [{
+          socketEvent: 'hotSeatFinalAnswer',
+          text: LocalizedStrings.YES
+        }, {
+          socketEvent: 'showHostRevealHotSeatChoice',
+          text: LocalizedStrings.NO
+        }],
+        header: LocalizedStrings.HOT_SEAT_FINAL_ANSWER
+      });
       expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
     });
   });

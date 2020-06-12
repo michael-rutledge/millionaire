@@ -49,6 +49,11 @@ class GameClient {
         compressedClientState.showHostStepDialog));
     }
 
+    if (compressedClientState.hotSeatStepDialog !== undefined) {
+      newCanvasElements.push(new StepDialogElement(canvas, this.socket,
+        compressedClientState.hotSeatStepDialog));
+    }
+
     if (compressedClientState.question !== undefined) {
       questionAndChoicesElement.setQuestion(compressedClientState.question);
       questionAndChoicesElement.choiceAction = compressedClientState.choiceAction;

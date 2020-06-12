@@ -89,6 +89,22 @@ class GameServer {
     }
   }
 
+  // Returns a new manual StepDialog that prompts the user with a yes or no option.
+  _getYesNoDialog(yesEvent, noEvent, header) {
+    return new StepDialog(/*actions=*/[
+      {
+        socketEvent: yesEvent,
+        text: LocalizedStrings.YES
+      },
+      {
+        socketEvent: noEvent,
+        text: LocalizedStrings.NO
+      }],
+      /*timeoutFunc=*/undefined,
+      /*timeoutMs*/undefined,
+      /*header=*/header);
+  }
+
   // Updates the game client-side by emitting a customized, compressed ClientState to each player.
   _updateGame() {
     this.playerMap.emitCustomToAll('updateGame', (socket) => {
@@ -407,6 +423,8 @@ class GameServer {
     this.currentSocketEvent = 'showHostRevealHotSeatChoice';
     Logger.logInfo(this.currentSocketEvent);
 
+    // We clear hot seat player's answer just for if they back out of final answer.
+    this.serverState.hotSeatPlayer.clearAllAnswers();
     this.serverState.hotSeatQuestion.revealChoice();
 
     // Only reveal more choices if choices are left.
@@ -419,6 +437,28 @@ class GameServer {
     } else {
       // Once all choices are revealed, the show host must wait for hot seat player input.
       this.serverState.setShowHostStepDialog(undefined);
+      this.serverState.setHotSeatStepDialog(undefined);
+    }
+    this._updateGame();
+  }
+
+  // Response to the client making a hot seat choice.
+  //
+  // Expected to only be called by the hot seat player.
+  hotSeatChoose(socket, data) {
+    this.currentSocketEvent = 'hotSeatChoose';
+    Logger.logInfo(this.currentSocketEvent);
+
+    this.serverState.hotSeatPlayer.chooseHotSeat(data.choice);
+    var dialog = this._getYesNoDialog(
+          /*yesEvent=*/'hotSeatFinalAnswer',
+          /*noEvent=*/'showHostRevealHotSeatChoice',
+          /*header=*/LocalizedStrings.HOT_SEAT_FINAL_ANSWER);
+
+    if (this.serverState.playerShowHostPresent()) {
+      this.serverState.setShowHostStepDialog(dialog);
+    } else {
+      this.serverState.setHotSeatStepDialog(dialog);
     }
     this._updateGame();
   }
