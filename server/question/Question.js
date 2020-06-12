@@ -1,3 +1,24 @@
+// Automatic wait times for final answer confirmations per question index.
+//
+// Later questions have longer times to build more suspense.
+const FINAL_ANSWER_WAIT_TIMES = [
+  1000,
+  1000,
+  1000,
+  1000,
+  1500,
+  3000,
+  3000,
+  3000,
+  3000,
+  4000,
+  5000,
+  5000,
+  5000,
+  5000,
+  7500
+];
+
 // Super class that lays groundwork for other questions.
 class Question {
   constructor(questionJson) {
@@ -72,3 +93,4 @@ class Question {
 }
 
 module.exports = Question;
+Question.FINAL_ANSWER_WAIT_TIMES = FINAL_ANSWER_WAIT_TIMES;

@@ -5,6 +5,8 @@ const HotSeatSession = require(process.cwd() + '/server/question/HotSeatSession.
 const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 const StepDialog = require(process.cwd() + '/server/game/StepDialog.js');
 
+const FINAL_ANSWER_WAIT_TIMES = require(process.cwd() + '/server/question/Question.js').FINAL_ANSWER_WAIT_TIMES;
+
 // Socket event names to allow for dynamic activation and deactivation of listeners.
 const SOCKET_EVENTS = [
   'showHostShowFastestFingerRules',
@@ -26,7 +28,8 @@ const SOCKET_EVENTS = [
   'showHostAskTheAudience',
   'showHostDoFiftyFifty',
   'showHostPhoneAFriend',
-  'showHostRevealHotSeatQuestionOutcome',
+  'showHostRevealHotSeatQuestionVictory',
+  'showHostRevealHotSeatQuestionLoss',
   'showHostShowScores',
   'contestantChoose',
   'contestantSetConfidence',
@@ -474,6 +477,33 @@ class GameServer {
     var player = this.playerMap.getPlayerBySocket(socket);
     player.chooseHotSeat(data.choice);
     this.updateGameForSocket(socket);
+  }
+
+  // Response to the client finalizing a hot seat player's answer.
+  //
+  // Will reveal the outcome of the answer to the show host, but only the show host.
+  hotSeatFinalAnswer(socket, data) {
+    this.currentSocketEvent = 'hotSeatFinalAnswer';
+    Logger.logInfo(this.currentSocketEvent);
+
+    this.serverState.hotSeatQuestion.revealCorrectChoiceForShowHost();
+
+    if (this.serverState.hotSeatQuestion.answerIsCorrect(
+        this.serverState.hotSeatPlayer.hotSeatChoice)) {
+      this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+        nextSocketEvent: 'showHostRevealHotSeatQuestionVictory',
+        hostButtonMessage: LocalizedStrings.HOT_SEAT_VICTORY,
+        aiTimeout: FINAL_ANSWER_WAIT_TIMES[this.serverState.hotSeatQuestionIndex]
+      }));
+    } else  {
+      this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+        nextSocketEvent: 'showHostRevealHotSeatQuestionLoss',
+        hostButtonMessage: LocalizedStrings.HOT_SEAT_LOSS,
+        aiTimeout: FINAL_ANSWER_WAIT_TIMES[this.serverState.hotSeatQuestionIndex]
+      }));
+    }
+
+    this._updateGame();
   }
 }
 

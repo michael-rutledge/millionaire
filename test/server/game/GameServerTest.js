@@ -568,4 +568,58 @@ describe('GameServerTest', () => {
       expect(player.hotSeatChoice).to.equal(Choices.A);
     });
   });
+
+  describe('hotSeatFinalAnswer', function () {
+    it('shouldSetExpectedDialogForCorrectAnswer', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+      gameServer.serverState.hotSeatQuestion.shuffledChoices = [
+        'choice 2', 'choice 1', 'choice 4', 'choice 3'
+      ];
+      var player = new Player(new MockSocket(), 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
+      gameServer.serverState.hotSeatQuestion.revealAllChoices();
+      player.chooseHotSeat(Choices.B);
+
+      gameServer.hotSeatFinalAnswer(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.showHostStepDialog).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostRevealHotSeatQuestionVictory',
+          text: LocalizedStrings.HOT_SEAT_VICTORY
+        }],
+        header: ''
+      });
+    });
+
+    it('shouldSetExpectedDialogForIncorrectAnswer', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+      gameServer.serverState.hotSeatQuestion.shuffledChoices = [
+        'choice 2', 'choice 1', 'choice 4', 'choice 3'
+      ];
+      var player = new Player(new MockSocket(), 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
+      gameServer.serverState.hotSeatQuestion.revealAllChoices();
+      player.chooseHotSeat(Choices.A);
+
+      gameServer.hotSeatFinalAnswer(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.showHostStepDialog).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostRevealHotSeatQuestionLoss',
+          text: LocalizedStrings.HOT_SEAT_LOSS
+        }],
+        header: ''
+      });
+    });
+  });
 });

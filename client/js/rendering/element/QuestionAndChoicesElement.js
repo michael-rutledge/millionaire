@@ -13,6 +13,7 @@ class QuestionAndChoicesElement extends CanvasElement {
     this.questionText = undefined;
     this.revealedChoices = [];
     this.madeChoices = [];
+    this.correctChoice = undefined;
     this.choiceBubbles = [];
     this.socket = socket;
     this.choiceAction = choiceAction;
@@ -91,8 +92,7 @@ class QuestionAndChoicesElement extends CanvasElement {
         .setDimensions(bubbleWidth, bubbleHeight)
         .setText(this.revealedChoices[leftChoice])
         .setChoice(this.choiceBubbles.length)
-        .setState(this.madeChoices.includes(leftChoice) ?
-          MillionaireBubble.State.SELECTED : MillionaireBubble.State.DEFAULT)
+        .setState(this._getStateForChoice(leftChoice))
         .setTextAlign('left')
         .build();
     choiceBubble.draw();
@@ -109,8 +109,7 @@ class QuestionAndChoicesElement extends CanvasElement {
         .setDimensions(bubbleWidth, bubbleHeight)
         .setText(this.revealedChoices[rightChoice])
         .setChoice(this.choiceBubbles.length)
-        .setState(this.madeChoices.includes(rightChoice) ?
-          MillionaireBubble.State.SELECTED : MillionaireBubble.State.DEFAULT)
+        .setState(this._getStateForChoice(rightChoice))
         .setTextAlign('left')
         .build();
     choiceBubble.draw();
@@ -119,6 +118,21 @@ class QuestionAndChoicesElement extends CanvasElement {
     bubbleLine.moveTo(startX + bubbleWidth, questionMidLineY);
     bubbleLine.lineTo(this.canvas.width - bottomSidePanelWidth, questionMidLineY);
     this.context.stroke(bubbleLine);
+  }
+
+  // Returns the MillionaireBubble.State for the given choice.
+  _getStateForChoice(choice) {
+    var state = MillionaireBubble.State.DEFAULT;
+
+    if (this.madeChoices.includes(choice)) {
+      state = MillionaireBubble.State.SELECTED;
+    }
+
+    if (this.correctChoice === choice) {
+      state = MillionaireBubble.State.CORRECT;
+    }
+
+    return state;
   }
 
   _onClick(x, y) {
@@ -170,6 +184,7 @@ class QuestionAndChoicesElement extends CanvasElement {
     this.questionText = question.text;
     this.revealedChoices = question.revealedChoices;
     this.madeChoices = question.madeChoices;
+    this.correctChoice = question.correctChoice;
 
     // Choices should only be clickable when all are revealed
     if (this.revealedChoices.length >= Choices.MAX_CHOICES) {

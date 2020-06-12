@@ -226,11 +226,8 @@ class ServerState {
     }
     // Fastest finger question
     if (this.fastestFingerQuestion !== undefined) {
-      compressed.question = {
-        text: this.fastestFingerQuestion.text,
-        revealedChoices: this.fastestFingerQuestion.revealedChoices,
-        madeChoices: player.fastestFingerChoices
-      };
+      compressed.question = this.fastestFingerQuestion.toCompressed(
+        /*madeChoices=*/player.fastestFingerChoices);
       // Fastest finger answer results
       if (this.fastestFingerQuestion.revealedAnswers.length > 0) {
         compressed.fastestFingerRevealedAnswers = this.fastestFingerQuestion.revealedAnswers;
@@ -258,15 +255,14 @@ class ServerState {
     }
     // Hot seat question
     if (this.hotSeatQuestion !== undefined) {
-      compressed.question = {
-        text: this.hotSeatQuestion.text,
-        revealedChoices: this.hotSeatQuestion.revealedChoices,
-        madeChoices: [ player.hotSeatChoice ]
-      };
-      // Hot seat player choice should show for show host.
-      if (compressed.clientIsShowHost) {
-        compressed.question.madeChoices = [ this.hotSeatPlayer.hotSeatChoice ];
-      }
+      var madeChoiceToDisplay = compressed.clientIsShowHost ?
+        this.hotSeatPlayer.hotSeatChoice :
+        player.hotSeatChoice;
+      var showCorrectChoice = compressed.clientIsShowHost ?
+        this.hotSeatQuestion.correctChoiceRevealedForShowHost :
+        this.hotSeatQuestion.correctChoiceRevealedForAll;
+      compressed.question = this.hotSeatQuestion.toCompressed(madeChoiceToDisplay,
+        showCorrectChoice);
     }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();

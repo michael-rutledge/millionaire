@@ -13,6 +13,8 @@ module.exports.HOT_SEAT_RULES = 'Answer 15 questions of increasing difficulty to
 module.exports.SHOW_HOT_SEAT_QUESTION = 'Show question text';
 module.exports.REVEAL_HOT_SEAT_CHOICE = 'Reveal choice';
 module.exports.HOT_SEAT_FINAL_ANSWER = 'Final Answer?';
+module.exports.HOT_SEAT_VICTORY = 'Correct!';
+module.exports.HOT_SEAT_LOSS = 'Sorry...';
 
 module.exports.YES = 'Yes';
 module.exports.NO = 'No';
