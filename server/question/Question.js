@@ -13,6 +13,10 @@ class Question {
 
     // Choices that all players can see as they get revealed
     this.revealedChoices = [];
+
+    // Time that the question was opened for answering. Used in calculation of fastest finger winner
+    // and contestant winnings on hot seat questions.
+    this.startTime = undefined;
   }
 
 
@@ -34,6 +38,15 @@ class Question {
   // Returns whether all choices for this Question have been revealed.
   allChoicesRevealed() {
     return this.revealedChoices.length >= this.shuffledChoices.length;
+  }
+
+  // Sets the start time of this question to now.
+  //
+  // Can only set the time once. Any subsequent calls will not change the startTime.
+  markStartTime() {
+    if (this.startTime === undefined) {
+      this.startTime = Date.now();
+    }
   }
 
   // Reveals all choices at once.

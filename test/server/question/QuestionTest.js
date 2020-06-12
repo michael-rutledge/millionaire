@@ -29,6 +29,32 @@ describe('QuestionTest', () => {
     expect(resultAllRevealed).to.be.true;
   });
 
+  describe('markStartTime', function () {
+    it('shouldSetNewStartTimeWhenNotCalledBefore', function () {
+      var question = new Question({
+        text: 'question_text',
+        orderedChoices: ['a', 'b', 'c', 'd']
+      });
+
+      question.markStartTime();
+
+      expect(question.startTime).to.not.be.undefined;
+    });
+
+    it('shouldNotSetNewStartTimeWhenAlreadyCalled', function () {
+      var question = new Question({
+        text: 'question_text',
+        orderedChoices: ['a', 'b', 'c', 'd']
+      });
+      question.startTime = 1;
+      var originalStartTime = question.startTime;
+
+      question.markStartTime();
+
+      expect(question.startTime).to.equal(1);
+    });
+  });
+
   it('revealAllChoicesShouldGiveExpectedResult', () => {
     var question = new Question({
       text: 'question_text',
