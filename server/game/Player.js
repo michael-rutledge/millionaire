@@ -34,9 +34,11 @@ class Player {
 
   // Chooses an answer for a hot seat question for this Player.
   //
-  // Time of answer is tracked in calculation of contestant money.
+  // Time of answer is tracked in calculation of contestant money. A changed answer will reset the
+  // time of answer.
   chooseHotSeat(choice) {
-    if (Choices.isValidChoice(choice) && this.hotSeatChoice === undefined) {
+    if (Choices.isValidChoice(choice) && (this.hotSeatChoice === undefined ||
+        this.hotSeatChoice !== choice)) {
       this.hotSeatChoice = choice;
       this.hotSeatTime = Date.now();
     }

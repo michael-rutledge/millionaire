@@ -49,27 +49,37 @@ describe('PlayerTest', () => {
     expect(timeAfter).to.not.be.undefined;
   });
 
-  it('chooseHotSeatShouldChooseWhenNoChoiceMadeYet', () => {
-    var player = new Player(new MockSocket('socket_id'), 'username');
+  describe('chooseHotSeat', function () {
+    it('shouldChooseWhenNoChoiceMadeYet', () => {
+      var player = new Player(new MockSocket('socket_id'), 'username');
 
-    player.chooseHotSeat(Choices.A);
+      player.chooseHotSeat(Choices.A);
 
-    expect(player.hotSeatChoice).to.equal(Choices.A);
-    expect(player.hotSeatTime).to.not.be.undefined;
-  });
+      expect(player.hotSeatChoice).to.equal(Choices.A);
+      expect(player.hotSeatTime).to.not.be.undefined;
+    });
 
-  it('chooseHotSeatShouldNotChooseWhenChoiceAlreadyMade', () => {
-    var player = new Player(new MockSocket('socket_id'), 'username');
-    var timeBefore, timeAfter;
+    it('shouldNotResetTimeOnRepeatChoice', () => {
+      var player = new Player(new MockSocket('socket_id'), 'username');
+      player.chooseHotSeat(Choices.A);
+      player.hotSeatTime = 1;
 
-    player.chooseHotSeat(Choices.A);
-    timeBefore = player.hotSeatTime;
-    player.chooseHotSeat(Choices.B);
-    timeAfter = player.hotSeatTime;
+      player.chooseHotSeat(Choices.A);
 
-    expect(player.hotSeatChoice).to.equal(Choices.A);
-    expect(timeBefore).to.not.be.undefined;
-    expect(timeBefore).to.equal(timeAfter);
+      expect(player.hotSeatChoice).to.equal(Choices.A);
+      expect(player.hotSeatTime).to.equal(1);
+    });
+
+    it('shouldUpdateChoiceAndTimeOnDifferentChoice', () => {
+      var player = new Player(new MockSocket('socket_id'), 'username');
+      player.chooseHotSeat(Choices.A);
+      player.hotSeatTime = 1;
+
+      player.chooseHotSeat(Choices.B);
+
+      expect(player.hotSeatChoice).to.equal(Choices.B);
+      expect(player.hotSeatTime).to.not.equal(1);
+    });
   });
 
   it('clearAllAnswersShouldGiveExpectedResult', () => {
