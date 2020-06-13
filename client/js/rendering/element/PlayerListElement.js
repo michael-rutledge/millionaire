@@ -1,8 +1,7 @@
 const CanvasElement = require('./CanvasElement.js');
 const Colors = require('../Colors.js');
 const Constants = require('../Constants.js');
-const MillionaireBubble = require('./MillionaireBubble.js');
-const MillionaireBubbleBuilder = require('./MillionaireBubbleBuilder.js');
+const PlayerElement = require('./PlayerElement.js');
 
 class PlayerListElement extends CanvasElement {
 
@@ -10,7 +9,7 @@ class PlayerListElement extends CanvasElement {
     // x and y will be ignored upon draw
     super(canvas, /*x=*/0, /*y=*/0);
     this.compressedPlayerList = compressedPlayerList;
-    this.playerBubbles = [];
+    this.playerElements = [];
   }
 
 
@@ -40,16 +39,10 @@ class PlayerListElement extends CanvasElement {
     for (var i = 0; i < this.compressedPlayerList.length; i++) {
       var compressedPlayer = this.compressedPlayerList[i];
       var y = startY + i * (bubbleHeight + verticalPadding);
-      var playerBubble =
-        new MillionaireBubbleBuilder(this.canvas)
-          .setPosition(startX, y)
-          .setDimensions(bubbleWidth, bubbleHeight)
-          .setText(compressedPlayer.username)
-          .setState(MillionaireBubble.State.DEFAULT)
-          .setTextAlign('left')
-          .build();
-      playerBubble.draw();
-      this.playerBubbles.push(playerBubble);
+      var playerElement =
+        new PlayerElement(this.canvas, startX, y, bubbleWidth, bubbleHeight, compressedPlayer);
+      playerElement.draw();
+      this.playerElements.push(playerElement);
     }
   }
 }

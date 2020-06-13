@@ -29,6 +29,7 @@ class FastestFingerResultsElement extends CanvasElement {
   _getTimeInDecimalSecondString(timeMs) {
     var seconds = Math.floor(timeMs / 1000);
     var decimals = Math.floor(timeMs % 100);
+    decimals = decimals < 10 ? '0' + decimals : decimals;
     return seconds + '.' + decimals;
   }
 
