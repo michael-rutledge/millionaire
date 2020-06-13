@@ -16,5 +16,6 @@ module.exports.HOT_SEAT_FINAL_ANSWER = 'Final Answer?';
 module.exports.HOT_SEAT_VICTORY = 'Correct!';
 module.exports.HOT_SEAT_LOSS = 'Sorry...';
 
+module.exports.TOTAL_WINNINGS = 'Total Winnings:';
 module.exports.YES = 'Yes';
 module.exports.NO = 'No';

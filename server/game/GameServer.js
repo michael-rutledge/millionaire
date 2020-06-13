@@ -6,6 +6,8 @@ const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 const StepDialog = require(process.cwd() + '/server/game/StepDialog.js');
 
 const FINAL_ANSWER_WAIT_TIMES = require(process.cwd() + '/server/question/Question.js').FINAL_ANSWER_WAIT_TIMES;
+const CORRECT_WAIT_TIMES = require(process.cwd() + '/server/question/Question.js').CORRECT_WAIT_TIMES;
+const MONEY_STRINGS = require(process.cwd() + '/server/question/Question.js').MONEY_STRINGS;
 
 // Socket event names to allow for dynamic activation and deactivation of listeners.
 const SOCKET_EVENTS = [
@@ -357,7 +359,11 @@ class GameServer {
     this.currentSocketEvent = 'showHostAcceptHotSeatPlayer';
     Logger.logInfo(this.currentSocketEvent);
 
-    // Nothing much happens here other than triggering the audio cue.
+    // Fanfare should play as the celebration for a fastest finger winner is started.
+    this.serverState.setCelebrationBanner({
+      header: LocalizedStrings.FASTEST_FINGER_WINNER,
+      text: this.serverState.hotSeatPlayer.username
+    });
 
     // Human host will control flow, or 10 seconds until hot seat rules start.
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -375,8 +381,10 @@ class GameServer {
     this.currentSocketEvent = 'showHostCueHotSeatRules';
     Logger.logInfo(this.currentSocketEvent);
 
-    // Fastest finger question is reset, as its job is finished.
+    // Fastest finger question is reset, as its job is finished. The celebration banner is removed
+    // as well.
     this.serverState.resetFastestFinger();
+    this.serverState.setCelebrationBanner(undefined);
 
     // Human host will control flow, or 5 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -393,6 +401,8 @@ class GameServer {
     Logger.logInfo(this.currentSocketEvent);
 
     // Nothing much happens here other than triggering the "Let's Play" audio cue.
+    this.serverState.setCelebrationBanner(undefined);
+    this.serverState.hotSeatQuestionIndex++;
 
     // Human host will control flow, or 7 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -503,6 +513,37 @@ class GameServer {
       }));
     }
 
+    this._updateGame();
+  }
+
+  // Response to the client transitioning to a question victory screen.
+  showHostRevealHotSeatQuestionVictory(socket, data) {
+    this.currentSocketEvent = 'showHostRevealHotSeatQuestionVictory';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // First we want to reveal the question's outcome briefly.
+    this.serverState.setShowHostStepDialog(undefined);
+    this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
+    this._updateGame();
+
+    // Then after a brief moment, set the step dialog and celebration banner.
+    this.currentForcedTimer = setTimeout(() => {
+      this.showHostRevealHotSeatQuestionVictory_Continuation();
+    }, /*timeoutMs*/1000);
+  }
+
+  // Continuation to be forced during showHostRevealQuestionVictory.
+  showHostRevealHotSeatQuestionVictory_Continuation() {
+    this.serverState.setCelebrationBanner({
+      header: '',
+      text: MONEY_STRINGS[this.serverState.hotSeatQuestionIndex]
+    });
+    this.serverState.resetHotSeatQuestion();
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostCueHotSeatQuestion',
+      hostButtonMessage: LocalizedStrings.CUE_HOT_SEAT_QUESTION,
+      aiTimeout: CORRECT_WAIT_TIMES[this.serverState.hotSeatQuestionIndex]
+    }));
     this._updateGame();
   }
 }

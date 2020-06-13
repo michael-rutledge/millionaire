@@ -139,6 +139,17 @@ class ServerState {
     this.clearAllPlayerAnswers();
   }
 
+  // Resets the hot seat question.
+  resetHotSeatQuestion() {
+    this.hotSeatQuestion = undefined;
+    this.clearAllPlayerAnswers();
+  }
+
+  // Sets the current celebration banner.
+  setCelebrationBanner(celebrationBanner) {
+    this.celebrationBanner = celebrationBanner;
+  }
+
   // Sets the hot seat player of this game using the given username.
   setHotSeatPlayerByUsername(hotSeatPlayerUsername) {
     this.hotSeatPlayer = this.playerMap.getPlayerByUsername(hotSeatPlayerUsername);
@@ -190,10 +201,15 @@ class ServerState {
     this.hotSeatQuestion = undefined;
 
     // What question this server is on (e.g. 0 = $100, 14 = $1 million)
-    this.hotSeatQuestionIndex = 0;
+    //
+    // Set to -1 for default state, as it will be incremented before first use.
+    this.hotSeatQuestionIndex = -1;
 
     // Reference to the current fastest finger question
     this.fastestFingerQuestion = undefined;
+
+    // Banner element that appears on a celebration moment
+    this.celebrationBanner = undefined;
   }
 
   // Returns a compressed, JSON-formatted version of client state to pass to the client via socket.
@@ -242,13 +258,6 @@ class ServerState {
         compressed.fastestFingerResults);
       compressed.fastestFingerBestScore = this.hotSeatPlayer.fastestFingerScore;
     }
-    // New player in the hot seat
-    if (currentSocketEvent == 'showHostAcceptHotSeatPlayer') {
-      compressed.celebrationBanner = {
-        header: LocalizedStrings.FASTEST_FINGER_WINNER,
-        text: this.hotSeatPlayer.username
-      };
-    }
     // Hot seat rules
     if (currentSocketEvent == 'showHostCueHotSeatRules') {
       compressed.infoText = LocalizedStrings.HOT_SEAT_RULES;
@@ -266,6 +275,8 @@ class ServerState {
     }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();
+    // Celebration banner will show up as long as it is defined.
+    compressed.celebrationBanner = this.celebrationBanner;
 
     return compressed;
   }

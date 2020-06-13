@@ -236,7 +236,7 @@ describe('ServerStateTest', () => {
     expect(serverState.showHostStepDialog).to.be.undefined;
     expect(serverState.hotSeatStepDialog).to.be.undefined;
     expect(serverState.hotSeatQuestion).to.be.undefined;
-    expect(serverState.hotSeatQuestionIndex).to.equal(0);
+    expect(serverState.hotSeatQuestionIndex).to.equal(-1);
     expect(serverState.fastestFingerQuestion).to.be.undefined;
   });
 
@@ -487,24 +487,19 @@ describe('ServerStateTest', () => {
     }]);
   });
 
-  it('toCompressedClientStateShouldSetCelebrationBannerIfAcceptingHotSeatPlayer', () => {
+  it('toCompressedClientStateShouldSetCelebrationBannerIfPresent', () => {
     var serverState = new ServerState(new PlayerMap());
     var mockSocket = new MockSocket('socket_id');
     var player = new Player(mockSocket, 'username');
-    serverState.fastestFingerQuestion = new FastestFingerQuestion({
-      text: 'question',
-      orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
-    });
-    serverState.playerMap.putPlayer(player);
-    serverState.setHotSeatPlayerByUsername(player.username);
+    serverState.celebrationBanner = {
+      header: 'header',
+      text: 'text'
+    };
 
     var compressedClientState = serverState.toCompressedClientState(mockSocket,
-      'showHostAcceptHotSeatPlayer');
+      /*currentSocketEvent=*/undefined);
 
-    expect(compressedClientState.celebrationBanner).to.deep.equal({
-      header: LocalizedStrings.FASTEST_FINGER_WINNER,
-      text: player.username
-    });
+    expect(compressedClientState.celebrationBanner).to.deep.equal(serverState.celebrationBanner);
   });
 
   it('toCompressedClientStateShouldSetInfoTextOnCueHotSeatRules', function () {
