@@ -8,7 +8,7 @@ class HotSeatQuestion extends Question {
 
     this.correctChoiceRevealedForShowHost = false;
 
-    this.correctChoiceRevealedAll = false;
+    this.correctChoiceRevealedForAll = false;
   }
 
 
@@ -42,7 +42,7 @@ class HotSeatQuestion extends Question {
 
   // Reveals the correct choice for all.
   revealCorrectChoiceForAll() {
-    this.correctChoiceRevealedAll = true;
+    this.correctChoiceRevealedForAll = true;
   }
 
   // Returns a compressed version of the hot seat question that can be passed through a socket.

@@ -706,7 +706,7 @@ describe('GameServerTest', () => {
 
       gameServer.showHostRevealHotSeatQuestionVictory(new MockSocket(), /*data=*/{});
 
-      expect(gameServer.serverState.hotSeatQuestion.correctChoiceRevealedAll).to.be.true;
+      expect(gameServer.serverState.hotSeatQuestion.correctChoiceRevealedForAll).to.be.true;
       clearTimeout(gameServer.currentForcedTimer);
     });
 
@@ -731,12 +731,97 @@ describe('GameServerTest', () => {
       expect(gameServer.serverState.hotSeatQuestion).to.be.undefined;
     });
 
-    it('continuationShouldSetShowHostStepDialog', function () {
+    it('continuationShouldSetExpectedDialog', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
 
       gameServer.showHostRevealHotSeatQuestionVictory_Continuation();
 
-      expect(gameServer.serverState.showHostStepDialog).to.not.be.undefined;
+      expect(gameServer.serverState.showHostStepDialog).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostCueHotSeatQuestion',
+          text: LocalizedStrings.CUE_HOT_SEAT_QUESTION
+        }],
+        header: ''
+      });
+    });
+  });
+
+  describe('showHostRevealHotSeatQuestionLoss', function () {
+    it('shouldRevealCorrectChoiceForAll', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+
+      gameServer.showHostRevealHotSeatQuestionLoss(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.hotSeatQuestion.correctChoiceRevealedForAll).to.be.true;
+    });
+
+    it('shouldSetExpectedDialog', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+
+      gameServer.showHostRevealHotSeatQuestionLoss(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.showHostStepDialog).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostSayGoodbyeToHotSeat',
+          text: LocalizedStrings.SAY_GOODBYE
+        }],
+        header: ''
+      });
+    });
+  });
+
+  describe('showHostSayGoodbyeToHotSeat', function () {
+    it('shouldSetExpectedCelebrationBanner', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+
+      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.celebrationBanner).to.deep.equal({
+        header: LocalizedStrings.TOTAL_WINNINGS,
+        text: '$$$'
+      });
+    });
+
+    it('shouldResetHotSeatQuestion', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+
+      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.hotSeatQuestion).to.be.undefined;
+    });
+
+    it('shouldSetExpectedDialog', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+
+      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.showHostStepDialog).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostShowFastestFingerRules',
+          text: LocalizedStrings.START_NEW_ROUND
+        }],
+        header: ''
+      });
     });
   });
 });

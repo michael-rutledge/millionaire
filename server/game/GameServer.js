@@ -32,6 +32,7 @@ const SOCKET_EVENTS = [
   'showHostPhoneAFriend',
   'showHostRevealHotSeatQuestionVictory',
   'showHostRevealHotSeatQuestionLoss',
+  'showHostSayGoodbyeToHotSeat',
   'showHostShowScores',
   'contestantChoose',
   'contestantSetConfidence',
@@ -543,6 +544,39 @@ class GameServer {
       nextSocketEvent: 'showHostCueHotSeatQuestion',
       hostButtonMessage: LocalizedStrings.CUE_HOT_SEAT_QUESTION,
       aiTimeout: CORRECT_WAIT_TIMES[this.serverState.hotSeatQuestionIndex]
+    }));
+    this._updateGame();
+  }
+
+  // Response to the client transitioning to a question loss screen.
+  showHostRevealHotSeatQuestionLoss(socket, data) {
+    this.currentSocketEvent = 'showHostRevealHotSeatQuestionLoss';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // We want to reveal the question's outcome.
+    // TODO: deal with winnings here.
+    this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
+
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostSayGoodbyeToHotSeat',
+      hostButtonMessage: LocalizedStrings.SAY_GOODBYE,
+      aiTimeout: 6000
+    }));
+    this._updateGame();
+  }
+
+  // Continuation to be forced during showHostRevealQuestionVictory.
+  showHostSayGoodbyeToHotSeat(socket, data) {
+    // TODO: deal with winnings here
+    this.serverState.setCelebrationBanner({
+      header: LocalizedStrings.TOTAL_WINNINGS,
+      text: '\$\$\$'
+    });
+    this.serverState.resetHotSeatQuestion();
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostShowFastestFingerRules',
+      hostButtonMessage: LocalizedStrings.START_NEW_ROUND,
+      aiTimeout: 9000
     }));
     this._updateGame();
   }
