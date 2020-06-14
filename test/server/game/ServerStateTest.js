@@ -136,6 +136,61 @@ describe('ServerStateTest', () => {
     expect(fastestFingerResults).to.be.empty;
   });
 
+  describe('gradeHotSeatQuestionForContestants', function () {
+    function getPreppedServerStateWithOnePlayer(username) {
+      var serverState = new ServerState(new PlayerMap());
+      var player = new Player(new MockSocket('socket_id'), username);
+      var question = new HotSeatQuestion({
+        text: 'question',
+        orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+      });
+      serverState.playerMap.putPlayer(player);
+      serverState.hotSeatQuestionIndex = 0;
+      serverState.hotSeatQuestion = question;
+      question.shuffledChoices = ['choice2', 'choice1', 'choice4', 'choice3'];
+      serverState.hotSeatQuestion.markStartTime();
+      player.hotSeatChoice = Choices.B;
+      player.hotSeatTime = Date.now() + 2000;
+      return serverState;
+    }
+
+    it('shouldNotGradeForShowHost', function () {
+      var serverState = getPreppedServerStateWithOnePlayer('username');
+      serverState.setShowHostByUsername('username');
+
+      serverState.gradeHotSeatQuestionForContestants();
+
+      expect(serverState.playerMap.getPlayerByUsername('username').money).to.equal(0);
+    });
+
+    it('shouldNotGradeForHotSeatPlayer', function () {
+      var serverState = getPreppedServerStateWithOnePlayer('username');
+      serverState.setShowHostByUsername('username');
+
+      serverState.gradeHotSeatQuestionForContestants();
+
+      expect(serverState.playerMap.getPlayerByUsername('username').money).to.equal(0);
+    });
+
+    it('shouldAddMoneyForContestantWithRightAnswer', function () {
+      var serverState = getPreppedServerStateWithOnePlayer('username');
+
+      serverState.gradeHotSeatQuestionForContestants();
+
+      expect(serverState.playerMap.getPlayerByUsername('username').money).to.be.gt(0);
+    });
+
+    it('shouldNotAddMoneyForContestantWithWrongAnswer', function () {
+      var serverState = getPreppedServerStateWithOnePlayer('username');
+      var player = serverState.playerMap.getPlayerByUsername('username');
+      player.hotSeatChoice = undefined;
+
+      serverState.gradeHotSeatQuestionForContestants();
+
+      expect(player.money).to.equal(0);
+    });
+  });
+
   it('getHotSeatPlayerFromFastestFingerResultsShouldPrioritizeScore', () => {
     var serverState = new ServerState(new PlayerMap());
     var winningPlayer = new Player(new MockSocket('socket_winner'), 'winner');

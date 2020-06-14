@@ -5,9 +5,9 @@ const HotSeatSession = require(process.cwd() + '/server/question/HotSeatSession.
 const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 const StepDialog = require(process.cwd() + '/server/game/StepDialog.js');
 
-const FINAL_ANSWER_WAIT_TIMES = require(process.cwd() + '/server/question/Question.js').FINAL_ANSWER_WAIT_TIMES;
-const CORRECT_WAIT_TIMES = require(process.cwd() + '/server/question/Question.js').CORRECT_WAIT_TIMES;
-const MONEY_STRINGS = require(process.cwd() + '/server/question/Question.js').MONEY_STRINGS;
+const FINAL_ANSWER_WAIT_TIMES = require(process.cwd() + '/server/question/HotSeatQuestion.js').FINAL_ANSWER_WAIT_TIMES;
+const CORRECT_WAIT_TIMES = require(process.cwd() + '/server/question/HotSeatQuestion.js').CORRECT_WAIT_TIMES;
+const MONEY_STRINGS = require(process.cwd() + '/server/question/HotSeatQuestion.js').MONEY_STRINGS;
 
 // Socket event names to allow for dynamic activation and deactivation of listeners.
 const SOCKET_EVENTS = [
@@ -522,9 +522,11 @@ class GameServer {
     this.currentSocketEvent = 'showHostRevealHotSeatQuestionVictory';
     Logger.logInfo(this.currentSocketEvent);
 
-    // First we want to reveal the question's outcome briefly.
+    // First we want to reveal the question's outcome briefly and grade the answers sent by
+    // contestants.
     this.serverState.setShowHostStepDialog(undefined);
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
+    this.serverState.gradeHotSeatQuestionForContestants();
     this._updateGame();
 
     // Then after a brief moment, set the step dialog and celebration banner.
@@ -556,6 +558,7 @@ class GameServer {
     // We want to reveal the question's outcome.
     // TODO: deal with winnings here.
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
+    this.serverState.gradeHotSeatQuestionForContestants();
 
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
       nextSocketEvent: 'showHostSayGoodbyeToHotSeat',

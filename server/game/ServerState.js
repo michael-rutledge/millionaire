@@ -1,3 +1,4 @@
+const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
 const LifelineIndex = require(process.cwd() + '/server/question/LifelineIndex.js');
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
@@ -40,6 +41,19 @@ class ServerState {
     });
 
     return compressedPlayerList;
+  }
+
+  // Returns the amount of money to give to a contestant for their answer to a hot seat question.
+  _getContestantHotSeatPayout(elapsedTime, hotSeatQuestionIndex) {
+    const payoutRatioCap = 0.5;
+    const payoutRatioFloor = 0.2;
+    const bestWindowMs = 1000;
+    const timeWindowMs = 10000;
+
+    var trimmedElapsedTime = Math.max(0, Math.min(elapsedTime - bestWindowMs, timeWindowMs));
+    var timeRatio = 1 - (trimmedElapsedTime / timeWindowMs);
+    var payoutRatio = payoutRatioFloor + timeRatio * (payoutRatioCap - payoutRatioFloor);
+    return Math.floor(HotSeatQuestion.PAYOUTS[hotSeatQuestionIndex] * payoutRatio);
   }
 
 
@@ -117,15 +131,42 @@ class ServerState {
     return hotSeatPlayer;
   }
 
+  // Assigns cash winnings per contestant according to the current hot seat question.
+  //
+  // The money given will be inversely proportional to the amount of time it takes for an answer to
+  // be put down. Whoever answer correctly in the fastest time, no matter what, will get the highest
+  // modifier possible.
+  //
+  // Expects hotSeatQuestion to be defined.
+  gradeHotSeatQuestionForContestants() {
+    this.playerMap.doAll((player) => {
+      if (this.playerIsContestant(player) && player.hotSeatTime !== undefined &&
+          this.hotSeatQuestion.answerIsCorrect(player.hotSeatChoice)) {
+        var elapsedTime = player.hotSeatTime - this.hotSeatQuestion.startTime;
+        player.money += this._getContestantHotSeatPayout(elapsedTime, this.hotSeatQuestionIndex);
+      }
+    });
+  }
+
   // Returns whether the hot seat player can choose during the given socket event.
   hotSeatPlayerCanChoose(currentSocketEvent) {
     return hotSeatChoosableEvents.has(currentSocketEvent) &&
       this.hotSeatQuestion !== undefined && this.hotSeatQuestion.allChoicesRevealed();
   }
 
+  // Returns whether the given player is a contestant (i.e not in the hot seat or show hosting).
+  playerIsContestant(player) {
+    return !this.playerIsShowHost(player) && !this.playerIsHotSeatPlayer(player);
+  }
+
+  // Returns whether the given player is the hot seat player.
+  playerIsHotSeatPlayer(player) {
+    return this.hotSeatPlayer !== undefined && player == this.hotSeatPlayer;
+  }
+
   // Returns whether the given player is host.
   playerIsShowHost(player) {
-    return player == this.showHost;
+    return this.showHost !== undefined && player == this.showHost;
   }
 
   // Returns whether a player is acting as show host.
@@ -217,9 +258,10 @@ class ServerState {
     var compressed = {};
     var player = this.playerMap.getPlayerBySocket(socket);
 
-    compressed.clientIsShowHost = (this.showHost !== undefined && player == this.showHost);
-    compressed.clientIsHotSeat = (this.hotSeatPlayer !== undefined && player == this.hotSeatPlayer);
-    compressed.clientIsContestant = !compressed.clientIsShowHost && !compressed.clientIsHotSeat;
+    compressed.clientIsShowHost = this.playerIsShowHost(player);
+    compressed.clientIsHotSeat = this.playerIsHotSeatPlayer(player);
+    compressed.clientIsContestant = this.playerIsContestant(player);
+
     // The host might need to have a dialog that can step the game through.
     if (compressed.clientIsShowHost && this.showHostStepDialog !== undefined) {
       compressed.showHostStepDialog = this.showHostStepDialog.toCompressed();

@@ -1,5 +1,85 @@
 const Question = require(process.cwd() + '/server/question/Question.js');
 
+// Payouts per question.
+const PAYOUTS = [
+  100,
+  200,
+  300,
+  500,
+  1000,
+  2000,
+  4000,
+  8000,
+  16000,
+  32000,
+  64000,
+  125000,
+  250000,
+  500000,
+  1000000
+];
+
+// Automatic wait times for final answer confirmations per question index.
+//
+// Later questions have longer times to build more suspense.
+const FINAL_ANSWER_WAIT_TIMES = [
+  1000,
+  1000,
+  1000,
+  1000,
+  1500,
+  3000,
+  3000,
+  3000,
+  3000,
+  4000,
+  5000,
+  5000,
+  5000,
+  5000,
+  7500
+];
+
+// Automatic wait times for correct question celebrations.
+//
+// Different lengths exist because of different audio cues.
+const CORRECT_WAIT_TIMES = [
+  1000,
+  1000,
+  1000,
+  1000,
+  8000,
+  5000,
+  5000,
+  5000,
+  5000,
+  8000,
+  7000,
+  7000,
+  7000,
+  7000,
+  24000,
+];
+
+// String represenations of the money amounts.
+const MONEY_STRINGS = [
+  '$100',
+  '$200',
+  '$300',
+  '$500',
+  '$1,000',
+  '$2,000',
+  '$4,000',
+  '$8,000',
+  '$16,000',
+  '$32,000',
+  '$64,000',
+  '$125,000',
+  '$250,000',
+  '$500,000',
+  '$1 MILLION'
+];
+
 // Stores and grades a hot seat question.
 class HotSeatQuestion extends Question {
 
@@ -57,3 +137,7 @@ class HotSeatQuestion extends Question {
 }
 
 module.exports = HotSeatQuestion;
+HotSeatQuestion.PAYOUTS = PAYOUTS;
+HotSeatQuestion.FINAL_ANSWER_WAIT_TIMES = FINAL_ANSWER_WAIT_TIMES;
+HotSeatQuestion.CORRECT_WAIT_TIMES = CORRECT_WAIT_TIMES;
+HotSeatQuestion.MONEY_STRINGS = MONEY_STRINGS;

@@ -10,7 +10,7 @@ const Player = require(process.cwd() + '/server/game/Player.js');
 const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
 const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 
-const MONEY_STRINGS = require(process.cwd() + '/server/question/Question.js').MONEY_STRINGS;
+const MONEY_STRINGS = require(process.cwd() + '/server/question/HotSeatQuestion.js').MONEY_STRINGS;
 
 function newGameServerWithPlayerShowHost(present) {
   var gameServer = new GameServer(new PlayerMap());
@@ -710,6 +710,23 @@ describe('GameServerTest', () => {
       clearTimeout(gameServer.currentForcedTimer);
     });
 
+    it('shouldGradeHotSeatQuestionForContestants', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+      var questionsGraded = false;
+      gameServer.serverState.gradeHotSeatQuestionForContestants = () => {
+        questionsGraded = true;
+      };
+
+      gameServer.showHostRevealHotSeatQuestionVictory(new MockSocket(), /*data=*/{});
+
+      expect(questionsGraded).to.be.true;
+      clearTimeout(gameServer.currentForcedTimer);
+    });
+
     it('continuationShouldSetCelebrationBanner', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
       gameServer.serverState.hotSeatQuestionIndex = 0;
@@ -757,6 +774,23 @@ describe('GameServerTest', () => {
       gameServer.showHostRevealHotSeatQuestionLoss(new MockSocket(), /*data=*/{});
 
       expect(gameServer.serverState.hotSeatQuestion.correctChoiceRevealedForAll).to.be.true;
+    });
+
+    it('shouldGradeHotSeatQuestionForContestants', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+      var questionsGraded = false;
+      gameServer.serverState.gradeHotSeatQuestionForContestants = () => {
+        questionsGraded = true;
+      };
+
+      gameServer.showHostRevealHotSeatQuestionLoss(new MockSocket(), /*data=*/{});
+
+      expect(questionsGraded).to.be.true;
+      clearTimeout(gameServer.currentForcedTimer);
     });
 
     it('shouldSetExpectedDialog', function () {
