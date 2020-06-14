@@ -498,6 +498,7 @@ class GameServer {
     this.currentSocketEvent = 'hotSeatFinalAnswer';
     Logger.logInfo(this.currentSocketEvent);
 
+    this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.hotSeatQuestion.revealCorrectChoiceForShowHost();
 
     if (this.serverState.hotSeatQuestion.answerIsCorrect(

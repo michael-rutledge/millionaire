@@ -643,7 +643,7 @@ describe('GameServerTest', () => {
   });
 
   describe('hotSeatFinalAnswer', function () {
-    it('shouldSetExpectedDialogForCorrectAnswer', function () {
+    function getPreppedGameServer() {
       var gameServer = newGameServerWithPlayerShowHost(true);
       gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
         text: 'questionText',
@@ -656,7 +656,20 @@ describe('GameServerTest', () => {
       gameServer.playerMap.putPlayer(player);
       gameServer.serverState.setHotSeatPlayerByUsername(player.username);
       gameServer.serverState.hotSeatQuestion.revealAllChoices();
-      player.chooseHotSeat(Choices.B);
+      return gameServer;
+    }
+
+    it('shouldClearHotSeatStepDialog', function () {
+      var gameServer = getPreppedGameServer();
+
+      gameServer.hotSeatFinalAnswer(new MockSocket());
+
+      expect(gameServer.serverState.hotSeatStepDialog).to.be.undefined;
+    });
+
+    it('shouldSetExpectedDialogForCorrectAnswer', function () {
+      var gameServer = getPreppedGameServer();
+      gameServer.serverState.hotSeatPlayer.chooseHotSeat(Choices.B);
 
       gameServer.hotSeatFinalAnswer(new MockSocket(), /*data=*/{});
 
@@ -670,19 +683,8 @@ describe('GameServerTest', () => {
     });
 
     it('shouldSetExpectedDialogForIncorrectAnswer', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
-      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
-        text: 'questionText',
-        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
-      });
-      gameServer.serverState.hotSeatQuestion.shuffledChoices = [
-        'choice 2', 'choice 1', 'choice 4', 'choice 3'
-      ];
-      var player = new Player(new MockSocket(), 'username');
-      gameServer.playerMap.putPlayer(player);
-      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
-      gameServer.serverState.hotSeatQuestion.revealAllChoices();
-      player.chooseHotSeat(Choices.A);
+      var gameServer = getPreppedGameServer();
+      gameServer.serverState.hotSeatPlayer.chooseHotSeat(Choices.A);
 
       gameServer.hotSeatFinalAnswer(new MockSocket(), /*data=*/{});
 
