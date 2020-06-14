@@ -10,7 +10,7 @@ const Player = require(process.cwd() + '/server/game/Player.js');
 const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
 const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 
-const MONEY_STRINGS = require(process.cwd() + '/server/question/HotSeatQuestion.js').MONEY_STRINGS;
+const MONEY_STRINGS = require(process.cwd() + '/server/question/MoneyTree.js').MONEY_STRINGS;
 
 function newGameServerWithPlayerShowHost(present) {
   var gameServer = new GameServer(new PlayerMap());

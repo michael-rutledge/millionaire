@@ -61,25 +61,6 @@ const CORRECT_WAIT_TIMES = [
   24000,
 ];
 
-// String represenations of the money amounts.
-const MONEY_STRINGS = [
-  '$100',
-  '$200',
-  '$300',
-  '$500',
-  '$1,000',
-  '$2,000',
-  '$4,000',
-  '$8,000',
-  '$16,000',
-  '$32,000',
-  '$64,000',
-  '$125,000',
-  '$250,000',
-  '$500,000',
-  '$1 MILLION'
-];
-
 // Returns the safe haven (i.e fallback) index for a given failed index.
 function getSafeHavenIndex(failedIndex) {
   var oneIndexed = Math.max(0, failedIndex) + 1;
@@ -147,5 +128,4 @@ module.exports = HotSeatQuestion;
 HotSeatQuestion.PAYOUTS = PAYOUTS;
 HotSeatQuestion.FINAL_ANSWER_WAIT_TIMES = FINAL_ANSWER_WAIT_TIMES;
 HotSeatQuestion.CORRECT_WAIT_TIMES = CORRECT_WAIT_TIMES;
-HotSeatQuestion.MONEY_STRINGS = MONEY_STRINGS;
 HotSeatQuestion.getSafeHavenIndex = getSafeHavenIndex;

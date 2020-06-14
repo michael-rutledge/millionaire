@@ -317,6 +317,8 @@ class ServerState {
     }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();
+    // Hot seat question index will always be set to configure money tree.
+    compressed.hotSeatQuestionIndex = this.hotSeatQuestionIndex;
     // Celebration banner will show up as long as it is defined.
     compressed.celebrationBanner = this.celebrationBanner;
 

@@ -8,7 +8,7 @@ const StepDialog = require(process.cwd() + '/server/game/StepDialog.js');
 
 const FINAL_ANSWER_WAIT_TIMES = require(process.cwd() + '/server/question/HotSeatQuestion.js').FINAL_ANSWER_WAIT_TIMES;
 const CORRECT_WAIT_TIMES = require(process.cwd() + '/server/question/HotSeatQuestion.js').CORRECT_WAIT_TIMES;
-const MONEY_STRINGS = require(process.cwd() + '/server/question/HotSeatQuestion.js').MONEY_STRINGS;
+const MONEY_STRINGS = require(process.cwd() + '/server/question/MoneyTree.js').MONEY_STRINGS;
 
 // Socket event names to allow for dynamic activation and deactivation of listeners.
 const SOCKET_EVENTS = [

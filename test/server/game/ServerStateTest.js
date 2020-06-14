@@ -614,4 +614,13 @@ describe('ServerStateTest', () => {
       hotSeatPlayer.hotSeatChoice
     ]);
   });
+
+  it('toCompressedClientStateShouldSetHotSeatQuestionIndex', function () {
+    var serverState = new ServerState(new PlayerMap());
+    serverState.hotSeatQuestionIndex = 1;
+
+    var compressedClientState = serverState.toCompressedClientState(new MockSocket());
+
+    expect(compressedClientState.hotSeatQuestionIndex).to.equal(1);
+  });
 });
