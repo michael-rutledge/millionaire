@@ -4,6 +4,32 @@ const Choices = require(process.cwd() + '/server/question/Choices.js');
 const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
 
 describe('HotSeatQuestionTest', function () {
+  describe('getSafeHavenIndex', function () {
+    it('shouldReturnExpectedResultForNegativeCase', function () {
+      expect(HotSeatQuestion.getSafeHavenIndex(-1)).to.equal(-1);
+    });
+
+    it('shouldReturnExpectedResultForLowTierEdgeCase', function () {
+      expect(HotSeatQuestion.getSafeHavenIndex(0)).to.equal(-1);
+    });
+
+    it('shouldReturnExpectedResultForLowTierCase', function () {
+      expect(HotSeatQuestion.getSafeHavenIndex(1)).to.equal(-1);
+    });
+
+    it('shouldReturnExpectedResultForMidTierEdgeCase', function () {
+      expect(HotSeatQuestion.getSafeHavenIndex(4)).to.equal(4);
+    });
+
+    it('shouldGiveExpectedResultForMidTierCase', function () {
+      expect(HotSeatQuestion.getSafeHavenIndex(5)).to.equal(4);
+    });
+
+    it('shouldGiveExpectedResultForHighTierEdgeCase', function () {
+      expect(HotSeatQuestion.getSafeHavenIndex(14)).to.equal(14);
+    });
+  });
+
   describe('answerIsCorrect', function () {
     it('shouldGiveExpectedResult', function () {
       var hsq = new HotSeatQuestion({

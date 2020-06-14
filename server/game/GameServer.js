@@ -1,6 +1,7 @@
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
 const FastestFingerSession = require(process.cwd() + '/server/question/FastestFingerSession.js');
+const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
 const HotSeatSession = require(process.cwd() + '/server/question/HotSeatSession.js');
 const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 const StepDialog = require(process.cwd() + '/server/game/StepDialog.js');
@@ -542,11 +543,21 @@ class GameServer {
       text: MONEY_STRINGS[this.serverState.hotSeatQuestionIndex]
     });
     this.serverState.resetHotSeatQuestion();
-    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
-      nextSocketEvent: 'showHostCueHotSeatQuestion',
-      hostButtonMessage: LocalizedStrings.CUE_HOT_SEAT_QUESTION,
-      aiTimeout: CORRECT_WAIT_TIMES[this.serverState.hotSeatQuestionIndex]
-    }));
+
+    // If the hot seat player won the million, the next option should be to say goodbye.
+    if (this.serverState.hotSeatQuestionIndex + 1 >= HotSeatQuestion.PAYOUTS.length) {
+      this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+        nextSocketEvent: 'showHostSayGoodbyeToHotSeat',
+        hostButtonMessage: LocalizedStrings.SAY_GOODBYE,
+        aiTimeout: CORRECT_WAIT_TIMES[this.serverState.hotSeatQuestionIndex]
+      }));
+    } else {
+      this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+        nextSocketEvent: 'showHostCueHotSeatQuestion',
+        hostButtonMessage: LocalizedStrings.CUE_HOT_SEAT_QUESTION,
+        aiTimeout: CORRECT_WAIT_TIMES[this.serverState.hotSeatQuestionIndex]
+      }));
+    }
     this._updateGame();
   }
 
@@ -556,9 +567,11 @@ class GameServer {
     Logger.logInfo(this.currentSocketEvent);
 
     // We want to reveal the question's outcome.
-    // TODO: deal with winnings here.
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
     this.serverState.gradeHotSeatQuestionForContestants();
+    // Also, we want to take down the question index to the nearest losing safe haven.
+    this.serverState.hotSeatQuestionIndex = HotSeatQuestion.getSafeHavenIndex(
+      this.serverState.hotSeatQuestionIndex - 1);
 
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
       nextSocketEvent: 'showHostSayGoodbyeToHotSeat',
@@ -570,10 +583,15 @@ class GameServer {
 
   // Continuation to be forced during showHostRevealQuestionVictory.
   showHostSayGoodbyeToHotSeat(socket, data) {
-    // TODO: deal with winnings here
+    var winnings = this.serverState.hotSeatQuestionIndex < 0 ?
+      0 : HotSeatQuestion.PAYOUTS[this.serverState.hotSeatQuestionIndex];
+    var moneyString = this.serverState.hotSeatQuestionIndex < 0 ?
+      '$0' : MONEY_STRINGS[this.serverState.hotSeatQuestionIndex];
+
+    this.serverState.hotSeatPlayer.money += winnings;
     this.serverState.setCelebrationBanner({
       header: LocalizedStrings.TOTAL_WINNINGS,
-      text: '\$\$\$'
+      text: moneyString
     });
     this.serverState.resetHotSeatQuestion();
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({

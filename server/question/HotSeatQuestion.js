@@ -80,6 +80,13 @@ const MONEY_STRINGS = [
   '$1 MILLION'
 ];
 
+// Returns the safe haven (i.e fallback) index for a given failed index.
+function getSafeHavenIndex(failedIndex) {
+  var oneIndexed = Math.max(0, failedIndex) + 1;
+  return oneIndexed - (oneIndexed % 5) - 1;
+}
+
+
 // Stores and grades a hot seat question.
 class HotSeatQuestion extends Question {
 
@@ -141,3 +148,4 @@ HotSeatQuestion.PAYOUTS = PAYOUTS;
 HotSeatQuestion.FINAL_ANSWER_WAIT_TIMES = FINAL_ANSWER_WAIT_TIMES;
 HotSeatQuestion.CORRECT_WAIT_TIMES = CORRECT_WAIT_TIMES;
 HotSeatQuestion.MONEY_STRINGS = MONEY_STRINGS;
+HotSeatQuestion.getSafeHavenIndex = getSafeHavenIndex;
