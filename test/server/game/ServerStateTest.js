@@ -189,6 +189,20 @@ describe('ServerStateTest', () => {
 
       expect(player.money).to.equal(0);
     });
+
+    it('shouldSetElapsedTimeToZeroForWalkingAway', function () {
+      var serverState = getPreppedServerStateWithOnePlayer('username');
+      var forcedElapsedTime = undefined;
+      serverState._getContestantHotSeatPayout = (elapsedTime, questionIndex) => {
+        forcedElapsedTime = elapsedTime;
+      }
+
+      serverState.gradeHotSeatQuestionForContestants(/*criteria=*/{
+        walkingAway: true
+      });
+
+      expect(forcedElapsedTime).to.equal(0);
+    });
   });
 
   it('getHotSeatPlayerFromFastestFingerResultsShouldPrioritizeScore', () => {
@@ -356,6 +370,24 @@ describe('ServerStateTest', () => {
     var compressedClientState = serverState.toCompressedClientState(mockSocket, 'badEvent');
 
     expect(compressedClientState.choiceAction).to.be.undefined;
+  });
+
+  it('toCompressedClientStateShouldSetWalkAwayActionForHotSeatPlayerOnGoodEvent', function () {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.hotSeatQuestion = new HotSeatQuestion({
+      text: 'question',
+      orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+    });
+    serverState.hotSeatQuestion.revealAllChoices();
+    serverState.playerMap.putPlayer(player);
+    serverState.setHotSeatPlayerByUsername(player.username);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'showHostRevealHotSeatChoice');
+
+    expect(compressedClientState.walkAwayAction).to.equal('hotSeatWalkAway');
   });
 
   it('toCompressedClientStateShouldNotSetFastestFingerChoiceActionForShowHost', () => {

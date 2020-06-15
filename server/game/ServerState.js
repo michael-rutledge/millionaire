@@ -6,7 +6,8 @@ const Logger = require(process.cwd() + '/server/logging/Logger.js');
 const contestantChoosableEvents = new Set([
   'showHostRevealHotSeatChoice',
   'hotSeatChoose',
-  'hotSeatUseLifeline'
+  'hotSeatUseLifeline',
+  'hotSeatWalkAway'
 ]);
 const hotSeatChoosableEvents = new Set(['showHostRevealHotSeatChoice']);
 const fastestFingerChoosableEvents = new Set(['showHostRevealFastestFingerQuestionChoices']);
@@ -137,12 +138,20 @@ class ServerState {
   // be put down. Whoever answer correctly in the fastest time, no matter what, will get the highest
   // modifier possible.
   //
+  // Expected criteria format (will act as a set via fields being included/excluded): {
+  //   bool walkingAway
+  //   bool hotSeatPlayerWrong
+  // }
+  //
   // Expects hotSeatQuestion to be defined.
-  gradeHotSeatQuestionForContestants() {
+  gradeHotSeatQuestionForContestants(criteria = {}) {
     this.playerMap.doAll((player) => {
       if (this.playerIsContestant(player) && player.hotSeatTime !== undefined &&
           this.hotSeatQuestion.answerIsCorrect(player.hotSeatChoice)) {
         var elapsedTime = player.hotSeatTime - this.hotSeatQuestion.startTime;
+        // When the hot seat player walks away, all contestants should get the highest possible
+        // bonus if they answer correctly. This is to deincentivize walking away to an extent.
+        elapsedTime = criteria.walkingAway ? 0 : elapsedTime;
         player.money += this._getContestantHotSeatPayout(elapsedTime, this.hotSeatQuestionIndex);
       }
     });
@@ -279,6 +288,7 @@ class ServerState {
     // actions.
     if (compressed.clientIsHotSeat && this.hotSeatPlayerCanChoose(currentSocketEvent)) {
       compressed.choiceAction = 'hotSeatChoose';
+      compressed.walkAwayAction = 'hotSeatWalkAway';
     } else if (compressed.clientIsContestant && this.contestantCanChoose(currentSocketEvent)) {
       compressed.choiceAction = 'contestantChoose';
     }

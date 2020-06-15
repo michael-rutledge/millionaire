@@ -36,12 +36,14 @@ const SOCKET_EVENTS = [
   'showHostSayGoodbyeToHotSeat',
   'showHostShowScores',
   'contestantChoose',
-  'contestantSetConfidence',
+  'contestantSetPhoneConfidence',
   'hotSeatChoose',
   'hotSeatFinalAnswer',
   'hotSeatUseLifeline',
   'hotSeatConfirmLifeline',
   'hotSeatPickPhoneAFriend',
+  'hotSeatWalkAway',
+  'hotSeatConfirmWalkAway'
 ];
 
 // Handles game-related socket interactions on the server side.
@@ -582,7 +584,7 @@ class GameServer {
     this._updateGame();
   }
 
-  // Continuation to be forced during showHostRevealQuestionVictory.
+  // Response to the client saying goodbye to hot seat player.
   showHostSayGoodbyeToHotSeat(socket, data) {
     var winnings = this.serverState.hotSeatQuestionIndex < 0 ?
       0 : HotSeatQuestion.PAYOUTS[this.serverState.hotSeatQuestionIndex];
@@ -601,6 +603,38 @@ class GameServer {
       aiTimeout: 9000
     }));
     this._updateGame();
+  }
+
+  // Response to the client asking to walk away.
+  //
+  // Expected to only be called by hot seat player.
+  hotSeatWalkAway(socket, data) {
+    this.currentSocketEvent = 'hotSeatWalkAway';
+    Logger.logInfo(this.currentSocketEvent);
+
+    var dialog = this._getYesNoDialog(
+      /*yesEvent=*/'hotSeatConfirmWalkAway',
+      /*noEvent=*/'showHostRevealHotSeatChoice',
+      /*header=*/LocalizedStrings.ARE_YOU_SURE);
+
+    if (this.serverState.playerShowHostPresent()) {
+      this.serverState.setShowHostStepDialog(dialog);
+    } else {
+      this.serverState.setHotSeatStepDialog(dialog);
+    }
+    this._updateGame();
+  }
+
+  // Response to the client confirming a walk away.
+  hotSeatConfirmWalkAway(socket, data) {
+    Logger.logInfo('hotSeatConfirmWalkAway');
+
+    this.serverState.setHotSeatStepDialog(undefined);
+    this.serverState.setShowHostStepDialog(undefined);
+    this.serverState.gradeHotSeatQuestionForContestants(/*criteria*/{
+      walkingAway: true
+    });
+    this.showHostSayGoodbyeToHotSeat();
   }
 }
 

@@ -922,4 +922,94 @@ describe('GameServerTest', () => {
       });
     });
   });
+
+  describe('hotSeatWalkAway', function () {
+    function getPreppedGameServerWithShowHostPresent(showHostPresent) {
+      var gameServer = newGameServerWithPlayerShowHost(showHostPresent);
+      var mockSocket = new MockSocket('socket_id');
+      var player = new Player(mockSocket, 'player');
+      gameServer.serverState.playerMap.putPlayer(player);
+      if (showHostPresent) {
+        gameServer.serverState.setShowHostByUsername(player.username);
+      } else {
+        gameServer.serverState.setHotSeatPlayerByUsername(player.username);
+      }
+      return gameServer;
+    }
+
+    it('shouldSetHostDialogWhenShowHostPresent', function () {
+      var gameServer = getPreppedGameServerWithShowHostPresent(true);
+
+      gameServer.hotSeatWalkAway(new MockSocket());
+
+      expect(gameServer.serverState.showHostStepDialog).to.deep.equal({
+        actions: [{
+          socketEvent: 'hotSeatConfirmWalkAway',
+          text: LocalizedStrings.YES
+        }, {
+          socketEvent: 'showHostRevealHotSeatChoice',
+          text: LocalizedStrings.NO
+        }],
+        header: LocalizedStrings.ARE_YOU_SURE
+      });
+      expect(gameServer.serverState.hotSeatStepDialog).to.be.undefined;
+    });
+
+    it('shouldHotSeatDialogWhenShowHostNotPresent', function () {
+      var gameServer = getPreppedGameServerWithShowHostPresent(false);
+
+      gameServer.hotSeatWalkAway(new MockSocket());
+
+      expect(gameServer.serverState.hotSeatStepDialog).to.deep.equal({
+        actions: [{
+          socketEvent: 'hotSeatConfirmWalkAway',
+          text: LocalizedStrings.YES
+        }, {
+          socketEvent: 'showHostRevealHotSeatChoice',
+          text: LocalizedStrings.NO
+        }],
+        header: LocalizedStrings.ARE_YOU_SURE
+      });
+      expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
+    });
+  });
+
+  describe('hotSeatConfirmWalkAway', function () {
+    it('shouldClearHotSeatAndShowHostStepDialog', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.showHostStepDialog = {};
+      gameServer.serverState.hotSeatStepDialog = {};
+      gameServer.gradeHotSeatQuestionForContestants = () => {};
+      gameServer.showHostSayGoodbyeToHotSeat = () => {};
+
+      gameServer.hotSeatConfirmWalkAway(new MockSocket());
+
+      expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
+      expect(gameServer.serverState.hotSeatStepDialog).to.be.undefined;
+    });
+
+    it('shouldGradeHotSeatQuestionForContestants', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var questionsGraded = false;
+      gameServer.serverState.gradeHotSeatQuestionForContestants = () => {
+        questionsGraded = true;
+      };
+      gameServer.showHostSayGoodbyeToHotSeat = () => {};
+
+      gameServer.hotSeatConfirmWalkAway(new MockSocket());
+
+      expect(questionsGraded).to.be.true;
+    });
+
+    it('shouldCallShowHostSayGoodbyeToHotSeat', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var called = false;
+      gameServer.gradeHotSeatQuestionForContestants = () => {};
+      gameServer.showHostSayGoodbyeToHotSeat = () => { called = true; };
+
+      gameServer.hotSeatConfirmWalkAway(new MockSocket());
+
+      expect(called).to.be.true;
+    });
+  });
 });
