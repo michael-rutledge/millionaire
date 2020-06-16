@@ -629,6 +629,10 @@ class GameServer {
   hotSeatConfirmWalkAway(socket, data) {
     Logger.logInfo('hotSeatConfirmWalkAway');
 
+    // Question index needs to be deprecated to make sure hot seat player only gets money for the
+    // questions they completed.
+    this.serverState.hotSeatQuestionIndex--;
+
     this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.setShowHostStepDialog(undefined);
     this.serverState.gradeHotSeatQuestionForContestants(/*criteria*/{

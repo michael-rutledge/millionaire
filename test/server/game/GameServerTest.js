@@ -975,6 +975,17 @@ describe('GameServerTest', () => {
   });
 
   describe('hotSeatConfirmWalkAway', function () {
+    it('shouldDecrementHotSeatQuestionIndex', function() {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestionIndex = 0;
+      gameServer.gradeHotSeatQuestionForContestants = () => {};
+      gameServer.showHostSayGoodbyeToHotSeat = () => {};
+
+      gameServer.hotSeatConfirmWalkAway(new MockSocket());
+
+      expect(gameServer.serverState.hotSeatQuestionIndex).to.equal(-1);
+    });
+
     it('shouldClearHotSeatAndShowHostStepDialog', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
       gameServer.serverState.showHostStepDialog = {};
