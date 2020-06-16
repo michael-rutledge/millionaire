@@ -1,6 +1,8 @@
 const DEFAULT_TEXT_COLOR = '#ffffff';
 const ORANGE = '#ffa500';
 const BLACK = '#000000';
+const TEAL = '#00ffff';
+const BLUE = '#0099ff';
 
 module.exports.BACKGROUND_VOID = '#150023';
 module.exports.BACKGROUND_SIDE_GRADIENT = '#00134d';
@@ -16,6 +18,9 @@ module.exports.BUBBLE_FILL_CELEBRATION_RIGHT = '#3a1326';
 module.exports.BUBBLE_TEXT_LIGHT = DEFAULT_TEXT_COLOR;
 module.exports.BUBBLE_TEXT_DARK = BLACK;
 module.exports.BUBBLE_TEXT_ORANGE = ORANGE;
+
+module.exports.LIFELINE_OUTLINE = BLUE;
+module.exports.WALK_AWAY_OUTLINE = TEAL;
 
 module.exports.DEFAULT_TEXT_COLOR = DEFAULT_TEXT_COLOR;
 

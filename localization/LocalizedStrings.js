@@ -20,5 +20,6 @@ module.exports.SAY_GOODBYE = 'Say goodbye to contestant';
 
 module.exports.ARE_YOU_SURE = 'Are you sure?';
 module.exports.TOTAL_WINNINGS = 'Total Winnings:';
+module.exports.WALK_AWAY = 'Walk';
 module.exports.YES = 'Yes';
 module.exports.NO = 'No';

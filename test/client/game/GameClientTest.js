@@ -119,6 +119,9 @@ describe('GameClientTest', function () {
     expect(newCanvasElements).to.deep.include(expectedInfoTextElement);
   });
 
+  // No test for hotSeatActionButton because many of the tested fields are UI-related.
+  // TODO: figure out the hotSeatActionButton test.
+
   it('updateGameShouldUpdateCanvasElementsInGameRenderer', () => {
     var gameClient = new GameClient(new MockSocket('socket_id'),
       new GameRenderer(new MockCanvas(), new MockHtmlDocument()));

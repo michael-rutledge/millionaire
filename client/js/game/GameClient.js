@@ -1,8 +1,13 @@
 const BackgroundElement = require('../rendering/element/BackgroundElement.js');
 const CelebrationBanner = require('../rendering/element/CelebrationBanner.js');
+const Colors = require('../rendering/Colors.js');
+const Constants = require('../rendering/Constants.js');
 const FastestFingerAnswersElement = require('../rendering/element/FastestFingerAnswersElement.js');
 const FastestFingerResultsElement = require('../rendering/element/FastestFingerResultsElement.js');
+const HotSeatActionButton = require('../rendering/element/HotSeatActionButton.js');
+const HotSeatActionButtonBuilder = require('../rendering/element/HotSeatActionButtonBuilder.js');
 const InfoTextElement = require('../rendering/element/InfoTextElement.js');
+const LocalizedStrings = require('../../../localization/LocalizedStrings.js');
 const MoneyTreeElement = require('../rendering/element/MoneyTreeElement.js');
 const PlayerListElement = require('../rendering/element/PlayerListElement.js');
 const QuestionAndChoicesElement = require('../rendering/element/QuestionAndChoicesElement.js');
@@ -71,6 +76,22 @@ class GameClient {
     if (compressedClientState.fastestFingerResults !== undefined) {
       newCanvasElements.push(new FastestFingerResultsElement(canvas,
         compressedClientState.fastestFingerResults, compressedClientState.fastestFingerBestScore));
+    }
+
+    if (compressedClientState.clientIsHotSeat) {
+      const bottomSideHeight = canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO;
+
+      var walkAwayActionButton =
+        new HotSeatActionButtonBuilder(canvas)
+          .setPosition(
+            canvas.width - bottomSideHeight * 0.25,
+            canvas.height  - bottomSideHeight * 0.25)
+          .setText(LocalizedStrings.WALK_AWAY)
+          .setSocket(this.socket)
+          .setSocketEvent(compressedClientState.walkAwayAction)
+          .setOutlineColor(Colors.WALK_AWAY_OUTLINE)
+          .build();
+      newCanvasElements.push(walkAwayActionButton);
     }
 
     return newCanvasElements;
