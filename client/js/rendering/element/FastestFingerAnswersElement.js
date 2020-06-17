@@ -20,7 +20,7 @@ class FastestFingerAnswersElement extends CanvasElement {
   _getHorizontalLineGradient(startX, endX) {
     var lineGradient = this.context.createLinearGradient(startX, 0, endX, 0);
     lineGradient.addColorStop(0, Colors.QUESTION_AND_CHOICES_LINE_BASE);
-    lineGradient.addColorStop(0.5, Colors.QUESTION_AND_CHOICES_LINE_BASE);
+    lineGradient.addColorStop(0.5, Colors.QUESTION_AND_CHOICES_LINE_SHINE);
     lineGradient.addColorStop(1, Colors.QUESTION_AND_CHOICES_LINE_BASE);
     return lineGradient;
   }
