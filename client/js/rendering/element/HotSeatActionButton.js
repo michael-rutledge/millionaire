@@ -30,6 +30,12 @@ class HotSeatActionButton extends CanvasElement {
     // Socket event to be sent on activation.
     this.socketEvent = undefined;
 
+    // Whether this action button has been used.
+    this.used = false;
+
+    // Whether this action button can be clicked on.
+    this.available = false;
+
     this.onClick = (x, y) => {
       this._onClick(x, y);
     };
@@ -52,6 +58,7 @@ class HotSeatActionButton extends CanvasElement {
     var oldFillStyle = this.context.fillStyle;
     var oldStrokeStyle = this.context.strokeStyle;
     var oldLineWidth = this.context.lineWidth;
+    var oldGlobalAlpha = this.context.globalAlpha;
 
     var font = Fonts.DEFAULT_FONT;
     var buttonWidth = 60;
@@ -60,6 +67,7 @@ class HotSeatActionButton extends CanvasElement {
     this.context.fillStyle = Colors.BUBBLE_FILL_DEFAULT;
     this.context.strokeStyle = this.outlineColor;
     this.context.lineWidth = 6;
+    this.context.globalAlpha = this.available ? 1.0 : 0.3;
 
     this.button = new Path2D();
     this.button.ellipse(this.x, this.y, buttonWidth, buttonHeight, 0, 0, 2 * Math.PI);
@@ -78,15 +86,26 @@ class HotSeatActionButton extends CanvasElement {
       .draw();
     }
 
+    this.context.lineWidth = 10;
+    this.context.strokeStyle = 'red';
+    if (this.used) {
+      var xPath = new Path2D();
+      xPath.moveTo(this.x - buttonWidth / 2, this.y - buttonWidth / 2);
+      xPath.lineTo(this.x + buttonWidth / 2, this.y + buttonWidth / 2);
+      xPath.moveTo(this.x + buttonWidth / 2, this.y - buttonWidth / 2);
+      xPath.lineTo(this.x - buttonWidth / 2, this.y + buttonWidth / 2);
+      this.context.stroke(xPath);
+    }
+
     this.context.fillStyle = oldFillStyle;
     this.context.strokeStyle = oldStrokeStyle;
     this.context.lineWidth = oldLineWidth;
+    this.context.globalAlpha = oldGlobalAlpha;
   }
 
   // Returns whether the mouse is hovering over this button currently.
   isMouseHovering(x, y) {
-    console.log('this.button: ' + this.button);
-    return this.socketEvent !== undefined && this.context.isPointInPath(this.button, x, y);
+    return this.available && !this.used && this.context.isPointInPath(this.button, x, y);
   }
 }
 

@@ -20,8 +20,10 @@ module.exports.HOT_SEAT_VICTORY = 'Correct!';
 module.exports.HOT_SEAT_LOSS = 'Sorry...';
 module.exports.SAY_GOODBYE = 'Say goodbye to contestant';
 
+module.exports.WALK_AWAY = 'Walk';
+module.exports.FIFTY_FIFTY = '50:50';
+
 module.exports.ARE_YOU_SURE = 'Are you sure?';
 module.exports.TOTAL_WINNINGS = 'Total Winnings:';
-module.exports.WALK_AWAY = 'Walk';
 module.exports.YES = 'Yes';
 module.exports.NO = 'No';

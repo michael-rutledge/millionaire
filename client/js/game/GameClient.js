@@ -78,9 +78,11 @@ class GameClient {
         compressedClientState.fastestFingerResults, compressedClientState.fastestFingerBestScore));
     }
 
-    if (compressedClientState.clientIsHotSeat) {
-      const bottomSideHeight = canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO;
+    // Hot seat action buttons
+    const bottomSideHeight = canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO;
 
+    // Walk away
+    if (compressedClientState.walkAwayActionButton !== undefined) {
       var walkAwayActionButton =
         new HotSeatActionButtonBuilder(canvas)
           .setPosition(
@@ -88,10 +90,28 @@ class GameClient {
             canvas.height  - bottomSideHeight * 0.25)
           .setText(LocalizedStrings.WALK_AWAY)
           .setSocket(this.socket)
-          .setSocketEvent(compressedClientState.walkAwayAction)
+          .setSocketEvent(compressedClientState.walkAwayActionButton.socketEvent)
           .setOutlineColor(Colors.WALK_AWAY_OUTLINE)
+          .setUsed(compressedClientState.walkAwayActionButton.used)
+          .setAvailable(compressedClientState.walkAwayActionButton.available)
           .build();
       newCanvasElements.push(walkAwayActionButton);
+    }
+    // Fifty fifty
+    if (compressedClientState.fiftyFiftyActionButton !== undefined) {
+      var fiftyFiftyActionButton =
+        new HotSeatActionButtonBuilder(canvas)
+          .setPosition(
+            canvas.width - bottomSideHeight * 0.75,
+            canvas.height  - bottomSideHeight * 0.75)
+          .setText(LocalizedStrings.FIFTY_FIFTY)
+          .setSocket(this.socket)
+          .setSocketEvent(compressedClientState.fiftyFiftyActionButton.socketEvent)
+          .setOutlineColor(Colors.LIFELINE_OUTLINE)
+          .setUsed(compressedClientState.fiftyFiftyActionButton.used)
+          .setAvailable(compressedClientState.fiftyFiftyActionButton.available)
+          .build();
+      newCanvasElements.push(fiftyFiftyActionButton);
     }
 
     return newCanvasElements;

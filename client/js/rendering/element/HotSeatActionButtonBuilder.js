@@ -9,6 +9,11 @@ class HotSeatActionButtonBuilder {
     return this._hotSeatActionButton;
   }
 
+  setAvailable(available) {
+    this._hotSeatActionButton.available = available;
+    return this;
+  }
+
   setIcon(icon) {
     this._hotSeatActionButton.icon = icon;
     return this;
@@ -37,6 +42,11 @@ class HotSeatActionButtonBuilder {
 
   setText(text) {
     this._hotSeatActionButton.text = text;
+    return this;
+  }
+
+  setUsed(used) {
+    this._hotSeatActionButton.used = used;
     return this;
   }
 }

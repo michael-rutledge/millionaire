@@ -86,15 +86,19 @@ class QuestionAndChoicesElement extends CanvasElement {
     bubbleLine.moveTo(bottomSidePanelWidth, questionMidLineY);
     bubbleLine.lineTo(startX, questionMidLineY);
 
-    var choiceBubble =
+    var choiceBubbleBuilder =
       new MillionaireBubbleBuilder(this.canvas)
         .setPosition(startX, questionMidLineY)
         .setDimensions(bubbleWidth, bubbleHeight)
+        .setTextAlign('left');
+    // Do not draw text if the choice was masked.
+    if (this._questionIncludesChoiceIndex(leftChoice)) {
+      choiceBubbleBuilder
         .setText(this.revealedChoices[leftChoice])
         .setChoice(this.choiceBubbles.length)
-        .setState(this._getStateForChoice(leftChoice))
-        .setTextAlign('left')
-        .build();
+        .setState(this._getStateForChoice(leftChoice));
+    }
+    var choiceBubble = choiceBubbleBuilder.build();
     choiceBubble.draw();
     this.choiceBubbles.push(choiceBubble);
 
@@ -103,15 +107,19 @@ class QuestionAndChoicesElement extends CanvasElement {
     startX = this.canvas.width - startX - bubbleWidth;
     bubbleLine.lineTo(startX, questionMidLineY);
 
-    var choiceBubble =
+    choiceBubbleBuilder =
       new MillionaireBubbleBuilder(this.canvas)
         .setPosition(startX, questionMidLineY)
         .setDimensions(bubbleWidth, bubbleHeight)
+        .setTextAlign('left');
+        // Do not draw text if the choice was masked.
+    if (this._questionIncludesChoiceIndex(rightChoice)) {
+      choiceBubbleBuilder
         .setText(this.revealedChoices[rightChoice])
         .setChoice(this.choiceBubbles.length)
-        .setState(this._getStateForChoice(rightChoice))
-        .setTextAlign('left')
-        .build();
+        .setState(this._getStateForChoice(rightChoice));
+    }
+    choiceBubble = choiceBubbleBuilder.build();
     choiceBubble.draw();
     this.choiceBubbles.push(choiceBubble);
 
@@ -137,12 +145,19 @@ class QuestionAndChoicesElement extends CanvasElement {
 
   _onClick(x, y) {
     this.choiceBubbles.forEach((bubble, index) => {
-      if (bubble.isPointInPath(x, y) && this.choiceAction !== undefined) {
+      if (bubble.isPointInPath(x, y) && this.choiceAction !== undefined &&
+          this._questionIncludesChoiceIndex(index)) {
         this.socket.emit(this.choiceAction, {
           choice: index
         });
       }
     });
+  }
+
+  // Returns whether the given choice index is included.
+  _questionIncludesChoiceIndex(choiceIndex) {
+    return this.maskedChoiceIndices === undefined ||
+      (this.maskedChoiceIndices[0] != choiceIndex && this.maskedChoiceIndices[1] != choiceIndex);
   }
 
 
@@ -169,7 +184,8 @@ class QuestionAndChoicesElement extends CanvasElement {
   // Returns whether the given coordinates are hovering over any of the choice bubbles.
   isMouseHovering(x, y) {
     for (var i = 0; i < this.choiceBubbles.length; i++) {
-      if (this.choiceBubbles[i].isPointInPath(x, y) && this.choiceAction !== undefined) {
+      if (this.choiceBubbles[i].isPointInPath(x, y) && this.choiceAction !== undefined
+          && this._questionIncludesChoiceIndex(i)) {
         return true;
       }
     }
@@ -185,6 +201,7 @@ class QuestionAndChoicesElement extends CanvasElement {
     this.revealedChoices = question.revealedChoices;
     this.madeChoices = question.madeChoices;
     this.correctChoice = question.correctChoice;
+    this.maskedChoiceIndices = question.maskedChoiceIndices;
 
     // Choices should only be clickable when all are revealed
     if (this.revealedChoices.length >= Choices.MAX_CHOICES) {
