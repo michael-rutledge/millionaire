@@ -39,7 +39,7 @@ const SOCKET_EVENTS = [
   'contestantSetPhoneConfidence',
   'hotSeatChoose',
   'hotSeatFinalAnswer',
-  'hotSeatUseLifeline',
+  'hotSeatUseFiftyFifty',
   'hotSeatConfirmLifeline',
   'hotSeatPickPhoneAFriend',
   'hotSeatWalkAway',
@@ -615,7 +615,7 @@ class GameServer {
     var dialog = this._getYesNoDialog(
       /*yesEvent=*/'hotSeatConfirmWalkAway',
       /*noEvent=*/'showHostRevealHotSeatChoice',
-      /*header=*/LocalizedStrings.ARE_YOU_SURE);
+      /*header=*/LocalizedStrings.HOT_SEAT_CONFIRM_WALK_AWAY);
 
     if (this.serverState.playerShowHostPresent()) {
       this.serverState.setShowHostStepDialog(dialog);

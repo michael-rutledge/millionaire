@@ -950,7 +950,7 @@ describe('GameServerTest', () => {
           socketEvent: 'showHostRevealHotSeatChoice',
           text: LocalizedStrings.NO
         }],
-        header: LocalizedStrings.ARE_YOU_SURE
+        header: LocalizedStrings.HOT_SEAT_CONFIRM_WALK_AWAY
       });
       expect(gameServer.serverState.hotSeatStepDialog).to.be.undefined;
     });
@@ -968,7 +968,7 @@ describe('GameServerTest', () => {
           socketEvent: 'showHostRevealHotSeatChoice',
           text: LocalizedStrings.NO
         }],
-        header: LocalizedStrings.ARE_YOU_SURE
+        header: LocalizedStrings.HOT_SEAT_CONFIRM_WALK_AWAY
       });
       expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
     });
