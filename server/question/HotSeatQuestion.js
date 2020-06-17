@@ -80,12 +80,17 @@ class HotSeatQuestion extends Question {
   }
 
 
-  // PRIVATE METHODS
+  // PUBLIC METHODS
+
+  // Returns whether the given answer is correct.
+  answerIsCorrect(answer) {
+    return this.shuffledChoices[answer] == this.orderedChoices[0];
+  }
 
   // Returns the choice corresponding to the correct answer.
   //
   // Returns undefined if a correct choice couldn't be found.
-  _getCorrectChoice() {
+  getCorrectChoice() {
     for (var i = 0; i < this.shuffledChoices.length; i++) {
       if (this.answerIsCorrect(i)) {
         return i;
@@ -93,14 +98,6 @@ class HotSeatQuestion extends Question {
     }
 
     return undefined;
-  }
-
-
-  // PUBLIC METHODS
-
-  // Returns whether the given answer is correct.
-  answerIsCorrect(answer) {
-    return this.shuffledChoices[answer] == this.orderedChoices[0];
   }
 
   // Reveals the correct choice for the show host.
@@ -118,7 +115,7 @@ class HotSeatQuestion extends Question {
     var compressed = super.toCompressed([madeChoice]);
     if (showCorrectChoice) {
       // We choose to compute instead of storing on construction to make testing easier.
-      compressed.correctChoice = this._getCorrectChoice();
+      compressed.correctChoice = this.getCorrectChoice();
     }
     return compressed;
   }

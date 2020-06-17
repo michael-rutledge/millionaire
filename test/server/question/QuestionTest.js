@@ -102,7 +102,8 @@ describe('QuestionTest', () => {
       expect(result).to.deep.equal({
         text: question.text,
         revealedChoices: question.revealedChoices,
-        madeChoices: [Choices.A]
+        madeChoices: [Choices.A],
+        maskedChoiceIndices: question.maskedChoiceIndices
       });
     });
   });

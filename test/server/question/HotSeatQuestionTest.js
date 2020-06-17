@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const should = require('chai').should;
 
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
@@ -43,6 +44,28 @@ describe('HotSeatQuestionTest', function () {
 
       expect(correctResult).to.be.true;
       expect(incorrectResult).to.be.false;
+    });
+  });
+
+  describe('getCorrectChoice', function () {
+    it('shouldGiveExpectedResultWhenCorrectChoicePresent', function () {
+      var hsq = new HotSeatQuestion({
+        text: 'question_text',
+        orderedChoices: ['correct', 'incorrect_1', 'incorrect_2', 'incorrect_3']
+      });
+      hsq.shuffledChoices = ['incorrect_1', 'incorrect_3', 'correct', 'incorrect_2'];
+
+      hsq.getCorrectChoice().should.equal(Choices.C);
+    });
+
+    it('shouldReturnUndefinedWhenCorrectChoiceAbsent', function () {
+      var hsq = new HotSeatQuestion({
+        text: 'question_text',
+        orderedChoices: ['correct', 'incorrect_1', 'incorrect_2', 'incorrect_3']
+      });
+      hsq.shuffledChoices = [];
+
+      expect(hsq.getCorrectChoice()).to.be.undefined;
     });
   });
 

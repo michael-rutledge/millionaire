@@ -517,7 +517,8 @@ describe('ServerStateTest', () => {
     expect(compressedClientState.question).to.deep.equal({
       text: 'question',
       revealedChoices: serverState.fastestFingerQuestion.revealedChoices,
-      madeChoices: player.fastestFingerChoices
+      madeChoices: player.fastestFingerChoices,
+      maskedChoiceIndices: serverState.fastestFingerQuestion.maskedChoiceIndices
     });
   });
 
@@ -618,7 +619,8 @@ describe('ServerStateTest', () => {
     expect(compressedClientState.question).to.deep.equal({
       text: 'question',
       revealedChoices: serverState.hotSeatQuestion.revealedChoices,
-      madeChoices: [ player.hotSeatChoice ]
+      madeChoices: [ player.hotSeatChoice ],
+      maskedChoiceIndices: serverState.hotSeatQuestion.maskedChoiceIndices
     });
   });
 
