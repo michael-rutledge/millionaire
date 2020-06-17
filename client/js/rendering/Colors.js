@@ -1,4 +1,7 @@
 const DEFAULT_TEXT_COLOR = '#ffffff';
+const DEFAULT_LINE_BASE = '#2691d9';
+const DEFAULT_LINE_SHINE = '#b3e0ff';
+
 const ORANGE = '#ffa500';
 const BLACK = '#000000';
 const TEAL = '#00ffff';
@@ -24,9 +27,9 @@ module.exports.WALK_AWAY_OUTLINE = TEAL;
 
 module.exports.DEFAULT_TEXT_COLOR = DEFAULT_TEXT_COLOR;
 
-module.exports.QUESTION_AND_CHOICES_LINE_BASE = '#9cbfe2';
-module.exports.QUESTION_AND_CHOICES_LINE_SHINE = '#ffffff';
+module.exports.QUESTION_AND_CHOICES_LINE_BASE = DEFAULT_LINE_BASE;
+module.exports.QUESTION_AND_CHOICES_LINE_SHINE = DEFAULT_LINE_SHINE;
 module.exports.QUESTION_TEXT_COLOR = DEFAULT_TEXT_COLOR;
 
-module.exports.SIDE_PANEL_LINE_BASE = '#b1a3dc';
-module.exports.SIDE_PANEL_LINE_SHINE = '#ffffff';
+module.exports.SIDE_PANEL_LINE_BASE = DEFAULT_LINE_BASE;
+module.exports.SIDE_PANEL_LINE_SHINE = DEFAULT_LINE_SHINE;
