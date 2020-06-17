@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const should = require('chai').should();
 
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const FastestFingerQuestion = require(process.cwd() + '/server/question/FastestFingerQuestion.js');
@@ -372,7 +373,28 @@ describe('ServerStateTest', () => {
     expect(compressedClientState.choiceAction).to.be.undefined;
   });
 
-  it('toCompressedClientStateShouldSetWalkAwayActionForHotSeatPlayerOnGoodEvent', function () {
+  it('toCompressedClientStateShouldSetExpectedWalkAwayActionButtonForContestant', function () {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.hotSeatQuestion = new HotSeatQuestion({
+      text: 'question',
+      orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+    });
+    serverState.hotSeatQuestion.revealAllChoices();
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      'showHostRevealHotSeatChoice');
+
+    compressedClientState.walkAwayActionButton.should.deep.equal({
+      used: false,
+      socketEvent: 'hotSeatWalkAway',
+      available: false
+    });
+  });
+
+  it('toCompressedClientStateShouldSetExpectedWalkAwayActionButtonForHotSeatPlayer', function () {
     var serverState = new ServerState(new PlayerMap());
     var mockSocket = new MockSocket('socket_id');
     var player = new Player(mockSocket, 'username');
@@ -387,7 +409,22 @@ describe('ServerStateTest', () => {
     var compressedClientState = serverState.toCompressedClientState(mockSocket,
       'showHostRevealHotSeatChoice');
 
-    expect(compressedClientState.walkAwayAction).to.equal('hotSeatWalkAway');
+    compressedClientState.walkAwayActionButton.should.deep.equal({
+      used: false,
+      socketEvent: 'hotSeatWalkAway',
+      available: true
+    });
+  });
+
+  it('toCompressedClientStateShouldSetFiftyFiftyActionButton', function () {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket);
+
+    expect(compressedClientState).to.not.be.undefined;
   });
 
   it('toCompressedClientStateShouldNotSetFastestFingerChoiceActionForShowHost', () => {

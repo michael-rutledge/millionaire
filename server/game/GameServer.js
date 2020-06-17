@@ -40,7 +40,7 @@ const SOCKET_EVENTS = [
   'hotSeatChoose',
   'hotSeatFinalAnswer',
   'hotSeatUseFiftyFifty',
-  'hotSeatConfirmLifeline',
+  'hotSeatConfirmFiftyFifty',
   'hotSeatPickPhoneAFriend',
   'hotSeatWalkAway',
   'hotSeatConfirmWalkAway'
@@ -112,6 +112,17 @@ class GameServer {
       /*timeoutFunc=*/undefined,
       /*timeoutMs*/undefined,
       /*header=*/header);
+  }
+
+  // Sets the showHostDialog or hotSeatDialog for the given parameters.
+  _setShowHostOrHotSeatYesNoDialog(yesEvent, noEvent, header) {
+    var dialog = this._getYesNoDialog(yesEvent, noEvent, header);
+
+    if (this.serverState.playerShowHostPresent()) {
+      this.serverState.setShowHostStepDialog(dialog);
+    } else {
+      this.serverState.setHotSeatStepDialog(dialog);
+    }
   }
 
   // Updates the game client-side by emitting a customized, compressed ClientState to each player.
@@ -612,16 +623,10 @@ class GameServer {
     this.currentSocketEvent = 'hotSeatWalkAway';
     Logger.logInfo(this.currentSocketEvent);
 
-    var dialog = this._getYesNoDialog(
+    this._setShowHostOrHotSeatYesNoDialog(
       /*yesEvent=*/'hotSeatConfirmWalkAway',
       /*noEvent=*/'showHostRevealHotSeatChoice',
       /*header=*/LocalizedStrings.HOT_SEAT_CONFIRM_WALK_AWAY);
-
-    if (this.serverState.playerShowHostPresent()) {
-      this.serverState.setShowHostStepDialog(dialog);
-    } else {
-      this.serverState.setHotSeatStepDialog(dialog);
-    }
     this._updateGame();
   }
 
@@ -639,6 +644,32 @@ class GameServer {
       walkingAway: true
     });
     this.showHostSayGoodbyeToHotSeat();
+  }
+
+  // Response to the client asking to use fifty fifty.
+  //
+  // Expected to only be called by hot seat player.
+  hotSeatUseFiftyFifty(socket, data) {
+    this.currentSocketEvent = 'hotSeatUseFiftyFifty';
+    Logger.logInfo(this.currentSocketEvent);
+
+    this._setShowHostOrHotSeatYesNoDialog(
+      /*yesEvent=*/'hotSeatConfirmFiftyFifty',
+      /*noEvent=*/'showHostRevealHotSeatChoice',
+      /*header=*/LocalizedStrings.HOT_SEAT_CONFIRM_FIFTY_FIFTY);
+    this._updateGame();
+  }
+
+  // Response to the client confirming the use of fifty fifty.
+  hotSeatConfirmFiftyFifty(socket, data) {
+    Logger.logInfo('hotSeatConfirmFiftyFifty');
+
+    this.serverState.fiftyFifty.startForQuestion(this.serverState.hotSeatQuestion);
+    this.serverState.fiftyFifty.removeTwoRandomAnswers();
+
+    this.serverState.setHotSeatStepDialog(undefined);
+    this.serverState.setShowHostStepDialog(undefined);
+    this.showHostRevealHotSeatChoice();
   }
 }
 

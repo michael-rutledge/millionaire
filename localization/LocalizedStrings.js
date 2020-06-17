@@ -15,6 +15,7 @@ module.exports.SHOW_HOT_SEAT_QUESTION = 'Show question text';
 module.exports.REVEAL_HOT_SEAT_CHOICE = 'Reveal choice';
 module.exports.HOT_SEAT_FINAL_ANSWER = 'Final Answer?';
 module.exports.HOT_SEAT_CONFIRM_WALK_AWAY = 'Walk Away?';
+module.exports.HOT_SEAT_CONFIRM_FIFTY_FIFTY = 'Use 50/50?';
 module.exports.HOT_SEAT_VICTORY = 'Correct!';
 module.exports.HOT_SEAT_LOSS = 'Sorry...';
 module.exports.SAY_GOODBYE = 'Say goodbye to contestant';

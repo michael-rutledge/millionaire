@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const should = require('chai').should();
 
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const FastestFingerQuestion = require(process.cwd() + '/server/question/FastestFingerQuestion.js');
@@ -1021,6 +1022,46 @@ describe('GameServerTest', () => {
       gameServer.hotSeatConfirmWalkAway(new MockSocket());
 
       expect(called).to.be.true;
+    });
+  });
+
+  describe('hotSeatUseFiftyFifty', function () {
+    it('shouldSetYesNoDialog', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+
+      gameServer.hotSeatUseFiftyFifty();
+
+      gameServer.serverState.showHostStepDialog.should.deep.equal({
+        actions: [{
+          socketEvent: 'hotSeatConfirmFiftyFifty',
+          text: LocalizedStrings.YES
+        }, {
+          socketEvent: 'showHostRevealHotSeatChoice',
+          text: LocalizedStrings.NO
+        }],
+        header: LocalizedStrings.HOT_SEAT_CONFIRM_FIFTY_FIFTY
+      });
+    });
+  });
+
+  describe('hotSeatConfirmFiftyFifty', function () {
+    function getPreppedGameServer() {
+
+    }
+
+    it('shouldUseFiftyFifty', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+      gameServer.serverState.hotSeatQuestion.revealAllChoices();
+      gameServer.showHostRevealHotSeatChoice = () => {};
+
+      gameServer.hotSeatConfirmFiftyFifty();
+
+      gameServer.serverState.fiftyFifty.used.should.be.true;
+      gameServer.serverState.hotSeatQuestion.maskedChoiceIndices.should.have.lengthOf(2);
     });
   });
 });

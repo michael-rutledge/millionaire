@@ -1,3 +1,4 @@
+const FiftyFiftyLifeline = require(process.cwd() + '/server/lifeline/FiftyFiftyLifeline.js');
 const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
 const LifelineIndex = require(process.cwd() + '/server/question/LifelineIndex.js');
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
@@ -258,6 +259,9 @@ class ServerState {
     // Reference to the current fastest finger question
     this.fastestFingerQuestion = undefined;
 
+    // Lifelines
+    this.fiftyFifty = new FiftyFiftyLifeline();
+
     // Banner element that appears on a celebration moment
     this.celebrationBanner = undefined;
   }
@@ -288,7 +292,6 @@ class ServerState {
     // actions.
     if (compressed.clientIsHotSeat && this.hotSeatPlayerCanChoose(currentSocketEvent)) {
       compressed.choiceAction = 'hotSeatChoose';
-      compressed.walkAwayAction = 'hotSeatWalkAway';
     } else if (compressed.clientIsContestant && this.contestantCanChoose(currentSocketEvent)) {
       compressed.choiceAction = 'contestantChoose';
     }
@@ -325,6 +328,16 @@ class ServerState {
       compressed.question = this.hotSeatQuestion.toCompressed(madeChoiceToDisplay,
         showCorrectChoice);
     }
+    // Hot seat action buttons
+    var actionButtonsAvailable = compressed.clientIsHotSeat
+      && this.hotSeatPlayerCanChoose(currentSocketEvent);
+    compressed.walkAwayActionButton = {
+      used: false,
+      socketEvent: 'hotSeatWalkAway',
+      available: actionButtonsAvailable
+    };
+    compressed.fiftyFiftyActionButton = this.fiftyFifty.toCompressedHotSeatActionButton(
+      actionButtonsAvailable);
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();
     // Hot seat question index will always be set to configure money tree.
