@@ -1061,7 +1061,6 @@ describe('GameServerTest', () => {
       gameServer.hotSeatConfirmFiftyFifty();
 
       gameServer.serverState.fiftyFifty.used.should.be.true;
-      gameServer.serverState.hotSeatQuestion.maskedChoiceIndices.should.have.lengthOf(2);
     });
   });
 });

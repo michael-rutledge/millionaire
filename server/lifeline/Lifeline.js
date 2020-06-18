@@ -1,7 +1,10 @@
 // Parent class of all lifelines.
 class Lifeline {
 
-  constructor(socketEvent) {
+  constructor(socketEvent, playerMap) {
+    // Player map of the game currently using the lifeline.
+    this.playerMap = playerMap;
+
     // Whether this lifeline has been used.
     this.used = false;
 

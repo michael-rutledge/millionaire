@@ -121,7 +121,7 @@ class QuestionAndChoicesElement extends CanvasElement {
   _onClick(x, y) {
     this.choiceBubbles.forEach((bubble, index) => {
       if (bubble.isPointInPath(x, y) && this.choiceAction !== undefined &&
-          this._questionIncludesChoiceIndex(index)) {
+          this._questionIncludesChoiceIndex(index) && !this.choiceLocked) {
         this.socket.emit(this.choiceAction, {
           choice: index
         });
@@ -131,8 +131,9 @@ class QuestionAndChoicesElement extends CanvasElement {
 
   // Returns whether the given choice index is included.
   _questionIncludesChoiceIndex(choiceIndex) {
-    return this.maskedChoiceIndices === undefined ||
-      (this.maskedChoiceIndices[0] != choiceIndex && this.maskedChoiceIndices[1] != choiceIndex);
+    // Verbose if statement here to cover null + undefined + whatever other fuckery may come.
+    if (this.revealedChoices[choiceIndex]) return true;
+    return false;
   }
 
 
@@ -163,7 +164,7 @@ class QuestionAndChoicesElement extends CanvasElement {
   isMouseHovering(x, y) {
     for (var i = 0; i < this.choiceBubbles.length; i++) {
       if (this.choiceBubbles[i].isPointInPath(x, y) && this.choiceAction !== undefined
-          && this._questionIncludesChoiceIndex(i)) {
+          && this._questionIncludesChoiceIndex(i) && !this.choiceLocked) {
         return true;
       }
     }
@@ -179,7 +180,7 @@ class QuestionAndChoicesElement extends CanvasElement {
     this.revealedChoices = question.revealedChoices;
     this.madeChoices = question.madeChoices;
     this.correctChoice = question.correctChoice;
-    this.maskedChoiceIndices = question.maskedChoiceIndices;
+    this.choiceLocked = question.choiceLocked;
 
     // Choices should only be clickable when all are revealed
     if (this.revealedChoices.length >= Choices.MAX_CHOICES) {

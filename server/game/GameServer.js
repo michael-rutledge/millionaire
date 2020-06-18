@@ -665,7 +665,7 @@ class GameServer {
     Logger.logInfo('hotSeatConfirmFiftyFifty');
 
     this.serverState.fiftyFifty.startForQuestion(this.serverState.hotSeatQuestion);
-    this.serverState.fiftyFifty.removeTwoRandomAnswers();
+    this.serverState.fiftyFifty.removeTwoWrongChoices();
 
     this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.setShowHostStepDialog(undefined);

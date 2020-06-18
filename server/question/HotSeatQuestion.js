@@ -117,6 +117,9 @@ class HotSeatQuestion extends Question {
       // We choose to compute instead of storing on construction to make testing easier.
       compressed.correctChoice = this.getCorrectChoice();
     }
+    // This field will be used to make sure contestants' choices are locked in so no sabotage will
+    // occur.
+    compressed.choiceLocked = (madeChoice !== undefined);
     return compressed;
   }
 }

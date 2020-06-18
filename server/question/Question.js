@@ -17,9 +17,6 @@ class Question {
     // Time that the question was opened for answering. Used in calculation of fastest finger winner
     // and contestant winnings on hot seat questions.
     this.startTime = undefined;
-
-    // Array of Choice indices that are to be removed. Intended for use for fifty fifty.
-    this.maskedChoiceIndices = [];
   }
 
 
@@ -69,8 +66,7 @@ class Question {
     return {
       text: this.text,
       revealedChoices: this.revealedChoices,
-      madeChoices: madeChoices,
-      maskedChoiceIndices: this.maskedChoiceIndices
+      madeChoices: madeChoices
     };
   }
 }

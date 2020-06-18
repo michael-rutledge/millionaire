@@ -260,7 +260,7 @@ class ServerState {
     this.fastestFingerQuestion = undefined;
 
     // Lifelines
-    this.fiftyFifty = new FiftyFiftyLifeline();
+    this.fiftyFifty = new FiftyFiftyLifeline(this.playerMap);
 
     // Banner element that appears on a celebration moment
     this.celebrationBanner = undefined;

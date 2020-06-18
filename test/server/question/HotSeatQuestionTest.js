@@ -42,8 +42,8 @@ describe('HotSeatQuestionTest', function () {
       var correctResult = hsq.answerIsCorrect(Choices.C);
       var incorrectResult = hsq.answerIsCorrect(Choices.A);
 
-      expect(correctResult).to.be.true;
-      expect(incorrectResult).to.be.false;
+      correctResult.should.be.true;
+      incorrectResult.should.be.false;
     });
   });
 
@@ -79,7 +79,7 @@ describe('HotSeatQuestionTest', function () {
 
       var result = hsq.toCompressed(/*madeChoice=*/Choices.A, /*showCorrectChoice=*/true);
 
-      expect(result.correctChoice).to.equal(Choices.C);
+      result.correctChoice.should.equal(Choices.C);
     });
 
     it('shouldNotSetCorrectChoiceIfNotRequested', function () {
@@ -92,6 +92,28 @@ describe('HotSeatQuestionTest', function () {
       var result = hsq.toCompressed(/*madeChoice=*/Choices.A, /*showCorrectChoice=*/false);
 
       expect(result.correctChoice).to.be.undefined;
+    });
+
+    it('shouldSetChoiceLockedToTrueForChoicePresent', function () {
+      var hsq = new HotSeatQuestion({
+        text: 'question_text',
+        orderedChoices: ['correct', 'incorrect_1', 'incorrect_2', 'incorrect_3']
+      });
+
+      var result = hsq.toCompressed(/*madeChoice=*/Choices.A, /*showCorrectChoice=*/false);
+
+      result.choiceLocked.should.be.true;
+    });
+
+    it('shouldSetChoiceLockedToFalseForChoiceAbsent', function () {
+      var hsq = new HotSeatQuestion({
+        text: 'question_text',
+        orderedChoices: ['correct', 'incorrect_1', 'incorrect_2', 'incorrect_3']
+      });
+
+      var result = hsq.toCompressed(/*madeChoice=*/undefined, /*showCorrectChoice=*/false);
+
+      result.choiceLocked.should.be.false;
     });
   });
 });
