@@ -3,11 +3,16 @@ const ASPECT_RATIO = require('./Constants.js').ASPECT_RATIO;
 // Handles top-level rendering logic to be done by the HTML canvas.
 class GameRenderer {
 
-  constructor(canvas, htmlDocument) {
+  constructor(canvas, htmlDocument, htmlWindow) {
     if (canvas !== undefined) {
       this.canvas = canvas;
+      if (this.canvas.getContext !== undefined) {
+        this.context = this.canvas.getContext('2d');
+      }
       this.htmlDocument = htmlDocument;
+      this.htmlWindow = htmlWindow;
       this.canvasElements = [];
+      this.rendering = false;
 
       this.canvas.width = 1600;
       this.canvas.height = this.canvas.width / ASPECT_RATIO;
@@ -38,7 +43,6 @@ class GameRenderer {
   // Executes when the user clicks on the game canvas.
   onClick(event) {
     var localPos = this._getLocalCursorPosition(this.canvas, event);
-    console.log('CLICK: ' + localPos.x + ', ' + localPos.y);
     this.canvasElements.forEach((element, index) => {
       if (element.isClickable()) {
         element.onClick(localPos.x, localPos.y);
@@ -59,18 +63,34 @@ class GameRenderer {
     this.htmlDocument.body.style.cursor = 'initial';
   }
 
+  // Render a frame.
+  render(timestamp) {
+    console.log('render');
+
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.canvasElements.forEach((element, index) => {
+      element.draw();
+    });
+
+    if (this.rendering) {
+      this.htmlWindow.requestAnimationFrame((timestamp) => { this.render(timestamp); });
+    }
+  }
+
+  startRendering() {
+    this.rendering = true;
+    this.htmlWindow.requestAnimationFrame((timestamp) => { this.render(timestamp); });
+  }
+
+  stopRendering() {
+    this.rendering = false;
+  }
+
   // Updates the game canvas with new CanvasElements.
   //
   // Overwrites any existing CanvasElements drawn on the canvas before.
   updateCanvasElements(newCanvasElements) {
     this.canvasElements = newCanvasElements;
-
-    if (this.canvas.getContext !== undefined) {
-      this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.canvasElements.forEach((element, index) => {
-        element.draw();
-      });
-    }
   }
 }
 

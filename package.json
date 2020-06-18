@@ -26,7 +26,7 @@
     "clean_dev_info": "npm run build && node app.js data_level:dev debug:info",
     "clean_dev_warn": "npm run build && node app.js data_level:dev debug:warn",
     "clean_dev_error": "npm run build && node app.js data_level:dev debug:error",
-    "test": "mocha 'test/**/*.js' --recursive data_level:dev"
+    "test": "mocha 'test/server/**/*.js' --recursive data_level:dev"
   },
   "author": "",
   "license": "ISC"

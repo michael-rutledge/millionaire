@@ -7,6 +7,7 @@ class MillionaireBubbleBuilder {
   }
 
   build() {
+    this._millionaireBubble._compose();
     return this._millionaireBubble;
   }
 
@@ -34,6 +35,11 @@ class MillionaireBubbleBuilder {
 
   setState(state) {
     this._millionaireBubble.state = state;
+    return this;
+  }
+
+  setStrokeStyle(strokeStyle) {
+    this._millionaireBubble.strokeStyle = strokeStyle;
     return this;
   }
 

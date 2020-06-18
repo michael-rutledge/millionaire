@@ -1,4 +1,5 @@
 const CanvasElement = require('./CanvasElement.js');
+const Colors = require('../Colors.js');
 const Fonts = require('../Fonts.js');
 const MillionaireBubble = require('./MillionaireBubble.js');
 const MillionaireBubbleBuilder = require('./MillionaireBubbleBuilder.js');
@@ -12,45 +13,62 @@ class PlayerElement extends CanvasElement {
     this.width = width;
     this.height = height;
     this.compressedPlayer = compressedPlayer;
+
+    this.bubble = undefined;
+    this.nameText = undefined;
+    this.moneyText = undefined;
+
+    this._compose();
   }
 
+
+  // PRIVATE METHODS
+
+  // Sets up this element for repeated calls to draw().
+  _compose() {
+    var lineGradient = this.context.createLinearGradient(this.x, 0, this.x + this.width, 0);
+    lineGradient.addColorStop(0, Colors.QUESTION_AND_CHOICES_LINE_BASE);
+    lineGradient.addColorStop(0.5, Colors.QUESTION_AND_CHOICES_LINE_SHINE);
+    lineGradient.addColorStop(1, Colors.QUESTION_AND_CHOICES_LINE_BASE);
+
+    // A blank bubble is drawn to allow for multiple text elements on it.
+    this.bubble =
+      new MillionaireBubbleBuilder(this.canvas)
+        .setPosition(this.x, this.y)
+        .setDimensions(this.width, this.height)
+        .setState(MillionaireBubble.State.DEFAULT)
+        .setStrokeStyle(lineGradient)
+        .build();
+
+    var usernameHeight = TextElement.getPredictedTextHeight(this.context,
+      this.compressedPlayer.username, Fonts.PLAYER_USERNAME_FONT);
+
+    this.nameText =
+      new TextElementBuilder(this.canvas)
+        .setPosition(this.x + this.width / 2, this.y - this.height / 2 + usernameHeight)
+        .setMaxWidth(this.width)
+        .setText(this.compressedPlayer.username)
+        .setFont(Fonts.PLAYER_USERNAME_FONT)
+        .setTextAlign('center')
+        .build();
+
+    this.moneyText =
+      new TextElementBuilder(this.canvas)
+        .setPosition(this.x + this.width / 2, this.y + this.height / 2 - usernameHeight)
+        .setMaxWidth(this.width)
+        .setText('\$' + this.compressedPlayer.money)
+        .setFont(Fonts.PLAYER_USERNAME_FONT)
+        .setTextAlign('center')
+        .build();
+  }
 
   // PUBLIC METHODS
 
   // Draw the element on the canvas.
   draw() {
-    var oldStrokeStyle = this.context.strokeStyle;
-
-    // A blank bubble is drawn to allow for multiple text elements on it.
-    new MillionaireBubbleBuilder(this.canvas)
-      .setPosition(this.x, this.y)
-      .setDimensions(this.width, this.height)
-      .setState(MillionaireBubble.State.DEFAULT)
-      .build()
-      .draw();
-
-    var usernameHeight = TextElement.getPredictedTextHeight(this.context,
-      this.compressedPlayer.username, Fonts.PLAYER_USERNAME_FONT);
-
-    new TextElementBuilder(this.canvas)
-      .setPosition(this.x + this.width / 2, this.y - this.height / 2 + usernameHeight)
-      .setMaxWidth(this.width)
-      .setText(this.compressedPlayer.username)
-      .setFont(Fonts.PLAYER_USERNAME_FONT)
-      .setTextAlign('center')
-      .build()
-      .draw();
-
-    new TextElementBuilder(this.canvas)
-      .setPosition(this.x + this.width / 2, this.y + this.height / 2 - usernameHeight)
-      .setMaxWidth(this.width)
-      .setText('\$' + this.compressedPlayer.money)
-      .setFont(Fonts.PLAYER_USERNAME_FONT)
-      .setTextAlign('center')
-      .build()
-      .draw();
-
-    this.context.strokeStyle = oldStrokeStyle;
+    this.bubble.draw();
+    this.nameText.draw();
+    this.moneyText.draw();
   }
 }
 

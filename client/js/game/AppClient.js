@@ -50,7 +50,8 @@ class AppClient {
     this.loginJoinButton = this.htmlDocument.getElementById('loginJoinButton');
     this.loginCreateButton = this.htmlDocument.getElementById('loginCreateButton');
 
-    this.gameClient = new GameClient(this.socket, new GameRenderer(this.gameCanvas, this.htmlDocument));
+    this.gameClient = new GameClient(this.socket,
+      new GameRenderer(this.gameCanvas, this.htmlDocument, this.htmlWindow));
 
     // Assign HTML functions
     this.gameEndButton.onclick = () => { this.hostAttemptEndGame(); }
@@ -113,9 +114,11 @@ class AppClient {
     if (isInGame) {
       this.gameCanvas.style.display = '';
       this.gameLobbyRow.style.display = 'none';
+      this.gameClient.gameRenderer.startRendering();
     } else {
       this.gameCanvas.style.display = 'none';
       this.gameLobbyRow.style.display = '';
+      this.gameClient.gameRenderer.stopRendering();
     }
   }
 

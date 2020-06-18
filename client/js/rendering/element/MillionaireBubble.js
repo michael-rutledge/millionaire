@@ -62,12 +62,59 @@ class MillionaireBubble extends CanvasElement {
     this.textAlign = 'left';
     this.font = Fonts.DEFAULT_FONT;
     this.state = State.DEFAULT;
+    this.strokeStyle = Colors.DEFAULT_LINE_SHINE;
+
     this.xOffsets = {
       'left': () => { return this.height / 2 },
       'right': () => { return this.width - this.height / 2},
       'center': () => { return this.width / 2 }
     };
+
+    this.path = undefined;
+    this.choiceLetterText = undefined;
+    this.choiceText = undefined;
+
+    this._compose();
+  }
+
+
+  // PRIVATE METHODS
+
+  // Sets up this element for repeated calls to draw().
+  _compose() {
+    // TODO: update the shape to recreate the curves in the show.
     this.path = new Path2D();
+    this.path.moveTo(this.x, this.y);
+    this.path.lineTo(this.x + this.height / 2, this.y - this.height / 2);
+    this.path.lineTo(this.x + this.width - this.height / 2, this.y - this.height / 2);
+    this.path.lineTo(this.x + this.width, this.y);
+    this.path.lineTo(this.x + this.width - this.height / 2, this.y + this.height / 2);
+    this.path.lineTo(this.x + this.height / 2, this.y + this.height / 2);
+    this.path.lineTo(this.x, this.y);
+    this.path.closePath();
+
+    var originalXOffset = this.xOffsets[this.textAlign]();
+
+    this.choiceLetterText =
+      new TextElementBuilder(this.canvas)
+        .setPosition(this.x + originalXOffset, this.y)
+        .setTextAlign('left')
+        .setFont(Fonts.CHOICE_LETTER_FONT)
+        .setMaxHeight(this.height)
+        .build();
+
+    this.choiceText =
+      new TextElementBuilder(this.canvas)
+        .setPosition(this.x + originalXOffset, this.y)
+        .setTextAlign(this.textAlign)
+        .setFont(this.font)
+        .setMaxWidth(this.width - this.height)
+        .setMaxHeight(this.height)
+        .build();
+  }
+
+  _getChoiceString(choice) {
+    return Choices.getString(choice) + ': ';
   }
 
 
@@ -78,60 +125,41 @@ class MillionaireBubble extends CanvasElement {
     return this.context.isPointInPath(this.path, x, y);
   }
 
+  // Draws the element on the canvas.
   draw() {
+    console.log('Bubble draw');
+    // Draw bubble.
     var oldFillStyle = this.context.fillStyle;
     var oldStrokeStyle = this.context.strokeStyle;
 
-    var textFillStyle = textFillStyles[this.state];
     this.context.fillStyle = bubbleFillStyles[this.state](this);
+    this.context.strokeStyle = this.strokeStyle;
 
-    // TODO: update the shape to recreate the curves in the show.
-    this.path.moveTo(this.x, this.y);
-    this.path.lineTo(this.x + this.height / 2, this.y - this.height / 2);
-    this.path.lineTo(this.x + this.width - this.height / 2, this.y - this.height / 2);
-    this.path.lineTo(this.x + this.width, this.y);
-    this.path.lineTo(this.x + this.width - this.height / 2, this.y + this.height / 2);
-    this.path.lineTo(this.x + this.height / 2, this.y + this.height / 2);
-    this.path.lineTo(this.x, this.y);
-    this.path.closePath();
     this.context.stroke(this.path);
     this.context.fill(this.path);
 
-    if (this.text !== undefined) {
-      var xOffset = this.xOffsets[this.textAlign]();
-
-      // Draw choice letter if necessary.
-      if (this.choice !== undefined) {
-        var choiceLetterText = Choices.getString(this.choice) + ': ';
-        var choiceLetterFont = Fonts.CHOICE_LETTER_FONT;
-        new TextElementBuilder(this.canvas)
-          .setPosition(this.x + xOffset, this.y)
-          .setText(choiceLetterText)
-          .setTextAlign('left')
-          .setFont(choiceLetterFont)
-          .setFillStyle(choiceLetterFillStyles[this.state])
-          .setMaxHeight(this.height)
-          .build()
-          .draw();
-        xOffset += TextElement.getPredictedTextWidth(this.context, choiceLetterText,
-          choiceLetterFont);
-      }
-
-      // Draw text.
-      new TextElementBuilder(this.canvas)
-        .setPosition(this.x + xOffset, this.y)
-        .setText(this.text)
-        .setTextAlign(this.textAlign)
-        .setFont(this.font)
-        .setFillStyle(textFillStyle)
-        .setMaxWidth(this.width - this.height)
-        .setMaxHeight(this.height)
-        .build()
-        .draw();
-    }
-
     this.context.fillStyle = oldFillStyle;
     this.context.strokeStyle = oldStrokeStyle;
+
+    // Draw text.
+    if (this.text !== undefined) {
+      var choiceLetterXOffset = 0;
+      // Draw choice letter if necessary.
+      if (this.choice !== undefined) {
+        this.choiceLetterText.fillStyle = choiceLetterFillStyles[this.state];
+        this.choiceLetterText.text = this._getChoiceString(this.choice);
+        this.choiceLetterText.draw();
+        choiceLetterXOffset += TextElement.getPredictedTextWidth(this.context,
+          this.choiceLetterText.text, Fonts.CHOICE_LETTER_FONT);
+      }
+
+      // Draw text, taking offset of choice letter into account.
+      this.choiceText.x += choiceLetterXOffset;
+      this.choiceText.fillStyle = textFillStyles[this.state];
+      this.choiceText.text = this.text;
+      this.choiceText.draw();
+      this.choiceText.x -= choiceLetterXOffset;
+    }
   }
 }
 

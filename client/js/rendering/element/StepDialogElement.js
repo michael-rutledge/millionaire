@@ -10,6 +10,7 @@ const TextElementBuilder = require('./TextElementBuilder.js');
 class StepDialogElement extends CanvasElement {
 
   constructor(canvas, socket, compressedStepDialog) {
+    // Logical variables
     super(canvas, /*x=*/0, /*y=*/0);
     this.socket = socket;
     this.compressedStepDialog = compressedStepDialog;
@@ -17,10 +18,62 @@ class StepDialogElement extends CanvasElement {
     this.onClick = (x, y) => {
       this._onClick(x, y);
     };
+
+    // Draw variables
+    this.headerTextElement = undefined;
+    this.buttonFont = Fonts.STEP_DIALOG_FONT;
+    this.headerFont = Fonts.STEP_DIALOG_HEADER_FONT;
+
+    this._compose();
   }
 
 
   // PRIVATE METHODS
+
+  // Sets up this element for repeated calls to draw().
+  _compose() {
+    var maxWidth = 0;
+    var maxHeight = 0;
+    this.compressedStepDialog.actions.forEach((action, index) => {
+      maxHeight = Math.max(maxHeight,
+        TextElement.getPredictedTextHeight(this.context, action.text, this.buttonFont));
+      maxWidth = Math.max(maxWidth,
+        TextElement.getPredictedTextWidth(this.context, action.text, this.buttonFont));
+    });
+    var verticalPadding = 20;
+    var horizontalPadding = 20;
+    var bubbleHeight = maxHeight + verticalPadding;
+    var bubbleWidth = maxWidth + bubbleHeight + horizontalPadding;
+    var startX = this.canvas.width / 2;
+    var startY = this.canvas.height - (this.canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO) -
+      bubbleHeight / 2 - verticalPadding;
+    var strokeStyle = this._getHorizontalLineGradient(startX, startX + bubbleWidth);
+
+    // Button elements
+    for (var i = 0; i < this.compressedStepDialog.actions.length; i++) {
+      var action = this.compressedStepDialog.actions[i];
+      var bubble =
+        new MillionaireBubbleBuilder(this.canvas)
+          .setPosition(startX - bubbleWidth / 2, startY - i * (bubbleHeight + verticalPadding))
+          .setDimensions(bubbleWidth, bubbleHeight)
+          .setText(action.text)
+          .setTextAlign('center')
+          .setFont(this.buttonFont)
+          .setStrokeStyle(strokeStyle)
+          .build();
+      this.actionBubbles.push(bubble);
+    }
+
+    // Header text element
+    this.headerTextElement =
+      new TextElementBuilder(this.canvas)
+        .setPosition(startX,
+          startY - this.compressedStepDialog.actions.length * (bubbleHeight + verticalPadding))
+        .setText(this.compressedStepDialog.header)
+        .setFont(this.headerFont)
+        .setTextAlign('center')
+        .build();
+  }
 
   // Returns the horizontal lione gradient to be used for the stroke style of the dialog.
   _getHorizontalLineGradient(startX, endX) {
@@ -43,54 +96,10 @@ class StepDialogElement extends CanvasElement {
 
   // Draws the element on the canvas.
   draw() {
-    var oldFont = this.context.font;
-    var oldStrokeStyle = this.context.strokeStyle;
-
-    var textElements = [];
-    var maxWidth = 0;
-    var maxHeight = 0;
-    this.context.font = Fonts.STEP_DIALOG_FONT;
-    this.compressedStepDialog.actions.forEach((action, index) => {
-      maxHeight = Math.max(maxHeight,
-        TextElement.getPredictedTextHeight(this.context, action.text));
-      maxWidth = Math.max(maxWidth, TextElement.getPredictedTextWidth(this.context, action.text));
+    this.actionBubbles.forEach((actionBubble, index) => {
+      actionBubble.draw();
     });
-    var verticalPadding = 20;
-    var horizontalPadding = 20;
-    var bubbleHeight = maxHeight + verticalPadding;
-    var bubbleWidth = maxWidth + bubbleHeight + horizontalPadding;
-    var startX = this.canvas.width / 2;
-    var startY = this.canvas.height - (this.canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO) -
-      bubbleHeight / 2 - verticalPadding;
-    this.context.strokeStyle = this._getHorizontalLineGradient(startX, startX + bubbleWidth);
-
-    // Button elements
-    for (var i = 0; i < this.compressedStepDialog.actions.length; i++) {
-      var action = this.compressedStepDialog.actions[i];
-      var bubble =
-        new MillionaireBubbleBuilder(this.canvas)
-          .setPosition(startX - bubbleWidth / 2, startY - i * (bubbleHeight + verticalPadding))
-          .setDimensions(bubbleWidth, bubbleHeight)
-          .setText(action.text)
-          .setTextAlign('center')
-          .setFont(this.context.font)
-          .build();
-      bubble.draw();
-      this.actionBubbles.push(bubble);
-    }
-
-    // Header text element
-    new TextElementBuilder(this.canvas)
-      .setPosition(startX,
-        startY - this.compressedStepDialog.actions.length * (bubbleHeight + verticalPadding))
-      .setText(this.compressedStepDialog.header)
-      .setFont(Fonts.STEP_DIALOG_HEADER_FONT)
-      .setTextAlign('center')
-      .build()
-      .draw();
-
-    this.context.strokeStyle = oldStrokeStyle;
-    this.context.font = oldFont;
+    this.headerTextElement.draw();
   }
 
   // Returns whether the given coordinates are hovering over any of the choice bubbles.
