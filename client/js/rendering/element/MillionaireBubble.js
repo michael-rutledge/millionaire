@@ -127,7 +127,6 @@ class MillionaireBubble extends CanvasElement {
 
   // Draws the element on the canvas.
   draw() {
-    console.log('Bubble draw');
     // Draw bubble.
     var oldFillStyle = this.context.fillStyle;
     var oldStrokeStyle = this.context.strokeStyle;

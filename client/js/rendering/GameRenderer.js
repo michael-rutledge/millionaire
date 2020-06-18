@@ -65,8 +65,6 @@ class GameRenderer {
 
   // Render a frame.
   render(timestamp) {
-    console.log('render');
-
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.canvasElements.forEach((element, index) => {
       element.draw();
