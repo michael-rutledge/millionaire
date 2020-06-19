@@ -200,8 +200,6 @@ describe('GameServerTest', () => {
     expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
     expect(gameServer.serverState.fastestFingerQuestion.revealedChoices).to.have.lengthOf(
       Choices.MAX_CHOICES);
-    expect(gameServer.currentForcedTimer._onTimeout).to.not.be.undefined;
-    clearTimeout(gameServer.currentForcedTimer);
   });
 
   it('showHostRevealFastestFingerQuestionChoicesShouldSetFastestFingerStartTime', () => {

@@ -264,10 +264,6 @@ class GameServer {
     this.serverState.fastestFingerQuestion.revealAllChoices();
     this.serverState.fastestFingerQuestion.markStartTime();
     this._updateGame();
-
-    this.currentForcedTimer = setTimeout(() => {
-      this.fastestFingerTimeUp(data);
-    }, /*timeoutMs*/10000);
   }
 
   // Response to contestant from client locking in a fastest finger choice.
