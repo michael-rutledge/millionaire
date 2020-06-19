@@ -57,7 +57,7 @@ class GameServer {
     this.serverState = undefined;
 
     // FastestFingerSession which can keep generating unused questions for this server.
-    this.fastestFingerSession = new FastestFingerSession();
+    this.fastestFingerSession = new FastestFingerSession(this.playerMap);
 
     // HotSeatSession which can keep generating unused questions for this server.
     this.hotSeatSession = new HotSeatSession();
@@ -278,7 +278,7 @@ class GameServer {
     player.chooseFastestFinger(data.choice);
     this.updateGameForSocket(socket);
 
-    if (this.serverState.allPlayersDoneWithFastestFinger()) {
+    if (this.serverState.fastestFingerQuestion.allPlayersDone()) {
       this.fastestFingerTimeUp(socket, data);
     }
   }
@@ -347,12 +347,8 @@ class GameServer {
     this.currentSocketEvent = 'showHostRevealFastestFingerResults';
     Logger.logInfo(this.currentSocketEvent);
 
-    // Grade every answer; the winner will be determined by whoever gets the highest score.
-    // Tiebreaker is on answer time.
-    this.playerMap.doAll((player) => {
-      player.fastestFingerScore = this.serverState.fastestFingerQuestion.getAnswerScore(
-        player.fastestFingerChoices);
-    });
+    // Nothing needs to be done here, as fastest finger grading happens on the fly. ServerState will
+    // pass the results to the client.
 
     // Human host will control flow, or 3 seconds until hot seat player is accepted.
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({

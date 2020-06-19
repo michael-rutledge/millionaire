@@ -101,42 +101,6 @@ describe('ServerStateTest', () => {
     });
   });
 
-  it('getFastestFingerResultsShouldGiveExpectedResultForPlayer', () => {
-    var serverState = new ServerState(new PlayerMap());
-    var player = new Player(new MockSocket('socket_id'), 'player');
-    var question = new FastestFingerQuestion({
-        text: 'question',
-        orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
-      });
-    question.markStartTime();
-    player.fastestFingerScore = 2;
-    player.fastestFingerTime = question.startTime + 2000;
-    serverState.playerMap.putPlayer(player);
-
-    var fastestFingerResults = serverState.getFastestFingerResults(serverState.playerMap,
-      question);
-
-    expect(fastestFingerResults).to.deep.equal([{
-      username: player.username,
-      score: 2,
-      time: 2000
-    }]);
-  });
-
-  it('getFastestFingerResultsShouldIgnoreShowHost', () => {
-    var serverState = new ServerState(new PlayerMap());
-    var player = new Player(new MockSocket('socket_id'), 'player');
-    var timeNow = new Date().getTime();
-    player.fastestFingerScore = 2;
-    player.fastestFingerTime = timeNow - 2000;
-    serverState.playerMap.putPlayer(player);
-    serverState.setShowHostByUsername(player.username);
-
-    var fastestFingerResults = serverState.getFastestFingerResults(serverState.playerMap, timeNow);
-
-    expect(fastestFingerResults).to.be.empty;
-  });
-
   describe('gradeHotSeatQuestionForContestants', function () {
     function getPreppedServerStateWithOnePlayer(username) {
       var serverState = new ServerState(new PlayerMap());
@@ -204,48 +168,6 @@ describe('ServerStateTest', () => {
 
       expect(forcedElapsedTime).to.equal(0);
     });
-  });
-
-  it('getHotSeatPlayerFromFastestFingerResultsShouldPrioritizeScore', () => {
-    var serverState = new ServerState(new PlayerMap());
-    var winningPlayer = new Player(new MockSocket('socket_winner'), 'winner');
-    var losingPlayer = new Player(new MockSocket('socket_loser'), 'loser');
-    serverState.playerMap.putPlayer(winningPlayer);
-    serverState.playerMap.putPlayer(losingPlayer);
-    var fastestFingerResults = [{
-      username: 'winner',
-      score: 4,
-      time: 2000
-    }, {
-      username: 'loser',
-      score: 3,
-      time: 1000
-    }];
-
-    var hotSeatPlayer = serverState.getHotSeatPlayerFromFastestFingerResults(fastestFingerResults);
-
-    expect(hotSeatPlayer).to.equal(winningPlayer);
-  });
-
-  it('getHotSeatPlayerFromFastestFingerResultsShouldPrioritizeScore', () => {
-    var serverState = new ServerState(new PlayerMap());
-    var winningPlayer = new Player(new MockSocket('socket_winner'), 'winner');
-    var losingPlayer = new Player(new MockSocket('socket_loser'), 'loser');
-    serverState.playerMap.putPlayer(winningPlayer);
-    serverState.playerMap.putPlayer(losingPlayer);
-    var fastestFingerResults = [{
-      username: 'loser',
-      score: 4,
-      time: 2000
-    }, {
-      username: 'winner',
-      score: 4,
-      time: 1000
-    }];
-
-    var hotSeatPlayer = serverState.getHotSeatPlayerFromFastestFingerResults(fastestFingerResults);
-
-    expect(hotSeatPlayer).to.equal(winningPlayer);
   });
 
   describe('hotSeatPlayerCanChoose', function () {
@@ -578,16 +500,26 @@ describe('ServerStateTest', () => {
   });
 
   it('toCompressedClientStateShouldSetResultsIfPresent', () => {
-    var serverState = new ServerState(new PlayerMap());
+    var playerMap = new PlayerMap();
+    var serverState = new ServerState(playerMap);
     var mockSocket = new MockSocket('socket_id');
     var player = new Player(mockSocket, 'username');
     serverState.playerMap.putPlayer(player);
     serverState.fastestFingerQuestion = new FastestFingerQuestion({
       text: 'question',
       orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
-    });
-    player.fastestFingerScore = 4;
-    player.fastestFingerTime = Date.now();
+    }, playerMap);
+    serverState.fastestFingerQuestion.getResults = () => {
+      player.fastestFingerScore = 4;
+      return {
+        playerResults: [{
+          username: player.username,
+          score: 4,
+          time: 10000
+        }],
+        hotSeatPlayer: player
+      };
+    };
 
     var compressedClientState = serverState.toCompressedClientState(mockSocket,
       'showHostRevealFastestFingerResults');

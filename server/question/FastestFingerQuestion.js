@@ -1,9 +1,12 @@
+const Logger = require(process.cwd() + '/server/logging/Logger.js');
+const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
 const Question = require(process.cwd() + '/server/question/Question.js');
 
 // Stores and grades a fastest finger question.
 class FastestFingerQuestion extends Question {
-  constructor(ffqJson) {
+  constructor(ffqJson, playerMap = new PlayerMap()) {
     super(ffqJson);
+    this.playerMap = playerMap;
 
     // Answers revealed to contestants after the question is over.
     //
@@ -30,6 +33,22 @@ class FastestFingerQuestion extends Question {
 
   // PUBLIC METHODS
 
+  // Returns whether all possible players have completed their fastest finger answers.
+  allPlayersDone() {
+    var showHostOffset = 0;
+    var doneCount = 0;
+
+    this.playerMap.doAll((player) => {
+      if (player.isShowHost) {
+        showHostOffset++;
+      } else if (!player.hasFastestFingerChoicesLeft()) {
+        doneCount++;
+      }
+    });
+
+    return doneCount >= this.playerMap.getPlayerCount() - showHostOffset;
+  }
+
   // Grades the given score by returning how many answers matched the ordered choices of this
   // question.
   getAnswerScore(fastestFingerChoices) {
@@ -42,6 +61,39 @@ class FastestFingerQuestion extends Question {
     }
 
     return score;
+  }
+
+  // Returns a JSON object encapsulating the results of this fastest finger question.
+  //
+  // Expects all players to have an answer, which is enforced by the rules of GameServer.
+  getResults() {
+    var fastestFingerResults = {};
+    fastestFingerResults.playerResults = [];
+    var bestScore = 0;
+    var bestTime = Date.now();
+
+    this.playerMap.doAll((player) => {
+      if (!player.isShowHost) {
+        var elapsedTime = player.fastestFingerTime - this.startTime;
+        var playerScore = this.getAnswerScore(player.fastestFingerChoices);
+        player.fastestFingerScore = playerScore;
+
+        // Set hot seat player if answer is best.
+        if (playerScore > bestScore || (playerScore >= bestScore && elapsedTime <= bestTime)) {
+          bestScore = playerScore;
+          bestTime = elapsedTime;
+          fastestFingerResults.hotSeatPlayer = player;
+        }
+
+        fastestFingerResults.playerResults.push({
+          username: player.username,
+          score: playerScore,
+          time: elapsedTime
+        });
+      }
+    });
+
+    return fastestFingerResults;
   }
 
   // Reveals a correct answer to be displayed back to contestants.

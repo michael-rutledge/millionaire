@@ -13,6 +13,8 @@ class Player {
     this.fastestFingerTime = undefined;
     this.hotSeatChoice = undefined;
     this.hotSeatTime = undefined;
+    this.isShowHost = false;
+    this.isHotSeatPlayer = false;
   }
 
 

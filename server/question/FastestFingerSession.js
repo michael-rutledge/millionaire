@@ -11,7 +11,8 @@ const QUESTIONS = JSON.parse(fs.readFileSync(FILE_PATH, 'utf8'));
 // Generates FastestFingerQuestions within a session.
 class FastestFingerSession {
 
-  constructor() {
+  constructor(playerMap) {
+    this.playerMap = playerMap;
     this._refreshQuestions();
   }
 
@@ -45,7 +46,7 @@ class FastestFingerSession {
     if (Object.keys(this.openQuestions).length < 1) {
       this._refreshQuestions();
     }
-    return new FastestFingerQuestion(QUESTIONS[openIndex]);
+    return new FastestFingerQuestion(QUESTIONS[openIndex], this.playerMap);
   }
 }
 

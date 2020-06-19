@@ -93,46 +93,6 @@ class ServerState {
       this.hotSeatQuestion !== undefined && this.hotSeatQuestion.allChoicesRevealed();
   }
 
-  // Returns an array of fastest finger player results for client display using the given player
-  // map.
-  getFastestFingerResults(playerMap, question) {
-    var fastestFingerResults = [];
-
-    playerMap.doAll((player) => {
-      if (!this.playerIsShowHost(player)) {
-        var elapsedTime = player.fastestFingerTime - question.startTime;
-
-        fastestFingerResults.push({
-          username: player.username,
-          score: player.fastestFingerScore,
-          time: elapsedTime
-        });
-      }
-    });
-
-    return fastestFingerResults;
-  }
-
-  // Returns the winning player from the given fastest finger results so they can become the hot
-  // seat player.
-  getHotSeatPlayerFromFastestFingerResults(fastestFingerResults) {
-    var hotSeatPlayer = undefined;
-    var bestScore = 0;
-    var bestTime = undefined;
-
-    fastestFingerResults.forEach((result, index) => {
-      if (result.score >= bestScore) {
-        bestScore = result.score;
-        if (bestTime === undefined || result.time < bestTime) {
-          bestTime = result.time;
-          hotSeatPlayer = this.playerMap.getPlayerByUsername(result.username);
-        }
-      }
-    });
-
-    return hotSeatPlayer;
-  }
-
   // Assigns cash winnings per contestant according to the current hot seat question.
   //
   // The money given will be inversely proportional to the amount of time it takes for an answer to
@@ -204,6 +164,9 @@ class ServerState {
   // Sets the hot seat player of this game using the given username.
   setHotSeatPlayerByUsername(hotSeatPlayerUsername) {
     this.hotSeatPlayer = this.playerMap.getPlayerByUsername(hotSeatPlayerUsername);
+    if (this.hotSeatPlayer) {
+      this.hotSeatPlayer.isHotSeatPlayer = true;
+    }
   }
 
   // Sets the next action to be taken when the host steps the game.
@@ -219,6 +182,9 @@ class ServerState {
   // Sets the show host of this game using the given username.
   setShowHostByUsername(showHostUsername) {
     this.showHost = this.playerMap.getPlayerByUsername(showHostUsername);
+    if (this.showHost) {
+      this.showHost.isShowHost = true;
+    }
   }
 
   // Sets the next action to be taken when the host steps the game.
@@ -307,11 +273,11 @@ class ServerState {
     // Fastest finger results
     if (showFastestFingerResultsEvents.has(currentSocketEvent)) {
       compressed.fastestFingerRevealedAnswers = undefined;
-      compressed.fastestFingerResults = this.getFastestFingerResults(this.playerMap,
-        this.fastestFingerQuestion);
-      this.hotSeatPlayer = this.getHotSeatPlayerFromFastestFingerResults(
-        compressed.fastestFingerResults);
-      compressed.fastestFingerBestScore = this.hotSeatPlayer.fastestFingerScore;
+      var fastestFingerResults = this.fastestFingerQuestion.getResults();
+      compressed.fastestFingerResults = fastestFingerResults.playerResults;
+      this.hotSeatPlayer = fastestFingerResults.hotSeatPlayer;
+      compressed.fastestFingerBestScore = this.hotSeatPlayer ?
+          this.hotSeatPlayer.fastestFingerScore : 0;
     }
     // Hot seat rules
     if (currentSocketEvent == 'showHostCueHotSeatRules') {
