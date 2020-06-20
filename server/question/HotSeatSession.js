@@ -39,10 +39,10 @@ class HotSeatSession {
 
   // Returns a new question from the given question and open indices, subsequently marking it as
   // used.
-  _getNewOpenQuestion(openQuestions, questions) {
+  _getNewOpenQuestion(openQuestions, questions, questionIndex) {
     var openIndexIndex = Math.trunc(Math.random() * openQuestions.length);
     var openIndex = openQuestions.splice(openIndexIndex, 1)[0];
-    return new HotSeatQuestion(questions[openIndex]);
+    return new HotSeatQuestion(questions[openIndex], questionIndex);
   }
 
 
@@ -52,21 +52,24 @@ class HotSeatSession {
   getNewQuestion(questionIndex) {
     if (questionIndex <= 4) {
       // Easy questions up through $1,000.
-      var question = this._getNewOpenQuestion(this.openEasyQuestions, EASY_QUESTIONS);
+      var question = this._getNewOpenQuestion(this.openEasyQuestions, EASY_QUESTIONS,
+        questionIndex);
       if (this.openEasyQuestions.length < 1) {
         this.openEasyQuestions = this._getRefreshedQuestions(EASY_QUESTIONS);
       }
       return question;
     } else if (questionIndex <= 9) {
       // Medium questions up through $32,000.
-      var question = this._getNewOpenQuestion(this.openMediumQuestions, MEDIUM_QUESTIONS);
+      var question = this._getNewOpenQuestion(this.openMediumQuestions, MEDIUM_QUESTIONS,
+        questionIndex);
       if (this.openMediumQuestions.length < 1) {
         this.openMediumQuestions = this._getRefreshedQuestions(MEDIUM_QUESTIONS);
       }
       return question;
     } else {
       // Hard questions the rest of the way.
-      var question = this._getNewOpenQuestion(this.openHardQuestions, HARD_QUESTIONS);
+      var question = this._getNewOpenQuestion(this.openHardQuestions, HARD_QUESTIONS,
+        questionIndex);
       if (this.openHardQuestions.length < 1) {
         this.openHardQuestions = this._getRefreshedQuestions(HARD_QUESTIONS);
       }

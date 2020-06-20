@@ -71,12 +71,14 @@ function getSafeHavenIndex(failedIndex) {
 // Stores and grades a hot seat question.
 class HotSeatQuestion extends Question {
 
-  constructor(hsqJson) {
+  constructor(hsqJson, questionIndex = 0) {
     super(hsqJson);
 
     this.correctChoiceRevealedForShowHost = false;
 
     this.correctChoiceRevealedForAll = false;
+
+    this.questionIndex = questionIndex;
   }
 
 
