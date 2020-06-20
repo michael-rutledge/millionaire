@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const should = require('chai').should();
 
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 const Player = require(process.cwd() + '/server/game/Player.js');
@@ -117,6 +118,22 @@ describe('PlayerMapTest', () => {
 
     expect(playerMap.getPlayerList()).to.deep.equal([activePlayer, inactivePlayer]);
     expect(playerMap.getPlayerCount()).to.equal(2);
+  });
+
+  describe('getPlayerListExcludingShowHost', function () {
+    it('shouldGiveExpectedResult', function () {
+      var playerMap = new PlayerMap();
+      var activePlayer = new Player(new MockSocket('socket_id'), 'active');
+      var inactivePlayer = new Player(/*socket=*/undefined, 'inactive');
+      var hostPlayer = new Player(new MockSocket('socket_host'), 'host');
+      hostPlayer.isShowHost = true;
+      playerMap.putPlayer(activePlayer);
+      playerMap.putPlayer(inactivePlayer);
+      playerMap.putPlayer(hostPlayer);
+
+      playerMap.getPlayerListExcludingShowHost().should.deep.equal([activePlayer, inactivePlayer]);
+      playerMap.getPlayerCountExcludingShowHost().should.equal(2);
+    });
   });
 
   it('getUsernameBySocketShouldGiveExpectedResult', () => {

@@ -94,6 +94,11 @@ class PlayerMap {
     return this.getPlayerList().length;
   }
 
+  // Returns the count of all players in the PlayerMap, excluding the show host.
+  getPlayerCountExcludingShowHost() {
+    return this.getPlayerListExcludingShowHost().length;
+  }
+
   // Returns all Players present in the map in list form.
   getPlayerList() {
     var activePlayers = [];
@@ -103,6 +108,20 @@ class PlayerMap {
     }
 
     return activePlayers;
+  }
+
+  // Returns a list of all players in the PlayerMap, excluding the show host.
+  getPlayerListExcludingShowHost() {
+    var playersExcludingHost = [];
+
+    for (const username in this.usernameToPlayerMap) {
+      var player = this.getPlayerByUsername(username);
+      if (!player.isShowHost) {
+        playersExcludingHost.push(player);
+      }
+    }
+
+    return playersExcludingHost;
   }
 
   // Returns the username of the Player associated with the given socket.
