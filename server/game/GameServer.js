@@ -29,8 +29,6 @@ const SOCKET_EVENTS = [
   'showHostShowHotSeatQuestionText',
   'showHostRevealHotSeatChoice',
   'showHostAskTheAudience',
-  'showHostDoFiftyFifty',
-  'showHostPhoneAFriend',
   'showHostRevealHotSeatQuestionVictory',
   'showHostRevealHotSeatQuestionLoss',
   'showHostSayGoodbyeToHotSeat',
@@ -41,6 +39,8 @@ const SOCKET_EVENTS = [
   'hotSeatFinalAnswer',
   'hotSeatUseFiftyFifty',
   'hotSeatConfirmFiftyFifty',
+  'hotSeatUsePhoneAFriend',
+  'hotSeatConfirmPhoneAFriend',
   'hotSeatPickPhoneAFriend',
   'hotSeatWalkAway',
   'hotSeatConfirmWalkAway'

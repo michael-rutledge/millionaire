@@ -61,20 +61,6 @@ class ServerState {
 
   // PUBLIC METHODS
 
-  // Returns whether all contestant players are done with their fastest finger choices.
-  allPlayersDoneWithFastestFinger() {
-    var showHostOffset = this.showHost === undefined ? 0 : 1;
-    var doneCount = 0;
-
-    this.playerMap.doAll((player) => {
-      if (!player.hasFastestFingerChoicesLeft()) {
-        doneCount++;
-      }
-    });
-
-    return doneCount >= this.playerMap.getPlayerCount() - showHostOffset;
-  }
-
   // Clears all player answers, regardless of question type.
   clearAllPlayerAnswers() {
     this.playerMap.doAll((player) => { player.clearAllAnswers(); });

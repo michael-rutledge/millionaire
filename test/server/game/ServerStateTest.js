@@ -12,37 +12,6 @@ const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 const StepDialog = require(process.cwd() + '/server/game/StepDialog.js');
 
 describe('ServerStateTest', () => {
-  it('allPlayersDoneWithFastestFingerShouldGiveExpectedResultForShowHostAbsent', () => {
-    var serverState = new ServerState(new PlayerMap());
-    var player = new Player(new MockSocket('socket_id_1'), 'username1');
-    serverState.playerMap.putPlayer(player);
-
-    var beforeResult = serverState.allPlayersDoneWithFastestFinger();
-    player.fastestFingerChoices = [Choices.A, Choices.B, Choices.C, Choices.D];
-    player.fastestFingerTime = Date.now();
-    var afterResult = serverState.allPlayersDoneWithFastestFinger();
-
-    expect(beforeResult).to.be.false;
-    expect(afterResult).to.be.true;
-  });
-
-  it('allPlayersDoneWithFastestFingerShouldGiveExpectedResultForShowHostPresent', () => {
-    var serverState = new ServerState(new PlayerMap());
-    var hostPlayer = new Player(new MockSocket('host_socket'), 'host');
-    var otherPlayer = new Player(new MockSocket('other_socket'), 'other');
-    serverState.playerMap.putPlayer(hostPlayer);
-    serverState.playerMap.putPlayer(otherPlayer);
-    serverState.showHost = hostPlayer;
-
-    var beforeResult = serverState.allPlayersDoneWithFastestFinger();
-    otherPlayer.fastestFingerChoices = [Choices.A, Choices.B, Choices.C, Choices.D];
-    otherPlayer.fastestFingerTime = Date.now();
-    var afterResult = serverState.allPlayersDoneWithFastestFinger();
-
-    expect(beforeResult).to.be.false;
-    expect(afterResult).to.be.true;
-  });
-
   it('clearAllPlayerAnswersShouldGiveExpectedResult', () => {
     var serverState = new ServerState(new PlayerMap());
     serverState.playerMap.putPlayer(new Player(new MockSocket('socket_id_1'), 'username1'));
