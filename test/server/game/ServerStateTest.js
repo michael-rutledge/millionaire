@@ -7,6 +7,7 @@ const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestio
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 const Player = require(process.cwd() + '/server/game/Player.js');
+const PlayerDisplay = require(process.cwd() + '/server/game/PlayerDisplay.js');
 const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
 const ServerState = require(process.cwd() + '/server/game/ServerState.js');
 const StepDialog = require(process.cwd() + '/server/game/StepDialog.js');
@@ -537,21 +538,6 @@ describe('ServerStateTest', () => {
     expect(compressedClientState.fastestFingerBestScore).to.equal(4);
   });
 
-  it('toCompressedShouldSetPlayerList', () => {
-    var serverState = new ServerState(new PlayerMap());
-    var mockSocket = new MockSocket('socket_id');
-    var player = new Player(mockSocket, 'username');
-    serverState.playerMap.putPlayer(player);
-
-    var compressedClientState = serverState.toCompressedClientState(mockSocket,
-      /*currentSocketEvent=*/undefined);
-
-    expect(compressedClientState.playerList).to.deep.equal([{
-      username: player.username,
-      money: player.money
-    }]);
-  });
-
   it('toCompressedClientStateShouldSetCelebrationBannerIfPresent', () => {
     var serverState = new ServerState(new PlayerMap());
     var mockSocket = new MockSocket('socket_id');
@@ -659,6 +645,47 @@ describe('ServerStateTest', () => {
 
       compressedClientState.phoneAFriendResults.should.deep.equal(
         serverState.phoneAFriend.getResults());
+    });
+
+    it('shouldSetPlayerList', () => {
+      var serverState = new ServerState(new PlayerMap());
+      var mockSocket = new MockSocket('socket_id');
+      var player = new Player(mockSocket, 'username');
+      serverState.playerMap.putPlayer(player);
+
+      var compressedClientState = serverState.toCompressedClientState(mockSocket,
+        /*currentSocketEvent=*/undefined);
+
+      expect(compressedClientState.playerList).to.deep.equal([player.toCompressed()]);
+    });
+
+    it('shouldSetExpectedClickActionsForPlayerListDuringPhoneAFriend', function () {
+      var serverState = new ServerState(new PlayerMap());
+      var showHostSocket = new MockSocket('socket_show_host');
+      var hotSeatSocket = new MockSocket('socket_hot_seat');
+      var playerSocket = new MockSocket('socket');
+      var showHost = new Player(showHostSocket, 'showHost');
+      var hotSeatPlayer = new Player(hotSeatSocket, 'hotSeat');
+      var player = new Player(playerSocket, 'player');
+      serverState.playerMap.putPlayer(showHost);
+      serverState.playerMap.putPlayer(hotSeatPlayer);
+      serverState.playerMap.putPlayer(player);
+      serverState.setShowHostByUsername(showHost.username);
+      serverState.setHotSeatPlayerByUsername(hotSeatPlayer.username);
+
+      var showHostState = serverState.toCompressedClientState(showHostSocket,
+        /*currentSocketEvent=*/'hotSeatConfirmPhoneAFriend');
+      var hotSeatState = serverState.toCompressedClientState(hotSeatSocket,
+        /*currentSocketEvent=*/'hotSeatConfirmPhoneAFriend');
+      var playerState = serverState.toCompressedClientState(playerSocket,
+        /*currentSocketEvent=*/'hotSeatConfirmPhoneAFriend');
+
+      showHostState.playerList.should.deep.equal([
+        hotSeatPlayer.toCompressed(), player.toCompressed()]);
+      hotSeatState.playerList.should.deep.equal([
+        hotSeatPlayer.toCompressed(), player.toCompressed('hotSeatPickPhoneAFriend')]);
+      playerState.playerList.should.deep.equal([
+        hotSeatPlayer.toCompressed(), player.toCompressed()]);
     });
   });
 });

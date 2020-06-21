@@ -57,6 +57,11 @@ class PhoneAFriendLifeline extends Lifeline {
     this.friendChoice = this.friendChoice === undefined ? choice : this.friendChoice;
     this.friendConfidence = this.friendConfidence === undefined ?
       confidence : this.friendConfidence;
+    // At this point, we want to clear the selected property on the friend to make clearing the
+    // display easier.
+    if (this.friend) {
+      this.friend.selectedForPhoneAFriend = false;
+    }
   }
 
   // Picks the friend to ask for this phone a friend instance from the given username.
@@ -67,6 +72,7 @@ class PhoneAFriendLifeline extends Lifeline {
 
     if (this.friend) {
       this.friendChoice = this.friend.hotSeatChoice;
+      this.friend.selectedForPhoneAFriend = true;
     } else {
       var aiChoice = this._getAIChoice();
       this.friendChoice = aiChoice.choice;

@@ -1,4 +1,5 @@
 const Choices = require(process.cwd() + '/server/question/Choices.js');
+const PlayerDisplay = require(process.cwd() + '/server/game/PlayerDisplay.js');
 
 // Encapsulates a player and their possible actions in Millionaire With Friends.
 class Player {
@@ -15,6 +16,7 @@ class Player {
     this.hotSeatTime = undefined;
     this.isShowHost = false;
     this.isHotSeatPlayer = false;
+    this.selectedForPhoneAFriend = false;
   }
 
 
@@ -72,10 +74,12 @@ class Player {
   }
 
   // Returns a compressed version of the Player, suitable for transfer over a socket message.
-  toCompressed() {
+  toCompressed(clickAction = undefined) {
     return {
       username: this.username,
-      money: this.money
+      money: this.money,
+      display: PlayerDisplay.getDisplayFromPlayer(this),
+      clickAction: clickAction
     };
   }
 }

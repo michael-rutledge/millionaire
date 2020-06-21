@@ -3,6 +3,7 @@ const expect = require('chai').expect;
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
 const Player = require(process.cwd() + '/server/game/Player.js');
+const PlayerDisplay = require(process.cwd() + '/server/game/PlayerDisplay.js');
 
 describe('PlayerTest', () => {
   it('chooseFastestFingerShouldAddChoiceWhenAvailable', () => {
@@ -120,13 +121,17 @@ describe('PlayerTest', () => {
     expect(expectedFalseResult).to.be.false;
   });
 
-  it('toCompressedShouldGiveExpectedResult', () => {
-    var player = new Player(new MockSocket('socket_id'), 'username');
-    player.money = 100;
+  describe('toCompressed', function () {
+    it('shouldGiveExpectedResult', () => {
+      var player = new Player(new MockSocket('socket_id'), 'username');
+      player.money = 100;
 
-    expect(player.toCompressed()).to.deep.equal({
-      username: 'username',
-      money: 100
+      expect(player.toCompressed('clickAction')).to.deep.equal({
+        username: 'username',
+        money: 100,
+        display: PlayerDisplay.DEFAULT,
+        clickAction: 'clickAction'
+      });
     });
   });
 });

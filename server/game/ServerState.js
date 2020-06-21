@@ -39,11 +39,14 @@ class ServerState {
   // PRIVATE METHODS
 
   // Returns a list of all Players, compressed for transfer over a socket message.
-  _getCompressedPlayerList() {
+  _getCompressedPlayerList(phoneAFriendSelectable) {
     var compressedPlayerList = [];
+    var clickAction = phoneAFriendSelectable ? 'hotSeatPickPhoneAFriend' : undefined;
 
-    this.playerMap.getPlayerList().forEach((player, index) => {
-      compressedPlayerList.push(player.toCompressed());
+    this.playerMap.getPlayerListExcludingShowHost().forEach((player, index) => {
+      // Hot seat players should not be able to click on themselves.
+      var filteredClickAction = player.isHotSeatPlayer ? undefined : clickAction;
+      compressedPlayerList.push(player.toCompressed(filteredClickAction));
     });
 
     return compressedPlayerList;
@@ -328,7 +331,8 @@ class ServerState {
       compressed.phoneAFriendResults = this.phoneAFriend.getResults();
     }
     // Player list will always show up.
-    compressed.playerList = this._getCompressedPlayerList();
+    compressed.playerList = this._getCompressedPlayerList(
+      compressed.clientIsHotSeat && currentSocketEvent == 'hotSeatConfirmPhoneAFriend');
     // Hot seat question index will always be set to configure money tree.
     compressed.hotSeatQuestionIndex = this.hotSeatQuestionIndex;
     // Celebration banner will show up as long as it is defined.

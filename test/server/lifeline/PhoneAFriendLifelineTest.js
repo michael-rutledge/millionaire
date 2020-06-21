@@ -107,6 +107,16 @@ describe('PhoneAFriendLifelineTest', function () {
       phoneAFriend.friendChoice.should.equal(Choices.B);
       phoneAFriend.friendConfidence.should.equal(0.75);
     });
+
+    it('shouldResetSelectedStateForFriend', function () {
+      var phoneAFriend = new PhoneAFriendLifeline(new PlayerMap());
+      var player = new Player(new MockSocket('socket_id'), 'player');
+      phoneAFriend.friend = player;
+
+      phoneAFriend.maybeSetFriendChoiceAndConfidence(Choices.A, 0.5);
+
+      phoneAFriend.friend.selectedForPhoneAFriend.should.be.false;
+    });
   });
 
   describe('pickFriend', function () {
@@ -142,6 +152,16 @@ describe('PhoneAFriendLifelineTest', function () {
       expect(phoneAFriend.friend).to.be.undefined;
       phoneAFriend.friendChoice.should.not.be.undefined;
       phoneAFriend.friendConfidence.should.not.be.undefined;
+    });
+
+    it('shouldSetSelectedStateForFriend', function () {
+      var phoneAFriend = new PhoneAFriendLifeline(new PlayerMap());
+      var player = new Player(new MockSocket('socket_id'), 'player');
+      phoneAFriend.playerMap.putPlayer(player);
+
+      phoneAFriend.pickFriend('player');
+
+      phoneAFriend.friend.selectedForPhoneAFriend.should.be.true;
     });
   });
 
