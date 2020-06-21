@@ -433,6 +433,17 @@ describe('GameServerTest', () => {
 
       expect(gameServer.serverState.celebrationBanner).to.be.undefined;
     });
+
+    it('shouldSetExpectedInfoTexts', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.clearEphemeralFields = () => {};
+
+      gameServer.showHostCueHotSeatRules();
+
+      gameServer.serverState.showHostInfoText.should.equal(LocalizedStrings.SHOW_HOST_RULES);
+      gameServer.serverState.hotSeatInfoText.should.equal(LocalizedStrings.HOT_SEAT_RULES);
+      gameServer.serverState.contestantInfoText.should.equal(LocalizedStrings.CONTESTANT_RULES);
+    });
   });
 
   describe('showHostCueHotSeatQuestion', function () {
@@ -1037,10 +1048,6 @@ describe('GameServerTest', () => {
   });
 
   describe('hotSeatConfirmFiftyFifty', function () {
-    function getPreppedGameServer() {
-
-    }
-
     it('shouldUseFiftyFifty', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
       gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
@@ -1053,6 +1060,178 @@ describe('GameServerTest', () => {
       gameServer.hotSeatConfirmFiftyFifty();
 
       gameServer.serverState.fiftyFifty.used.should.be.true;
+    });
+  });
+
+  describe('hotSeatUsePhoneAFriend', function () {
+    it('shouldSetYesNoDialog', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+
+      gameServer.hotSeatUsePhoneAFriend();
+
+      gameServer.serverState.showHostStepDialog.should.deep.equal({
+        actions: [{
+          socketEvent: 'hotSeatConfirmPhoneAFriend',
+          text: LocalizedStrings.YES
+        }, {
+          socketEvent: 'showHostRevealHotSeatChoice',
+          text: LocalizedStrings.NO
+        }],
+        header: LocalizedStrings.HOT_SEAT_CONFIRM_PHONE_A_FRIEND
+      });
+    });
+  });
+
+  describe('hotSeatConfirmPhoneAFriend', function () {
+    it('shouldUsePhoneAFriend', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+
+      gameServer.hotSeatConfirmPhoneAFriend();
+
+      gameServer.serverState.phoneAFriend.used.should.be.true;
+      clearTimeout(gameServer.currentForcedTimer);
+    });
+
+    it('shouldResetStepDialogs', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.showHostStepDialog = {};
+      gameServer.serverState.hotSeatStepDialog = {};
+
+      gameServer.hotSeatConfirmPhoneAFriend();
+
+      expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
+      expect(gameServer.serverState.hotSeatStepDialog).to.be.undefined;
+      clearTimeout(gameServer.currentForcedTimer);
+    });
+
+    it('shouldSetTimerToPickAIFriendForNoOtherHumanPlayers', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.playerMap.getPlayerCountExcludingShowHost = () => { return 1; };
+
+      gameServer.hotSeatConfirmPhoneAFriend();
+
+      expect(gameServer.serverState.phoneAFriend.friend).to.be.undefined;
+      gameServer.currentForcedTimer._onTimeout.should.not.be.undefined;
+      clearTimeout(gameServer.currentForcedTimer);
+    });
+
+    it('shouldNotSetTimerToPickAIFriendForOtherHumanPlayers', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.playerMap.getPlayerCountExcludingShowHost = () => { return 2; };
+
+      gameServer.hotSeatConfirmPhoneAFriend();
+
+      expect(gameServer.currentForcedTimer).to.be.undefined;
+    });
+
+    it('shouldSetExpectedInfoTextsWhenGoingToPickAI', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.clearEphemeralFields = () => {};
+
+      gameServer.hotSeatConfirmPhoneAFriend();
+
+      gameServer.serverState.showHostInfoText.should.equal(
+        LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_RULES_AI);
+      gameServer.serverState.hotSeatInfoText.should.equal(
+        LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_RULES_AI);
+      clearTimeout(gameServer.currentForcedTimer);
+    });
+
+    it('shouldSetExpectedInfoTextsWhenNotGoingToPickAI', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.playerMap.getPlayerCountExcludingShowHost = () => { return 2; };
+      gameServer.serverState.clearEphemeralFields = () => {};
+
+      gameServer.hotSeatConfirmPhoneAFriend();
+
+      gameServer.serverState.showHostInfoText.should.equal(
+        LocalizedStrings.SHOW_HOST_PHONE_A_FRIEND_RULES);
+      gameServer.serverState.hotSeatInfoText.should.equal(
+        LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_RULES);
+      gameServer.serverState.contestantInfoText.should.equal(
+        LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_RULES);
+    });
+  });
+
+  describe('hotSeatPickPhoneAFriend', function () {
+    it('shouldSetFriendForHumanPlayer', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var player = new Player(new MockSocket('socket_id'), 'player');
+      gameServer.playerMap.putPlayer(player);
+
+      gameServer.hotSeatPickPhoneAFriend(new MockSocket(), {
+        username: player.username
+      });
+
+      gameServer.serverState.phoneAFriend.friend.should.equal(player);
+    });
+
+    it('shouldSetExpectedFriendWhenUsingAI', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+
+      gameServer.hotSeatPickPhoneAFriend(new MockSocket(), { useAI: true });
+
+      expect(gameServer.serverState.phoneAFriend.friend).to.be.undefined;
+      clearTimeout(gameServer.currentForcedTimer);
+    });
+
+    it('shouldSetExpectedInfoTextsWhenNotUsingAI', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var player = new Player(new MockSocket('socket_id'), 'player');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.clearEphemeralFields = () => {};
+
+      gameServer.hotSeatPickPhoneAFriend(new MockSocket(), {
+        username: player.username
+      });
+
+      gameServer.serverState.showHostInfoText.should.equal(
+        LocalizedStrings.SHOW_HOST_PHONE_A_FRIEND_CHOOSING);
+      gameServer.serverState.hotSeatInfoText.should.equal(
+        LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_CHOOSING);
+      gameServer.serverState.contestantInfoText.should.equal(
+        LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_CHOOSING);
+    });
+
+    it('shouldSetExpectedInfoTextsWhenUsingAI', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.clearEphemeralFields = () => {};
+
+      gameServer.hotSeatPickPhoneAFriend(new MockSocket(), { useAI: true });
+
+      gameServer.serverState.showHostInfoText.should.equal(
+        LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_CHOOSING_AI);
+      gameServer.serverState.hotSeatInfoText.should.equal(
+        LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_CHOOSING_AI);
+      clearTimeout(gameServer.currentForcedTimer);
+    });
+  });
+
+  describe('contestantSetPhoneConfidence', function () {
+    it('shouldSetFriendChoiceAndConfidence', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.showHostRevealHotSeatChoice = () => {};
+
+      gameServer.contestantSetPhoneConfidence(new MockSocket(), {
+        choice: Choices.A,
+        confidence: 0.5
+      });
+
+      gameServer.serverState.phoneAFriend.friendChoice.should.not.be.undefined;
+      gameServer.serverState.phoneAFriend.friendConfidence.should.not.be.undefined;
+    });
+
+    it('shouldCallShowHostRevealHotSeatChoice', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var called = false;
+      gameServer.showHostRevealHotSeatChoice = () => { called = true; };
+
+      gameServer.contestantSetPhoneConfidence(new MockSocket(), {
+        choice: Choices.A,
+        confidence: 0.5
+      });
+
+      called.should.be.true;
     });
   });
 });

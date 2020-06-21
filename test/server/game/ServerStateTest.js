@@ -241,6 +241,46 @@ describe('ServerStateTest', () => {
     expect(compressedOtherClientState.hotSeatStepDialog).to.be.undefined;
   });
 
+  it('toCompressedClientStateShouldSetExpectedShowHostInfoText', function () {
+    var serverState = new ServerState(new PlayerMap());
+    var socket = new MockSocket('socket_id');
+    var player = new Player(socket, 'player');
+    player.isShowHost = true;
+    serverState.showHost = player;
+    serverState.showHostInfoText = 'infoText';
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(socket);
+
+    compressedClientState.infoText.should.equal(serverState.showHostInfoText);
+  });
+
+  it('toCompressedClientStateShouldSetExpectedHotSeatInfoText', function () {
+    var serverState = new ServerState(new PlayerMap());
+    var socket = new MockSocket('socket_id');
+    var player = new Player(socket, 'player');
+    player.isHotSeatPlayer = true;
+    serverState.hotSeatPlayer = player;
+    serverState.hotSeatInfoText = 'infoText';
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(socket);
+
+    compressedClientState.infoText.should.equal(serverState.hotSeatInfoText);
+  });
+
+  it('toCompressedClientStateShouldSetExpectedContestantInfoText', function () {
+    var serverState = new ServerState(new PlayerMap());
+    var socket = new MockSocket('socket_id');
+    var player = new Player(socket, 'player');
+    serverState.contestantInfoText = 'infoText';
+    serverState.playerMap.putPlayer(player);
+
+    var compressedClientState = serverState.toCompressedClientState(socket);
+
+    compressedClientState.infoText.should.equal(serverState.contestantInfoText);
+  });
+
   it('toCompressedClientStateShouldSetFastestFingerChoiceActionOnGoodEvent', () => {
     var serverState = new ServerState(new PlayerMap());
     var mockSocket = new MockSocket('socket_id');
@@ -527,18 +567,6 @@ describe('ServerStateTest', () => {
     expect(compressedClientState.celebrationBanner).to.deep.equal(serverState.celebrationBanner);
   });
 
-  it('toCompressedClientStateShouldSetInfoTextOnCueHotSeatRules', function () {
-    var serverState = new ServerState(new PlayerMap());
-    var mockSocket = new MockSocket('socket_id');
-    var player = new Player(mockSocket, 'username');
-    serverState.playerMap.putPlayer(player);
-
-    var compressedClientState = serverState.toCompressedClientState(mockSocket,
-      'showHostCueHotSeatRules');
-
-    expect(compressedClientState.infoText).to.deep.equal(LocalizedStrings.HOT_SEAT_RULES,);
-  });
-
   it('toCompressedClientStateShouldSetQuestionForHotSeatQuestion', () => {
     var serverState = new ServerState(new PlayerMap());
     var mockSocket = new MockSocket('socket_id');
@@ -593,5 +621,44 @@ describe('ServerStateTest', () => {
     var compressedClientState = serverState.toCompressedClientState(new MockSocket());
 
     expect(compressedClientState.hotSeatQuestionIndex).to.equal(1);
+  });
+
+  describe('toCompressedClientState', function () {
+    it('shouldSetExpectedInfoTextIfPhoneAFriendWaitingOnChoice', function () {
+      var serverState = new ServerState(new PlayerMap());
+      var mockSocket = new MockSocket('socket');
+      var player = new Player(mockSocket, 'player');
+      serverState.playerMap.putPlayer(player);
+      serverState.phoneAFriend.isActiveForQuestionIndex = () => { return true; };
+      serverState.phoneAFriend.waitingForChoiceFromPlayer = () => { return true; };
+
+      var compressedClientState = serverState.toCompressedClientState(mockSocket);
+
+      compressedClientState.infoText.should.equal(
+        LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_NO_CHOICE);
+    });
+
+    it('shouldSetShowPhoneConfidenceMeterToTrueIfPhoneAFriendWaitingOnConfidence', function () {
+      var serverState = new ServerState(new PlayerMap());
+      var mockSocket = new MockSocket('socket');
+      var player = new Player(mockSocket, 'player');
+      serverState.playerMap.putPlayer(player);
+      serverState.phoneAFriend.isActiveForQuestionIndex = () => { return true; };
+      serverState.phoneAFriend.waitingForConfidenceFromPlayer = () => { return true; };
+
+      var compressedClientState = serverState.toCompressedClientState(mockSocket);
+
+      compressedClientState.showPhoneConfidenceMeter.should.be.true;
+    });
+
+    it('shouldSetPhoneAFriendResultsWhenResultsAreAvailableForQuestionIndex', function () {
+      var serverState = new ServerState(new PlayerMap());
+      serverState.phoneAFriend.hasResultsForQuestionIndex = () => {  return true; };
+
+      var compressedClientState = serverState.toCompressedClientState(new MockSocket());
+
+      compressedClientState.phoneAFriendResults.should.deep.equal(
+        serverState.phoneAFriend.getResults());
+    });
   });
 });

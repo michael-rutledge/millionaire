@@ -130,6 +130,7 @@ class GameServer {
     this.playerMap.emitCustomToAll('updateGame', (socket) => {
       return this.serverState.toCompressedClientState(socket, this.currentSocketEvent);
     });
+    this.serverState.clearEphemeralFields();
   }
 
 
@@ -392,6 +393,10 @@ class GameServer {
     // as well.
     this.serverState.resetFastestFinger();
     this.serverState.setCelebrationBanner(undefined);
+    // Set the infoTexts for each role.
+    this.serverState.showHostInfoText = LocalizedStrings.SHOW_HOST_RULES;
+    this.serverState.hotSeatInfoText = LocalizedStrings.HOT_SEAT_RULES;
+    this.serverState.contestantInfoText = LocalizedStrings.CONTESTANT_RULES;
 
     // Human host will control flow, or 5 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -661,6 +666,102 @@ class GameServer {
 
     this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.setShowHostStepDialog(undefined);
+    this.showHostRevealHotSeatChoice();
+  }
+
+  // Response to the client asking to use phone a fried.
+  //
+  // Expected to only be called by hot seat player.
+  hotSeatUsePhoneAFriend(socket, data) {
+    this.currentSocketEvent = 'hotSeatUsePhoneAFriend';
+    Logger.logInfo(this.currentSocketEvent);
+
+    this._setShowHostOrHotSeatYesNoDialog(
+      /*yesEvent=*/'hotSeatConfirmPhoneAFriend',
+      /*noEvent=*/'showHostRevealHotSeatChoice',
+      /*header=*/LocalizedStrings.HOT_SEAT_CONFIRM_PHONE_A_FRIEND);
+    this._updateGame();
+  }
+
+  // Response to the client confirming the use of phone a friend.
+  hotSeatConfirmPhoneAFriend(socket, data) {
+    this.currentSocketEvent = 'hotSeatConfirmPhoneAFriend';
+    Logger.logInfo(this.currentSocketEvent);
+
+    var goingToPickAI = this.playerMap.getPlayerCountExcludingShowHost() <= 1;
+
+    // Start the lifeline for this question and remove dialogs.
+    this.serverState.phoneAFriend.startForQuestion(this.serverState.hotSeatQuestion);
+    this.serverState.setHotSeatStepDialog(undefined);
+    this.serverState.setShowHostStepDialog(undefined);
+
+    // Set info text appropriately.
+    if (goingToPickAI) {
+      this.serverState.showHostInfoText = LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_RULES_AI;
+      this.serverState.hotSeatInfoText = LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_RULES_AI;
+    } else {
+      this.serverState.showHostInfoText = LocalizedStrings.SHOW_HOST_PHONE_A_FRIEND_RULES;
+      this.serverState.hotSeatInfoText = LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_RULES;
+      this.serverState.contestantInfoText = LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_RULES;
+    }
+
+    this._updateGame();
+
+    // If no players are around to phone, use AI friend after a forced timer.
+    if (goingToPickAI) {
+      this.currentForcedTimer = setTimeout(() => {
+        this.hotSeatPickPhoneAFriend(socket, {
+          useAI: true
+        });
+      }, /*timeoutMs*/4500);
+    }
+  }
+
+  // Response to the client picking a friend to phone.
+  //
+  // Expected data format: {
+  //   string username,
+  //   boolean useAI
+  // }
+  hotSeatPickPhoneAFriend(socket, data) {
+    this.currentSocketEvent = 'hotSeatPickPhoneAFriend';
+    Logger.logInfo(this.currentSocketEvent);
+
+    this.serverState.phoneAFriend.pickFriend(data.useAI ? undefined : data.username);
+
+    // Set info text appropriately.
+    if (data.useAI) {
+      this.serverState.showHostInfoText = LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_CHOOSING_AI;
+      this.serverState.hotSeatInfoText = LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_CHOOSING_AI;
+    } else {
+      this.serverState.showHostInfoText = LocalizedStrings.SHOW_HOST_PHONE_A_FRIEND_CHOOSING;
+      this.serverState.hotSeatInfoText = LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_CHOOSING;
+      this.serverState.contestantInfoText = LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_CHOOSING;
+    }
+
+    this._updateGame();
+
+    // If we are using AI, we will wait a few seconds before giving the response.
+    if (data.useAI || !this.serverState.phoneAFriend.friend) {
+      this.currentForcedTimer = setTimeout(() => {
+        this.contestantSetPhoneConfidence(socket, /*data=*/{});
+      }, /*timeoutMs*/4500);
+    }
+
+    // Otherwise, we do nothing and wait for confidence to be set.
+  }
+
+  // Response to the client setting the confidence of a phone-a-friend answer.
+  //
+  // Expected data format: {
+  //   Choice choice
+  //   float confidence
+  // }
+  contestantSetPhoneConfidence(socket, data) {
+    Logger.logInfo('contestantSetPhoneConfidence');
+
+    this.serverState.phoneAFriend.maybeSetFriendChoiceAndConfidence(data.choice, data.confidence);
+
     this.showHostRevealHotSeatChoice();
   }
 }

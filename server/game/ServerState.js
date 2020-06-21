@@ -3,11 +3,15 @@ const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestio
 const LifelineIndex = require(process.cwd() + '/server/question/LifelineIndex.js');
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
+const PhoneAFriend = require(process.cwd() + '/server/lifeline/PhoneAFriendLifeline.js');
 
 const contestantChoosableEvents = new Set([
   'showHostRevealHotSeatChoice',
   'hotSeatChoose',
-  'hotSeatUseLifeline',
+  'hotSeatUseFiftyFifty',
+  'hotSeatUsePhoneAFriend',
+  'hotSeatConfirmPhoneAFriend',
+  'hotSeatPickPhoneAFriend',
   'hotSeatWalkAway'
 ]);
 const hotSeatChoosableEvents = new Set(['showHostRevealHotSeatChoice']);
@@ -64,6 +68,15 @@ class ServerState {
   // Clears all player answers, regardless of question type.
   clearAllPlayerAnswers() {
     this.playerMap.doAll((player) => { player.clearAllAnswers(); });
+  }
+
+  // Clears any fields meant to be sent to the client for one update at a time.
+  clearEphemeralFields() {
+    // Info texts should only appear for one socket event at a time. Any exceptions should be
+    // handled from the GameServer.
+    this.hotSeatInfoText = undefined;
+    this.contestantInfoText = undefined;
+    this.showHostInfoText = undefined;
   }
 
   // Clears the timers associated with this server state.
@@ -213,9 +226,16 @@ class ServerState {
 
     // Lifelines
     this.fiftyFifty = new FiftyFiftyLifeline(this.playerMap);
+    this.phoneAFriend = new PhoneAFriend(this.playerMap);
 
     // Banner element that appears on a celebration moment
     this.celebrationBanner = undefined;
+
+    // Separate infoText fields for each role, that way relevant information can be displayed on
+    // screen for all clients.
+    this.hotSeatInfoText = undefined;
+    this.contestantInfoText = undefined;
+    this.showHostInfoText = undefined;
   }
 
   // Returns a compressed, JSON-formatted version of client state to pass to the client via socket.
@@ -234,6 +254,14 @@ class ServerState {
     // The hot seat player might need to have a dialog that can step the game through.
     if (compressed.clientIsHotSeat && this.hotSeatStepDialog !== undefined) {
       compressed.hotSeatStepDialog = this.hotSeatStepDialog.toCompressed();
+    }
+    // Set info texts.
+    if (compressed.clientIsShowHost) {
+      compressed.infoText = this.showHostInfoText;
+    } else if (compressed.clientIsHotSeat) {
+      compressed.infoText = this.hotSeatInfoText;
+    } else {
+      compressed.infoText = this.contestantInfoText;
     }
     // If we are in an event that allows for fastest finger choosing, make choice buttons active by
     // setting choice actions.
@@ -265,10 +293,6 @@ class ServerState {
       compressed.fastestFingerBestScore = this.hotSeatPlayer ?
           this.hotSeatPlayer.fastestFingerScore : 0;
     }
-    // Hot seat rules
-    if (currentSocketEvent == 'showHostCueHotSeatRules') {
-      compressed.infoText = LocalizedStrings.HOT_SEAT_RULES;
-    }
     // Hot seat question
     if (this.hotSeatQuestion !== undefined) {
       var madeChoiceToDisplay = compressed.clientIsShowHost ?
@@ -290,6 +314,19 @@ class ServerState {
     };
     compressed.fiftyFiftyActionButton = this.fiftyFifty.toCompressedHotSeatActionButton(
       actionButtonsAvailable);
+    compressed.phoneAFriendActionButton = this.phoneAFriend.toCompressedHotSeatActionButton(
+      actionButtonsAvailable);
+    // Phone a friend elements
+    if (this.phoneAFriend.isActiveForQuestionIndex(this.hotSeatQuestionIndex)) {
+      if (this.phoneAFriend.waitingForChoiceFromPlayer(player)) {
+        compressed.infoText = LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_NO_CHOICE;
+      } else if (this.phoneAFriend.waitingForConfidenceFromPlayer(player)) {
+        compressed.showPhoneConfidenceMeter = true;
+      }
+    }
+    if (this.phoneAFriend.hasResultsForQuestionIndex(this.hotSeatQuestionIndex)) {
+      compressed.phoneAFriendResults = this.phoneAFriend.getResults();
+    }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList();
     // Hot seat question index will always be set to configure money tree.

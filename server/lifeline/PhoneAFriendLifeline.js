@@ -31,6 +31,34 @@ class PhoneAFriendLifeline extends Lifeline {
 
   // PUBLIC METHODS
 
+  // Returns a JSON representation of the results of this phone a friend instance.
+  getResults() {
+    return {
+      choice: this.friendChoice,
+      confidence: this.friendConfidence
+    };
+  }
+
+  // Returns whether this lifeline should display its results to players.
+  hasResultsForQuestionIndex(questionIndex) {
+    // Verbose if statement because using just a return statement didn't give a boolean result.
+    return this.isActiveForQuestionIndex(questionIndex) && this.friendChoice !== undefined
+      && this.friendConfidence !== undefined;
+  }
+
+  // Returns whether the lifeline is currently active.
+  isActiveForQuestionIndex(questionIndex) {
+    return this.used && this.question !== undefined
+      && this.question.questionIndex === questionIndex;
+  }
+
+  // Sets choice and confidence from the given data, not overwriting if values are already present.
+  maybeSetFriendChoiceAndConfidence(choice, confidence) {
+    this.friendChoice = this.friendChoice === undefined ? choice : this.friendChoice;
+    this.friendConfidence = this.friendConfidence === undefined ?
+      confidence : this.friendConfidence;
+  }
+
   // Picks the friend to ask for this phone a friend instance from the given username.
   //
   // An undefined friend leads to AI choice selection.
@@ -46,19 +74,14 @@ class PhoneAFriendLifeline extends Lifeline {
     }
   }
 
-  // Sets the choice being put forth by the phone friend.
-  //
-  // Expected to only be used in the event of a phoned friend not having a choice ready at the
-  // start.
-  setFriendChoice(friendChoice) {
-    this.friendChoice = friendChoice;
+  // Returns whether the lifeline is currently waiting for a choice from the given player.
+  waitingForChoiceFromPlayer(player) {
+    return this.friendChoice === undefined && this.friend == player;
   }
 
-  // Sets the confidence level of a friend's answer.
-  //
-  // Expected to only be used for human friends, as AI confidence is set upon choice generation.
-  setFriendConfidence(friendConfidence) {
-    this.friendConfidence = friendConfidence;
+  // Returns whether the lifeline is currently waiting for confidence from the given player.
+  waitingForConfidenceFromPlayer(player) {
+    return this.friendConfidence === undefined && this.friend == player;
   }
 }
 
