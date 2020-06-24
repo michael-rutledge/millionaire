@@ -20,6 +20,9 @@ class GameRenderer {
       this.canvas.onmousedown = (event) => {
         this.onClick(event);
       };
+      this.canvas.onmouseup = (event) => {
+        this.onMouseUp(event);
+      };
       this.canvas.onmousemove = (event) => {
         this.onMouseMove(event);
       };
@@ -53,6 +56,11 @@ class GameRenderer {
   // Executes when the user moves their mouse.
   onMouseMove(event) {
     var localPos = this._getLocalCursorPosition(this.canvas, event);
+    this.canvasElements.forEach((element, index) => {
+      if (element.onMouseMove) {
+        element.onMouseMove(localPos.x, localPos.y);
+      }
+    });
     for (var i = 0; i < this.canvasElements.length; i++) {
       if (this.canvasElements[i].isClickable() &&
           this.canvasElements[i].isMouseHovering(localPos.x, localPos.y)) {
@@ -61,6 +69,15 @@ class GameRenderer {
       }
     }
     this.htmlDocument.body.style.cursor = 'initial';
+  }
+
+  onMouseUp(event) {
+    var localPos = this._getLocalCursorPosition(this.canvas, event);
+    this.canvasElements.forEach((element, index) => {
+      if (element.onMouseUp) {
+        element.onMouseUp(localPos.x, localPos.y);
+      }
+    });
   }
 
   // Render a frame.

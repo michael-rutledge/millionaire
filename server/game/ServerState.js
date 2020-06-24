@@ -292,7 +292,8 @@ class ServerState {
       compressed.fastestFingerRevealedAnswers = undefined;
       var fastestFingerResults = this.fastestFingerQuestion.getResults();
       compressed.fastestFingerResults = fastestFingerResults.playerResults;
-      this.hotSeatPlayer = fastestFingerResults.hotSeatPlayer;
+      this.setHotSeatPlayerByUsername(fastestFingerResults.hotSeatPlayer ?
+        fastestFingerResults.hotSeatPlayer.username : undefined);
       compressed.fastestFingerBestScore = this.hotSeatPlayer ?
           this.hotSeatPlayer.fastestFingerScore : 0;
     }
@@ -321,10 +322,14 @@ class ServerState {
       actionButtonsAvailable);
     // Phone a friend elements
     if (this.phoneAFriend.isActiveForQuestionIndex(this.hotSeatQuestionIndex)) {
-      if (this.phoneAFriend.waitingForChoiceFromPlayer(player)) {
-        compressed.infoText = LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_NO_CHOICE;
-      } else if (this.phoneAFriend.waitingForConfidenceFromPlayer(player)) {
-        compressed.showPhoneConfidenceMeter = true;
+      if (this.phoneAFriend.friend == player) {
+        if (this.phoneAFriend.waitingForChoiceFromPlayer(player)) {
+          compressed.infoText = LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_NO_CHOICE;
+        } else if (this.phoneAFriend.waitingForConfidenceFromPlayer(player)) {
+          compressed.showPhoneConfidenceMeter = true;
+        }
+      } else if (compressed.clientIsContestant) {
+        compressed.infoText = LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_WAIT;
       }
     }
     if (this.phoneAFriend.hasResultsForQuestionIndex(this.hotSeatQuestionIndex)) {

@@ -615,6 +615,7 @@ describe('ServerStateTest', () => {
       var mockSocket = new MockSocket('socket');
       var player = new Player(mockSocket, 'player');
       serverState.playerMap.putPlayer(player);
+      serverState.phoneAFriend.friend = player;
       serverState.phoneAFriend.isActiveForQuestionIndex = () => { return true; };
       serverState.phoneAFriend.waitingForChoiceFromPlayer = () => { return true; };
 
@@ -629,12 +630,26 @@ describe('ServerStateTest', () => {
       var mockSocket = new MockSocket('socket');
       var player = new Player(mockSocket, 'player');
       serverState.playerMap.putPlayer(player);
+      serverState.phoneAFriend.friend = player;
       serverState.phoneAFriend.isActiveForQuestionIndex = () => { return true; };
+      serverState.phoneAFriend.waitingForChoiceFromPlayer = () => { return false; };
       serverState.phoneAFriend.waitingForConfidenceFromPlayer = () => { return true; };
 
       var compressedClientState = serverState.toCompressedClientState(mockSocket);
 
       compressedClientState.showPhoneConfidenceMeter.should.be.true;
+    });
+
+    it('shouldSetExpectedInfoTextForNonFriendWaitingOnPhoneAFriendChoice', function () {
+      var serverState = new ServerState(new PlayerMap());
+      var mockSocket = new MockSocket('socket');
+      var player = new Player(mockSocket, 'player');
+      serverState.playerMap.putPlayer(player);
+      serverState.phoneAFriend.isActiveForQuestionIndex = () => { return true; };
+
+      var compressedClientState = serverState.toCompressedClientState(mockSocket);
+
+      compressedClientState.infoText.should.equal(LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_WAIT);
     });
 
     it('shouldSetPhoneAFriendResultsWhenResultsAreAvailableForQuestionIndex', function () {

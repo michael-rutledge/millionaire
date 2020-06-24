@@ -644,6 +644,18 @@ describe('GameServerTest', () => {
 
       expect(player.hotSeatChoice).to.equal(Choices.A);
     });
+
+    it('shouldSetPhoneAFriendChoiceForFriend', function () {
+      var gameServer = newGameServerWithPlayerShowHost(false);
+      var mockSocket = new MockSocket('socket_id');
+      var player = new Player(mockSocket, 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.phoneAFriend.friend = player;
+
+      gameServer.contestantChoose(mockSocket, { choice: Choices.A });
+
+      player.hotSeatChoice.should.equal(gameServer.serverState.phoneAFriend.friendChoice);
+    });
   });
 
   describe('hotSeatFinalAnswer', function () {
@@ -1208,16 +1220,14 @@ describe('GameServerTest', () => {
   });
 
   describe('contestantSetPhoneConfidence', function () {
-    it('shouldSetFriendChoiceAndConfidence', function () {
+    it('shouldSetFriendConfidence', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
       gameServer.showHostRevealHotSeatChoice = () => {};
 
       gameServer.contestantSetPhoneConfidence(new MockSocket(), {
-        choice: Choices.A,
         confidence: 0.5
       });
 
-      gameServer.serverState.phoneAFriend.friendChoice.should.not.be.undefined;
       gameServer.serverState.phoneAFriend.friendConfidence.should.not.be.undefined;
     });
 

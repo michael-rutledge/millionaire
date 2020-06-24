@@ -53,8 +53,8 @@ class PhoneAFriendLifeline extends Lifeline {
   }
 
   // Sets choice and confidence from the given data, not overwriting if values are already present.
-  maybeSetFriendChoiceAndConfidence(choice, confidence) {
-    this.friendChoice = this.friendChoice === undefined ? choice : this.friendChoice;
+  maybeSetFriendConfidence(confidence) {
+    this.friendChoice = this.friend === undefined ? undefined : this.friend.hotSeatChoice;
     this.friendConfidence = this.friendConfidence === undefined ?
       confidence : this.friendConfidence;
     // At this point, we want to clear the selected property on the friend to make clearing the

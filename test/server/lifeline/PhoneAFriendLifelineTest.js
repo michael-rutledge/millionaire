@@ -87,24 +87,26 @@ describe('PhoneAFriendLifelineTest', function () {
     });
   });
 
-  describe('maybeSetFriendChoiceAndConfidence', function () {
+  describe('maybeSetFriendConfidence', function () {
     it('shouldSetValuesIfNotDefined', function () {
       var phoneAFriend = new PhoneAFriendLifeline(new PlayerMap());
+      phoneAFriend.friend = new Player(new MockSocket('socket_id'), 'player');
+      phoneAFriend.friend.hotSeatChoice = Choices.A;
 
-      phoneAFriend.maybeSetFriendChoiceAndConfidence(Choices.A, 0.5);
+      phoneAFriend.maybeSetFriendConfidence(0.5);
 
       phoneAFriend.friendChoice.should.equal(Choices.A);
       phoneAFriend.friendConfidence.should.equal(0.5);
     });
 
-    it('shouldNotOverwriteExistingValues', function () {
+    it('shouldNotOverwriteExistingConfidence', function () {
       var phoneAFriend = new PhoneAFriendLifeline(new PlayerMap());
-      phoneAFriend.friendChoice = Choices.B;
+      phoneAFriend.friend = new Player(new MockSocket('socket_id'), 'player');
+      phoneAFriend.friend.hotSeatChoice = Choices.A;
       phoneAFriend.friendConfidence = 0.75;
 
-      phoneAFriend.maybeSetFriendChoiceAndConfidence(Choices.A, 0.5);
+      phoneAFriend.maybeSetFriendConfidence(0.5);
 
-      phoneAFriend.friendChoice.should.equal(Choices.B);
       phoneAFriend.friendConfidence.should.equal(0.75);
     });
 
@@ -112,8 +114,9 @@ describe('PhoneAFriendLifelineTest', function () {
       var phoneAFriend = new PhoneAFriendLifeline(new PlayerMap());
       var player = new Player(new MockSocket('socket_id'), 'player');
       phoneAFriend.friend = player;
+      player.hotSeatChoice = Choices.A;
 
-      phoneAFriend.maybeSetFriendChoiceAndConfidence(Choices.A, 0.5);
+      phoneAFriend.maybeSetFriendConfidence(0.5);
 
       phoneAFriend.friend.selectedForPhoneAFriend.should.be.false;
     });

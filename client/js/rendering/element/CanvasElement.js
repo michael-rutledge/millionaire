@@ -6,6 +6,7 @@ class CanvasElement {
     this.x = x;
     this.y = y;
     this.onClick = onClick;
+    this.onMouseUp = undefined;
   }
 
   // Returns whether the element can be clicked on.

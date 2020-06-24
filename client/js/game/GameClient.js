@@ -9,6 +9,7 @@ const HotSeatActionButtonBuilder = require('../rendering/element/HotSeatActionBu
 const InfoTextElement = require('../rendering/element/InfoTextElement.js');
 const LocalizedStrings = require('../../../localization/LocalizedStrings.js');
 const MoneyTreeElement = require('../rendering/element/MoneyTreeElement.js');
+const PhoneConfidenceMeter = require('../rendering/element/PhoneConfidenceMeter.js');
 const PlayerListElement = require('../rendering/element/PlayerListElement.js');
 const QuestionAndChoicesElement = require('../rendering/element/QuestionAndChoicesElement.js');
 const StepDialogElement = require('../rendering/element/StepDialogElement.js');
@@ -35,7 +36,8 @@ class GameClient {
   getNewCanvasElements(compressedClientState) {
     var canvas = this.gameRenderer.canvas;
     var newCanvasElements = [new BackgroundElement(canvas)];
-    var playerListElement = new PlayerListElement(canvas, compressedClientState.playerList);
+    var playerListElement = new PlayerListElement(canvas, compressedClientState.playerList,
+      this.socket);
     var questionAndChoicesElement = new QuestionAndChoicesElement(canvas, this.socket);
 
     newCanvasElements.push(playerListElement);
@@ -112,6 +114,26 @@ class GameClient {
           .setAvailable(compressedClientState.fiftyFiftyActionButton.available)
           .build();
       newCanvasElements.push(fiftyFiftyActionButton);
+    }
+    // Phone a friend
+    if (compressedClientState.phoneAFriendActionButton !== undefined) {
+      var phoneAFriendActionButton =
+        new HotSeatActionButtonBuilder(canvas)
+          .setPosition(
+            canvas.width - bottomSideHeight * 0.25,
+            canvas.height  - bottomSideHeight * 0.75)
+          .setText('Phone')
+          .setSocket(this.socket)
+          .setSocketEvent(compressedClientState.phoneAFriendActionButton.socketEvent)
+          .setOutlineColor(Colors.LIFELINE_OUTLINE)
+          .setUsed(compressedClientState.phoneAFriendActionButton.used)
+          .setAvailable(compressedClientState.phoneAFriendActionButton.available)
+          .build();
+      newCanvasElements.push(phoneAFriendActionButton);
+    }
+
+    if (compressedClientState.showPhoneConfidenceMeter) {
+      newCanvasElements.push(new PhoneConfidenceMeter(canvas, this.socket));
     }
 
     return newCanvasElements;

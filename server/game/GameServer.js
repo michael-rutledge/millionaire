@@ -498,6 +498,12 @@ class GameServer {
 
     var player = this.playerMap.getPlayerBySocket(socket);
     player.chooseHotSeat(data.choice);
+
+    // If this is a phoned player who hasn't made a choice yet, we should set the friendChoice.
+    if (player == this.serverState.phoneAFriend.friend) {
+      this.serverState.phoneAFriend.friendChoice = player.hotSeatChoice;
+    }
+
     this.updateGameForSocket(socket);
   }
 
@@ -754,13 +760,13 @@ class GameServer {
   // Response to the client setting the confidence of a phone-a-friend answer.
   //
   // Expected data format: {
-  //   Choice choice
   //   float confidence
   // }
   contestantSetPhoneConfidence(socket, data) {
     Logger.logInfo('contestantSetPhoneConfidence');
+    Logger.logInfo('confidence set: ' + data.confidence);
 
-    this.serverState.phoneAFriend.maybeSetFriendChoiceAndConfidence(data.choice, data.confidence);
+    this.serverState.phoneAFriend.maybeSetFriendConfidence(data.confidence);
 
     this.showHostRevealHotSeatChoice();
   }

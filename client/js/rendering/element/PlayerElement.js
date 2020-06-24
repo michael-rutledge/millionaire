@@ -8,11 +8,16 @@ const TextElementBuilder = require('./TextElementBuilder.js');
 
 class PlayerElement extends CanvasElement {
 
-  constructor(canvas, x, y, width, height, compressedPlayer) {
+  constructor(canvas, x, y, width, height, compressedPlayer, socket) {
     super(canvas, x, y);
     this.width = width;
     this.height = height;
     this.compressedPlayer = compressedPlayer;
+    this.socket = socket;
+
+    if (this.compressedPlayer.clickAction) {
+      this.onClick = (x, y) => { this._onClick(x, y); };
+    }
 
     this.bubble = undefined;
     this.nameText = undefined;
@@ -62,6 +67,14 @@ class PlayerElement extends CanvasElement {
         .build();
   }
 
+  _onClick(x, y) {
+    if (this.isMouseHovering(x, y)) {
+      this.socket.emit('hotSeatPickPhoneAFriend', {
+        username: this.compressedPlayer.username
+      });
+    }
+  }
+
   // PUBLIC METHODS
 
   // Draw the element on the canvas.
@@ -69,6 +82,10 @@ class PlayerElement extends CanvasElement {
     this.bubble.draw();
     this.nameText.draw();
     this.moneyText.draw();
+  }
+
+  isMouseHovering(x, y) {
+    return this.isClickable() && this.bubble.isPointInPath(x, y);
   }
 }
 

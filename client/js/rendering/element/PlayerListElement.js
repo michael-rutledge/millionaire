@@ -5,10 +5,12 @@ const PlayerElement = require('./PlayerElement.js');
 
 class PlayerListElement extends CanvasElement {
 
-  constructor(canvas, compressedPlayerList = []) {
+  constructor(canvas, compressedPlayerList = [], socket = undefined) {
     super(canvas);
     this.compressedPlayerList = compressedPlayerList;
     this.playerElements = [];
+    this.socket = socket;
+    this.onClick = (x, y) => { this._onClick(x, y) };
 
     this._compose();
   }
@@ -32,8 +34,17 @@ class PlayerListElement extends CanvasElement {
       var compressedPlayer = this.compressedPlayerList[i];
       var y = startY + i * (bubbleHeight + verticalPadding);
       var playerElement =
-        new PlayerElement(this.canvas, startX, y, bubbleWidth, bubbleHeight, compressedPlayer);
+        new PlayerElement(this.canvas, startX, y, bubbleWidth, bubbleHeight, compressedPlayer,
+          this.socket);
       this.playerElements.push(playerElement);
+    }
+  }
+
+  _onClick(x, y) {
+    for (var i = 0; i < this.playerElements.length; i++) {
+      if (this.playerElements[i].isClickable()) {
+        this.playerElements[i].onClick(x, y);
+      }
     }
   }
 
@@ -45,6 +56,16 @@ class PlayerListElement extends CanvasElement {
     this.playerElements.forEach((playerElement, index) => {
       playerElement.draw();
     });
+  }
+
+  isMouseHovering(x, y) {
+    for (var i = 0; i < this.playerElements.length; i++) {
+      if (this.playerElements[i].isMouseHovering(x, y)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
 
