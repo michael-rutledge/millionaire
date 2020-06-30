@@ -44,7 +44,8 @@ class PhoneAFriendLifeline extends Lifeline {
     var uncertainChoiceCount = this._getAIUncertainChoiceCount(this.question.questionIndex);
     var remainingOrderedChoiceIndexes = this.question.getRemainingOrderedChoiceIndexes();
     var uncertainChoiceIndex = Math.floor(Math.random() * (uncertainChoiceCount + 1));
-    var choice = remainingOrderedChoiceIndexes[uncertainChoiceIndex];
+    var choice = this.question.getShuffledChoice(
+      remainingOrderedChoiceIndexes[uncertainChoiceIndex]);
     var confidence = 1 - uncertainChoiceCount / remainingOrderedChoiceIndexes.length;
 
     return  {

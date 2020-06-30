@@ -9,6 +9,7 @@ const HotSeatActionButtonBuilder = require('../rendering/element/HotSeatActionBu
 const InfoTextElement = require('../rendering/element/InfoTextElement.js');
 const LocalizedStrings = require('../../../localization/LocalizedStrings.js');
 const MoneyTreeElement = require('../rendering/element/MoneyTreeElement.js');
+const PhoneAFriendResultsElement = require('../rendering/element/PhoneAFriendResultsElement.js');
 const PhoneConfidenceMeter = require('../rendering/element/PhoneConfidenceMeter.js');
 const PlayerListElement = require('../rendering/element/PlayerListElement.js');
 const QuestionAndChoicesElement = require('../rendering/element/QuestionAndChoicesElement.js');
@@ -122,7 +123,7 @@ class GameClient {
           .setPosition(
             canvas.width - bottomSideHeight * 0.25,
             canvas.height  - bottomSideHeight * 0.75)
-          .setText('Phone')
+          .setText(LocalizedStrings.PHONE_A_FRIEND)
           .setSocket(this.socket)
           .setSocketEvent(compressedClientState.phoneAFriendActionButton.socketEvent)
           .setOutlineColor(Colors.LIFELINE_OUTLINE)
@@ -134,6 +135,11 @@ class GameClient {
 
     if (compressedClientState.showPhoneConfidenceMeter) {
       newCanvasElements.push(new PhoneConfidenceMeter(canvas, this.socket));
+    }
+
+    if (compressedClientState.phoneAFriendResults) {
+      newCanvasElements.push(new PhoneAFriendResultsElement(canvas,
+        compressedClientState.phoneAFriendResults));
     }
 
     return newCanvasElements;

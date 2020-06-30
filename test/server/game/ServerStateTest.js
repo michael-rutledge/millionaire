@@ -644,10 +644,14 @@ describe('ServerStateTest', () => {
       var serverState = new ServerState(new PlayerMap());
       var mockSocket = new MockSocket('socket');
       var player = new Player(mockSocket, 'player');
+      var phonedFriend = new Player(new MockSocket('phone_socket'), 'friend');
       serverState.playerMap.putPlayer(player);
+      serverState.playerMap.putPlayer(phonedFriend);
+      serverState.phoneAFriend.friend = phonedFriend;
       serverState.phoneAFriend.isActiveForQuestionIndex = () => { return true; };
 
-      var compressedClientState = serverState.toCompressedClientState(mockSocket);
+      var compressedClientState = serverState.toCompressedClientState(mockSocket,
+        /*currentSocketEvent=*/'showHostRevealHotSeatChoice');
 
       compressedClientState.infoText.should.equal(LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_WAIT);
     });
@@ -656,7 +660,8 @@ describe('ServerStateTest', () => {
       var serverState = new ServerState(new PlayerMap());
       serverState.phoneAFriend.hasResultsForQuestionIndex = () => {  return true; };
 
-      var compressedClientState = serverState.toCompressedClientState(new MockSocket());
+      var compressedClientState = serverState.toCompressedClientState(new MockSocket(),
+        /*currentSocketEvent=*/'showHostRevealHotSeatChoice');
 
       compressedClientState.phoneAFriendResults.should.deep.equal(
         serverState.phoneAFriend.getResults());

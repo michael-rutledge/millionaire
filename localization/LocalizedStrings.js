@@ -38,8 +38,11 @@ module.exports.SHOW_HOST_RULES = 'You are hosting the game. Take this moment to 
 
 module.exports.WALK_AWAY = 'Walk';
 module.exports.FIFTY_FIFTY = '50:50';
+module.exports.PHONE_A_FRIEND = 'Phone';
 
 module.exports.ARE_YOU_SURE = 'Are you sure?';
+module.exports.PHONE_A_FRIEND_CHOICE_PREFIX = 'Phoned friend says ';
+module.exports.PHONE_A_FRIEND_CONFIDENCE_MIDFIX = ' with a confidence of ';
 module.exports.TOTAL_WINNINGS = 'Total Winnings:';
 module.exports.YES = 'Yes';
 module.exports.NO = 'No';

@@ -20,6 +20,11 @@ const showFastestFingerResultsEvents = new Set([
   'showHostRevealFastestFingerResults',
   'showHostAcceptHotSeatPlayer'
 ]);
+const showLifelineResultsEvents = new Set([
+  'showHostRevealHotSeatChoice',
+  'hotSeatChoose',
+  'hotSeatFinalAnswer'
+]);
 
 // Encapsulates the state of a running game on the server side.
 class ServerState {
@@ -328,11 +333,12 @@ class ServerState {
         } else if (this.phoneAFriend.waitingForConfidenceFromPlayer(player)) {
           compressed.showPhoneConfidenceMeter = true;
         }
-      } else if (compressed.clientIsContestant) {
+      } else if (compressed.clientIsContestant && this.phoneAFriend.friend) {
         compressed.infoText = LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_WAIT;
       }
     }
-    if (this.phoneAFriend.hasResultsForQuestionIndex(this.hotSeatQuestionIndex)) {
+    if (this.phoneAFriend.hasResultsForQuestionIndex(this.hotSeatQuestionIndex)
+      && showLifelineResultsEvents.has(currentSocketEvent)) {
       compressed.phoneAFriendResults = this.phoneAFriend.getResults();
     }
     // Player list will always show up.
