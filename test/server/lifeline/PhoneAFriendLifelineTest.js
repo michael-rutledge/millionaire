@@ -45,6 +45,7 @@ describe('PhoneAFriendLifelineTest', function () {
         text: 'text',
         orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
       }, /*questionIndex=*/0);
+      question.revealAllChoices();
       phoneAFriend.startForQuestion(question);
       // Set AI choice and confidence
       phoneAFriend.pickFriend(undefined);

@@ -1,6 +1,25 @@
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const Lifeline = require(process.cwd() + '/server/lifeline/Lifeline.js');
 
+const ELMINATION_CHANCES = [
+  1.0,
+  0.99,
+  0.99,
+  0.97,
+  0.93,
+  0.79,
+  0.76,
+  0.73,
+  0.65,
+  0.60,
+  0.58,
+  0.56,
+  0.54,
+  0.52,
+  0.50,
+  0.46
+];
+
 class PhoneAFriendLifeline extends Lifeline {
 
   constructor(playerMap) {
@@ -22,10 +41,33 @@ class PhoneAFriendLifeline extends Lifeline {
   // Returns an AI choice.
   // TODO: implement phone a friend AI choice logic.
   _getAIChoice() {
+    var uncertainChoiceCount = this._getAIUncertainChoiceCount(this.question.questionIndex);
+    var remainingOrderedChoiceIndexes = this.question.getRemainingOrderedChoiceIndexes();
+    var uncertainChoiceIndex = Math.floor(Math.random() * (uncertainChoiceCount + 1));
+    var choice = remainingOrderedChoiceIndexes[uncertainChoiceIndex];
+    var confidence = 1 - uncertainChoiceCount / remainingOrderedChoiceIndexes.length;
+
     return  {
-      choice:Choices.A,
-      confidence: 0.0
+      choice: choice,
+      confidence: confidence
     };
+  }
+
+  // Returns the amount of uncertain choices left for the AI.
+  //
+  // Best case scenario is 0, resulting in 100% confidence. Worst case is the same amount as
+  // available choice count, resulting in 0% confidence. Otherwise, returns a proportional
+  // percentage.
+  _getAIUncertainChoiceCount(questionIndex) {
+    var uncertainChoices = this.question.revealedChoices.length;
+
+    this.question.revealedChoices.forEach((revealedChoice, index) => {
+      if (revealedChoice === undefined || Math.random() < ELMINATION_CHANCES[questionIndex]) {
+        uncertainChoices--;
+      }
+    });
+
+    return uncertainChoices;
   }
 
 
@@ -54,7 +96,7 @@ class PhoneAFriendLifeline extends Lifeline {
 
   // Sets choice and confidence from the given data, not overwriting if values are already present.
   maybeSetFriendConfidence(confidence) {
-    this.friendChoice = this.friend === undefined ? undefined : this.friend.hotSeatChoice;
+    this.friendChoice = this.friend === undefined ? this.friendChoice : this.friend.hotSeatChoice;
     this.friendConfidence = this.friendConfidence === undefined ?
       confidence : this.friendConfidence;
     // At this point, we want to clear the selected property on the friend to make clearing the

@@ -69,6 +69,36 @@ describe('HotSeatQuestionTest', function () {
     });
   });
 
+  describe('getRemainingOrderedChoiceIndexes', function () {
+    it('shouldGiveExpectedResult', function () {
+      var hsq = new HotSeatQuestion({
+        text: 'question_text',
+        orderedChoices: ['correct', 'incorrect_1', 'incorrect_2', 'incorrect_3']
+      });
+      hsq.shuffledChoices = ['incorrect_1', 'incorrect_3', 'correct', 'incorrect_2'];
+      hsq.revealAllChoices();
+      hsq.revealedChoices[1] = undefined;
+
+      hsq.getRemainingOrderedChoiceIndexes().should.deep.equal([0, 1, 2]);
+    });
+  });
+
+  describe('getShuffledChoice', function () {
+    it('shouldGiveExpectedResult', function () {
+      var hsq = new HotSeatQuestion({
+        text: 'question_text',
+        orderedChoices: ['correct', 'incorrect_1', 'incorrect_2', 'incorrect_3']
+      });
+      hsq.shuffledChoices = ['incorrect_1', 'incorrect_3', 'correct', 'incorrect_2'];
+
+      hsq.getShuffledChoice(0).should.equal(Choices.C);
+      hsq.getShuffledChoice(1).should.equal(Choices.A);
+      hsq.getShuffledChoice(2).should.equal(Choices.D);
+      hsq.getShuffledChoice(3).should.equal(Choices.B);
+      expect(hsq.getShuffledChoice(4)).to.be.undefined;
+    });
+  });
+
   describe('toCompressed', function () {
     it('shouldSetCorrectChoiceIfRequested', function () {
       var hsq = new HotSeatQuestion({

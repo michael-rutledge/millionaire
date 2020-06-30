@@ -764,9 +764,10 @@ class GameServer {
   // }
   contestantSetPhoneConfidence(socket, data) {
     Logger.logInfo('contestantSetPhoneConfidence');
-    Logger.logInfo('confidence set: ' + data.confidence);
 
     this.serverState.phoneAFriend.maybeSetFriendConfidence(data.confidence);
+    Logger.logInfo('confidence set: ' + this.serverState.phoneAFriend.friendConfidence);
+    Logger.logInfo('choice set: ' + this.serverState.phoneAFriend.friendChoice);
 
     this.showHostRevealHotSeatChoice();
   }

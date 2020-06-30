@@ -93,8 +93,26 @@ class HotSeatQuestion extends Question {
   //
   // Returns undefined if a correct choice couldn't be found.
   getCorrectChoice() {
+    return this.getShuffledChoice(0);
+  }
+
+  // Returns the remaining ordered indexes of revealed choices left.
+  getRemainingOrderedChoiceIndexes() {
+    var remaining = [];
+
+    this.orderedChoices.forEach((orderedChoice, index) => {
+      if (this.revealedChoices[this.getShuffledChoice(index)] !== undefined) {
+        remaining.push(index);
+      }
+    });
+
+    return remaining;
+  }
+
+  // Returns the shuffled index of the given ordered index.
+  getShuffledChoice(orderedIndex) {
     for (var i = 0; i < this.shuffledChoices.length; i++) {
-      if (this.answerIsCorrect(i)) {
+      if (this.shuffledChoices[i] == this.orderedChoices[orderedIndex]) {
         return i;
       }
     }

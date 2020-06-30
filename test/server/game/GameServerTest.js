@@ -1180,6 +1180,12 @@ describe('GameServerTest', () => {
 
     it('shouldSetExpectedFriendWhenUsingAI', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+      gameServer.serverState.hotSeatQuestion.revealAllChoices();
+      gameServer.serverState.phoneAFriend.startForQuestion(gameServer.serverState.hotSeatQuestion);
 
       gameServer.hotSeatPickPhoneAFriend(new MockSocket(), { useAI: true });
 
@@ -1207,6 +1213,12 @@ describe('GameServerTest', () => {
 
     it('shouldSetExpectedInfoTextsWhenUsingAI', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+      gameServer.serverState.hotSeatQuestion.revealAllChoices();
+      gameServer.serverState.phoneAFriend.startForQuestion(gameServer.serverState.hotSeatQuestion);
       gameServer.serverState.clearEphemeralFields = () => {};
 
       gameServer.hotSeatPickPhoneAFriend(new MockSocket(), { useAI: true });
