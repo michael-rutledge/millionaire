@@ -656,6 +656,21 @@ describe('GameServerTest', () => {
 
       player.hotSeatChoice.should.equal(gameServer.serverState.phoneAFriend.friendChoice);
     });
+
+    it('shouldFinishAskTheAudienceIfNoLongerWaitingAndTimerIsOut', function () {
+      var gameServer = newGameServerWithPlayerShowHost(false);
+      var contestantSocket = new MockSocket('contestant');
+      var contestant = new Player(contestantSocket, 'contestant');
+      var finishAskTheAudienceCalled = false;
+      gameServer.playerMap.putPlayer(contestant);
+      gameServer.currentSocketEvent = 'showHostStartAskTheAudience';
+      gameServer.serverState.askTheAudience.waitingForContestants = () => { return false; };
+      gameServer.finishAskTheAudience = () => { finishAskTheAudienceCalled = true; };
+
+      gameServer.contestantChoose(contestantSocket, { choice: Choices.A });
+
+      finishAskTheAudienceCalled.should.be.true;
+    });
   });
 
   describe('hotSeatFinalAnswer', function () {
@@ -1254,6 +1269,92 @@ describe('GameServerTest', () => {
       });
 
       called.should.be.true;
+    });
+  });
+
+  describe('hotSeatUseAskTheAudience', function () {
+    it('shouldSetYesNoDialog', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+
+      gameServer.hotSeatUseAskTheAudience();
+
+      gameServer.serverState.showHostStepDialog.should.deep.equal({
+        actions: [{
+          socketEvent: 'hotSeatConfirmAskTheAudience',
+          text: LocalizedStrings.YES
+        }, {
+          socketEvent: 'showHostRevealHotSeatChoice',
+          text: LocalizedStrings.NO
+        }],
+        header: LocalizedStrings.HOT_SEAT_CONFIRM_ASK_THE_AUDIENCE
+      });
+    });
+  });
+
+  describe('hotSeatConfirmAskTheAudience', function () {
+    it('shouldUsePhoneAFriend', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+
+      gameServer.hotSeatConfirmAskTheAudience();
+
+      gameServer.serverState.askTheAudience.used.should.be.true;
+      clearTimeout(gameServer.currentForcedTimer);
+    });
+
+    it('shouldSetExpectedDialog', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+
+      gameServer.hotSeatConfirmAskTheAudience();
+
+      expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostStartAskTheAudience',
+          text: LocalizedStrings.SHOW_HOST_START_ASK_THE_AUDIENCE
+        }],
+        header: ''
+      });
+    });
+  });
+
+  describe('showHostStartAskTheAudience', function () {
+    it('shouldSetTimer', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+
+      gameServer.showHostStartAskTheAudience();
+
+      gameServer.currentForcedTimer.should.not.be.undefined;
+      clearTimeout(gameServer.currentForcedTimer);
+    });
+
+    it('shouldFinishAskTheAudienceIfNoLongerWaiting', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.askTheAudience.waitingForContestants = () => { return false; };
+      var finishAskTheAudienceCalled = false;
+      gameServer.finishAskTheAudience = () => { finishAskTheAudienceCalled = true; };
+
+      gameServer.showHostStartAskTheAudience();
+      var onTimeout = gameServer.currentForcedTimer._onTimeout;
+      clearTimeout(gameServer.currentForcedTimer);
+      onTimeout();
+
+      finishAskTheAudienceCalled.should.be.true;
+    });
+  });
+
+  describe('finishAskTheAudience', function () {
+    it('shouldPopulateBucketsAndGoBackToRevealHotSeatChoice', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var bucketsPopulated = false;
+      var backToRevealHotSeatChoice = false;
+      gameServer.serverState.askTheAudience.populateAllAnswerBuckets = () => {
+        bucketsPopulated = true;
+      };
+      gameServer.showHostRevealHotSeatChoice = () => { backToRevealHotSeatChoice = true; };
+
+      gameServer.finishAskTheAudience();
+
+      bucketsPopulated.should.be.true;
+      backToRevealHotSeatChoice.should.be.true;
     });
   });
 });

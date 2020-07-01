@@ -1,9 +1,10 @@
+const AskTheAudienceLifeline = require(process.cwd() + '/server/lifeline/AskTheAudienceLifeline.js');
 const FiftyFiftyLifeline = require(process.cwd() + '/server/lifeline/FiftyFiftyLifeline.js');
 const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
 const LifelineIndex = require(process.cwd() + '/server/question/LifelineIndex.js');
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
-const PhoneAFriend = require(process.cwd() + '/server/lifeline/PhoneAFriendLifeline.js');
+const PhoneAFriendLifeline = require(process.cwd() + '/server/lifeline/PhoneAFriendLifeline.js');
 
 const contestantChoosableEvents = new Set([
   'showHostRevealHotSeatChoice',
@@ -12,6 +13,9 @@ const contestantChoosableEvents = new Set([
   'hotSeatUsePhoneAFriend',
   'hotSeatConfirmPhoneAFriend',
   'hotSeatPickPhoneAFriend',
+  'hotSeatUseAskTheAudience',
+  'hotSeatConfirmAskTheAudience',
+  'showHostStartAskTheAudience',
   'hotSeatWalkAway'
 ]);
 const hotSeatChoosableEvents = new Set(['showHostRevealHotSeatChoice']);
@@ -234,7 +238,8 @@ class ServerState {
 
     // Lifelines
     this.fiftyFifty = new FiftyFiftyLifeline(this.playerMap);
-    this.phoneAFriend = new PhoneAFriend(this.playerMap);
+    this.phoneAFriend = new PhoneAFriendLifeline(this.playerMap);
+    this.askTheAudience = new AskTheAudienceLifeline(this.playerMap);
 
     // Banner element that appears on a celebration moment
     this.celebrationBanner = undefined;
@@ -338,8 +343,13 @@ class ServerState {
       }
     }
     if (this.phoneAFriend.hasResultsForQuestionIndex(this.hotSeatQuestionIndex)
-      && showLifelineResultsEvents.has(currentSocketEvent)) {
+        && showLifelineResultsEvents.has(currentSocketEvent)) {
       compressed.phoneAFriendResults = this.phoneAFriend.getResults();
+    }
+    // Ask the audience elements
+    if (this.askTheAudience.hasResultsForQuestionIndex(this.hotSeatQuestionIndex)
+        && showLifelineResultsEvents.has(currentSocketEvent)) {
+      compressed.askTheAudienceResults = this.askTheAudience.getResults();
     }
     // Player list will always show up.
     compressed.playerList = this._getCompressedPlayerList(

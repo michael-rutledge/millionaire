@@ -667,6 +667,17 @@ describe('ServerStateTest', () => {
         serverState.phoneAFriend.getResults());
     });
 
+    it('shouldSetAskTheAudienceResultsWhenResultsAreAvailableForQuestionIndex', function () {
+      var serverState = new ServerState(new PlayerMap());
+      serverState.askTheAudience.hasResultsForQuestionIndex = () => {  return true; };
+
+      var compressedClientState = serverState.toCompressedClientState(new MockSocket(),
+        /*currentSocketEvent=*/'showHostRevealHotSeatChoice');
+
+      compressedClientState.askTheAudienceResults.should.deep.equal(
+        serverState.askTheAudience.getResults());
+    });
+
     it('shouldSetPlayerList', () => {
       var serverState = new ServerState(new PlayerMap());
       var mockSocket = new MockSocket('socket_id');

@@ -16,6 +16,57 @@ function getMockHotSeatQuestion(questionIndex = 0) {
 }
 
 describe('AskTheAudienceLifelineTest', function () {
+  describe('getResults', function () {
+    it('shouldGiveExpectedResults', function () {
+      var playerMap = new PlayerMap();
+      var player = new Player(new MockSocket('socket'), 'player');
+      playerMap.putPlayer(player);
+      var askTheAudience = new AskTheAudienceLifeline(playerMap);
+      var question = getMockHotSeatQuestion();
+      question.revealAllChoices();
+      askTheAudience.startForQuestion(question);
+      askTheAudience.populateAllAnswerBuckets();
+
+      var results = askTheAudience.getResults();
+
+      results.should.deep.equal({
+        aiAnswerBuckets: askTheAudience.aiAnswerBuckets,
+        contestantAnswerBuckets: askTheAudience.contestantAnswerBuckets
+      });
+    });
+  });
+
+  describe('hasResultsForQuestionIndex', function () {
+    it('shouldReturnTrueOnGoodInput', function () {
+      var questionIndex = 4;
+      var question = getMockHotSeatQuestion(questionIndex);
+      var askTheAudience = new AskTheAudienceLifeline();
+      askTheAudience.startForQuestion(question);
+      askTheAudience.executed = true;
+
+      askTheAudience.hasResultsForQuestionIndex(questionIndex).should.be.true;
+    });
+
+    it('shouldReturnFalseForWrongQuestionIndex', function () {
+      var question = getMockHotSeatQuestion(4);
+      var askTheAudience = new AskTheAudienceLifeline();
+      askTheAudience.startForQuestion(question);
+      askTheAudience.executed = true;
+
+      askTheAudience.hasResultsForQuestionIndex(-1).should.be.false;
+    });
+
+    it('shouldReturnFalseForNotExectuedYet', function () {
+      var questionIndex = 4;
+      var question = getMockHotSeatQuestion(questionIndex);
+      var askTheAudience = new AskTheAudienceLifeline();
+      askTheAudience.startForQuestion(question);
+      askTheAudience.executed = false;
+
+      askTheAudience.hasResultsForQuestionIndex(questionIndex).should.be.false;
+    });
+  });
+
   describe('populateAllAnswerBuckets', function () {
     it('shouldCallPopulateAIAnswerBucketsAndPopulateContestantAnswerBuckets', function () {
       var playerMap = new PlayerMap();
@@ -31,6 +82,7 @@ describe('AskTheAudienceLifelineTest', function () {
 
       aiAnswersPopulated.should.be.true;
       contestantAnswersPopulated.should.be.true;
+      askTheAudience.executed.should.be.true;
     });
   });
 
@@ -62,6 +114,7 @@ describe('AskTheAudienceLifelineTest', function () {
       askTheAudience.populateContestantAnswerBuckets();
 
       askTheAudience.contestantAnswerBuckets.should.deep.equal([1, 0, 0, 0]);
+      askTheAudience.contestantVoteCount.should.equal(1);
     });
 
     it('shouldIgnoreContestantsWithoutChoices', function () {
@@ -73,26 +126,38 @@ describe('AskTheAudienceLifelineTest', function () {
       askTheAudience.populateContestantAnswerBuckets();
 
       askTheAudience.contestantAnswerBuckets.should.deep.equal([0, 0, 0, 0]);
+      askTheAudience.contestantVoteCount.should.equal(0);
     });
   });
 
-  describe('getResults', function () {
-    it('shouldGiveExpectedResults', function () {
+  describe('waitingOnContestants', function () {
+    it('shouldReturnTrueWhenWaitingOnContestants', function () {
       var playerMap = new PlayerMap();
-      var player = new Player(new MockSocket('socket'), 'player');
-      playerMap.putPlayer(player);
+      var contestant = new Player(new MockSocket('contestant'), 'contestant');
+      var hotSeat = new Player(new MockSocket('hotSeat'), 'hotSeat');
+      hotSeat.isHotSeatPlayer = true;
+      playerMap.putPlayer(contestant);
+      playerMap.putPlayer(hotSeat);
+      var askTheAudience = new AskTheAudienceLifeline(playerMap);
+
+      askTheAudience.waitingOnContestants().should.be.true;
+    });
+
+    it('shouldReturnFalseWhenContestantsHaveAnswered', function () {
+      var playerMap = new PlayerMap();
+      var contestant = new Player(new MockSocket('contestant'), 'contestant');
+      var hotSeat = new Player(new MockSocket('hotSeat'), 'hotSeat');
+      hotSeat.isHotSeatPlayer = true;
+      playerMap.putPlayer(contestant);
+      playerMap.putPlayer(hotSeat);
       var askTheAudience = new AskTheAudienceLifeline(playerMap);
       var question = getMockHotSeatQuestion();
       question.revealAllChoices();
       askTheAudience.startForQuestion(question);
+      contestant.chooseHotSeat(Choices.A);
       askTheAudience.populateAllAnswerBuckets();
 
-      var results = askTheAudience.getResults();
-
-      results.should.deep.equal({
-        aiAnswerBuckets: askTheAudience.aiAnswerBuckets,
-        contestantAnswerBuckets: askTheAudience.contestantAnswerBuckets
-      });
+      askTheAudience.waitingOnContestants().should.be.false;
     });
   });
 });

@@ -24,6 +24,7 @@ module.exports.HOT_SEAT_FINAL_ANSWER = 'Final Answer?';
 module.exports.HOT_SEAT_CONFIRM_WALK_AWAY = 'Walk Away?';
 module.exports.HOT_SEAT_CONFIRM_FIFTY_FIFTY = 'Use 50/50?';
 module.exports.HOT_SEAT_CONFIRM_PHONE_A_FRIEND = 'Phone a friend?';
+module.exports.HOT_SEAT_CONFIRM_ASK_THE_AUDIENCE = 'Ask the Audience?';
 module.exports.HOT_SEAT_PHONE_A_FRIEND_CHOOSING = 'Your friend is pondering their confidence in their answer...';
 module.exports.HOT_SEAT_PHONE_A_FRIEND_CHOOSING_AI = 'Reggie is thinking...';
 module.exports.HOT_SEAT_PHONE_A_FRIEND_RULES = 'Click on a player on the left pane to phone them. They will tell you how confident they are with their choice.';
@@ -35,6 +36,7 @@ module.exports.SAY_GOODBYE = 'Say goodbye to contestant';
 module.exports.SHOW_HOST_PHONE_A_FRIEND_CHOOSING = 'The hot seat player\'s friend is choosing... Make sure to remind them about the risk/reward factor.';
 module.exports.SHOW_HOST_PHONE_A_FRIEND_RULES = 'The hot seat player is picking a friend to phone...';
 module.exports.SHOW_HOST_RULES = 'You are hosting the game. Take this moment to go over the rules.';
+module.exports.SHOW_HOST_START_ASK_THE_AUDIENCE = 'Poll the audience';
 
 module.exports.WALK_AWAY = 'Walk';
 module.exports.FIFTY_FIFTY = '50:50';

@@ -28,7 +28,6 @@ const SOCKET_EVENTS = [
   'showHostCueHotSeatQuestion',
   'showHostShowHotSeatQuestionText',
   'showHostRevealHotSeatChoice',
-  'showHostAskTheAudience',
   'showHostRevealHotSeatQuestionVictory',
   'showHostRevealHotSeatQuestionLoss',
   'showHostSayGoodbyeToHotSeat',
@@ -42,6 +41,9 @@ const SOCKET_EVENTS = [
   'hotSeatUsePhoneAFriend',
   'hotSeatConfirmPhoneAFriend',
   'hotSeatPickPhoneAFriend',
+  'hotSeatUseAskTheAudience',
+  'hotSeatConfirmAskTheAudience',
+  'showHostStartAskTheAudience',
   'hotSeatWalkAway',
   'hotSeatConfirmWalkAway'
 ];
@@ -503,6 +505,11 @@ class GameServer {
     if (player == this.serverState.phoneAFriend.friend) {
       this.serverState.phoneAFriend.friendChoice = player.hotSeatChoice;
     }
+    // If the timer is out and we are in the middle of voting for ask the audience, we must finish
+    // it.
+    if (this.currentSocketEvent == 'showHostStartAskTheAudience' && !this.currentForcedTimer) {
+      this.finishAskTheAudience();
+    }
 
     this.updateGameForSocket(socket);
   }
@@ -769,6 +776,60 @@ class GameServer {
     Logger.logInfo('confidence set: ' + this.serverState.phoneAFriend.friendConfidence);
     Logger.logInfo('choice set: ' + this.serverState.phoneAFriend.friendChoice);
 
+    this.showHostRevealHotSeatChoice();
+  }
+
+  // Response to the client looking to ask the audience.
+  hotSeatUseAskTheAudience(socket, data) {
+    this.currentSocketEvent = 'hotSeatUseAskTheAudience';
+    Logger.logInfo(this.currentSocketEvent);
+
+    this._setShowHostOrHotSeatYesNoDialog(
+      /*yesEvent=*/'hotSeatConfirmAskTheAudience',
+      /*noEvent=*/'showHostRevealHotSeatChoice',
+      /*header=*/LocalizedStrings.HOT_SEAT_CONFIRM_ASK_THE_AUDIENCE);
+    this._updateGame();
+  }
+
+  // Response to the cient confirming the use of Ask the Audience.
+  hotSeatConfirmAskTheAudience(socket, data) {
+    this.currentSocketEvent = 'hotSeatConfirmAskTheAudience';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // Start the lifeline for this question.
+    this.serverState.askTheAudience.startForQuestion(this.serverState.hotSeatQuestion);
+
+    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+      nextSocketEvent: 'showHostStartAskTheAudience',
+      hostButtonMessage: LocalizedStrings.SHOW_HOST_START_ASK_THE_AUDIENCE,
+      aiTimeout: 6200
+    }));
+    this._updateGame();
+  }
+
+  // Response to the client starting the voting phase of Ask the Audience.
+  showHostStartAskTheAudience(socket, data) {
+    this.currentSocketEvent = 'showHostStartAskTheAudience';
+    Logger.logInfo(this.currentSocketEvent);
+
+    // After a small waiting period, we reveal all choices, but only if we are no longer waiting for
+    // answers.
+    this.currentForcedTimer = setTimeout(() => {
+      if (!this.serverState.askTheAudience.waitingOnContestants()) {
+        this.finishAskTheAudience();
+      }
+    }, /*timeoutMs*/4500);
+  }
+
+  // Special method to be called on completion of ask the audience. NOT a listener.
+  //
+  // This should merely populate the answer buckets and then go back to the reveal hot seat choice
+  // screen.
+  //
+  // This method should be called at least after some time after showHostStartAskTheAudience is
+  // called. This is to make the experience not so jarring with audio.
+  finishAskTheAudience() {
+    this.serverState.askTheAudience.populateAllAnswerBuckets();
     this.showHostRevealHotSeatChoice();
   }
 }

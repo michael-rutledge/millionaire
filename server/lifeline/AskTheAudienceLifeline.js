@@ -40,6 +40,7 @@ class AskTheAudienceLifeline extends Lifeline {
       /*Choices.C*/0,
       /*Choices.D*/0
     ];
+    this.contestantVoteCount = 0;
 
     // Array grouped by choice index to keep track of ai-generated choices.
     this.aiAnswerBuckets = [
@@ -48,12 +49,17 @@ class AskTheAudienceLifeline extends Lifeline {
       /*Choices.C*/0,
       /*Choices.D*/0
     ];
+
+    // Boolean denoting whether the lifeline has been executed, populating data in the bucket
+    // arrays.
+    this.executed = false;
   }
 
 
   // PRIVATE METHODS
 
-  // Returns a 
+  // Returns the percentage of audience members to correctly guess the answer for the given question
+  // index. The higher the question index, the more unreliable the answers will be.
   _getScaledCorrectPercentageForQuestionIndex(questionIndex) {
     let u = 0, v = 0, min = 0, max = 1;
     let skew = PERFOMANCE_SKEWS[questionIndex];
@@ -79,10 +85,26 @@ class AskTheAudienceLifeline extends Lifeline {
 
   // PUBLIC METHODS
 
+  // Returns a JSON representation of the results of askiing the audience.
+  //
+  // The data here will be interpreted by the frontend into a bar graph of answer percentages.
+  getResults() {
+    return {
+      contestantAnswerBuckets: this.contestantAnswerBuckets,
+      aiAnswerBuckets: this.aiAnswerBuckets
+    };
+  }
+
+  // Returns whether the lifeline has results for the given question index.
+  hasResultsForQuestionIndex(questionIndex) {
+    return this.executed && this.question.questionIndex == questionIndex;
+  }
+
   // Populates all of the answer buckets for this instance of Ask the Audience.
   //
   // This can be seen as the effective "execute" method of the lifeline.
   populateAllAnswerBuckets() {
+    this.executed = true;
     this.populateContestantAnswerBuckets();
     this.populateAIAnswerBuckets();
   }
@@ -117,18 +139,14 @@ class AskTheAudienceLifeline extends Lifeline {
     this.playerMap.doAll((player) => {
       if (player.hotSeatChoice !== undefined && Choices.isValidChoice(player.hotSeatChoice)) {
         this.contestantAnswerBuckets[player.hotSeatChoice]++;
+        this.contestantVoteCount++;
       }
     });
   }
 
-  // Returns a JSON representation of the results of askiing the audience.
-  //
-  // The data here will be interpreted by the frontend into a bar graph of answer percentages.
-  getResults() {
-    return {
-      contestantAnswerBuckets: this.contestantAnswerBuckets,
-      aiAnswerBuckets: this.aiAnswerBuckets
-    };
+  // Returns whether the lifeline is waiting for human contestants to choose.
+  waitingOnContestants() {
+    return this.contestantVoteCount < this.playerMap.getPlayerCountExcludingShowHost() - 1;
   }
 }
 
