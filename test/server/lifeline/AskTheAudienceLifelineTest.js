@@ -101,6 +101,27 @@ describe('AskTheAudienceLifelineTest', function () {
       });
       totalChoices.should.equal(AskTheAudienceLifeline.AUDIENCE_COUNT);
     });
+
+    it('shouldPopulateBucketsProperlyForChoicesRemoved', function () {
+      var askTheAudience = new AskTheAudienceLifeline();
+      var question = getMockHotSeatQuestion(/*questionIndex=*/14);
+      question.revealAllChoices();
+      var revealedRemove1 = question.getShuffledChoice(1);
+      var revealedRemove2 = question.getShuffledChoice(2);
+      question.revealedChoices[revealedRemove1] = undefined;
+      question.revealedChoices[revealedRemove2] = undefined;
+      askTheAudience.startForQuestion(question);
+
+      askTheAudience.populateAIAnswerBuckets();
+
+      var totalChoices = 0;
+      askTheAudience.aiAnswerBuckets.forEach((numChoices) => {
+        totalChoices += numChoices;
+      });
+      totalChoices.should.equal(AskTheAudienceLifeline.AUDIENCE_COUNT);
+      askTheAudience.aiAnswerBuckets[revealedRemove1].should.equal(0);
+      askTheAudience.aiAnswerBuckets[revealedRemove2].should.equal(0);
+    });
   });  
 
   describe('populateContestantAnswerBuckets', function () {
@@ -114,7 +135,6 @@ describe('AskTheAudienceLifelineTest', function () {
       askTheAudience.populateContestantAnswerBuckets();
 
       askTheAudience.contestantAnswerBuckets.should.deep.equal([1, 0, 0, 0]);
-      askTheAudience.contestantVoteCount.should.equal(1);
     });
 
     it('shouldIgnoreContestantsWithoutChoices', function () {
@@ -126,7 +146,6 @@ describe('AskTheAudienceLifelineTest', function () {
       askTheAudience.populateContestantAnswerBuckets();
 
       askTheAudience.contestantAnswerBuckets.should.deep.equal([0, 0, 0, 0]);
-      askTheAudience.contestantVoteCount.should.equal(0);
     });
   });
 
@@ -155,7 +174,6 @@ describe('AskTheAudienceLifelineTest', function () {
       question.revealAllChoices();
       askTheAudience.startForQuestion(question);
       contestant.chooseHotSeat(Choices.A);
-      askTheAudience.populateAllAnswerBuckets();
 
       askTheAudience.waitingOnContestants().should.be.false;
     });

@@ -40,7 +40,6 @@ class AskTheAudienceLifeline extends Lifeline {
       /*Choices.C*/0,
       /*Choices.D*/0
     ];
-    this.contestantVoteCount = 0;
 
     // Array grouped by choice index to keep track of ai-generated choices.
     this.aiAnswerBuckets = [
@@ -57,6 +56,17 @@ class AskTheAudienceLifeline extends Lifeline {
 
 
   // PRIVATE METHODS
+
+  // Returns the amount of currently made votes by contestants.
+  _getPendingContestantVoteCount() {
+    var contestantVoteCount = 0;
+
+    this.playerMap.doAll((player) => {
+      contestantVoteCount += player.hotSeatChoice !== undefined ? 1 : 0;
+    });
+
+    return contestantVoteCount;
+  }
 
   // Returns the percentage of audience members to correctly guess the answer for the given question
   // index. The higher the question index, the more unreliable the answers will be.
@@ -119,15 +129,16 @@ class AskTheAudienceLifeline extends Lifeline {
     var audienceChoicesRemaining = AUDIENCE_COUNT;
     var numCorrect = Math.floor(AUDIENCE_COUNT * correctPercentage);
 
-    this.aiAnswerBuckets[this.question.getShuffledChoice(0)] += numCorrect;
+    this.aiAnswerBuckets[this.question.getCorrectChoice()] += numCorrect;
     audienceChoicesRemaining -= numCorrect;
 
     for (var i = 1; i < remainingOrderedChoiceIndexes.length; i++) {
+      var bucketIndex = this.question.getShuffledChoice(remainingOrderedChoiceIndexes[i]);
       var numChosen = Math.floor(Math.random() * audienceChoicesRemaining);
       if (i >= remainingOrderedChoiceIndexes.length - 1) {
         numChosen = audienceChoicesRemaining;
       }
-      this.aiAnswerBuckets[this.question.getShuffledChoice(i)] += numChosen;
+      this.aiAnswerBuckets[bucketIndex] += numChosen;
       audienceChoicesRemaining -= numChosen;
     }
   }
@@ -139,14 +150,14 @@ class AskTheAudienceLifeline extends Lifeline {
     this.playerMap.doAll((player) => {
       if (player.hotSeatChoice !== undefined && Choices.isValidChoice(player.hotSeatChoice)) {
         this.contestantAnswerBuckets[player.hotSeatChoice]++;
-        this.contestantVoteCount++;
       }
     });
   }
 
   // Returns whether the lifeline is waiting for human contestants to choose.
   waitingOnContestants() {
-    return this.contestantVoteCount < this.playerMap.getPlayerCountExcludingShowHost() - 1;
+    return this._getPendingContestantVoteCount() <
+      this.playerMap.getPlayerCountExcludingShowHost() - 1;
   }
 }
 
