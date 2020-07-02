@@ -11,21 +11,21 @@ const AUDIENCE_COUNT = 100;
 //
 // 1 is equal to a bell curve distribution centered on the 50% line.
 const PERFOMANCE_SKEWS = [
-  0.05,
+  0.05,   // $100
   0.075,
-  0.1,
   0.2,
-  0.3,
   0.4,
-  0.4,
-  0.5,
-  0.5,
+  0.5,    // $1000
   0.6,
   0.7,
-  0.7,
-  0.7,
   0.8,
-  1
+  0.9,
+  1.0,    // $32,000
+  1.1,
+  1.2,
+  1.3,
+  1.4,
+  1.5     // $1 Million
 ];
 
 class AskTheAudienceLifeline extends Lifeline {
@@ -75,7 +75,7 @@ class AskTheAudienceLifeline extends Lifeline {
     let skew = PERFOMANCE_SKEWS[questionIndex];
     while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
     while(v === 0) v = Math.random();
-    var entropy = 10.0;  // How much the answer should vary. Higher => more variance.
+    var entropy = 8.0;  // How much the answer should vary. Higher => more variance.
     let num = Math.sqrt( -1 * entropy * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
 
     // Translate to 0 -> 1
@@ -128,16 +128,26 @@ class AskTheAudienceLifeline extends Lifeline {
       this.question.questionIndex);
     var audienceChoicesRemaining = AUDIENCE_COUNT;
     var numCorrect = Math.floor(AUDIENCE_COUNT * correctPercentage);
+    var correctIndex = this.question.getCorrectChoice();
 
-    this.aiAnswerBuckets[this.question.getCorrectChoice()] += numCorrect;
+    this.aiAnswerBuckets[correctIndex] += numCorrect;
     audienceChoicesRemaining -= numCorrect;
 
     for (var i = 1; i < remainingOrderedChoiceIndexes.length; i++) {
       var bucketIndex = this.question.getShuffledChoice(remainingOrderedChoiceIndexes[i]);
       var numChosen = Math.floor(Math.random() * audienceChoicesRemaining);
+
       if (i >= remainingOrderedChoiceIndexes.length - 1) {
+        // When dealing with the last player, we need to split any would-have votes evenly to avoid
+        // wrong-answer favoritism.
+        if (this.question.revealedChoices.length > remainingOrderedChoiceIndexes.length) {
+          var migratedToCorrect = audienceChoicesRemaining / 2;
+          this.aiAnswerBuckets[correctIndex] += migratedToCorrect;
+          audienceChoicesRemaining -= migratedToCorrect;
+        }
         numChosen = audienceChoicesRemaining;
       }
+
       this.aiAnswerBuckets[bucketIndex] += numChosen;
       audienceChoicesRemaining -= numChosen;
     }
