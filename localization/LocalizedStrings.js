@@ -43,6 +43,8 @@ module.exports.FIFTY_FIFTY = '50:50';
 module.exports.PHONE_A_FRIEND = 'Phone';
 
 module.exports.ARE_YOU_SURE = 'Are you sure?';
+module.exports.ASK_THE_ADUIENCE_AUDIENCE_LABEL = 'Audience:';
+module.exports.ASK_THE_ADUIENCE_CONTESTANT_LABEL = 'Contestants:';
 module.exports.PHONE_A_FRIEND_CHOICE_PREFIX = 'Phoned friend says ';
 module.exports.PHONE_A_FRIEND_CONFIDENCE_MIDFIX = ' with a confidence of ';
 module.exports.TOTAL_WINNINGS = 'Total Winnings:';

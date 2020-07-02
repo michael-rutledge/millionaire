@@ -1,3 +1,5 @@
+module.exports.ASK_THE_AUDIENCE_LABEL_FONT = '30px copperplate_gothic';
+module.exports.ASK_THE_AUDIENCE_PERCENT_FONT = '26px itc_conduit';
 module.exports.CELEBRATION_HEADER_FONT = '36px copperplate_gothic';
 module.exports.CELEBRATION_TEXT_FONT = '72px copperplate_gothic';
 module.exports.CHOICE_LETTER_FONT = '26px copperplate_gothic';

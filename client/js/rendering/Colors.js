@@ -7,8 +7,10 @@ const BLACK = '#000000';
 const TEAL = '#00ffff';
 const BLUE = '#0099ff';
 const GREEN = '#22c322';
+const PINK = '#e60073';
 const RED = '#bf4040';
 const YELLOW = '#edc95e';
+const WHITE = '#ffffff';
 
 module.exports.BACKGROUND_VOID = '#150023';
 module.exports.BACKGROUND_SIDE_GRADIENT = '#00134d';
@@ -37,6 +39,12 @@ module.exports.QUESTION_TEXT_COLOR = DEFAULT_TEXT_COLOR;
 module.exports.SIDE_PANEL_LINE_BASE = DEFAULT_LINE_BASE;
 module.exports.SIDE_PANEL_LINE_SHINE = DEFAULT_LINE_SHINE;
 
+module.exports.ASK_THE_AUDIENCE_GRID = DEFAULT_LINE_BASE;
+
+module.exports.BLACK = BLACK;
 module.exports.GREEN = GREEN;
+module.exports.PINK = PINK;
 module.exports.RED = RED;
+module.exports.TEAL = TEAL;
 module.exports.YELLOW = YELLOW;
+module.exports.WHITE = WHITE;
