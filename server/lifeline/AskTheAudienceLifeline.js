@@ -75,7 +75,7 @@ class AskTheAudienceLifeline extends Lifeline {
     let skew = PERFOMANCE_SKEWS[questionIndex];
     while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
     while(v === 0) v = Math.random();
-    var entropy = 8.0;  // How much the answer should vary. Higher => more variance.
+    var entropy = 10.0;  // How much the answer should vary. Higher => more variance.
     let num = Math.sqrt( -1 * entropy * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
 
     // Translate to 0 -> 1

@@ -507,7 +507,8 @@ class GameServer {
     }
     // If the timer is out and we are in the middle of voting for ask the audience, we must finish
     // it.
-    if (this.currentSocketEvent == 'showHostStartAskTheAudience' && !this.currentForcedTimer) {
+    if (this.currentSocketEvent == 'showHostStartAskTheAudience' && !this.currentForcedTimer &&
+        !this.serverState.askTheAudience.waitingOnContestants()) {
       this.finishAskTheAudience();
     }
 
@@ -812,13 +813,18 @@ class GameServer {
     this.currentSocketEvent = 'showHostStartAskTheAudience';
     Logger.logInfo(this.currentSocketEvent);
 
+    this.serverState.setHotSeatStepDialog(undefined);
+    this.serverState.setShowHostStepDialog(undefined);
+
     // After a small waiting period, we reveal all choices, but only if we are no longer waiting for
     // answers.
     this.currentForcedTimer = setTimeout(() => {
       if (!this.serverState.askTheAudience.waitingOnContestants()) {
         this.finishAskTheAudience();
       }
+      this.currentForcedTimer = undefined;
     }, /*timeoutMs*/4500);
+    this._updateGame();
   }
 
   // Special method to be called on completion of ask the audience. NOT a listener.

@@ -1339,6 +1339,18 @@ describe('GameServerTest', () => {
 
       finishAskTheAudienceCalled.should.be.true;
     });
+
+    it('shouldResetStepDialogs', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.showHostStepDialog = {};
+      gameServer.serverState.hotSeatStepDialog = {};
+
+      gameServer.showHostStartAskTheAudience();
+
+      expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
+      expect(gameServer.serverState.hotSeatStepDialog).to.be.undefined;
+      clearTimeout(gameServer.currentForcedTimer);
+    });
   });
 
   describe('finishAskTheAudience', function () {

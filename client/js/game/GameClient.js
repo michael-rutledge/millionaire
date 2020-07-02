@@ -1,3 +1,4 @@
+const AskTheAudienceResultsElement = require('../rendering/element/AskTheAudienceResultsElement.js');
 const BackgroundElement = require('../rendering/element/BackgroundElement.js');
 const CelebrationBanner = require('../rendering/element/CelebrationBanner.js');
 const Colors = require('../rendering/Colors.js');
@@ -132,6 +133,22 @@ class GameClient {
           .build();
       newCanvasElements.push(phoneAFriendActionButton);
     }
+    // Ask the audience
+    if (compressedClientState.phoneAFriendActionButton !== undefined) {
+      var askTheAudienceActionButton =
+        new HotSeatActionButtonBuilder(canvas)
+          .setPosition(
+            canvas.width - bottomSideHeight * 0.75,
+            canvas.height  - bottomSideHeight * 0.25)
+          .setText('Audience')
+          .setSocket(this.socket)
+          .setSocketEvent(compressedClientState.askTheAudienceActionButton.socketEvent)
+          .setOutlineColor(Colors.LIFELINE_OUTLINE)
+          .setUsed(compressedClientState.askTheAudienceActionButton.used)
+          .setAvailable(compressedClientState.askTheAudienceActionButton.available)
+          .build();
+      newCanvasElements.push(askTheAudienceActionButton);
+    }
 
     if (compressedClientState.showPhoneConfidenceMeter) {
       newCanvasElements.push(new PhoneConfidenceMeter(canvas, this.socket));
@@ -140,6 +157,11 @@ class GameClient {
     if (compressedClientState.phoneAFriendResults) {
       newCanvasElements.push(new PhoneAFriendResultsElement(canvas,
         compressedClientState.phoneAFriendResults));
+    }
+
+    if (compressedClientState.askTheAudienceResults) {
+      newCanvasElements.push(new AskTheAudienceResultsElement(canvas,
+        compressedClientState.askTheAudienceResults));
     }
 
     return newCanvasElements;

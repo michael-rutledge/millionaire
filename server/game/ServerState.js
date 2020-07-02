@@ -27,7 +27,11 @@ const showFastestFingerResultsEvents = new Set([
 const showLifelineResultsEvents = new Set([
   'showHostRevealHotSeatChoice',
   'hotSeatChoose',
-  'hotSeatFinalAnswer'
+  'hotSeatFinalAnswer',
+  'hotSeatUseFiftyFifty',
+  'hotSeatUsePhoneAFriend',
+  'hotSeatUseAskTheAudience',
+  'hotSeatWalkAway'
 ]);
 
 // Encapsulates the state of a running game on the server side.
@@ -329,6 +333,8 @@ class ServerState {
     compressed.fiftyFiftyActionButton = this.fiftyFifty.toCompressedHotSeatActionButton(
       actionButtonsAvailable);
     compressed.phoneAFriendActionButton = this.phoneAFriend.toCompressedHotSeatActionButton(
+      actionButtonsAvailable);
+    compressed.askTheAudienceActionButton = this.askTheAudience.toCompressedHotSeatActionButton(
       actionButtonsAvailable);
     // Phone a friend elements
     if (this.phoneAFriend.isActiveForQuestionIndex(this.hotSeatQuestionIndex)) {

@@ -348,17 +348,6 @@ describe('ServerStateTest', () => {
     });
   });
 
-  it('toCompressedClientStateShouldSetFiftyFiftyActionButton', function () {
-    var serverState = new ServerState(new PlayerMap());
-    var mockSocket = new MockSocket('socket_id');
-    var player = new Player(mockSocket, 'username');
-    serverState.playerMap.putPlayer(player);
-
-    var compressedClientState = serverState.toCompressedClientState(mockSocket);
-
-    expect(compressedClientState).to.not.be.undefined;
-  });
-
   it('toCompressedClientStateShouldNotSetFastestFingerChoiceActionForShowHost', () => {
     var serverState = new ServerState(new PlayerMap());
     var showHostSocket = new MockSocket('socket_show_host');
@@ -610,6 +599,19 @@ describe('ServerStateTest', () => {
   });
 
   describe('toCompressedClientState', function () {
+    it('shouldSetLifelineActionButtons', function () {
+      var serverState = new ServerState(new PlayerMap());
+      var mockSocket = new MockSocket('socket_id');
+      var player = new Player(mockSocket, 'username');
+      serverState.playerMap.putPlayer(player);
+
+      var compressedClientState = serverState.toCompressedClientState(mockSocket);
+
+      compressedClientState.fiftyFiftyActionButton.should.not.be.undefined;
+      compressedClientState.phoneAFriendActionButton.should.not.be.undefined;
+      compressedClientState.askTheAudienceActionButton.should.not.be.undefined;
+    });
+
     it('shouldSetExpectedInfoTextIfPhoneAFriendWaitingOnChoice', function () {
       var serverState = new ServerState(new PlayerMap());
       var mockSocket = new MockSocket('socket');
