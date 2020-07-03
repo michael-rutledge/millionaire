@@ -215,8 +215,6 @@ class GameServer {
     this.currentSocketEvent = 'showHostShowFastestFingerRules';
     Logger.logInfo(this.currentSocketEvent);
 
-    // This is the first part of any game, so we start a new round for the server state
-    this.serverState.startNewRound();
     this.playMusic(Audio.Sources.FASTEST_FINGER_RULES);
 
     // Human host will control flow, or 5 seconds are allotted for the rules to be shown
@@ -653,6 +651,9 @@ class GameServer {
 
   // Response to the client saying goodbye to hot seat player.
   showHostSayGoodbyeToHotSeat(socket, data) {
+    this.currentSocketEvent = 'showHostSayGoodbyeToHotSeat';
+    Logger.logInfo(this.currentSocketEvent);
+
     var winnings = this.serverState.hotSeatQuestionIndex < 0 ?
       0 : HotSeatQuestion.PAYOUTS[this.serverState.hotSeatQuestionIndex];
     var moneyString = this.serverState.hotSeatQuestionIndex < 0 ?
@@ -666,11 +667,12 @@ class GameServer {
     });
     this.serverState.resetHotSeatQuestion();
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
-      nextSocketEvent: 'showHostShowFastestFingerRules',
+      nextSocketEvent: 'showHostCueFastestFingerQuestion',
       hostButtonMessage: LocalizedStrings.START_NEW_ROUND,
       aiTimeout: 9000
     }));
     this._updateGame();
+    this.serverState.startNewRound();
   }
 
   // Response to the client asking to walk away.

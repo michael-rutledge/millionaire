@@ -921,6 +921,7 @@ describe('GameServerTest', () => {
       var player = new Player(new MockSocket('socket_id'), 'username');
       gameServer.serverState.playerMap.putPlayer(player);
       gameServer.serverState.setHotSeatPlayerByUsername('username');
+      gameServer.serverState.startNewRound = () => {};
       return gameServer;
     }
 
@@ -982,11 +983,21 @@ describe('GameServerTest', () => {
 
       expect(gameServer.serverState.showHostStepDialog).to.deep.equal({
         actions: [{
-          socketEvent: 'showHostShowFastestFingerRules',
+          socketEvent: 'showHostCueFastestFingerQuestion',
           text: LocalizedStrings.START_NEW_ROUND
         }],
         header: ''
       });
+    });
+
+    it('shouldStartNewRound', function () {
+      var gameServer = getPreppedGameServer();
+      var newRoundStarted = false;
+      gameServer.serverState.startNewRound = () => { newRoundStarted = true; };
+
+      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
+
+      newRoundStarted.should.be.true;
     });
   });
 
