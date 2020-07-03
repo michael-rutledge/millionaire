@@ -61,6 +61,25 @@ const CORRECT_WAIT_TIMES = [
   24000,
 ];
 
+// Automatic wait times for question introduction. Variance is due to presence of flourish.
+const QUESTION_TEXT_WAIT_TIMES = [
+  7000,
+  1000,
+  1000,
+  1000,
+  1000,
+  7000,
+  7000,
+  7000,
+  7000,
+  7000,
+  7000,
+  7000,
+  7000,
+  7000,
+  7000,
+];
+
 // Returns the safe haven (i.e fallback) index for a given failed index.
 function getSafeHavenIndex(failedIndex) {
   var oneIndexed = Math.max(0, failedIndex) + 1;
@@ -148,4 +167,5 @@ module.exports = HotSeatQuestion;
 HotSeatQuestion.PAYOUTS = PAYOUTS;
 HotSeatQuestion.FINAL_ANSWER_WAIT_TIMES = FINAL_ANSWER_WAIT_TIMES;
 HotSeatQuestion.CORRECT_WAIT_TIMES = CORRECT_WAIT_TIMES;
+HotSeatQuestion.QUESTION_TEXT_WAIT_TIMES = QUESTION_TEXT_WAIT_TIMES;
 HotSeatQuestion.getSafeHavenIndex = getSafeHavenIndex;

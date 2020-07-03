@@ -1,3 +1,4 @@
+const Audio = require(process.cwd() + '/client/js/audio/Audio.js');
 const LocalizedStrings = require(process.cwd() + '/localization/LocalizedStrings.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
 const FastestFingerSession = require(process.cwd() + '/server/question/FastestFingerSession.js');
@@ -8,6 +9,7 @@ const StepDialog = require(process.cwd() + '/server/game/StepDialog.js');
 
 const FINAL_ANSWER_WAIT_TIMES = require(process.cwd() + '/server/question/HotSeatQuestion.js').FINAL_ANSWER_WAIT_TIMES;
 const CORRECT_WAIT_TIMES = require(process.cwd() + '/server/question/HotSeatQuestion.js').CORRECT_WAIT_TIMES;
+const QUESTION_TEXT_WAIT_TIMES = require(process.cwd() + '/server/question/HotSeatQuestion.js').QUESTION_TEXT_WAIT_TIMES;
 const MONEY_STRINGS = require(process.cwd() + '/server/question/MoneyTree.js').MONEY_STRINGS;
 
 // Socket event names to allow for dynamic activation and deactivation of listeners.
@@ -175,6 +177,22 @@ class GameServer {
     return this.serverState !== undefined;
   }
 
+  // Plays new music for the game.
+  playMusic(source, loop = false) {
+    this.serverState.audioCommand = {
+      musicSrc: source,
+      loop: loop
+    };
+  }
+
+  // Plays a sound effect for the game.
+  playSoundEffect(source, stopPreviousSounds = false) {
+    this.serverState.audioCommand = {
+      fxSrc: source,
+      stopPreviousSounds: stopPreviousSounds
+    };
+  }
+
   // Starts the game for this GameServer.
   startGame(gameOptions) {
     this.serverState = new ServerState(this.playerMap);
@@ -199,6 +217,7 @@ class GameServer {
 
     // This is the first part of any game, so we start a new round for the server state
     this.serverState.startNewRound();
+    this.playMusic(Audio.Sources.FASTEST_FINGER_RULES);
 
     // Human host will control flow, or 5 seconds are allotted for the rules to be shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -215,6 +234,8 @@ class GameServer {
   showHostCueFastestFingerQuestion(socket, data) {
     this.currentSocketEvent = 'showHostCueFastestFingerQuestion';
     Logger.logInfo(this.currentSocketEvent);
+
+    this.playMusic(Audio.Sources.FASTEST_FINGER_QUESTION);
 
     // Human host will control flow, or 3 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -251,12 +272,13 @@ class GameServer {
 
     // First we cue the audio with no possible host step action.
     this.serverState.setShowHostStepDialog(undefined);
+    this.playSoundEffect(Audio.Sources.FASTEST_FINGER_THREE_STRIKES, /*stopPreviousSounds=*/true);
     this._updateGame();
 
     // After a small waiting period, we reveal all choices.
     this.currentForcedTimer = setTimeout(() => {
       this.showHostRevealFastestFingerQuestionChoices(data);
-    }, /*timeoutMs*/2500);
+    }, /*timeoutMs*/2200);
   }
 
   // Response to client asking to reveal fastest finger choices.
@@ -266,6 +288,7 @@ class GameServer {
 
     this.serverState.fastestFingerQuestion.revealAllChoices();
     this.serverState.fastestFingerQuestion.markStartTime();
+    this.playMusic(Audio.Sources.FASTEST_FINGER_ANSWERING);
     this._updateGame();
   }
 
@@ -296,6 +319,7 @@ class GameServer {
     // Even if this was triggered by the timeout expiring, we will be safe and clear the timeout, as
     // it may have been triggered by everyone answering.
     clearTimeout(this.currentForcedTimer);
+    this.playSoundEffect(Audio.Sources.FASTEST_FINGER_OUT_OF_TIME, /*stopPreviousSounds=*/true);
 
     // Human host will control flow, or 8 seconds will pass until choices are revealed
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -311,6 +335,8 @@ class GameServer {
     this.currentSocketEvent = 'showHostCueFastestFingerAnswerRevealAudio';
     Logger.logInfo(this.currentSocketEvent);
 
+    this.playMusic(Audio.Sources.FASTEST_FINGER_CORRECT_ORDER);
+
     // Human host will control flow, or 2.5 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
       nextSocketEvent: 'showHostRevealFastestFingerAnswer',
@@ -325,6 +351,8 @@ class GameServer {
     this.currentSocketEvent = 'showHostRevealFastestFingerAnswer';
     Logger.logInfo(this.currentSocketEvent);
 
+    this.playSoundEffect(Audio.FastestFingerRevealSources[
+      this.serverState.fastestFingerQuestion.revealedAnswers.length]);
     this.serverState.fastestFingerQuestion.revealAnswer();
 
     if (this.serverState.fastestFingerQuestion.revealedAllAnswers()) {
@@ -352,6 +380,7 @@ class GameServer {
 
     // Nothing needs to be done here, as fastest finger grading happens on the fly. ServerState will
     // pass the results to the client.
+    this.playSoundEffect(Audio.Sources.FASTEST_FINGER_WHO_WAS_CORRECT);
 
     // Human host will control flow, or 3 seconds until hot seat player is accepted.
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -370,6 +399,7 @@ class GameServer {
     Logger.logInfo(this.currentSocketEvent);
 
     // Fanfare should play as the celebration for a fastest finger winner is started.
+    this.playMusic(Audio.Sources.HOT_SEAT_REVEAL);
     this.serverState.setCelebrationBanner({
       header: LocalizedStrings.FASTEST_FINGER_WINNER,
       text: this.serverState.hotSeatPlayer.username
@@ -399,6 +429,8 @@ class GameServer {
     this.serverState.showHostInfoText = LocalizedStrings.SHOW_HOST_RULES;
     this.serverState.hotSeatInfoText = LocalizedStrings.HOT_SEAT_RULES;
     this.serverState.contestantInfoText = LocalizedStrings.CONTESTANT_RULES;
+    // Do audio
+    this.playMusic(Audio.Sources.EXPLAIN_THE_RULES);
 
     // Human host will control flow, or 5 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -417,12 +449,13 @@ class GameServer {
     // Nothing much happens here other than triggering the "Let's Play" audio cue.
     this.serverState.setCelebrationBanner(undefined);
     this.serverState.hotSeatQuestionIndex++;
+    this.playMusic(Audio.LetsPlaySources[this.serverState.hotSeatQuestionIndex]);
 
     // Human host will control flow, or 7 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
       nextSocketEvent: 'showHostShowHotSeatQuestionText',
       hostButtonMessage: LocalizedStrings.SHOW_HOT_SEAT_QUESTION,
-      aiTimeout: 7000
+      aiTimeout: QUESTION_TEXT_WAIT_TIMES[this.serverState.hotSeatQuestionIndex]
     }));
     this._updateGame();
   }
@@ -435,6 +468,8 @@ class GameServer {
     // Get a new hot seat question, because this is the first we so of it.
     this.serverState.hotSeatQuestion = this.hotSeatSession.getNewQuestion(
       this.serverState.hotSeatQuestionIndex);
+    this.playMusic(Audio.QuestionBackgroundSources[this.serverState.hotSeatQuestionIndex],
+      /*loop=*/true);
 
     // Human host will control flow, or 4 seconds until question text is shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -453,6 +488,8 @@ class GameServer {
     // We clear hot seat player's answer just for if they back out of final answer.
     this.serverState.hotSeatPlayer.clearAllAnswers();
     this.serverState.hotSeatQuestion.revealChoice();
+    this.playMusic(Audio.QuestionBackgroundSources[this.serverState.hotSeatQuestionIndex],
+      /*loop=*/true);
 
     // Only reveal more choices if choices are left.
     if (!this.serverState.hotSeatQuestion.allChoicesRevealed()) {
@@ -524,6 +561,7 @@ class GameServer {
 
     this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.hotSeatQuestion.revealCorrectChoiceForShowHost();
+    this.playMusic(Audio.FinalAnswerSources[this.serverState.hotSeatQuestionIndex]);
 
     if (this.serverState.hotSeatQuestion.answerIsCorrect(
         this.serverState.hotSeatPlayer.hotSeatChoice)) {
@@ -553,6 +591,11 @@ class GameServer {
     this.serverState.setShowHostStepDialog(undefined);
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
     this.serverState.gradeHotSeatQuestionForContestants();
+    if (Audio.correctShouldInterrupt(this.serverState.hotSeatQuestionIndex)) {
+      this.playMusic(Audio.CorrectSources[this.serverState.hotSeatQuestionIndex]);
+    } else {
+      this.playSoundEffect(Audio.CorrectSources[this.serverState.hotSeatQuestionIndex]);
+    }
     this._updateGame();
 
     // Then after a brief moment, set the step dialog and celebration banner.
@@ -594,6 +637,8 @@ class GameServer {
     // We want to reveal the question's outcome.
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
     this.serverState.gradeHotSeatQuestionForContestants();
+    this.playSoundEffect(Audio.IncorrectSources[this.serverState.hotSeatQuestionIndex],
+      /*stopPreviousSounds=*/true);
     // Also, we want to take down the question index to the nearest losing safe haven.
     this.serverState.hotSeatQuestionIndex = HotSeatQuestion.getSafeHavenIndex(
       this.serverState.hotSeatQuestionIndex - 1);
@@ -614,6 +659,7 @@ class GameServer {
       '$0' : MONEY_STRINGS[this.serverState.hotSeatQuestionIndex];
 
     this.serverState.hotSeatPlayer.money += winnings;
+    this.playMusic(Audio.Sources.WALK_AWAY);
     this.serverState.setCelebrationBanner({
       header: LocalizedStrings.TOTAL_WINNINGS,
       text: moneyString
@@ -677,9 +723,13 @@ class GameServer {
 
     this.serverState.fiftyFifty.startForQuestion(this.serverState.hotSeatQuestion);
     this.serverState.fiftyFifty.removeTwoWrongChoices();
+    this.playSoundEffect(Audio.Sources.FIFTY_FIFTY_STRIKE);
 
     this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.setShowHostStepDialog(undefined);
+
+    // We call update first to make sure the audio cue plays.
+    this._updateGame();
     this.showHostRevealHotSeatChoice();
   }
 
@@ -708,6 +758,7 @@ class GameServer {
     this.serverState.phoneAFriend.startForQuestion(this.serverState.hotSeatQuestion);
     this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.setShowHostStepDialog(undefined);
+    this.playMusic(Audio.Sources.PHONE_A_FRIEND_INTERLUDE);
 
     // Set info text appropriately.
     if (goingToPickAI) {
@@ -742,6 +793,7 @@ class GameServer {
     Logger.logInfo(this.currentSocketEvent);
 
     this.serverState.phoneAFriend.pickFriend(data.useAI ? undefined : data.username);
+    this.playMusic(Audio.Sources.PHONE_A_FRIEND_COUNTDOWN);
 
     // Set info text appropriately.
     if (data.useAI) {
@@ -774,9 +826,12 @@ class GameServer {
     Logger.logInfo('contestantSetPhoneConfidence');
 
     this.serverState.phoneAFriend.maybeSetFriendConfidence(data.confidence);
+    this.playSoundEffect(Audio.Sources.PHONE_A_FRIEND_END);
     Logger.logInfo('confidence set: ' + this.serverState.phoneAFriend.friendConfidence);
     Logger.logInfo('choice set: ' + this.serverState.phoneAFriend.friendChoice);
 
+    // Update game is called first to make sure phone a friend end audio cue plays.
+    this._updateGame();
     this.showHostRevealHotSeatChoice();
   }
 
@@ -799,7 +854,9 @@ class GameServer {
 
     // Start the lifeline for this question.
     this.serverState.askTheAudience.startForQuestion(this.serverState.hotSeatQuestion);
+    this.playMusic(Audio.Sources.ASK_THE_AUDIENCE_INTERLUDE);
 
+    this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
       nextSocketEvent: 'showHostStartAskTheAudience',
       hostButtonMessage: LocalizedStrings.SHOW_HOST_START_ASK_THE_AUDIENCE,
@@ -815,6 +872,7 @@ class GameServer {
 
     this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.setShowHostStepDialog(undefined);
+    this.playMusic(Audio.Sources.ASK_THE_AUDIENCE_VOTE);
 
     // After a small waiting period, we reveal all choices, but only if we are no longer waiting for
     // answers.
@@ -836,6 +894,10 @@ class GameServer {
   // called. This is to make the experience not so jarring with audio.
   finishAskTheAudience() {
     this.serverState.askTheAudience.populateAllAnswerBuckets();
+    this.playSoundEffect(Audio.Sources.ASK_THE_AUDIENCE_END);
+
+    // Update game is called first to make sure ask the audience end audio cue plays.
+    this._updateGame();
     this.showHostRevealHotSeatChoice();
   }
 }

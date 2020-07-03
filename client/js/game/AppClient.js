@@ -174,6 +174,7 @@ class AppClient {
   // Handles a successful game end for this client.
   hostEndGameSuccess(data) {
     console.log('Game ended, thisClientIsHost: ' + data.thisClientIsHost);
+    this.gameClient.audioPlayer.stopAllSounds();
     this._setGameVisibility(false);
     this._setHostVisibility(data.thisClientIsHost);
   }

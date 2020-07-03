@@ -1,4 +1,5 @@
 const AskTheAudienceResultsElement = require('../rendering/element/AskTheAudienceResultsElement.js');
+const AudioPlayer = require('../audio/AudioPlayer.js');
 const BackgroundElement = require('../rendering/element/BackgroundElement.js');
 const CelebrationBanner = require('../rendering/element/CelebrationBanner.js');
 const Colors = require('../rendering/Colors.js');
@@ -23,8 +24,7 @@ class GameClient {
     // Assign fields
     this.socket = socket;
     this.gameRenderer = gameRenderer;
-    this.clientState = undefined;
-    this.audioPlayer = undefined;
+    this.audioPlayer = new AudioPlayer();
 
     // Assign socket listeners
     this.socket.on('updateGame', (data) => { this.updateGame(data); });
@@ -175,6 +175,7 @@ class GameClient {
   updateGame(compressedClientState) {
     console.log('updateGame');
     console.log(compressedClientState);
+    this.audioPlayer.executeAudioCommand(compressedClientState.audioCommand);
     var newCanvasElements = this.getNewCanvasElements(compressedClientState);
     this.gameRenderer.updateCanvasElements(newCanvasElements);
   }

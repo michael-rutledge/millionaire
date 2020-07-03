@@ -93,6 +93,8 @@ class ServerState {
     this.hotSeatInfoText = undefined;
     this.contestantInfoText = undefined;
     this.showHostInfoText = undefined;
+    // Audio commands are meant to be executed once.
+    this.audioCommand = undefined;
   }
 
   // Clears the timers associated with this server state.
@@ -253,6 +255,9 @@ class ServerState {
     this.hotSeatInfoText = undefined;
     this.contestantInfoText = undefined;
     this.showHostInfoText = undefined;
+
+    // Command to send to client AudioPlayer.
+    this.audioCommand = undefined;
   }
 
   // Returns a compressed, JSON-formatted version of client state to pass to the client via socket.
@@ -364,6 +369,8 @@ class ServerState {
     compressed.hotSeatQuestionIndex = this.hotSeatQuestionIndex;
     // Celebration banner will show up as long as it is defined.
     compressed.celebrationBanner = this.celebrationBanner;
+    // Audio command will always be set, as long as one is present.
+    compressed.audioCommand = this.audioCommand;
 
     return compressed;
   }

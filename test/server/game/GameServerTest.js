@@ -21,15 +21,17 @@ function newGameServerWithPlayerShowHost(present) {
 }
 
 describe('GameServerTest', () => {
-  it('activateListenersForSocketShouldGiveExpectedResult', () => {
-    var gameServer = new GameServer(new PlayerMap());
-    var socket = new MockSocket('socket_id');
-    var player = new Player(socket, 'username');
-    gameServer.playerMap.putPlayer(player);
+  describe('activateListenersForSocket', function () {
+    it('shouldGiveExpectedResult', () => {
+      var gameServer = new GameServer(new PlayerMap());
+      var socket = new MockSocket('socket_id');
+      var player = new Player(socket, 'username');
+      gameServer.playerMap.putPlayer(player);
 
-    gameServer.activateListenersForSocket(socket);
+      gameServer.activateListenersForSocket(socket);
 
-    expect(Object.keys(socket.listeners)).to.deep.equal(GameServer.SOCKET_EVENTS);
+      expect(Object.keys(socket.listeners)).to.deep.equal(GameServer.SOCKET_EVENTS);
+    });
   });
 
   it('deactivateListenersForSocketShouldGiveExpectedResult', () => {
@@ -44,55 +46,89 @@ describe('GameServerTest', () => {
     expect(Object.keys(socket.listeners)).to.be.empty;
   });
 
-  it('endGameShouldGiveExpectedResult', () => {
-    var gameServer = newGameServerWithPlayerShowHost(true);
+  describe('endGame', function () {
+    it('shouldGiveExpectedResult', () => {
+      var gameServer = newGameServerWithPlayerShowHost(true);
 
-    gameServer.endGame();
+      gameServer.endGame();
 
-    expect(gameServer.serverState).to.be.undefined;
+      expect(gameServer.serverState).to.be.undefined;
+    });
   });
 
-  it('gameOptionsAreValidShouldAllowNoShowHost', () => {
-    var gameServer = new GameServer(new PlayerMap());
-    var gameOptions = { showHostUsername: undefined };
+  describe('gameOptionsAreValid', function () {
+    it('shouldAllowNoShowHost', () => {
+      var gameServer = new GameServer(new PlayerMap());
+      var gameOptions = { showHostUsername: undefined };
 
-    var result = gameServer.gameOptionsAreValid(gameOptions);
+      var result = gameServer.gameOptionsAreValid(gameOptions);
 
-    expect(result).to.be.true;
+      expect(result).to.be.true;
+    });
+
+    it('shouldNotAllowShowHostForOnePlayer', () => {
+      var gameServer = new GameServer(new PlayerMap());
+      gameServer.playerMap.putPlayer(new Player(new MockSocket('socket_id'), 'username'));
+      var gameOptions = { showHostUsername: 'username' };
+
+      var result = gameServer.gameOptionsAreValid(gameOptions);
+
+      expect(result).to.be.false;
+    });
+
+    it('shouldAllowShowHostForMoreThanOnePlayer', () => {
+      var gameServer = new GameServer(new PlayerMap());
+      gameServer.playerMap.putPlayer(new Player(new MockSocket('socket_id'), 'username'));
+      gameServer.playerMap.putPlayer(new Player(new MockSocket('socket_id_2'), 'username_2'));
+      var gameOptions = { showHostUsername: 'username' };
+
+      var result = gameServer.gameOptionsAreValid(gameOptions);
+
+      expect(result).to.be.true;
+    });
   });
 
-  it('gameOptionsAreValidShouldNotAllowShowHostForOnePlayer', () => {
-    var gameServer = new GameServer(new PlayerMap());
-    gameServer.playerMap.putPlayer(new Player(new MockSocket('socket_id'), 'username'));
-    var gameOptions = { showHostUsername: 'username' };
+  describe('playMusic', function () {
+    it('shouldSetExpectedAudioCommand', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var musicSrc = 'music';
 
-    var result = gameServer.gameOptionsAreValid(gameOptions);
+      gameServer.playMusic(musicSrc, /*loop=*/true);
 
-    expect(result).to.be.false;
+      gameServer.serverState.audioCommand.should.deep.equal({
+        musicSrc: musicSrc,
+        loop: true
+      });
+    });
   });
 
-  it('gameOptionsAreValidShouldAllowShowHostForMoreThanOnePlayer', () => {
-    var gameServer = new GameServer(new PlayerMap());
-    gameServer.playerMap.putPlayer(new Player(new MockSocket('socket_id'), 'username'));
-    gameServer.playerMap.putPlayer(new Player(new MockSocket('socket_id_2'), 'username_2'));
-    var gameOptions = { showHostUsername: 'username' };
+  describe('playSoundEffect', function () {
+    it('shouldSetExpectedAudioCommand', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var fxSrc = 'sound';
 
-    var result = gameServer.gameOptionsAreValid(gameOptions);
+      gameServer.playSoundEffect(fxSrc, /*stopPreviousSounds=*/true);
 
-    expect(result).to.be.true;
+      gameServer.serverState.audioCommand.should.deep.equal({
+        fxSrc: fxSrc,
+        stopPreviousSounds: true
+      });
+    });
   });
 
-  it('startGameShouldGiveExpectedResultAndShowFastestFingerRules', () => {
-    var gameServer = newGameServerWithPlayerShowHost(true);
-    var showHostShowFastestFingerRulesCalled = false;
-    gameServer.showHostShowFastestFingerRules = (data) => {
-      showHostShowFastestFingerRulesCalled = true;
-    };
+  describe('startGame', function () {
+    it('shouldGiveExpectedResultAndShowFastestFingerRules', () => {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var showHostShowFastestFingerRulesCalled = false;
+      gameServer.showHostShowFastestFingerRules = (data) => {
+        showHostShowFastestFingerRulesCalled = true;
+      };
 
-    gameServer.startGame(/*gameOptions=*/{});
+      gameServer.startGame(/*gameOptions=*/{});
 
-    expect(gameServer.serverState).to.not.be.undefined;
-    expect(showHostShowFastestFingerRulesCalled).to.be.true;
+      expect(gameServer.serverState).to.not.be.undefined;
+      expect(showHostShowFastestFingerRulesCalled).to.be.true;
+    });
   });
 
   it('showHostShowFastestFingerRulesShouldShowCorrectDialogForHumanShowHost', () => {
@@ -1303,6 +1339,7 @@ describe('GameServerTest', () => {
 
     it('shouldSetExpectedDialog', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.hotSeatStepDialog = {};
 
       gameServer.hotSeatConfirmAskTheAudience();
 
@@ -1313,6 +1350,7 @@ describe('GameServerTest', () => {
         }],
         header: ''
       });
+      expect(gameServer.serverState.hotSeatStepDialog).to.be.undefined;
     });
   });
 
