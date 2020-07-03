@@ -215,13 +215,15 @@ class GameServer {
     this.currentSocketEvent = 'showHostShowFastestFingerRules';
     Logger.logInfo(this.currentSocketEvent);
 
+    this.serverState.showHostInfoText = LocalizedStrings.SHOW_HOST_FASTEST_FINGER_RULES;
+    this.serverState.contestantInfoText = LocalizedStrings.CONTESTANT_FASTEST_FINGER_RULES;
     this.playMusic(Audio.Sources.FASTEST_FINGER_RULES);
 
     // Human host will control flow, or 5 seconds are allotted for the rules to be shown
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
       nextSocketEvent: 'showHostCueFastestFingerQuestion',
       hostButtonMessage: LocalizedStrings.CUE_FASTEST_FINGER_MUSIC,
-      aiTimeout: 5000
+      aiTimeout: 8000
     }));
     this._updateGame();
   }
@@ -854,6 +856,10 @@ class GameServer {
     this.currentSocketEvent = 'hotSeatConfirmAskTheAudience';
     Logger.logInfo(this.currentSocketEvent);
 
+    // Display info texts.
+    this.serverState.showHostInfoText = LocalizedStrings.SHOW_HOST_ASK_THE_AUDIENCE_INTERLUDE;
+    this.serverState.hotSeatInfoText = LocalizedStrings.HOT_SEAT_ASK_THE_AUDIENCE_INTERLUDE;
+    this.serverState.contestantInfoText = LocalizedStrings.CONTESTANT_ASK_THE_AUDIENCE_INTERLUDE;
     // Start the lifeline for this question.
     this.serverState.askTheAudience.startForQuestion(this.serverState.hotSeatQuestion);
     this.playMusic(Audio.Sources.ASK_THE_AUDIENCE_INTERLUDE);
@@ -872,8 +878,14 @@ class GameServer {
     this.currentSocketEvent = 'showHostStartAskTheAudience';
     Logger.logInfo(this.currentSocketEvent);
 
+    // Display info texts.
+    this.serverState.showHostInfoText = LocalizedStrings.HOT_SEAT_ASK_THE_AUDIENCE_VOTE;
+    this.serverState.hotSeatInfoText = LocalizedStrings.HOT_SEAT_ASK_THE_AUDIENCE_VOTE;
+    this.serverState.contestantInfoText = LocalizedStrings.CONTESTANT_ASK_THE_AUDIENCE_VOTE;
+    // Clear dialogs.
     this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.setShowHostStepDialog(undefined);
+    // Do audio.
     this.playMusic(Audio.Sources.ASK_THE_AUDIENCE_VOTE);
 
     // After a small waiting period, we reveal all choices, but only if we are no longer waiting for
