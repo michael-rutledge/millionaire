@@ -67,6 +67,13 @@ Sources = {
   WALK_AWAY: 'https://vignette.wikia.nocookie.net/millionaire/images/f/fb/Little_Quitter.ogg'
 };
 
+// Special volumes for tracks that need to be adjusted.
+Volumes = {
+  CORRECT_ANSWER_4: 0.5,
+  CORRECT_ANSWER_9: 0.5,
+  CORRECT_ANSWER_14: 0.7,
+};
+
 function correctShouldInterrupt (questionIndex) {
   return questionIndex >= 4;
 }
