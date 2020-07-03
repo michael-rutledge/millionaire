@@ -119,6 +119,7 @@ class AppClient {
       this.gameCanvas.style.display = 'none';
       this.gameLobbyRow.style.display = '';
       this.gameClient.gameRenderer.stopRendering();
+      this.gameClient.audioPlayer.stopAllSounds();
     }
   }
 
@@ -174,7 +175,6 @@ class AppClient {
   // Handles a successful game end for this client.
   hostEndGameSuccess(data) {
     console.log('Game ended, thisClientIsHost: ' + data.thisClientIsHost);
-    this.gameClient.audioPlayer.stopAllSounds();
     this._setGameVisibility(false);
     this._setHostVisibility(data.thisClientIsHost);
   }

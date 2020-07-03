@@ -65,6 +65,8 @@ class AudioPlayer {
   // Stops all currently playing sounds.
   stopAllSounds() {
     Howler.stop();
+    this.currentMusicSrc = undefined;
+    this.currentMusic = undefined;
   }
 }
 
