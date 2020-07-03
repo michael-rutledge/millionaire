@@ -28,7 +28,7 @@ class FastestFingerResultsElement extends CanvasElement {
   // Returns the decimal representation string of the given time in milliseconds.
   _getTimeInDecimalSecondString(timeMs) {
     var seconds = Math.floor(timeMs / 1000);
-    var decimals = Math.floor(timeMs % 100);
+    var decimals = Math.floor((timeMs / 10) % 100);
     decimals = decimals < 10 ? '0' + decimals : decimals;
     return seconds + '.' + decimals;
   }
