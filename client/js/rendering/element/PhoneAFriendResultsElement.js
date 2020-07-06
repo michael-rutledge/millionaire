@@ -4,6 +4,7 @@ const Colors = require('../Colors.js');
 const Constants = require('../Constants.js');
 const Fonts = require('../Fonts.js');
 const LocalizedStrings = require('../../../../localization/LocalizedStrings.js');
+const NumberStrings = require('../../../../server/string/NumberStrings.js');
 const TextElement = require('./TextElement.js');
 const TextElementBuilder = require('./TextElementBuilder.js');
 
@@ -26,7 +27,7 @@ class PhoneAFriendResultsElement extends CanvasElement {
     var y = this.canvas.height * Constants.MAIN_SCREEN_SQUARE_HEIGHT_RATIO * 0.65;
     var resultsString = LocalizedStrings.PHONE_A_FRIEND_CHOICE_PREFIX +
         Choices.getString(this.results.choice) +
-        LocalizedStrings.PHONE_A_FRIEND_CONFIDENCE_MIDFIX + this._getPercentageString(
+        LocalizedStrings.PHONE_A_FRIEND_CONFIDENCE_MIDFIX + NumberStrings.getPercentageString(
           this.results.confidence) + '.';
 
     this.resultsText =
@@ -35,11 +36,6 @@ class PhoneAFriendResultsElement extends CanvasElement {
         .setText(resultsString)
         .setTextAlign('center')
         .build();
-  }
-
-  // Returns the string representation of the given percentage.
-  _getPercentageString(percentage) {
-    return Math.floor(percentage * 100) + '%';
   }
 
 

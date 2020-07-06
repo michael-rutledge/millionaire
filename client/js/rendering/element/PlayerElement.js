@@ -3,6 +3,7 @@ const Colors = require('../Colors.js');
 const Fonts = require('../Fonts.js');
 const MillionaireBubble = require('./MillionaireBubble.js');
 const MillionaireBubbleBuilder = require('./MillionaireBubbleBuilder.js');
+const NumberStrings = require('../../../../server/string/NumberStrings.js');
 const TextElement = require('./TextElement.js');
 const TextElementBuilder = require('./TextElementBuilder.js');
 
@@ -61,7 +62,7 @@ class PlayerElement extends CanvasElement {
       new TextElementBuilder(this.canvas)
         .setPosition(this.x + this.width / 2, this.y + this.height / 2 - usernameHeight)
         .setMaxWidth(this.width)
-        .setText('\$' + this.compressedPlayer.money)
+        .setText(NumberStrings.getMoneyString(this.compressedPlayer.money))
         .setFont(Fonts.PLAYER_USERNAME_FONT)
         .setTextAlign('center')
         .build();

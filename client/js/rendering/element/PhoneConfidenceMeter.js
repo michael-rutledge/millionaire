@@ -4,6 +4,7 @@ const Constants = require('../Constants.js');
 const LocalizedStrings = require('../../../../localization/LocalizedStrings.js');
 const Fonts = require('../Fonts.js');
 const MillionaireBubbleBuilder = require('./MillionaireBubbleBuilder.js');
+const NumberStrings = require('../../../../server/string/NumberStrings.js');
 const TextElement = require('./TextElement.js');
 const TextElementBuilder = require('./TextElementBuilder.js');
 
@@ -115,10 +116,6 @@ class PhoneConfidenceMeter extends CanvasElement {
     return distanceFromZero / totalDistance;
   }
 
-  _getPercentageString(percentage) {
-    return Math.floor(percentage * 100) + '%';
-  }
-
   _isMouseHoveringOverSlider(x, y) {
     return this.context.isPointInPath(this.slider, x, y) || this.mouseDownOnSlider;
   }
@@ -164,7 +161,7 @@ class PhoneConfidenceMeter extends CanvasElement {
     this.sliderX = this.mouseDownX;
     this._drawSliderAtX(this.sliderX);
 
-    this.confidenceText.text = 'Confidence: ' + this._getPercentageString(
+    this.confidenceText.text = 'Confidence: ' + NumberStrings.getPercentageString(
       this._getPercentageConfidenceFromSliderX(this.sliderX));
     this.confidenceText.draw();
 
