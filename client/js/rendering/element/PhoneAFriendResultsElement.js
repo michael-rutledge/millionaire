@@ -26,7 +26,8 @@ class PhoneAFriendResultsElement extends CanvasElement {
     var y = this.canvas.height * Constants.MAIN_SCREEN_SQUARE_HEIGHT_RATIO * 0.65;
     var resultsString = LocalizedStrings.PHONE_A_FRIEND_CHOICE_PREFIX +
         Choices.getString(this.results.choice) +
-        LocalizedStrings.PHONE_A_FRIEND_CONFIDENCE_MIDFIX + this.results.confidence + '.';
+        LocalizedStrings.PHONE_A_FRIEND_CONFIDENCE_MIDFIX + this._getPercentageString(
+          this.results.confidence) + '.';
 
     this.resultsText =
       new TextElementBuilder(this.canvas)
@@ -34,6 +35,11 @@ class PhoneAFriendResultsElement extends CanvasElement {
         .setText(resultsString)
         .setTextAlign('center')
         .build();
+  }
+
+  // Returns the string representation of the given percentage.
+  _getPercentageString(percentage) {
+    return Math.floor(percentage * 100) + '%';
   }
 
 
