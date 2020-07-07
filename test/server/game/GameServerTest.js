@@ -100,6 +100,12 @@ describe('GameServerTest', () => {
         loop: true
       });
     });
+
+    it('shouldNotDoAnythingWhenNoLongerInGame', function () {
+      var gameServer = new GameServer();
+
+      gameServer.playMusic('musicSrc');
+    });
   });
 
   describe('playSoundEffect', function () {
@@ -113,6 +119,12 @@ describe('GameServerTest', () => {
         fxSrc: fxSrc,
         stopPreviousSounds: true
       });
+    });
+
+    it('shouldNotDoAnythingWhenNoLongerInGame', function () {
+      var gameServer = new GameServer();
+
+      gameServer.playSoundEffect('fxSrc');
     });
   });
 

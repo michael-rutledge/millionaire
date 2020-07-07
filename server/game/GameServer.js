@@ -179,18 +179,22 @@ class GameServer {
 
   // Plays new music for the game.
   playMusic(source, loop = false) {
-    this.serverState.audioCommand = {
-      musicSrc: source,
-      loop: loop
-    };
+    if (this.isInGame()) {
+      this.serverState.audioCommand = {
+        musicSrc: source,
+        loop: loop
+      };
+    }
   }
 
   // Plays a sound effect for the game.
   playSoundEffect(source, stopPreviousSounds = false) {
-    this.serverState.audioCommand = {
-      fxSrc: source,
-      stopPreviousSounds: stopPreviousSounds
-    };
+    if (this.isInGame()) {
+      this.serverState.audioCommand = {
+        fxSrc: source,
+        stopPreviousSounds: stopPreviousSounds
+      };
+    }
   }
 
   // Starts the game for this GameServer.
