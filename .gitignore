@@ -24,7 +24,3 @@ node_modules/
 # question banks if you wish.
 server/question/FastestFingerQuestions.json
 server/question/HotSeatQuestions*\.json
-
-# Directory for personal scripts that help me in development. They serve no
-# function in the actual app.
-script/
