@@ -45,6 +45,7 @@ module.exports.SHOW_HOST_PHONE_A_FRIEND_RULES = 'The hot seat player is picking 
 module.exports.SHOW_HOST_RULES = 'You are hosting the game. Take this moment to go over the rules.';
 module.exports.SHOW_HOST_START_ASK_THE_AUDIENCE = 'Poll the audience';
 
+module.exports.LIFELINES_HEADER = 'Lifelines:';
 module.exports.WALK_AWAY = 'Walk';
 module.exports.FIFTY_FIFTY = '50:50';
 module.exports.PHONE_A_FRIEND = 'Phone';

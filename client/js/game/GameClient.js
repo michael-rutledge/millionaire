@@ -2,14 +2,10 @@ const AskTheAudienceResultsElement = require('../rendering/element/AskTheAudienc
 const AudioPlayer = require('../audio/AudioPlayer.js');
 const BackgroundElement = require('../rendering/element/BackgroundElement.js');
 const CelebrationBanner = require('../rendering/element/CelebrationBanner.js');
-const Colors = require('../rendering/Colors.js');
-const Constants = require('../rendering/Constants.js');
 const FastestFingerAnswersElement = require('../rendering/element/FastestFingerAnswersElement.js');
 const FastestFingerResultsElement = require('../rendering/element/FastestFingerResultsElement.js');
-const HotSeatActionButton = require('../rendering/element/HotSeatActionButton.js');
-const HotSeatActionButtonBuilder = require('../rendering/element/HotSeatActionButtonBuilder.js');
 const InfoTextElement = require('../rendering/element/InfoTextElement.js');
-const LocalizedStrings = require('../../../localization/LocalizedStrings.js');
+const LifelinesElement = require('../rendering/element/LifelinesElement.js');
 const MoneyTreeElement = require('../rendering/element/MoneyTreeElement.js');
 const PhoneAFriendResultsElement = require('../rendering/element/PhoneAFriendResultsElement.js');
 const PhoneConfidenceMeter = require('../rendering/element/PhoneConfidenceMeter.js');
@@ -82,73 +78,13 @@ class GameClient {
         compressedClientState.fastestFingerResults, compressedClientState.fastestFingerBestScore));
     }
 
-    // Hot seat action buttons
-    const bottomSideHeight = canvas.height * Constants.BOTTOM_SIDE_HEIGHT_RATIO;
-
-    // Walk away
-    if (compressedClientState.walkAwayActionButton !== undefined) {
-      var walkAwayActionButton =
-        new HotSeatActionButtonBuilder(canvas)
-          .setPosition(
-            canvas.width - bottomSideHeight * 0.25,
-            canvas.height  - bottomSideHeight * 0.25)
-          .setText(LocalizedStrings.WALK_AWAY)
-          .setSocket(this.socket)
-          .setSocketEvent(compressedClientState.walkAwayActionButton.socketEvent)
-          .setOutlineColor(Colors.WALK_AWAY_OUTLINE)
-          .setUsed(compressedClientState.walkAwayActionButton.used)
-          .setAvailable(compressedClientState.walkAwayActionButton.available)
-          .build();
-      newCanvasElements.push(walkAwayActionButton);
-    }
-    // Fifty fifty
-    if (compressedClientState.fiftyFiftyActionButton !== undefined) {
-      var fiftyFiftyActionButton =
-        new HotSeatActionButtonBuilder(canvas)
-          .setPosition(
-            canvas.width - bottomSideHeight * 0.75,
-            canvas.height  - bottomSideHeight * 0.75)
-          .setText(LocalizedStrings.FIFTY_FIFTY)
-          .setSocket(this.socket)
-          .setSocketEvent(compressedClientState.fiftyFiftyActionButton.socketEvent)
-          .setOutlineColor(Colors.LIFELINE_OUTLINE)
-          .setUsed(compressedClientState.fiftyFiftyActionButton.used)
-          .setAvailable(compressedClientState.fiftyFiftyActionButton.available)
-          .build();
-      newCanvasElements.push(fiftyFiftyActionButton);
-    }
-    // Phone a friend
-    if (compressedClientState.phoneAFriendActionButton !== undefined) {
-      var phoneAFriendActionButton =
-        new HotSeatActionButtonBuilder(canvas)
-          .setPosition(
-            canvas.width - bottomSideHeight * 0.25,
-            canvas.height  - bottomSideHeight * 0.75)
-          .setText(LocalizedStrings.PHONE_A_FRIEND)
-          .setSocket(this.socket)
-          .setSocketEvent(compressedClientState.phoneAFriendActionButton.socketEvent)
-          .setOutlineColor(Colors.LIFELINE_OUTLINE)
-          .setUsed(compressedClientState.phoneAFriendActionButton.used)
-          .setAvailable(compressedClientState.phoneAFriendActionButton.available)
-          .build();
-      newCanvasElements.push(phoneAFriendActionButton);
-    }
-    // Ask the audience
-    if (compressedClientState.phoneAFriendActionButton !== undefined) {
-      var askTheAudienceActionButton =
-        new HotSeatActionButtonBuilder(canvas)
-          .setPosition(
-            canvas.width - bottomSideHeight * 0.75,
-            canvas.height  - bottomSideHeight * 0.25)
-          .setText('Audience')
-          .setSocket(this.socket)
-          .setSocketEvent(compressedClientState.askTheAudienceActionButton.socketEvent)
-          .setOutlineColor(Colors.LIFELINE_OUTLINE)
-          .setUsed(compressedClientState.askTheAudienceActionButton.used)
-          .setAvailable(compressedClientState.askTheAudienceActionButton.available)
-          .build();
-      newCanvasElements.push(askTheAudienceActionButton);
-    }
+    newCanvasElements.push(new LifelinesElement(
+      canvas,
+      this.socket,
+      compressedClientState.fiftyFiftyActionButton,
+      compressedClientState.phoneAFriendActionButton,
+      compressedClientState.askTheAudienceActionButton,
+      compressedClientState.walkAwayActionButton));
 
     if (compressedClientState.showPhoneConfidenceMeter) {
       newCanvasElements.push(new PhoneConfidenceMeter(canvas, this.socket));
