@@ -36,6 +36,7 @@ class AudioPlayer {
         src: audioCommand.fxSrc,
         html5: true,
         loop: false,
+        volume: audioCommand.volume,
         onplay: () => {
           if (audioCommand.stopPreviousSounds) {
             this._stopMusic(this.currentMusic);
@@ -50,6 +51,7 @@ class AudioPlayer {
       this.currentMusic = new Howl({
         src: audioCommand.musicSrc,
         loop: audioCommand.loop,
+        volume: audioCommand.volume,
         html5: true,
         onplay: () => { this._stopMusic(musicToStop); }
       });

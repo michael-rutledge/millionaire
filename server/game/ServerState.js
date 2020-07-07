@@ -99,8 +99,11 @@ class ServerState {
 
   // Clears the timers associated with this server state.
   clearTimers() {
-    if (this.showHostStepDialog !== undefined) {
+    if (this.showHostStepDialog) {
       this.showHostStepDialog.clearTimeout();
+    }
+    if (this.hotSeatStepDialog) {
+      this.hotSeatStepDialog.clearTimeout();
     }
   }
 

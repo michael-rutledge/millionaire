@@ -30,16 +30,23 @@ describe('ServerStateTest', () => {
     });
   });
 
-  it('clearTimersShouldGiveExpectedResult', () => {
-    var serverState = new ServerState(new PlayerMap());
-    serverState.showHostStepDialog = new StepDialog(
+  describe('clearTimers', function () {
+    it('shouldClearShowHostAndHotSeatStepDialogTimers', () => {
+      var serverState = new ServerState(new PlayerMap());
+      serverState.showHostStepDialog = new StepDialog(
+        /*actions=*/[],
+        /*timeoutFunc=*/() => {},
+        /*timeoutMs=*/1000);
+      serverState.hotSeatStepDialog = new StepDialog(
         /*actions=*/[],
         /*timeoutFunc=*/() => {},
         /*timeoutMs=*/1000);
 
-    serverState.clearTimers();
+      serverState.clearTimers();
 
-    expect(serverState.showHostStepDialog.timeoutActive()).to.be.false;
+      serverState.showHostStepDialog.timeoutActive().should.be.false;
+      serverState.hotSeatStepDialog.timeoutActive().should.be.false;
+    });
   });
 
   describe('contestantCanChoose', function () {

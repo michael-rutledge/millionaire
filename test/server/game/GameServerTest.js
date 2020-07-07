@@ -93,11 +93,12 @@ describe('GameServerTest', () => {
       var gameServer = newGameServerWithPlayerShowHost(true);
       var musicSrc = 'music';
 
-      gameServer.playMusic(musicSrc, /*loop=*/true);
+      gameServer.playMusic(musicSrc, /*volume=*/1.0, /*loop=*/true);
 
       gameServer.serverState.audioCommand.should.deep.equal({
         musicSrc: musicSrc,
-        loop: true
+        loop: true,
+        volume: 1.0
       });
     });
 
@@ -113,11 +114,12 @@ describe('GameServerTest', () => {
       var gameServer = newGameServerWithPlayerShowHost(true);
       var fxSrc = 'sound';
 
-      gameServer.playSoundEffect(fxSrc, /*stopPreviousSounds=*/true);
+      gameServer.playSoundEffect(fxSrc, /*volume=*/1.0, /*stopPreviousSounds=*/true);
 
       gameServer.serverState.audioCommand.should.deep.equal({
         fxSrc: fxSrc,
-        stopPreviousSounds: true
+        stopPreviousSounds: true,
+        volume: 1.0
       });
     });
 
@@ -186,32 +188,44 @@ describe('GameServerTest', () => {
     });
   });
 
-  it('showHostCueFastestFingerQuestionShouldShowCorrectDialogForHumanShowHost', () => {
-    var gameServer = newGameServerWithPlayerShowHost(true);
+  describe('showHostCueFastestFingerQuestion', function () {
+    it('shouldShowCorrectDialogForHumanShowHost', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
 
-    gameServer.showHostCueFastestFingerQuestion(new MockSocket(), /*data=*/{});
+      gameServer.showHostCueFastestFingerQuestion(new MockSocket(), /*data=*/{});
 
-    expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
-      actions: [{
-        socketEvent: 'showHostShowFastestFingerQuestionText',
-        text: LocalizedStrings.SHOW_FASTEST_FINGER_QUESTION
-      }],
-      header: ''
+      expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostShowFastestFingerQuestionText',
+          text: LocalizedStrings.SHOW_FASTEST_FINGER_QUESTION
+        }],
+        header: ''
+      });
+      expect(gameServer.serverState.showHostStepDialog.timeout).to.be.undefined;
     });
-    expect(gameServer.serverState.showHostStepDialog.timeout).to.be.undefined;
-  });
 
-  it('showHostCueFastestFingerQuestionShouldSetTimerForNoShowHost', () => {
-    var gameServer = newGameServerWithPlayerShowHost(false);
+    it('shouldSetTimerForNoShowHost', function () {
+      var gameServer = newGameServerWithPlayerShowHost(false);
 
-    gameServer.showHostCueFastestFingerQuestion(new MockSocket(), /*data=*/{});
+      gameServer.showHostCueFastestFingerQuestion(new MockSocket(), /*data=*/{});
 
-    expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
-      actions: [],
-      header: ''
+      expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+        actions: [],
+        header: ''
+      });
+      expect(gameServer.serverState.showHostStepDialog.timeout).to.not.be.undefined;
+      gameServer.serverState.showHostStepDialog.clearTimeout();
     });
-    expect(gameServer.serverState.showHostStepDialog.timeout).to.not.be.undefined;
-    gameServer.serverState.showHostStepDialog.clearTimeout();
+
+    it('shouldStartNewRound', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      var newRoundStarted = false;
+      gameServer.serverState.startNewRound = () => { newRoundStarted = true; };
+
+      gameServer.showHostCueFastestFingerQuestion(new MockSocket(), /*data=*/{});
+
+      newRoundStarted.should.be.true;
+    });
   });
 
   it('showHostShowFastestFingerQuestionTextShouldShowCorrectDialogForHumanShowHost', () => {
@@ -1015,16 +1029,6 @@ describe('GameServerTest', () => {
         }],
         header: ''
       });
-    });
-
-    it('shouldStartNewRound', function () {
-      var gameServer = getPreppedGameServer();
-      var newRoundStarted = false;
-      gameServer.serverState.startNewRound = () => { newRoundStarted = true; };
-
-      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
-
-      newRoundStarted.should.be.true;
     });
   });
 

@@ -178,21 +178,23 @@ class GameServer {
   }
 
   // Plays new music for the game.
-  playMusic(source, loop = false) {
+  playMusic(source, volume = 1.0, loop = false) {
     if (this.isInGame()) {
       this.serverState.audioCommand = {
         musicSrc: source,
-        loop: loop
+        loop: loop,
+        volume: volume
       };
     }
   }
 
   // Plays a sound effect for the game.
-  playSoundEffect(source, stopPreviousSounds = false) {
+  playSoundEffect(source, volume = 1.0, stopPreviousSounds = false) {
     if (this.isInGame()) {
       this.serverState.audioCommand = {
         fxSrc: source,
-        stopPreviousSounds: stopPreviousSounds
+        stopPreviousSounds: stopPreviousSounds,
+        volume: volume
       };
     }
   }
@@ -239,6 +241,7 @@ class GameServer {
     this.currentSocketEvent = 'showHostCueFastestFingerQuestion';
     Logger.logInfo(this.currentSocketEvent);
 
+    this.serverState.startNewRound();
     this.playMusic(Audio.Sources.FASTEST_FINGER_QUESTION);
 
     // Human host will control flow, or 3 seconds until question text is shown
@@ -276,7 +279,9 @@ class GameServer {
 
     // First we cue the audio with no possible host step action.
     this.serverState.setShowHostStepDialog(undefined);
-    this.playSoundEffect(Audio.Sources.FASTEST_FINGER_THREE_STRIKES, /*stopPreviousSounds=*/true);
+    this.playSoundEffect(Audio.Sources.FASTEST_FINGER_THREE_STRIKES,
+      /*volume=*/1.0,
+      /*stopPreviousSounds=*/true);
     this._updateGame();
 
     // After a small waiting period, we reveal all choices.
@@ -323,7 +328,9 @@ class GameServer {
     // Even if this was triggered by the timeout expiring, we will be safe and clear the timeout, as
     // it may have been triggered by everyone answering.
     clearTimeout(this.currentForcedTimer);
-    this.playSoundEffect(Audio.Sources.FASTEST_FINGER_OUT_OF_TIME, /*stopPreviousSounds=*/true);
+    this.playSoundEffect(Audio.Sources.FASTEST_FINGER_OUT_OF_TIME,
+      /*volume=*/1.0,
+      /*stopPreviousSounds=*/true);
 
     // Human host will control flow, or 8 seconds will pass until choices are revealed
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
@@ -473,6 +480,7 @@ class GameServer {
     this.serverState.hotSeatQuestion = this.hotSeatSession.getNewQuestion(
       this.serverState.hotSeatQuestionIndex);
     this.playMusic(Audio.QuestionBackgroundSources[this.serverState.hotSeatQuestionIndex],
+      /*volume=*/1.0,
       /*loop=*/true);
 
     // Human host will control flow, or 4 seconds until question text is shown
@@ -493,6 +501,7 @@ class GameServer {
     this.serverState.hotSeatPlayer.clearAllAnswers();
     this.serverState.hotSeatQuestion.revealChoice();
     this.playMusic(Audio.QuestionBackgroundSources[this.serverState.hotSeatQuestionIndex],
+      /*volume=*/1.0,
       /*loop=*/true);
 
     // Only reveal more choices if choices are left.
@@ -596,9 +605,11 @@ class GameServer {
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
     this.serverState.gradeHotSeatQuestionForContestants();
     if (Audio.correctShouldInterrupt(this.serverState.hotSeatQuestionIndex)) {
-      this.playMusic(Audio.CorrectSources[this.serverState.hotSeatQuestionIndex]);
+      this.playMusic(Audio.CorrectSources[this.serverState.hotSeatQuestionIndex],
+        Audio.CorrectVolumes[this.serverState.hotSeatQuestionIndex]);
     } else {
-      this.playSoundEffect(Audio.CorrectSources[this.serverState.hotSeatQuestionIndex]);
+      this.playSoundEffect(Audio.CorrectSources[this.serverState.hotSeatQuestionIndex],
+        Audio.CorrectVolumes[this.serverState.hotSeatQuestionIndex]);
     }
     this._updateGame();
 
@@ -642,6 +653,7 @@ class GameServer {
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
     this.serverState.gradeHotSeatQuestionForContestants();
     this.playSoundEffect(Audio.IncorrectSources[this.serverState.hotSeatQuestionIndex],
+      /*volume=*/1.0,
       /*stopPreviousSounds=*/true);
     // Also, we want to take down the question index to the nearest losing safe haven.
     this.serverState.hotSeatQuestionIndex = HotSeatQuestion.getSafeHavenIndex(
@@ -678,7 +690,6 @@ class GameServer {
       aiTimeout: 9000
     }));
     this._updateGame();
-    this.serverState.startNewRound();
   }
 
   // Response to the client asking to walk away.

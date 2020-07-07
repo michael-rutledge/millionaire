@@ -67,11 +67,74 @@ Sources = {
   WALK_AWAY: 'https://vignette.wikia.nocookie.net/millionaire/images/f/fb/Little_Quitter.ogg'
 };
 
-// Special volumes for tracks that need to be adjusted.
+// Volumes for tracks.
 Volumes = {
-  CORRECT_ANSWER_4: 0.5,
-  CORRECT_ANSWER_9: 0.5,
-  CORRECT_ANSWER_14: 0.7,
+  FASTEST_FINGER_RULES: 1,
+  FASTEST_FINGER_QUESTION: 1,
+  FASTEST_FINGER_THREE_STRIKES: 1,
+  FASTEST_FINGER_ANSWERING: 1,
+  FASTEST_FINGER_OUT_OF_TIME: 1,
+  FASTEST_FINGER_CORRECT_ORDER: 1,
+  FASTEST_FINGER_IN_ORDER_FIRST: 1,
+  FASTEST_FINGER_IN_ORDER_SECOND: 1,
+  FASTEST_FINGER_IN_ORDER_THIRD: 1,
+  FASTEST_FINGER_IN_ORDER_FOURTH: 1,
+  FASTEST_FINGER_WHO_WAS_CORRECT: 1,
+  HOT_SEAT_REVEAL: 1,
+  EXPLAIN_THE_RULES: 1,
+  LETS_PLAY_0: 0.9,
+  LETS_PLAY_1: 1,
+  LETS_PLAY_2: 1,
+  LETS_PLAY_3: 1,
+  LETS_PLAY_4: 1,
+  HOT_SEAT_QUESTION_0_4: 1,
+  HOT_SEAT_QUESTION_5: 1,
+  HOT_SEAT_QUESTION_6: 1,
+  HOT_SEAT_QUESTION_7: 1,
+  HOT_SEAT_QUESTION_8: 1,
+  HOT_SEAT_QUESTION_9: 1,
+  HOT_SEAT_QUESTION_10: 1,
+  HOT_SEAT_QUESTION_11: 1,
+  HOT_SEAT_QUESTION_12: 1,
+  HOT_SEAT_QUESTION_13: 1,
+  HOT_SEAT_QUESTION_14: 1,
+  FINAL_ANSWER_5_10: 1,
+  FINAL_ANSWER_6_11: 1,
+  FINAL_ANSWER_7_12: 1,
+  FINAL_ANSWER_8_13: 1,
+  FINAL_ANSWER_9_14: 1,
+  CORRECT_ANSWER_0_3: 1,
+  CORRECT_ANSWER_4: 0.3,
+  CORRECT_ANSWER_5: 1,
+  CORRECT_ANSWER_6: 1,
+  CORRECT_ANSWER_7: 1,
+  CORRECT_ANSWER_8: 1,
+  CORRECT_ANSWER_9: 0.3,
+  CORRECT_ANSWER_10: 1,
+  CORRECT_ANSWER_11: 1,
+  CORRECT_ANSWER_12: 1,
+  CORRECT_ANSWER_13: 1,
+  CORRECT_ANSWER_14: 0.6,
+  INCORRECT_ANSWER_0_3: 1,
+  INCORRECT_ANSWER_4: 1,
+  INCORRECT_ANSWER_5: 1,
+  INCORRECT_ANSWER_6: 1,
+  INCORRECT_ANSWER_7: 1,
+  INCORRECT_ANSWER_8: 1,
+  INCORRECT_ANSWER_9: 1,
+  INCORRECT_ANSWER_10: 1,
+  INCORRECT_ANSWER_11: 1,
+  INCORRECT_ANSWER_12: 1,
+  INCORRECT_ANSWER_13: 1,
+  INCORRECT_ANSWER_14: 1,
+  FIFTY_FIFTY_STRIKE: 1,
+  PHONE_A_FRIEND_INTERLUDE: 1,
+  PHONE_A_FRIEND_COUNTDOWN: 1,
+  PHONE_A_FRIEND_END: 1,
+  ASK_THE_AUDIENCE_INTERLUDE: 1,
+  ASK_THE_AUDIENCE_VOTE: 1,
+  ASK_THE_AUDIENCE_END: 1,
+  WALK_AWAY: 1,
 };
 
 function correctShouldInterrupt (questionIndex) {
@@ -95,6 +158,24 @@ CorrectSources = [
   Sources.CORRECT_ANSWER_12,
   Sources.CORRECT_ANSWER_13,
   Sources.CORRECT_ANSWER_14
+];
+
+CorrectVolumes = [
+  Volumes.CORRECT_ANSWER_0_3,
+  Volumes.CORRECT_ANSWER_0_3,
+  Volumes.CORRECT_ANSWER_0_3,
+  Volumes.CORRECT_ANSWER_0_3,
+  Volumes.CORRECT_ANSWER_4,
+  Volumes.CORRECT_ANSWER_5,
+  Volumes.CORRECT_ANSWER_6,
+  Volumes.CORRECT_ANSWER_7,
+  Volumes.CORRECT_ANSWER_8,
+  Volumes.CORRECT_ANSWER_9,
+  Volumes.CORRECT_ANSWER_10,
+  Volumes.CORRECT_ANSWER_11,
+  Volumes.CORRECT_ANSWER_12,
+  Volumes.CORRECT_ANSWER_13,
+  Volumes.CORRECT_ANSWER_14
 ];
 
 // Sources for fastest finger order reveal, indexed by choice.
@@ -182,6 +263,7 @@ QuestionBackgroundSources = [
 module.exports.Sources = Sources;
 module.exports.Volumes = Volumes;
 module.exports.CorrectSources = CorrectSources;
+module.exports.CorrectVolumes = CorrectVolumes;
 module.exports.FastestFingerRevealSources = FastestFingerRevealSources;
 module.exports.FinalAnswerSources = FinalAnswerSources;
 module.exports.IncorrectSources = IncorrectSources;
