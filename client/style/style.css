@@ -12,6 +12,11 @@
     font-style: normal;
 }
 
+canvas {
+  width: 100%;
+  height: auto;
+}
+
 .gameLobbyPlayerBanner {
     border-radius: 5px;
     padding: 5px 10px 5px 10px;
