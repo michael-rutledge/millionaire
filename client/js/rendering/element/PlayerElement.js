@@ -70,7 +70,7 @@ class PlayerElement extends CanvasElement {
 
   _onClick(x, y) {
     if (this.isMouseHovering(x, y)) {
-      this.socket.emit('hotSeatPickPhoneAFriend', {
+      this.socket.safeEmit('hotSeatPickPhoneAFriend', {
         username: this.compressedPlayer.username
       });
     }

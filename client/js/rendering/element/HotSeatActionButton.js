@@ -47,7 +47,7 @@ class HotSeatActionButton extends CanvasElement {
   // Executes on client click.
   _onClick(x, y) {
     if (this.socket !== undefined && this.isMouseHovering(x, y)) {
-      this.socket.emit(this.socketEvent, {});
+      this.socket.safeEmit(this.socketEvent, {});
     }
   }
 

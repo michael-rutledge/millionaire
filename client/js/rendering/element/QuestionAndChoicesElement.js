@@ -122,7 +122,7 @@ class QuestionAndChoicesElement extends CanvasElement {
     this.choiceBubbles.forEach((bubble, index) => {
       if (bubble.isPointInPath(x, y) && this.choiceAction !== undefined &&
           this._questionIncludesChoiceIndex(index) && !this.choiceLocked) {
-        this.socket.emit(this.choiceAction, {
+        this.socket.safeEmit(this.choiceAction, {
           choice: index
         });
       }

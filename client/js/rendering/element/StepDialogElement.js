@@ -86,7 +86,7 @@ class StepDialogElement extends CanvasElement {
   _onClick(x, y) {
     this.actionBubbles.forEach((bubble, index) => {
       if (bubble.isPointInPath(x, y)) {
-        this.socket.emit(this.compressedStepDialog.actions[index].socketEvent, {});
+        this.socket.safeEmit(this.compressedStepDialog.actions[index].socketEvent, {});
       }
     });
   }

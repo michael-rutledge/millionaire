@@ -114,6 +114,7 @@ class GameClient {
     this.audioPlayer.executeAudioCommand(compressedClientState.audioCommand);
     var newCanvasElements = this.getNewCanvasElements(compressedClientState);
     this.gameRenderer.updateCanvasElements(newCanvasElements);
+    this.socket.emitting = false;
   }
 }
 

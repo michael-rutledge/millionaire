@@ -128,7 +128,7 @@ class PhoneConfidenceMeter extends CanvasElement {
     if (this._isMouseHoveringOverSlider(x, y)) {
       this.mouseDownOnSlider = true;
     } else if (this._isMouseHoveringOverSubmit(x, y)) {
-      this.socket.emit('contestantSetPhoneConfidence', {
+      this.socket.safeEmit('contestantSetPhoneConfidence', {
         confidence: this._getPercentageConfidenceFromSliderX(this.sliderX)
       });
     }

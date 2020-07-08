@@ -12,6 +12,7 @@ const SOCKET_EVENTS = [
   'hostStartGameFailure',
   'playerBecomeHost',
   'playerCreateRoomSuccess',
+  'playerCreateRoomFailure',
   'playerJoinRoomSuccess',
   'playerJoinRoomFailure',
   'playerLeaveRoomSuccess',
@@ -128,7 +129,7 @@ class AppClient {
 
   // Attempts to end the current game from this client.
   hostAttemptEndGame() {
-    this.socket.emit('hostAttemptEndGame', {});
+    this.socket.safeEmit('hostAttemptEndGame', {});
   }
 
   // Attempts to start a game from this client.
@@ -139,7 +140,7 @@ class AppClient {
       showHostUsername = this.gameOptionsHostShowHostUsername.value;
     }
 
-    this.socket.emit('hostAttemptStartGame', {
+    this.socket.safeEmit('hostAttemptStartGame', {
       gameOptions: {
         showHostUsername: showHostUsername
       }
@@ -148,14 +149,14 @@ class AppClient {
 
   // Attempts to create a room from this client.
   playerAttemptCreateRoom() {
-    this.socket.emit('playerAttemptCreateRoom', {
+    this.socket.safeEmit('playerAttemptCreateRoom', {
       username: this.loginUsername.value
     });
   }
 
   // Attempts to join this client to a room.
   playerAttemptJoinRoom() {
-    this.socket.emit('playerAttemptJoinRoom', {
+    this.socket.safeEmit('playerAttemptJoinRoom', {
       username: this.loginUsername.value,
       roomCode: this.loginRoomCode.value
     });
@@ -163,7 +164,7 @@ class AppClient {
 
   // Attempts to remove this client from its current room.
   playerAttemptLeaveRoom() {
-    this.socket.emit('playerAttemptLeaveRoom', {
+    this.socket.safeEmit('playerAttemptLeaveRoom', {
       username: this.loginUsername.value,
       roomCode: this.loginRoomCode.value
     });
@@ -177,11 +178,13 @@ class AppClient {
     console.log('Game ended, thisClientIsHost: ' + data.thisClientIsHost);
     this._setGameVisibility(false);
     this._setHostVisibility(data.thisClientIsHost);
+    this.socket.emitting = false;
   }
 
   // Handles a failed game end for this client.
   hostEndGameFailure(data) {
     console.log('Game failed to end: ' + data.reason);
+    this.socket.emitting = false;
   }
 
   // Handles a successful game start for this client.
@@ -189,11 +192,13 @@ class AppClient {
     console.log('Game started.');
     this._setGameVisibility(true);
     this._setHostVisibility(data.thisClientIsHost);
+    this.socket.emitting = false;
   }
 
   // Handles a failed game start for this client.
   hostStartGameFailure(data) {
     console.log('Game failed to start: ' + data.reason);
+    this.socket.emitting = false;
   }
 
   // Handles the player associated with this AppClient becoming host of the Room.
@@ -209,6 +214,13 @@ class AppClient {
     this._goFromLoginToGameRoom();
     this._setGameVisibility(false);
     this._setHostVisibility(true);
+    this.socket.emitting = false;
+  }
+
+  // Handles a successful room creation for this client.
+  playerCreateRoomFailure(data) {
+    console.log('Failed to create room.');
+    this.socket.emitting = false;
   }
 
   // Handles a successful room join for this client.
@@ -218,11 +230,13 @@ class AppClient {
     this._goFromLoginToGameRoom();
     this._setHostVisibility(false);
     this._setGameVisibility(data.isInGame);
+    this.socket.emitting = false;
   }
 
   // Handles a successful room join for this client.
   playerJoinRoomFailure(data) {
     console.log('Failed to join room: ' + data.reason);
+    this.socket.emitting = false;
   }
 
   // Handles a successful room leave for this client.
@@ -232,12 +246,14 @@ class AppClient {
     this.gameStartButton.style.display = 'none';
     this._setGameVisibility(false);
     this._goFromGameRoomToLogin();
+    this.socket.emitting = false;
   }
 
   // Handles a failed room leave for this client.
   playerLeaveRoomFailure(data) {
     console.log('Failed to leave room.');
     console.log(data);
+    this.socket.emitting = false;
   }
 
   // Handles any change to the lobby state.
