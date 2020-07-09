@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const DataLevel = require(process.cwd() + '/server/question/DataLevel.js');
 const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
+const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
 
 // If we are testing, use the mock question file.
 const inDevBuild = DataLevel.isDev();
@@ -20,7 +21,9 @@ const HARD_QUESTIONS = JSON.parse(fs.readFileSync(FILE_PATH_PREFIX +
 // Reads from local JSON files that are separated by easy, medium, and hard difficulties.
 class HotSeatSession {
 
-  constructor() {
+  constructor(playerMap = new PlayerMap()) {
+    this.playerMap = playerMap;
+
     this.openEasyQuestions = this._getRefreshedQuestions(EASY_QUESTIONS);
     this.openMediumQuestions = this._getRefreshedQuestions(MEDIUM_QUESTIONS);
     this.openHardQuestions = this._getRefreshedQuestions(HARD_QUESTIONS);
@@ -42,7 +45,7 @@ class HotSeatSession {
   _getNewOpenQuestion(openQuestions, questions, questionIndex) {
     var openIndexIndex = Math.trunc(Math.random() * openQuestions.length);
     var openIndex = openQuestions.splice(openIndexIndex, 1)[0];
-    return new HotSeatQuestion(questions[openIndex], questionIndex);
+    return new HotSeatQuestion(questions[openIndex], questionIndex, this.playerMap);
   }
 
 

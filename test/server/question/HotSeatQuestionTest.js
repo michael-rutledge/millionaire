@@ -1,8 +1,11 @@
 const expect = require('chai').expect;
-const should = require('chai').should;
+const should = require('chai').should();
 
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const HotSeatQuestion = require(process.cwd() + '/server/question/HotSeatQuestion.js');
+const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
+const Player = require(process.cwd() + '/server/game/Player.js');
+const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
 
 describe('HotSeatQuestionTest', function () {
   describe('getSafeHavenIndex', function () {
@@ -96,6 +99,76 @@ describe('HotSeatQuestionTest', function () {
       hsq.getShuffledChoice(2).should.equal(Choices.D);
       hsq.getShuffledChoice(3).should.equal(Choices.B);
       expect(hsq.getShuffledChoice(4)).to.be.undefined;
+    });
+  });
+
+  describe('gradeForContestants', function () {
+    function getPreppedQuestionWithOneCorrectPlayer(username) {
+      var playerMap = new PlayerMap();
+      var player = new Player(new MockSocket('socket_id'), username);
+      playerMap.putPlayer(player);
+      var question = new HotSeatQuestion({
+        text: 'question',
+        orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+      }, 0, playerMap);
+      question.shuffledChoices = ['choice2', 'choice1', 'choice4', 'choice3'];
+      question.markStartTime();
+      player.hotSeatChoice = Choices.B;
+      player.hotSeatTime = Date.now() + 2000;
+      return question;
+    }
+
+    it('shouldNotGradeForShowHost', function () {
+      var question = getPreppedQuestionWithOneCorrectPlayer('username');
+      var player = question.playerMap.getPlayerByUsername('username');
+      player.isShowHost = true;
+
+      question.gradeForContestants();
+
+      player.money.should.equal(0);
+    });
+
+    it('shouldNotGradeForHotSeatPlayer', function () {
+      var question = getPreppedQuestionWithOneCorrectPlayer('username');
+      var player = question.playerMap.getPlayerByUsername('username');
+      player.isHotSeatPlayer = true;
+
+      question.gradeForContestants();
+
+      player.money.should.equal(0);
+    });
+
+    it('shouldAddMoneyForContestantWithRightAnswer', function () {
+      var question = getPreppedQuestionWithOneCorrectPlayer('username');
+      var player = question.playerMap.getPlayerByUsername('username');
+
+      question.gradeForContestants();
+
+      player.money.should.be.gt(0);
+    });
+
+    it('shouldNotAddMoneyForContestantWithWrongAnswer', function () {
+      var question = getPreppedQuestionWithOneCorrectPlayer('username');
+      var player = question.playerMap.getPlayerByUsername('username');
+      player.hotSeatChoice = undefined;
+
+      question.gradeForContestants();
+
+      player.money.should.equal(0);
+    });
+
+    it('shouldSetLongElapsedTimeForWalkingAway', function () {
+      var question = getPreppedQuestionWithOneCorrectPlayer('username');
+      var forcedElapsedTime = undefined;
+      question._getScaledPayout = (elapsedTime) => {
+        forcedElapsedTime = elapsedTime;
+      }
+
+      question.gradeForContestants(/*criteria=*/{
+        walkingAway: true
+      });
+
+      forcedElapsedTime.should.equal(10000);
     });
   });
 

@@ -65,19 +65,6 @@ class ServerState {
     return compressedPlayerList;
   }
 
-  // Returns the amount of money to give to a contestant for their answer to a hot seat question.
-  _getContestantHotSeatPayout(elapsedTime, hotSeatQuestionIndex) {
-    const payoutRatioCap = 0.5;
-    const payoutRatioFloor = 0.2;
-    const bestWindowMs = 1000;
-    const timeWindowMs = 10000;
-
-    var trimmedElapsedTime = Math.max(0, Math.min(elapsedTime - bestWindowMs, timeWindowMs));
-    var timeRatio = 1 - (trimmedElapsedTime / timeWindowMs);
-    var payoutRatio = payoutRatioFloor + timeRatio * (payoutRatioCap - payoutRatioFloor);
-    return Math.floor(HotSeatQuestion.PAYOUTS[hotSeatQuestionIndex] * payoutRatio);
-  }
-
 
   // PUBLIC METHODS
 
@@ -113,31 +100,6 @@ class ServerState {
       this.hotSeatQuestion !== undefined && this.hotSeatQuestion.allChoicesRevealed();
   }
 
-  // Assigns cash winnings per contestant according to the current hot seat question.
-  //
-  // The money given will be inversely proportional to the amount of time it takes for an answer to
-  // be put down. Whoever answer correctly in the fastest time, no matter what, will get the highest
-  // modifier possible.
-  //
-  // Expected criteria format (will act as a set via fields being included/excluded): {
-  //   bool walkingAway
-  //   bool hotSeatPlayerWrong
-  // }
-  //
-  // Expects hotSeatQuestion to be defined.
-  gradeHotSeatQuestionForContestants(criteria = {}) {
-    this.playerMap.doAll((player) => {
-      if (this.playerIsContestant(player) && player.hotSeatTime !== undefined &&
-          this.hotSeatQuestion.answerIsCorrect(player.hotSeatChoice)) {
-        var elapsedTime = player.hotSeatTime - this.hotSeatQuestion.startTime;
-        // When the hot seat player walks away, all contestants should get the highest possible
-        // bonus if they answer correctly. This is to deincentivize walking away to an extent.
-        elapsedTime = criteria.walkingAway ? 0 : elapsedTime;
-        player.money += this._getContestantHotSeatPayout(elapsedTime, this.hotSeatQuestionIndex);
-      }
-    });
-  }
-
   // Returns whether the hot seat player can choose during the given socket event.
   hotSeatPlayerCanChoose(currentSocketEvent) {
     return hotSeatChoosableEvents.has(currentSocketEvent) &&
@@ -146,7 +108,7 @@ class ServerState {
 
   // Returns whether the given player is a contestant (i.e not in the hot seat or show hosting).
   playerIsContestant(player) {
-    return !this.playerIsShowHost(player) && !this.playerIsHotSeatPlayer(player);
+    return player && player.isContestant();
   }
 
   // Returns whether the given player is the hot seat player.

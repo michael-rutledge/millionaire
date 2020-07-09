@@ -67,6 +67,11 @@ class Player {
     return this.fastestFingerChoices.includes(choice);
   }
 
+  // Returns whether the player is a contestant.
+  isContestant() {
+    return !this.isShowHost && !this.isHotSeatPlayer;
+  }
+
   // Resets the player to base stats.
   reset() {
     this.money = 0;

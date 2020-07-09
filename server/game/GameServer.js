@@ -64,7 +64,7 @@ class GameServer {
     this.fastestFingerSession = new FastestFingerSession(this.playerMap);
 
     // HotSeatSession which can keep generating unused questions for this server.
-    this.hotSeatSession = new HotSeatSession();
+    this.hotSeatSession = new HotSeatSession(this.playerMap);
 
     // Reference to a setTimeout function that is forced upon the GameServer.
     this.currentForcedTimer = undefined;
@@ -603,7 +603,7 @@ class GameServer {
     // contestants.
     this.serverState.setShowHostStepDialog(undefined);
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
-    this.serverState.gradeHotSeatQuestionForContestants();
+    this.serverState.hotSeatQuestion.gradeForContestants();
     if (Audio.correctShouldInterrupt(this.serverState.hotSeatQuestionIndex)) {
       this.playMusic(Audio.CorrectSources[this.serverState.hotSeatQuestionIndex],
         Audio.CorrectVolumes[this.serverState.hotSeatQuestionIndex]);
@@ -651,7 +651,7 @@ class GameServer {
 
     // We want to reveal the question's outcome.
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
-    this.serverState.gradeHotSeatQuestionForContestants();
+    this.serverState.hotSeatQuestion.gradeForContestants();
     this.playSoundEffect(Audio.IncorrectSources[this.serverState.hotSeatQuestionIndex],
       /*volume=*/1.0,
       /*stopPreviousSounds=*/true);
@@ -716,7 +716,7 @@ class GameServer {
 
     this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.setShowHostStepDialog(undefined);
-    this.serverState.gradeHotSeatQuestionForContestants(/*criteria*/{
+    this.serverState.hotSeatQuestion.gradeForContestants(/*criteria*/{
       walkingAway: true
     });
     this.showHostSayGoodbyeToHotSeat();

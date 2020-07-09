@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const should = require('chai').should();
 
 const Choices = require(process.cwd() + '/server/question/Choices.js');
 const MockSocket = require(process.cwd() + '/server/socket/MockSocket.js');
@@ -119,6 +120,28 @@ describe('PlayerTest', () => {
 
     expect(expectedTrueResult).to.be.true;
     expect(expectedFalseResult).to.be.false;
+  });
+
+  describe('isContestant', function () {
+    it('shouldReturnTrueWhenNeitherHotSeatOrShowHost', function () {
+      var player = new Player(new MockSocket('socket'), 'player');
+
+      player.isContestant().should.be.true;
+    });
+
+    it('shouldReturnFalseWhenShowHost', function () {
+      var player = new Player(new MockSocket('socket'), 'player');
+      player.isShowHost = true;
+
+      player.isContestant().should.be.false;
+    });
+
+    it('shouldReturnFalseWhenHotSeat', function () {
+      var player = new Player(new MockSocket('socket'), 'player');
+      player.isHotSeatPlayer = true;
+
+      player.isContestant().should.be.false;
+    });
   });
 
   describe('toCompressed', function () {

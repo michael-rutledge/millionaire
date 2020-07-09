@@ -827,7 +827,7 @@ describe('GameServerTest', () => {
         orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
       });
       var questionsGraded = false;
-      gameServer.serverState.gradeHotSeatQuestionForContestants = () => {
+      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {
         questionsGraded = true;
       };
 
@@ -909,7 +909,7 @@ describe('GameServerTest', () => {
         orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
       });
       var questionsGraded = false;
-      gameServer.serverState.gradeHotSeatQuestionForContestants = () => {
+      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {
         questionsGraded = true;
       };
 
@@ -1087,7 +1087,8 @@ describe('GameServerTest', () => {
     it('shouldDecrementHotSeatQuestionIndex', function() {
       var gameServer = newGameServerWithPlayerShowHost(true);
       gameServer.serverState.hotSeatQuestionIndex = 0;
-      gameServer.gradeHotSeatQuestionForContestants = () => {};
+      gameServer.serverState.hotSeatQuestion = {};
+      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {};
       gameServer.showHostSayGoodbyeToHotSeat = () => {};
 
       gameServer.hotSeatConfirmWalkAway(new MockSocket());
@@ -1099,7 +1100,8 @@ describe('GameServerTest', () => {
       var gameServer = newGameServerWithPlayerShowHost(true);
       gameServer.serverState.showHostStepDialog = {};
       gameServer.serverState.hotSeatStepDialog = {};
-      gameServer.gradeHotSeatQuestionForContestants = () => {};
+      gameServer.serverState.hotSeatQuestion = {};
+      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {};
       gameServer.showHostSayGoodbyeToHotSeat = () => {};
 
       gameServer.hotSeatConfirmWalkAway(new MockSocket());
@@ -1111,7 +1113,8 @@ describe('GameServerTest', () => {
     it('shouldGradeHotSeatQuestionForContestants', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
       var questionsGraded = false;
-      gameServer.serverState.gradeHotSeatQuestionForContestants = () => {
+      gameServer.serverState.hotSeatQuestion = {};
+      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {
         questionsGraded = true;
       };
       gameServer.showHostSayGoodbyeToHotSeat = () => {};
@@ -1124,7 +1127,8 @@ describe('GameServerTest', () => {
     it('shouldCallShowHostSayGoodbyeToHotSeat', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
       var called = false;
-      gameServer.gradeHotSeatQuestionForContestants = () => {};
+      gameServer.serverState.hotSeatQuestion = {};
+      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {};
       gameServer.showHostSayGoodbyeToHotSeat = () => { called = true; };
 
       gameServer.hotSeatConfirmWalkAway(new MockSocket());
