@@ -1,24 +1,6 @@
+const HotSeatQuestionGrader = require(process.cwd() + '/server/question/HotSeatQuestionGrader.js');
 const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
 const Question = require(process.cwd() + '/server/question/Question.js');
-
-// Payouts per question.
-const PAYOUTS = [
-  100,
-  200,
-  300,
-  500,
-  1000,
-  2000,
-  4000,
-  8000,
-  16000,
-  32000,
-  64000,
-  125000,
-  250000,
-  500000,
-  1000000
-];
 
 // Automatic wait times for final answer confirmations per question index.
 //
@@ -116,7 +98,7 @@ class HotSeatQuestion extends Question {
     var trimmedElapsedTime = Math.max(0, Math.min(elapsedTime - bestWindowMs, timeWindowMs));
     var timeRatio = 1 - (trimmedElapsedTime / timeWindowMs);
     var payoutRatio = payoutRatioFloor + timeRatio * (payoutRatioCap - payoutRatioFloor);
-    return Math.floor(PAYOUTS[this.questionIndex] * payoutRatio);
+    return Math.floor(HotSeatQuestionGrader.PAYOUTS[this.questionIndex] * payoutRatio);
   }
 
 
@@ -211,7 +193,7 @@ class HotSeatQuestion extends Question {
 }
 
 module.exports = HotSeatQuestion;
-HotSeatQuestion.PAYOUTS = PAYOUTS;
+HotSeatQuestion.PAYOUTS = HotSeatQuestionGrader.PAYOUTS;
 HotSeatQuestion.FINAL_ANSWER_WAIT_TIMES = FINAL_ANSWER_WAIT_TIMES;
 HotSeatQuestion.CORRECT_WAIT_TIMES = CORRECT_WAIT_TIMES;
 HotSeatQuestion.QUESTION_TEXT_WAIT_TIMES = QUESTION_TEXT_WAIT_TIMES;
