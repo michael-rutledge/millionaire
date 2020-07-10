@@ -127,17 +127,30 @@ describe('ServerStateTest', () => {
     expect(serverState.showHost).to.equal(player);
   });
 
-  it('startNewRoundShouldGiveExpectedResult', () => {
-    var serverState = new ServerState(new PlayerMap());
+  describe('startNewRound', function () {
+    it('shouldGiveExpectedResult', function () {
+      var serverState = new ServerState(new PlayerMap());
 
-    serverState.startNewRound();
+      serverState.startNewRound();
 
-    expect(serverState.hotSeatPlayer).to.be.undefined;
-    expect(serverState.showHostStepDialog).to.be.undefined;
-    expect(serverState.hotSeatStepDialog).to.be.undefined;
-    expect(serverState.hotSeatQuestion).to.be.undefined;
-    expect(serverState.hotSeatQuestionIndex).to.equal(-1);
-    expect(serverState.fastestFingerQuestion).to.be.undefined;
+      expect(serverState.hotSeatPlayer).to.be.undefined;
+      expect(serverState.showHostStepDialog).to.be.undefined;
+      expect(serverState.hotSeatStepDialog).to.be.undefined;
+      expect(serverState.hotSeatQuestion).to.be.undefined;
+      expect(serverState.hotSeatQuestionIndex).to.equal(-1);
+      expect(serverState.fastestFingerQuestion).to.be.undefined;
+    });
+
+    it('shouldResetHotSeatPlayerIfPresent', function () {
+      var serverState = new ServerState(new PlayerMap());
+      var player = new Player(new MockSocket('socket'), 'player');
+      serverState.setHotSeatPlayerByUsername(player.username);
+
+      serverState.startNewRound();
+
+      expect(serverState.hotSeatPlayer).to.be.undefined;
+      player.isHotSeatPlayer.should.be.false;
+    });
   });
 
   it('toCompressedClientStateShouldOnlyGiveShowHostStepDialogForShowHost', () => {

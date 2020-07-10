@@ -182,6 +182,9 @@ class ServerState {
   // Starts a fresh round with the same show host.
   startNewRound() {
     // Reference to player in hot seat
+    if (this.hotSeatPlayer) {
+      this.hotSeatPlayer.isHotSeatPlayer = false;
+    }
     this.hotSeatPlayer = undefined;
 
     // Map of availability of lifelines
