@@ -83,22 +83,11 @@ class HotSeatQuestion extends Question {
     this.questionIndex = questionIndex;
 
     this.playerMap = playerMap;
-  }
 
-
-  // PRIVATE METHODS
-
-  // Returns the amount of money to give to a contestant for their answer to a hot seat question.
-  _getScaledPayout(elapsedTime) {
-    const payoutRatioCap = 0.5;
-    const payoutRatioFloor = 0.2;
-    const bestWindowMs = 1000;
-    const timeWindowMs = 10000;
-
-    var trimmedElapsedTime = Math.max(0, Math.min(elapsedTime - bestWindowMs, timeWindowMs));
-    var timeRatio = 1 - (trimmedElapsedTime / timeWindowMs);
-    var payoutRatio = payoutRatioFloor + timeRatio * (payoutRatioCap - payoutRatioFloor);
-    return Math.floor(HotSeatQuestionGrader.PAYOUTS[this.questionIndex] * payoutRatio);
+    this.grader =
+      new HotSeatQuestionGrader(this.playerMap)
+        .setCorrectChoice(this.getCorrectChoice())
+        .setQuestionIndex(this.questionIndex);
   }
 
 
@@ -140,32 +129,12 @@ class HotSeatQuestion extends Question {
     return undefined;
   }
 
-  // Assigns cash winnings per contestant according to the current hot seat question.
+  // Sets the start time of this question to now.
   //
-  // The money given will be inversely proportional to the amount of time it takes for an answer to
-  // be put down. Whoever answer correctly in the fastest time, no matter what, will get the highest
-  // modifier possible.
-  //
-  // Expected criteria format (will act as a set via fields being included/excluded): {
-  //   bool walkingAway
-  //   bool hotSeatPlayerWrong
-  //   bool lifelineUsed
-  // }
-  gradeForContestants(criteria = {}) {
-    this.playerMap.doAll((player) => {
-      if (player.isContestant() && player.hotSeatTime !== undefined
-          && !criteria.hotSeatPlayerWrong && this.answerIsCorrect(player.hotSeatChoice)) {
-        var elapsedTime = player.hotSeatTime - this.startTime;
-        // When a lifeline is used, all contestants should get the highest possible bonus if they
-        // answer correctly. This should be negated by walking away, however, where a discounted
-        // rate should be given. Otherwise, contestants would make way more money than the hot seat
-        // player, should they get the last question right.
-        elapsedTime = criteria.lifelineUsed ? 0 : elapsedTime;
-        elapsedTime = criteria.walkingAway ? 10000 : elapsedTime;
-        player.money += this._getScaledPayout(elapsedTime);
-        // TODO: Add ask the audience and phone a friend help and sabotage modifiers here.
-      }
-    });
+  // Overriden from parent in Question.js.
+  markStartTime() {
+    super.markStartTime();
+    this.grader.setStartTime(this.startTime);
   }
 
   // Reveals the correct choice for the show host.

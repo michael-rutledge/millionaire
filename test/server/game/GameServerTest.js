@@ -20,6 +20,15 @@ function newGameServerWithPlayerShowHost(present) {
   return gameServer;
 }
 
+function newGameServerWithHotSeatQuestion(showHostPresent) {
+  var gameServer = newGameServerWithPlayerShowHost(showHostPresent);
+  gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
+    text: 'text',
+    orderedChoices: ['1', '2', '3', '4']
+  }, /*questionIndex=*/0, gameServer.playerMap);
+  return gameServer;
+}
+
 describe('GameServerTest', () => {
   describe('activateListenersForSocket', function () {
     it('shouldGiveExpectedResult', () => {
@@ -654,7 +663,7 @@ describe('GameServerTest', () => {
 
   describe('hotSeatChoose', function () {
     it('shouldChooseHotSeatChoiceForPlayer', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       var mockSocket = new MockSocket('socket_id');
       var player = new Player(mockSocket, 'username');
       gameServer.playerMap.putPlayer(player);
@@ -666,7 +675,7 @@ describe('GameServerTest', () => {
     });
 
     it('shouldSetHostDialogWhenShowHostPresent', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       var mockSocket = new MockSocket('socket_id');
       var player = new Player(mockSocket, 'username');
       gameServer.playerMap.putPlayer(player);
@@ -688,7 +697,7 @@ describe('GameServerTest', () => {
     });
 
     it('shouldHotSeatDialogWhenShowHostNotPresent', function () {
-      var gameServer = newGameServerWithPlayerShowHost(false);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/false);
       var mockSocket = new MockSocket('socket_id');
       var player = new Player(mockSocket, 'username');
       gameServer.playerMap.putPlayer(player);
@@ -707,6 +716,18 @@ describe('GameServerTest', () => {
         header: LocalizedStrings.HOT_SEAT_FINAL_ANSWER
       });
       expect(gameServer.serverState.showHostStepDialog).to.be.undefined;
+    });
+
+    it('shouldSetHotSeatPlayerChoiceInGrader', function () {
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
+      var mockSocket = new MockSocket('socket_id');
+      var player = new Player(mockSocket, 'username');
+      gameServer.playerMap.putPlayer(player);
+      gameServer.serverState.setHotSeatPlayerByUsername(player.username);
+
+      gameServer.hotSeatChoose(mockSocket, { choice: Choices.A });
+
+      gameServer.serverState.hotSeatQuestion.grader.hotSeatPlayerChoice.should.equal(Choices.A);
     });
   });
 
@@ -827,7 +848,7 @@ describe('GameServerTest', () => {
         orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
       });
       var questionsGraded = false;
-      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {
+      gameServer.serverState.hotSeatQuestion.grader.grade = () => {
         questionsGraded = true;
       };
 
@@ -909,7 +930,7 @@ describe('GameServerTest', () => {
         orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
       });
       var questionsGraded = false;
-      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {
+      gameServer.serverState.hotSeatQuestion.grader.grade = () => {
         questionsGraded = true;
       };
 
@@ -1085,10 +1106,8 @@ describe('GameServerTest', () => {
 
   describe('hotSeatConfirmWalkAway', function () {
     it('shouldDecrementHotSeatQuestionIndex', function() {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       gameServer.serverState.hotSeatQuestionIndex = 0;
-      gameServer.serverState.hotSeatQuestion = {};
-      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {};
       gameServer.showHostSayGoodbyeToHotSeat = () => {};
 
       gameServer.hotSeatConfirmWalkAway(new MockSocket());
@@ -1097,11 +1116,9 @@ describe('GameServerTest', () => {
     });
 
     it('shouldClearHotSeatAndShowHostStepDialog', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       gameServer.serverState.showHostStepDialog = {};
       gameServer.serverState.hotSeatStepDialog = {};
-      gameServer.serverState.hotSeatQuestion = {};
-      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {};
       gameServer.showHostSayGoodbyeToHotSeat = () => {};
 
       gameServer.hotSeatConfirmWalkAway(new MockSocket());
@@ -1111,10 +1128,9 @@ describe('GameServerTest', () => {
     });
 
     it('shouldGradeHotSeatQuestionForContestants', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       var questionsGraded = false;
-      gameServer.serverState.hotSeatQuestion = {};
-      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {
+      gameServer.serverState.hotSeatQuestion.grader.grade = () => {
         questionsGraded = true;
       };
       gameServer.showHostSayGoodbyeToHotSeat = () => {};
@@ -1125,15 +1141,23 @@ describe('GameServerTest', () => {
     });
 
     it('shouldCallShowHostSayGoodbyeToHotSeat', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       var called = false;
-      gameServer.serverState.hotSeatQuestion = {};
-      gameServer.serverState.hotSeatQuestion.gradeForContestants = () => {};
+      gameServer.serverState.hotSeatQuestion.grader.grade = () => {};
       gameServer.showHostSayGoodbyeToHotSeat = () => { called = true; };
 
       gameServer.hotSeatConfirmWalkAway(new MockSocket());
 
       expect(called).to.be.true;
+    });
+
+    it('shouldSetWalkingAwayForGrader', function () {
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
+      gameServer.showHostSayGoodbyeToHotSeat = () => {};
+
+      gameServer.hotSeatConfirmWalkAway(new MockSocket());
+
+      gameServer.serverState.hotSeatQuestion.grader.walkingAway.should.be.true;
     });
   });
 
@@ -1158,17 +1182,23 @@ describe('GameServerTest', () => {
 
   describe('hotSeatConfirmFiftyFifty', function () {
     it('shouldUseFiftyFifty', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
-      gameServer.serverState.hotSeatQuestion = new HotSeatQuestion({
-        text: 'questionText',
-        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
-      });
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       gameServer.serverState.hotSeatQuestion.revealAllChoices();
       gameServer.showHostRevealHotSeatChoice = () => {};
 
       gameServer.hotSeatConfirmFiftyFifty();
 
       gameServer.serverState.fiftyFifty.used.should.be.true;
+    });
+
+    it('shouldSetFiftyFiftyForGrader', function () {
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
+      gameServer.serverState.hotSeatQuestion.revealAllChoices();
+      gameServer.showHostRevealHotSeatChoice = () => {};
+
+      gameServer.hotSeatConfirmFiftyFifty();
+
+      gameServer.serverState.hotSeatQuestion.grader.fiftyFiftyLifeline.should.not.be.undefined;
     });
   });
 
@@ -1193,7 +1223,7 @@ describe('GameServerTest', () => {
 
   describe('hotSeatConfirmPhoneAFriend', function () {
     it('shouldUsePhoneAFriend', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
 
       gameServer.hotSeatConfirmPhoneAFriend();
 
@@ -1202,7 +1232,7 @@ describe('GameServerTest', () => {
     });
 
     it('shouldResetStepDialogs', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       gameServer.serverState.showHostStepDialog = {};
       gameServer.serverState.hotSeatStepDialog = {};
 
@@ -1214,7 +1244,7 @@ describe('GameServerTest', () => {
     });
 
     it('shouldSetTimerToPickAIFriendForNoOtherHumanPlayers', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       gameServer.playerMap.getPlayerCountExcludingShowHost = () => { return 1; };
 
       gameServer.hotSeatConfirmPhoneAFriend();
@@ -1225,7 +1255,7 @@ describe('GameServerTest', () => {
     });
 
     it('shouldNotSetTimerToPickAIFriendForOtherHumanPlayers', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       gameServer.playerMap.getPlayerCountExcludingShowHost = () => { return 2; };
 
       gameServer.hotSeatConfirmPhoneAFriend();
@@ -1234,7 +1264,7 @@ describe('GameServerTest', () => {
     });
 
     it('shouldSetExpectedInfoTextsWhenGoingToPickAI', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       gameServer.serverState.clearEphemeralFields = () => {};
 
       gameServer.hotSeatConfirmPhoneAFriend();
@@ -1247,7 +1277,7 @@ describe('GameServerTest', () => {
     });
 
     it('shouldSetExpectedInfoTextsWhenNotGoingToPickAI', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       gameServer.playerMap.getPlayerCountExcludingShowHost = () => { return 2; };
       gameServer.serverState.clearEphemeralFields = () => {};
 
@@ -1259,6 +1289,15 @@ describe('GameServerTest', () => {
         LocalizedStrings.HOT_SEAT_PHONE_A_FRIEND_RULES);
       gameServer.serverState.contestantInfoText.should.equal(
         LocalizedStrings.CONTESTANT_PHONE_A_FRIEND_RULES);
+    });
+
+    it('shouldSetPhoneAFriendForGrader', function () {
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
+
+      gameServer.hotSeatConfirmPhoneAFriend();
+
+      gameServer.serverState.hotSeatQuestion.grader.phoneAFriendLifeline.should.not.be.undefined;
+      clearTimeout(gameServer.currentForcedTimer);
     });
   });
 
@@ -1375,7 +1414,7 @@ describe('GameServerTest', () => {
 
   describe('hotSeatConfirmAskTheAudience', function () {
     it('shouldUsePhoneAFriend', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
 
       gameServer.hotSeatConfirmAskTheAudience();
 
@@ -1384,7 +1423,7 @@ describe('GameServerTest', () => {
     });
 
     it('shouldSetExpectedDialog', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       gameServer.serverState.hotSeatStepDialog = {};
 
       gameServer.hotSeatConfirmAskTheAudience();
@@ -1400,7 +1439,7 @@ describe('GameServerTest', () => {
     });
 
     it('shouldSetExpectedInfoTexts', function () {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
       gameServer.serverState.clearEphemeralFields = () => {};
 
       gameServer.hotSeatConfirmAskTheAudience();
@@ -1411,6 +1450,15 @@ describe('GameServerTest', () => {
         LocalizedStrings.HOT_SEAT_ASK_THE_AUDIENCE_INTERLUDE);
       gameServer.serverState.contestantInfoText.should.equal(
         LocalizedStrings.CONTESTANT_ASK_THE_AUDIENCE_INTERLUDE);
+    });
+
+    it('shouldSetAskTheAudienceForGrader', function () {
+      var gameServer = newGameServerWithHotSeatQuestion(/*showHostPresent=*/true);
+
+      gameServer.hotSeatConfirmAskTheAudience();
+
+      gameServer.serverState.hotSeatQuestion.grader.askTheAudienceLifeline.should.not.be.undefined;
+      clearTimeout(gameServer.currentForcedTimer);
     });
   });
 

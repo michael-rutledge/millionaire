@@ -109,7 +109,7 @@ class HotSeatQuestionGrader {
           scaledPercentage *= -1;
         }
 
-        player.money += PAYOUTS[this.questionIndex] * scaledPercentage;
+        player.money += Math.floor(PAYOUTS[this.questionIndex] * scaledPercentage);
       }
     });
   }
@@ -136,11 +136,6 @@ class HotSeatQuestionGrader {
 
   setPhoneAFriendLifeline(phoneAFriendLifeline) {
     this.phoneAFriendLifeline = phoneAFriendLifeline;
-    return this;
-  }
-
-  setPhonedFriend(phonedFriend) {
-    this.phonedFriend = phonedFriend;
     return this;
   }
 

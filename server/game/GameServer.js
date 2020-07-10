@@ -529,6 +529,8 @@ class GameServer {
     Logger.logInfo(this.currentSocketEvent);
 
     this.serverState.hotSeatPlayer.chooseHotSeat(data.choice);
+    this.serverState.hotSeatQuestion.grader.setHotSeatPlayerChoice(
+      this.serverState.hotSeatPlayer.hotSeatChoice);
     var dialog = this._getYesNoDialog(
           /*yesEvent=*/'hotSeatFinalAnswer',
           /*noEvent=*/'showHostRevealHotSeatChoice',
@@ -603,7 +605,7 @@ class GameServer {
     // contestants.
     this.serverState.setShowHostStepDialog(undefined);
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
-    this.serverState.hotSeatQuestion.gradeForContestants();
+    this.serverState.hotSeatQuestion.grader.grade();
     if (Audio.correctShouldInterrupt(this.serverState.hotSeatQuestionIndex)) {
       this.playMusic(Audio.CorrectSources[this.serverState.hotSeatQuestionIndex],
         Audio.CorrectVolumes[this.serverState.hotSeatQuestionIndex]);
@@ -651,7 +653,7 @@ class GameServer {
 
     // We want to reveal the question's outcome.
     this.serverState.hotSeatQuestion.revealCorrectChoiceForAll();
-    this.serverState.hotSeatQuestion.gradeForContestants();
+    this.serverState.hotSeatQuestion.grader.grade();
     this.playSoundEffect(Audio.IncorrectSources[this.serverState.hotSeatQuestionIndex],
       /*volume=*/1.0,
       /*stopPreviousSounds=*/true);
@@ -716,9 +718,8 @@ class GameServer {
 
     this.serverState.setHotSeatStepDialog(undefined);
     this.serverState.setShowHostStepDialog(undefined);
-    this.serverState.hotSeatQuestion.gradeForContestants(/*criteria*/{
-      walkingAway: true
-    });
+    this.serverState.hotSeatQuestion.grader.setWalkingAway(true);
+    this.serverState.hotSeatQuestion.grader.grade();
     this.showHostSayGoodbyeToHotSeat();
   }
 
@@ -742,6 +743,7 @@ class GameServer {
 
     this.serverState.fiftyFifty.startForQuestion(this.serverState.hotSeatQuestion);
     this.serverState.fiftyFifty.removeTwoWrongChoices();
+    this.serverState.hotSeatQuestion.grader.setFiftyFiftyLifeline(this.serverState.fiftyFifty);
     this.playSoundEffect(Audio.Sources.FIFTY_FIFTY_STRIKE);
 
     this.serverState.setHotSeatStepDialog(undefined);
@@ -772,6 +774,7 @@ class GameServer {
     Logger.logInfo(this.currentSocketEvent);
 
     var goingToPickAI = this.playerMap.getPlayerCountExcludingShowHost() <= 1;
+    this.serverState.hotSeatQuestion.grader.setPhoneAFriendLifeline(this.serverState.phoneAFriend);
 
     // Start the lifeline for this question and remove dialogs.
     this.serverState.phoneAFriend.startForQuestion(this.serverState.hotSeatQuestion);
@@ -877,6 +880,8 @@ class GameServer {
     this.serverState.contestantInfoText = LocalizedStrings.CONTESTANT_ASK_THE_AUDIENCE_INTERLUDE;
     // Start the lifeline for this question.
     this.serverState.askTheAudience.startForQuestion(this.serverState.hotSeatQuestion);
+    this.serverState.hotSeatQuestion.grader.setAskTheAudienceLifeline(
+      this.serverState.askTheAudience);
     this.playMusic(Audio.Sources.ASK_THE_AUDIENCE_INTERLUDE);
 
     this.serverState.setHotSeatStepDialog(undefined);
