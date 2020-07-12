@@ -72,6 +72,9 @@ class GameServer {
     // Whatever socket event was last listened to. Stored so people who left can rejoin without a
     // problem.
     this.currentSocketEvent = undefined;
+
+    // Whether this game is being played by one player eligible for the hot seat.
+    this.isSinglePlayerGame = false;
   }
 
 
@@ -116,6 +119,19 @@ class GameServer {
       /*timeoutFunc=*/undefined,
       /*timeoutMs*/undefined,
       /*header=*/header);
+  }
+
+  // Sets the first non-showHost player available to the hot seat role.
+  //
+  // Expected to be called when only one player is present.
+  _setOnlyPlayerToShowHost() {
+    var hotSeatSet = false;
+    this.playerMap.doAll((player) => {
+      if (!hotSeatSet && !player.isShowHost) {
+        this.serverState.setHotSeatPlayerByUsername(player.username);
+        hotSeatSet = true;
+      }
+    });
   }
 
   // Sets the showHostDialog or hotSeatDialog for the given parameters.
@@ -204,7 +220,14 @@ class GameServer {
     this.serverState = new ServerState(this.playerMap);
     this.serverState.setShowHostByUsername(gameOptions.showHostUsername);
     this.serverState.startNewRound();
-    this.showHostShowFastestFingerRules();
+    this.isSinglePlayerGame = this.playerMap.getPlayerCountExcludingShowHost() <= 1;
+
+    if (this.isSinglePlayerGame) {
+      this._setOnlyPlayerToShowHost();
+      this.showHostCueHotSeatRules();
+    } else {
+      this.showHostShowFastestFingerRules();
+    }
   }
 
   // Updates the game solely for the given socket.
@@ -432,6 +455,11 @@ class GameServer {
     this.currentSocketEvent = 'showHostCueHotSeatRules';
     Logger.logInfo(this.currentSocketEvent);
 
+    // Because this is the entry point for a single player game, we must start a new round if we are
+    // in single player mode.
+    if (this.isSinglePlayerGame) {
+      this.serverState.startNewRound(this.isSinglePlayerGame);
+    }
     // Fastest finger question is reset, as its job is finished. The celebration banner is removed
     // as well.
     this.serverState.resetFastestFinger();
@@ -687,7 +715,8 @@ class GameServer {
     });
     this.serverState.resetHotSeatQuestion();
     this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
-      nextSocketEvent: 'showHostCueFastestFingerQuestion',
+      nextSocketEvent: (this.isSinglePlayerGame ?
+        'showHostCueHotSeatRules' : 'showHostCueFastestFingerQuestion'),
       hostButtonMessage: LocalizedStrings.START_NEW_ROUND,
       aiTimeout: 9000
     }));

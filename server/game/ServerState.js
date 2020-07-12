@@ -180,12 +180,14 @@ class ServerState {
   }
 
   // Starts a fresh round with the same show host.
-  startNewRound() {
+  startNewRound(keepHotSeatPlayer = false) {
     // Reference to player in hot seat
-    if (this.hotSeatPlayer) {
-      this.hotSeatPlayer.isHotSeatPlayer = false;
+    if (!keepHotSeatPlayer) {
+      if (this.hotSeatPlayer) {
+        this.hotSeatPlayer.isHotSeatPlayer = false;
+      }
+      this.hotSeatPlayer = undefined;
     }
-    this.hotSeatPlayer = undefined;
 
     // Map of availability of lifelines
     this.lifelinesAvailable = {};
@@ -200,7 +202,7 @@ class ServerState {
     this.hotSeatStepDialog = undefined;
 
     // Reference to the current hot seat question
-    this.hotSeatQuestion = undefined;
+    this.resetHotSeatQuestion();
 
     // What question this server is on (e.g. 0 = $100, 14 = $1 million)
     //

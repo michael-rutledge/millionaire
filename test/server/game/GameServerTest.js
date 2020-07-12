@@ -140,8 +140,10 @@ describe('GameServerTest', () => {
   });
 
   describe('startGame', function () {
-    it('shouldGiveExpectedResultAndShowFastestFingerRules', () => {
-      var gameServer = newGameServerWithPlayerShowHost(true);
+    it('shouldShowFastestFingerRulesForMultiplePlayers', () => {
+      var gameServer = newGameServerWithPlayerShowHost(false);
+      gameServer.playerMap.putPlayer(new Player(new MockSocket('socket1'), 'player1'));
+      gameServer.playerMap.putPlayer(new Player(new MockSocket('socket1'), 'player2'));
       var showHostShowFastestFingerRulesCalled = false;
       gameServer.showHostShowFastestFingerRules = (data) => {
         showHostShowFastestFingerRulesCalled = true;
@@ -149,8 +151,22 @@ describe('GameServerTest', () => {
 
       gameServer.startGame(/*gameOptions=*/{});
 
-      expect(gameServer.serverState).to.not.be.undefined;
-      expect(showHostShowFastestFingerRulesCalled).to.be.true;
+      gameServer.serverState.should.not.be.undefined;
+      showHostShowFastestFingerRulesCalled.should.be.true;
+    });
+
+    it('shouldCueHotSeatRulesForSinglePlayer', () => {
+      var gameServer = newGameServerWithPlayerShowHost(false);
+      gameServer.playerMap.putPlayer(new Player(new MockSocket('socket1'), 'player1'));
+      var showHostCueHotSeatRulesCalled = false;
+      gameServer.showHostCueHotSeatRules = (data) => {
+        showHostCueHotSeatRulesCalled = true;
+      };
+
+      gameServer.startGame(/*gameOptions=*/{});
+
+      gameServer.serverState.should.not.be.undefined;
+      showHostCueHotSeatRulesCalled.should.be.true;
     });
   });
 
@@ -485,6 +501,33 @@ describe('GameServerTest', () => {
   });
 
   describe('showHostCueHotSeatRules', function () {
+    it('shouldStartNewRoundForSinglePlayer', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.isSinglePlayerGame = true;
+      var startNewRoundCalled = false;
+      gameServer.serverState.startNewRound = () => {
+        startNewRoundCalled = true;
+      };
+
+      gameServer.showHostCueHotSeatRules();
+
+      startNewRoundCalled.should.be.true;
+    });
+
+    it('shouldNotStartNewRoundForMultiplePlayers', function () {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.isSinglePlayerGame = false;
+      var startNewRoundCalled = false;
+      gameServer.serverState.startNewRound = () => {
+        startNewRoundCalled = true;
+      };
+
+      gameServer.showHostCueHotSeatRules();
+
+      startNewRoundCalled.should.be.false;
+    });
+
+
     it('shouldSetExpectedDialog', function () {
       var gameServer = newGameServerWithPlayerShowHost(true);
 
@@ -991,7 +1034,7 @@ describe('GameServerTest', () => {
       var hotSeatQuestionIndex = 0;
       var gameServer = getPreppedGameServer(hotSeatQuestionIndex);
 
-      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
+      gameServer.showHostSayGoodbyeToHotSeat();
 
       expect(gameServer.serverState.celebrationBanner).to.deep.equal({
         header: LocalizedStrings.TOTAL_WINNINGS,
@@ -1003,7 +1046,7 @@ describe('GameServerTest', () => {
       var hotSeatQuestionIndex = -1;
       var gameServer = getPreppedGameServer(hotSeatQuestionIndex);
 
-      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
+      gameServer.showHostSayGoodbyeToHotSeat();
 
       expect(gameServer.serverState.celebrationBanner).to.deep.equal({
         header: LocalizedStrings.TOTAL_WINNINGS,
@@ -1015,7 +1058,7 @@ describe('GameServerTest', () => {
       var hotSeatQuestionIndex = 4;
       var gameServer = getPreppedGameServer(hotSeatQuestionIndex);
 
-      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
+      gameServer.showHostSayGoodbyeToHotSeat();
 
       expect(gameServer.serverState.hotSeatPlayer.money).to.equal(
         HotSeatQuestion.PAYOUTS[hotSeatQuestionIndex]);
@@ -1025,7 +1068,7 @@ describe('GameServerTest', () => {
       var hotSeatQuestionIndex = -1;
       var gameServer = getPreppedGameServer(hotSeatQuestionIndex);
 
-      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
+      gameServer.showHostSayGoodbyeToHotSeat();
 
       expect(gameServer.serverState.hotSeatPlayer.money).to.equal(0);
     });
@@ -1033,19 +1076,35 @@ describe('GameServerTest', () => {
     it('shouldResetHotSeatQuestion', function () {
       var gameServer = getPreppedGameServer();
 
-      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
+      gameServer.showHostSayGoodbyeToHotSeat();
 
       expect(gameServer.serverState.hotSeatQuestion).to.be.undefined;
     });
 
-    it('shouldSetExpectedDialog', function () {
+    it('shouldSetExpectedDialogForMultiplePlayers', function () {
       var gameServer = getPreppedGameServer();
+      gameServer.isSinglePlayerGame = false;
 
-      gameServer.showHostSayGoodbyeToHotSeat(new MockSocket(), /*data=*/{});
+      gameServer.showHostSayGoodbyeToHotSeat();
 
       expect(gameServer.serverState.showHostStepDialog).to.deep.equal({
         actions: [{
           socketEvent: 'showHostCueFastestFingerQuestion',
+          text: LocalizedStrings.START_NEW_ROUND
+        }],
+        header: ''
+      });
+    });
+
+    it('shouldSetExpectedDialogForSinglePlayer', function () {
+      var gameServer = getPreppedGameServer();
+      gameServer.isSinglePlayerGame = true;
+
+      gameServer.showHostSayGoodbyeToHotSeat();
+
+      expect(gameServer.serverState.showHostStepDialog).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostCueHotSeatRules',
           text: LocalizedStrings.START_NEW_ROUND
         }],
         header: ''
