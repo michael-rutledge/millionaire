@@ -15,13 +15,14 @@
 canvas {
   width: 100%;
   height: auto;
+  border: 2px solid #2691d9;
 }
 
 .gameLobbyPlayerBanner {
     border-radius: 5px;
     padding: 5px 10px 5px 10px;
     margin: 5px 0px 5px 0px;
-    background-color: #dcdcdc;
+    background-color: #151515;
 }
 
 .col-centered {
@@ -38,4 +39,16 @@ canvas {
 
 .entryButton {
     margin-top: 20px;
+}
+
+.jumbotron {
+    margin-top: 50px;
+}
+
+.lobbyButtonRow {
+    margin-top: 10px;
+}
+
+.lobbyButtonRow .btn {
+    margin-right: 5px;
 }

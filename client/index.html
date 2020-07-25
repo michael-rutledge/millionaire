@@ -6,6 +6,7 @@
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <title>Millionaire With Friends</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+    <link rel="stylesheet" href="client/style/darkBootstrap.css">
     <link rel="stylesheet" href="client/style/style.css">
 </head>
 
@@ -15,12 +16,14 @@
   <div class="row" id="loginRow">
     <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
       <h2 class="titleText">Join or create a room:</h2>
-        <label class="entryFormLabel" for="loginUsername">Username</label>
+        <label class="entryFormLabel" for="loginUsername">Username:</label>
         <input class="form-control" id="loginUsername" placeholder="Freddy" type="text" maxlength="15" />
-        <label class="entryFormLabel" for="loginRoomCode">Room Code</label>
+        <label class="entryFormLabel" for="loginRoomCode">Room Code:</label>
         <input class="form-control" id="loginRoomCode" placeholder="abcd" type="text" maxlength="4" />
-        <button type="button" class="btn btn-primary loginButton" id="loginJoinButton">Join Room</button>
-        <button type="button" class="btn btn-primary loginButton" id="loginCreateButton">Create Room</button>
+        <div class="lobbyButtonRow">
+          <button type="button" class="btn btn-primary loginButton" id="loginJoinButton">Join Room</button>
+          <button type="button" class="btn btn-primary loginButton" id="loginCreateButton">Create Room</button>
+        </div>
     </div>
     <div class="col-lg-8 col-md-6 col-sm-12 col-xs-12">
       <div class="jumbotron">
@@ -42,7 +45,7 @@
         <div id="gameLobbyPlayerList"></div>
       </div>
       <div class="col-lg-8 col-md-6 col-sm-12 col-xs-12">
-        <h3 id="gameLobbyStatusMessage" style="text-align: center">gameLobbyStatusMessage</h3>
+        <h3 id="gameLobbyStatusMessage" style="text-align: center">Game Options:</h3>
         <div id="gameOptionsHost" style="display: none">
           <label>Show Host</label>
           <select class="form-control" id="gameOptionsHostShowHostUsername"></select>
@@ -54,13 +57,15 @@
     </div>
 
     <div class="row">
-      <canvas id="gameCanvas" class='img-responsive' style="border: 1px solid black; display: none">Your browser does not support the HTML canvas tag. :(</canvas>
+      <canvas id="gameCanvas" class='img-responsive' style="display: none">Your browser does not support the HTML canvas tag. :(</canvas>
     </div>
   </div>
 
-  <button type="button" class="btn btn-primary gameLeaveButton" id="gameLeaveButton" style="display: none">Leave Room
-  <button type="button" class="btn btn-primary gameStartButton" id="gameStartButton" style="display: none">Start Game</button>
-  <button type="button" class="btn btn-primary gameEndButton" id="gameEndButton" style="display: none">End Game</button>
+  <div class="lobbyButtonRow">
+    <button type="button" class="btn btn-primary gameLeaveButton" id="gameLeaveButton" style="display: none">Leave Room
+    <button type="button" class="btn btn-primary gameStartButton" id="gameStartButton" style="display: none">Start Game</button>
+    <button type="button" class="btn btn-primary gameEndButton" id="gameEndButton" style="display: none">End Game</button>
+  </div>
 
   </div>
 
