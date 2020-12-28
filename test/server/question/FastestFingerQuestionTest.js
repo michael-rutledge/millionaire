@@ -65,6 +65,54 @@ describe('FastestFingerQuestionTest', () => {
     });
   });
 
+  describe('allPlayersIncorrect', function () {
+    it('shouldReturnTrueWhenAllPlayersIncorrectWithShowHost', function  () {
+      var ffq = getPreppedQuestion();
+      var player = new Player(new MockSocket('socket_id'), 'player');
+      ffq.playerMap.putPlayer(player);
+      player.fastestFingerChoices = [Choices.A, Choices.B, Choices.C, Choices.D];
+      player.fastestFingerTime = DATE_NOW;
+      var host = new Player(new MockSocket('host_id'), 'host');
+      host.isShowHost = true;
+      ffq.playerMap.putPlayer(host);
+
+      ffq.allPlayersIncorrect().should.be.true;
+    });
+
+    it('shouldReturnFalseWhenNotAllPlayersIncorrectWithShowHost', function () {
+      var ffq = getPreppedQuestion();
+      var player = new Player(new MockSocket('socket_id'), 'player');
+      ffq.playerMap.putPlayer(player);
+      player.fastestFingerChoices = [Choices.B, Choices.A, Choices.D, Choices.C];
+      player.fastestFingerTime = DATE_NOW;
+      var host = new Player(new MockSocket('host_id'), 'host');
+      host.isShowHost = true;
+      ffq.playerMap.putPlayer(host);
+
+      ffq.allPlayersIncorrect().should.be.false;
+    });
+
+    it('shouldReturnTrueWhenAllPlayersIncorrectWithNoShowHost', function () {
+      var ffq = getPreppedQuestion();
+      var player = new Player(new MockSocket('socket_id'), 'player');
+      ffq.playerMap.putPlayer(player);
+      player.fastestFingerChoices = [Choices.A, Choices.B, Choices.C, Choices.D];
+      player.fastestFingerTime = DATE_NOW;
+
+      ffq.allPlayersIncorrect().should.be.true;
+    });
+
+    it('shouldReturnFalseWhenNotAllPlayersIncorrectWithNoShowHost', function () {
+      var ffq = getPreppedQuestion();
+      var player = new Player(new MockSocket('socket_id'), 'player');
+      ffq.playerMap.putPlayer(player);
+      player.fastestFingerChoices = [Choices.B, Choices.A, Choices.D, Choices.C];
+      player.fastestFingerTime = DATE_NOW;
+
+      ffq.allPlayersIncorrect().should.be.false;
+    });
+  });
+
   describe('getAnswerScore', function () {
     it('shouldGiveExpectedResult', () => {
       var ffq = new FastestFingerQuestion({

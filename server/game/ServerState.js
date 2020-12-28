@@ -283,8 +283,7 @@ class ServerState {
       compressed.fastestFingerResults = fastestFingerResults.playerResults;
       this.setHotSeatPlayerByUsername(fastestFingerResults.hotSeatPlayer ?
         fastestFingerResults.hotSeatPlayer.username : undefined);
-      compressed.fastestFingerBestScore = this.hotSeatPlayer ?
-          this.hotSeatPlayer.fastestFingerScore : 0;
+      compressed.fastestFingerBestScore = this.fastestFingerQuestion.bestScore;
     }
     // Hot seat question
     if (this.hotSeatQuestion !== undefined) {

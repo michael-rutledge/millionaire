@@ -439,12 +439,13 @@ describe('GameServerTest', () => {
   });
 
   describe('showHostRevealFastestFingerResults', function () {
-    it('shouldSetExpectedDialog', () => {
+    it('shouldLeadToAcceptingHotSeatPlayerWhenSomeoneIsCorrect', () => {
       var gameServer = newGameServerWithPlayerShowHost(true);
       gameServer.serverState.fastestFingerQuestion = new FastestFingerQuestion({
         text: 'questionText',
         orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
       });
+      gameServer.serverState.fastestFingerQuestion.allPlayersIncorrect = () => { return false; };
 
       gameServer.showHostRevealFastestFingerResults(new MockSocket(), /*data=*/{});
 
@@ -452,6 +453,25 @@ describe('GameServerTest', () => {
         actions: [{
           socketEvent: 'showHostAcceptHotSeatPlayer',
           text: LocalizedStrings.ACCEPT_HOT_SEAT_PLAYER
+        }],
+        header: ''
+      });
+    });
+
+    it('shouldAskAnotherFastestFingerQuestionWhenAllPlayersIncorrect', () => {
+      var gameServer = newGameServerWithPlayerShowHost(true);
+      gameServer.serverState.fastestFingerQuestion = new FastestFingerQuestion({
+        text: 'questionText',
+        orderedChoices: ['choice 1', 'choice 2', 'choice 3', 'choice 4']
+      });
+      gameServer.serverState.fastestFingerQuestion.allPlayersIncorrect = () => { return true; };
+
+      gameServer.showHostRevealFastestFingerResults(new MockSocket(), /*data=*/{});
+
+      expect(gameServer.serverState.showHostStepDialog.toCompressed()).to.deep.equal({
+        actions: [{
+          socketEvent: 'showHostCueFastestFingerQuestion',
+          text: LocalizedStrings.REASK_FASTEST_FINGER
         }],
         header: ''
       });

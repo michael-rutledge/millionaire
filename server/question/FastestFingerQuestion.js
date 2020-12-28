@@ -15,6 +15,7 @@ class FastestFingerQuestion extends Question {
     //   Choice choice
     // }
     this.revealedAnswers = [];
+    this.bestScore = 4;
   }
 
   // PRIVATE METHODS
@@ -49,6 +50,21 @@ class FastestFingerQuestion extends Question {
     return doneCount >= this.playerMap.getPlayerCount() - showHostOffset;
   }
 
+  // Returns false if at least one player managed to get all choices in the correct order; true if
+  // otherwise.
+  allPlayersIncorrect() {
+    var allIncorrect = true;
+
+    this.playerMap.doAll((player) => {
+      if (!player.isShowHost
+            && this.getAnswerScore(player.fastestFingerChoices) >= this.bestScore) {
+        allIncorrect = false;
+      }
+    });
+
+    return allIncorrect;
+  }
+
   // Grades the given score by returning how many answers matched the ordered choices of this
   // question.
   getAnswerScore(fastestFingerChoices) {
@@ -69,7 +85,6 @@ class FastestFingerQuestion extends Question {
   getResults() {
     var fastestFingerResults = {};
     fastestFingerResults.playerResults = [];
-    var bestScore = 0;
     var bestTime = Date.now();
 
     this.playerMap.doAll((player) => {
@@ -79,8 +94,7 @@ class FastestFingerQuestion extends Question {
         player.fastestFingerScore = playerScore;
 
         // Set hot seat player if answer is best.
-        if (playerScore > bestScore || (playerScore >= bestScore && elapsedTime <= bestTime)) {
-          bestScore = playerScore;
+        if (playerScore >= this.bestScore && elapsedTime <= bestTime) {
           bestTime = elapsedTime;
           fastestFingerResults.hotSeatPlayer = player;
         }

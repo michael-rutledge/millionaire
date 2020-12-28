@@ -416,12 +416,20 @@ class GameServer {
     // pass the results to the client.
     this.playSoundEffect(Audio.Sources.FASTEST_FINGER_WHO_WAS_CORRECT);
 
-    // Human host will control flow, or 3 seconds until hot seat player is accepted.
-    this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
-      nextSocketEvent: 'showHostAcceptHotSeatPlayer',
-      hostButtonMessage: LocalizedStrings.ACCEPT_HOT_SEAT_PLAYER,
-      aiTimeout: 3000
-    }));
+    // Check if at least one player got it all the way right. If nobody got it right, ask again.
+    if (this.serverState.fastestFingerQuestion.allPlayersIncorrect()) {
+      this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+        nextSocketEvent: 'showHostCueFastestFingerQuestion',
+        hostButtonMessage: LocalizedStrings.REASK_FASTEST_FINGER,
+        aiTimeout: 3000
+      }));
+    } else {
+      this.serverState.setShowHostStepDialog(this._getOneChoiceHostStepDialog({
+        nextSocketEvent: 'showHostAcceptHotSeatPlayer',
+        hostButtonMessage: LocalizedStrings.ACCEPT_HOT_SEAT_PLAYER,
+        aiTimeout: 3000
+      }));
+    }
     this._updateGame();
   }
 
