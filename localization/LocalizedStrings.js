@@ -20,7 +20,7 @@ module.exports.CONTESTANT_PHONE_A_FRIEND_CHOOSING = 'You are being phoned! Set y
 module.exports.CONTESTANT_PHONE_A_FRIEND_NO_CHOICE = 'You are being phoned! Make a selection to help the hot seat player out.';
 module.exports.CONTESTANT_PHONE_A_FRIEND_RULES = 'Looks like our hot seat player needs help. If you are phoned, tell them how confident you are in your answer.';
 module.exports.CONTESTANT_PHONE_A_FRIEND_WAIT = 'Somebody else was picked.';
-module.exports.CONTESTANT_RULES = 'You\'re not in the hot seat, but you\'re still in the game! Answer questions for instant payouts of partial value. Do it quickest for the most cash!';
+module.exports.CONTESTANT_RULES = 'You\'re not in the hot seat, but you\'re still in the game! Answer questions for instant payouts of partial value.';
 module.exports.CONTESTANT_SUBMIT_PHONE_CONFIDENCE = 'Lock in confidence value';
 
 module.exports.HOT_SEAT_ASK_THE_AUDIENCE_INTERLUDE = 'The other contestants and our AI audience will combine their forces to help you out.';

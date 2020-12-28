@@ -51,7 +51,7 @@ describe('HotSeatQuestionGraderTest', function () {
       player.money.should.equal(0);
     });
 
-    it('shouldGiveExpectedPayoutToFastVanillaCorrectContestant', function () {
+    it('shouldGiveExpectedPayoutToVanillaCorrectContestant', function () {
       var playerMap = new PlayerMap();
       var player = new Player(new MockSocket('socket'), 'player');
       player.chooseHotSeat(Choices.A);
@@ -66,23 +66,6 @@ describe('HotSeatQuestionGraderTest', function () {
       grader.grade();
 
       player.money.should.equal(50);
-    });
-
-    it('shouldGiveExpectedPayoutToSlowVanillaCorrectContestant', function () {
-      var playerMap = new PlayerMap();
-      var player = new Player(new MockSocket('socket'), 'player');
-      player.chooseHotSeat(Choices.A);
-      playerMap.putPlayer(player);
-      var grader =
-        new HotSeatQuestionGrader(playerMap)
-          .setCorrectChoice(Choices.A)
-          .setHotSeatPlayerChoice(player.hotSeatChoice)
-          .setQuestionIndex(0)  // $100
-          .setStartTime(player.hotSeatTime - LONG_CHOICE_TIME);
-
-      grader.grade();
-
-      player.money.should.equal(100 * HotSeatQuestionGrader.PERCENT_FLOOR);
     });
 
     it('shouldGiveExpectedPayoutToVanillaIncorrectContestant', function () {
@@ -117,7 +100,7 @@ describe('HotSeatQuestionGraderTest', function () {
 
       grader.grade();
 
-      player.money.should.equal(100 * HotSeatQuestionGrader.PERCENT_FLOOR);
+      player.money.should.equal(50);
     });
 
     it('shouldGiveExpectedPayoutToIncorrectContestantOnWalkingAway', function () {
@@ -148,13 +131,13 @@ describe('HotSeatQuestionGraderTest', function () {
         new HotSeatQuestionGrader(playerMap)
           .setCorrectChoice(Choices.A)
           .setHotSeatPlayerChoice(player.hotSeatChoice)
-          .setQuestionIndex(0)  // $100
+          .setQuestionIndex(4)  // $1000
           .setStartTime(player.hotSeatTime - LONG_CHOICE_TIME)
           .setFiftyFiftyLifeline(fiftyFifty);
 
       grader.grade();
 
-      player.money.should.equal(50);
+      player.money.should.equal(100);
     });
 
     it('shouldGiveExpectedPayoutToIncorrectContestantOnFiftyFifty', function () {
@@ -188,13 +171,13 @@ describe('HotSeatQuestionGraderTest', function () {
         new HotSeatQuestionGrader(playerMap)
           .setCorrectChoice(Choices.A)
           .setHotSeatPlayerChoice(player.hotSeatChoice)
-          .setQuestionIndex(0)  // $100
+          .setQuestionIndex(4)  // $1000
           .setStartTime(player.hotSeatTime - LONG_CHOICE_TIME)
           .setPhoneAFriendLifeline(phoneAFriend);
 
       grader.grade();
 
-      player.money.should.equal(100);
+      player.money.should.equal(750);
     });
 
     it('shouldGiveExpectedPayoutToIncorrectContestantWhoFullPhonePersuaded', function () {
@@ -209,13 +192,13 @@ describe('HotSeatQuestionGraderTest', function () {
         new HotSeatQuestionGrader(playerMap)
           .setCorrectChoice(Choices.A)
           .setHotSeatPlayerChoice(player.hotSeatChoice)
-          .setQuestionIndex(0)  // $100
+          .setQuestionIndex(4)  // $1000
           .setStartTime(player.hotSeatTime - LONG_CHOICE_TIME)
           .setPhoneAFriendLifeline(phoneAFriend);
 
       grader.grade();
 
-      player.money.should.equal(-100);
+      player.money.should.equal(-750);
     });
 
     it('shouldGiveExpectedPayoutToCorrectContestantWhoZeroPhonePersuaded', function () {
@@ -230,13 +213,13 @@ describe('HotSeatQuestionGraderTest', function () {
         new HotSeatQuestionGrader(playerMap)
           .setCorrectChoice(Choices.A)
           .setHotSeatPlayerChoice(player.hotSeatChoice)
-          .setQuestionIndex(0)  // $100
+          .setQuestionIndex(4)  // $1000
           .setStartTime(player.hotSeatTime - LONG_CHOICE_TIME)
           .setPhoneAFriendLifeline(phoneAFriend);
 
       grader.grade();
 
-      player.money.should.equal(50);
+      player.money.should.equal(100);
     });
 
     it('shouldGiveExpectedPayoutToIncorrectContestantWhoZeroPhonePersuaded', function () {
@@ -251,7 +234,7 @@ describe('HotSeatQuestionGraderTest', function () {
         new HotSeatQuestionGrader(playerMap)
           .setCorrectChoice(Choices.A)
           .setHotSeatPlayerChoice(player.hotSeatChoice)
-          .setQuestionIndex(0)  // $100
+          .setQuestionIndex(4)  // $1000
           .setStartTime(player.hotSeatTime - LONG_CHOICE_TIME)
           .setPhoneAFriendLifeline(phoneAFriend);
 
@@ -270,13 +253,13 @@ describe('HotSeatQuestionGraderTest', function () {
         new HotSeatQuestionGrader(playerMap)
           .setCorrectChoice(Choices.A)
           .setHotSeatPlayerChoice(player.hotSeatChoice)
-          .setQuestionIndex(0)  // $100
+          .setQuestionIndex(4)  // $1000
           .setStartTime(player.hotSeatTime - LONG_CHOICE_TIME)
           .setAskTheAudienceLifeline(askTheAudience);
 
       grader.grade();
 
-      player.money.should.equal(75);
+      player.money.should.equal(500);
     });
 
     it('shouldGiveExpectedPayoutToIncorrectContestantWhoAudiencePersuaded', function () {
@@ -289,13 +272,13 @@ describe('HotSeatQuestionGraderTest', function () {
         new HotSeatQuestionGrader(playerMap)
           .setCorrectChoice(Choices.A)
           .setHotSeatPlayerChoice(player.hotSeatChoice)
-          .setQuestionIndex(0)  // $100
+          .setQuestionIndex(4)  // $1000
           .setStartTime(player.hotSeatTime - LONG_CHOICE_TIME)
           .setAskTheAudienceLifeline(askTheAudience);
 
       grader.grade();
 
-      player.money.should.equal(-75);
+      player.money.should.equal(-500);
     });
   });
 });

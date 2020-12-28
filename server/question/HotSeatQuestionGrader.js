@@ -19,11 +19,26 @@ const PAYOUTS = [
   1000000
 ];
 
-// Window of percentage money that can be won on a question, depending on how long it takes to
-// choose.
-const PERCENT_CEILING = 0.5;
-const PERCENT_FLOOR = 0.2;
+// Baseline payouts for audience members if they are correct.
+const AUDIENCE_BASELINE_PAYOUTS = [
+  50,
+  50,
+  50,
+  50,
+  50,
+  500,
+  500,
+  500,
+  500,
+  500,
+  16000,
+  16000,
+  16000,
+  16000,
+  16000
+]
 
+// Grades and calculates audience payouts for hot seat questions.
 class HotSeatQuestionGrader {
 
   constructor(playerMap = new PlayerMap()) {
@@ -42,17 +57,6 @@ class HotSeatQuestionGrader {
 
 
   // PRIVATE METHODS
-
-  // Returns the percentage of money for a question to give to a contestant for their answer to a
-  // hot seat question.
-  _getScaledPercentage(elapsedTime) {
-    const bestWindowMs = 1000;
-    const timeWindowMs = 10000;
-
-    var trimmedElapsedTime = Math.max(0, Math.min(elapsedTime - bestWindowMs, timeWindowMs));
-    var timeRatio = 1 - (trimmedElapsedTime / timeWindowMs);
-    return PERCENT_FLOOR + timeRatio * (PERCENT_CEILING - PERCENT_FLOOR);
-  }
 
   // Returns whether a lifeline has been used yet.
   _lifelineUsed() {
@@ -81,35 +85,42 @@ class HotSeatQuestionGrader {
   // question worth.
   grade() {
     this.playerMap.doAll((player) => {
-      if (player.isContestant() && player.hotSeatTime !== undefined) {
-        var elapsedTime = player.hotSeatTime - this.startTime;
-        var scaledPercentage = this._getScaledPercentage(elapsedTime);
+      if (player.isContestant()) {
+        // First, we set the baseline amount, as audience members should be well behind the hot seat
+        // player as they risk their way closer to the next milestone.
+        var baselinePayout = AUDIENCE_BASELINE_PAYOUTS[this.questionIndex];
+        // We also set a scaled percentage, which will represent any modifiers on the current
+        // question payout. This comes into play for sabotage and helping the hot seat player on a
+        // lifeline.
+        var scaledPercentage = 0;
         var phonePersuadedHotSeat = this._playerPhonePersuadedHotSeat(player);
         var audiencePersuadedHotSeat = this._playerAudiencePersuadedHotSeat(player);
+        var scaledPayout = 0;
 
-        // Assume correctness for scaledPercentage calculation
-        scaledPercentage = this._lifelineUsed() ? PERCENT_CEILING : scaledPercentage;
-        scaledPercentage = this.walkingAway ? PERCENT_FLOOR : scaledPercentage;
+        // Double audience payout on lifeline use.
+        if (this._lifelineUsed()) {
+          baselinePayout *= 2;
+        }
+
+        // Set modifiers for persuading on a lifeline.
         scaledPercentage = phonePersuadedHotSeat ?
-          scaledPercentage + this.phoneAFriendLifeline.friendConfidence / 2
+          this.phoneAFriendLifeline.friendConfidence * 0.75
           : scaledPercentage;
         scaledPercentage = audiencePersuadedHotSeat ?
-          Math.max(0.75, scaledPercentage) : scaledPercentage;
+          Math.max(0.5, scaledPercentage) : scaledPercentage;
 
-        // Apply incorrect punishments
+        // Apply incorrect punishments.
         if (player.hotSeatChoice != this.correctChoice) {
+          baselinePayout = 0;
+          scaledPercentage *= -1;
+
           if (!phonePersuadedHotSeat && !audiencePersuadedHotSeat) {
             scaledPercentage *= 0;
           }
-
-          scaledPercentage = phonePersuadedHotSeat && !audiencePersuadedHotSeat ?
-            this.phoneAFriendLifeline.friendConfidence : scaledPercentage;
-          scaledPercentage = audiencePersuadedHotSeat ?
-            Math.max(0.75, scaledPercentage) : scaledPercentage;
-          scaledPercentage *= -1;
         }
 
-        player.money += Math.floor(PAYOUTS[this.questionIndex] * scaledPercentage);
+        scaledPayout = Math.floor(PAYOUTS[this.questionIndex] * scaledPercentage);
+        player.money += Math.abs(scaledPayout) > baselinePayout ? scaledPayout : baselinePayout;
       }
     });
   }
@@ -157,5 +168,3 @@ class HotSeatQuestionGrader {
 
 module.exports = HotSeatQuestionGrader;
 HotSeatQuestionGrader.PAYOUTS = PAYOUTS;
-HotSeatQuestionGrader.PERCENT_CEILING = PERCENT_CEILING;
-HotSeatQuestionGrader.PERCENT_FLOOR = PERCENT_FLOOR;
