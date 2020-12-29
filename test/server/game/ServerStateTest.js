@@ -449,6 +449,24 @@ describe('ServerStateTest', () => {
       serverState.fastestFingerQuestion.revealedAnswers);
   });
 
+  it('toCompressedClientStateShouldSetFastestFingerClientCorrectnessIfAnswersRevealed', () => {
+    var serverState = new ServerState(new PlayerMap());
+    var mockSocket = new MockSocket('socket_id');
+    var player = new Player(mockSocket, 'username');
+    serverState.playerMap.putPlayer(player);
+    serverState.fastestFingerQuestion = new FastestFingerQuestion({
+      text: 'question',
+      orderedChoices: ['choice1', 'choice2', 'choice3', 'choice4']
+    });
+    serverState.fastestFingerQuestion.revealAllChoices();
+    serverState.fastestFingerQuestion.revealAnswer();
+
+    var compressedClientState = serverState.toCompressedClientState(mockSocket,
+      /*currentSocketEvent=*/undefined);
+
+    expect(compressedClientState.fastestFingerClientCorrectness).to.not.be.undefined;
+  });
+
   it('toCompressedClientStateShouldSetResultsIfPresent', () => {
     var playerMap = new PlayerMap();
     var serverState = new ServerState(playerMap);

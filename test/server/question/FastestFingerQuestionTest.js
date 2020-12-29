@@ -129,6 +129,39 @@ describe('FastestFingerQuestionTest', () => {
     });
   });
 
+  describe('getClientCorrectness', function () {
+    it('shouldGiveDefaultResultForUndefinedPlayer', function () {
+      var ffq = getPreppedQuestion();
+
+      var result = ffq.getClientCorrectness(new MockSocket('socket_id'));
+
+      result.should.deep.equal([
+        Choices.Correctness.DEFAULT,
+        Choices.Correctness.DEFAULT,
+        Choices.Correctness.DEFAULT,
+        Choices.Correctness.DEFAULT
+      ]);
+    });
+
+    it('shouldGiveExpectedResult', function () {
+      var ffq = getPreppedQuestion();
+      var socket = new MockSocket('socket_id');
+      var player = new Player(socket, 'player');
+      ffq.playerMap.putPlayer(player);
+      player.fastestFingerChoices = [Choices.B, Choices.A, Choices.C, Choices.D];
+      player.fastestFingerTime = DATE_NOW;
+
+      var result = ffq.getClientCorrectness(socket);
+
+      result.should.deep.equal([
+        Choices.Correctness.CORRECT,
+        Choices.Correctness.CORRECT,
+        Choices.Correctness.INCORRECT,
+        Choices.Correctness.INCORRECT
+      ]);
+    });
+  });
+
   describe('getResults', function () {
     it('shouldExcludeHost', function () {
       var ffq = getPreppedQuestion();
@@ -165,11 +198,11 @@ describe('FastestFingerQuestionTest', () => {
 
     it('shouldGiveExpectedResultForMultiplePlayers', function () {
       var ffq = getPreppedQuestion();
-      var player1 = new Player(new MockSocket('socket_id'), 'player1');
+      var player1 = new Player(new MockSocket('socket_id_1'), 'player1');
       ffq.playerMap.putPlayer(player1);
       player1.fastestFingerChoices = [Choices.B, Choices.A, Choices.C, Choices.D];
       player1.fastestFingerTime = DATE_NOW;
-      var player2 = new Player(new MockSocket('socket_id'), 'player2');
+      var player2 = new Player(new MockSocket('socket_id_2'), 'player2');
       ffq.playerMap.putPlayer(player2);
       player2.fastestFingerChoices = [Choices.B, Choices.A, Choices.D, Choices.C];
       player2.fastestFingerTime = DATE_NOW  + 2000;

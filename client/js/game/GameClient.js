@@ -70,7 +70,8 @@ class GameClient {
 
     if (compressedClientState.fastestFingerRevealedAnswers !== undefined) {
       newCanvasElements.push(new FastestFingerAnswersElement(canvas,
-        compressedClientState.fastestFingerRevealedAnswers));
+        compressedClientState.fastestFingerRevealedAnswers,
+        compressedClientState.fastestFingerClientCorrectness));
     }
 
     if (compressedClientState.fastestFingerResults !== undefined) {

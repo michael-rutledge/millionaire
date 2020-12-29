@@ -5,12 +5,20 @@ const Constants = require('../Constants.js');
 const MillionaireBubble = require('./MillionaireBubble.js');
 const MillionaireBubbleBuilder = require('./MillionaireBubbleBuilder.js');
 
+// Stroke styles for feedback on Fastest Finger answer reveal.
+const STROKE_STYLE_MAP = [
+  Colors.DEFAULT_LINE_SHINE,  // Choices.Correctness.DEFAULT
+  Colors.GREEN,               // Choices.Correctness.CORRECT
+  Colors.RED                  // Choices.Correctness.INCORRECT
+];
+
 // Displays fastest finger answers to contestants.
 class FastestFingerAnswersElement extends CanvasElement {
 
-  constructor(canvas, revealedAnswers) {
+  constructor(canvas, revealedAnswers, clientCorrectness) {
     super(canvas, /*x=*/0, /*y=*/0);
     this.revealedAnswers = revealedAnswers;
+    this.clientCorrectness = clientCorrectness;
   }
 
 
@@ -47,6 +55,7 @@ class FastestFingerAnswersElement extends CanvasElement {
         .setText(revealedAnswer.text)
         .setChoice(revealedAnswer.choice)
         .setTextAlign('left')
+        .setStrokeStyle(STROKE_STYLE_MAP[this.clientCorrectness[i]])
         .build()
         .draw();
     }

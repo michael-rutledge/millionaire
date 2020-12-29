@@ -1,3 +1,4 @@
+const Choices = require(process.cwd() + '/server/question/Choices.js');
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
 const PlayerMap = require(process.cwd() + '/server/game/PlayerMap.js');
 const Question = require(process.cwd() + '/server/question/Question.js');
@@ -15,7 +16,12 @@ class FastestFingerQuestion extends Question {
     //   Choice choice
     // }
     this.revealedAnswers = [];
-    this.bestScore = 4;
+    // Best score in the current Fastest Finger round.
+    //
+    // This is an artifact of grading Fastest Finger on a one-time-only basis. Now because we follow
+    // the show, we redo Fastest Finger when no one gets it completely right, so best score should
+    // always be 4.
+    this.bestScore = Choices.MAX_CHOICES;
   }
 
   // PRIVATE METHODS
@@ -77,6 +83,30 @@ class FastestFingerQuestion extends Question {
     }
 
     return score;
+  }
+
+  // Returns correctness of the given player's Fastest Finger choices in the form of a list of
+  // correctness values.
+  getClientCorrectness(socket) {
+    var player = this.playerMap.getPlayerBySocket(socket);
+    var correctness = [];
+
+    // Instantiate all correctness as DEFAULT first.
+    for (let i = 0; i < this.bestScore; i++) {
+      correctness.push(Choices.Correctness.DEFAULT);
+    }
+
+    // Set actual correctness.
+    for (let i = 0; player !== undefined && i < player.fastestFingerChoices.length; i++) {
+      if (this.shuffledChoices[player.fastestFingerChoices[i]] == this.orderedChoices[i]) {
+        correctness[i] = Choices.Correctness.CORRECT;
+      } else if (player.fastestFingerChoices !== undefined
+          && player.fastestFingerChoices.length > 0) {
+        correctness[i] = Choices.Correctness.INCORRECT;
+      }
+    }
+
+    return correctness;
   }
 
   // Returns a JSON object encapsulating the results of this fastest finger question.

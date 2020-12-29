@@ -274,6 +274,8 @@ class ServerState {
       // Fastest finger answer results
       if (this.fastestFingerQuestion.revealedAnswers.length > 0) {
         compressed.fastestFingerRevealedAnswers = this.fastestFingerQuestion.revealedAnswers;
+        compressed.fastestFingerClientCorrectness =
+          this.fastestFingerQuestion.getClientCorrectness(socket);
       }
     }
     // Fastest finger results
