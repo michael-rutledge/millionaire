@@ -57,5 +57,6 @@ module.exports.ASK_THE_ADUIENCE_CONTESTANT_LABEL = 'Contestants:';
 module.exports.PHONE_A_FRIEND_CHOICE_PREFIX = 'Phoned friend says ';
 module.exports.PHONE_A_FRIEND_CONFIDENCE_MIDFIX = ' with a confidence of ';
 module.exports.TOTAL_WINNINGS = 'Total Winnings:';
+module.exports.VOLUME_SLIDER_LABEL = 'Volume:';
 module.exports.YES = 'Yes';
 module.exports.NO = 'No';

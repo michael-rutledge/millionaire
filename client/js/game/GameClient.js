@@ -12,6 +12,7 @@ const PhoneConfidenceMeter = require('../rendering/element/PhoneConfidenceMeter.
 const PlayerListElement = require('../rendering/element/PlayerListElement.js');
 const QuestionAndChoicesElement = require('../rendering/element/QuestionAndChoicesElement.js');
 const StepDialogElement = require('../rendering/element/StepDialogElement.js');
+const VolumeSlider = require('../rendering/element/VolumeSlider.js');
 
 // Handles top level socket interactions between the game window of the client and the server.
 class GameClient {
@@ -41,6 +42,7 @@ class GameClient {
     newCanvasElements.push(playerListElement);
     newCanvasElements.push(new MoneyTreeElement(canvas,
       compressedClientState.hotSeatQuestionIndex));
+    newCanvasElements.push(new VolumeSlider(canvas, this.audioPlayer));
 
     if (compressedClientState.celebrationBanner === undefined) {
       newCanvasElements.push(questionAndChoicesElement);

@@ -6,6 +6,7 @@ class AudioPlayer {
   constructor() {
     this.currentMusicSrc = undefined;
     this.currentMusic = undefined;
+    this.currentVolume = 1.0;
   }
 
 
@@ -62,6 +63,12 @@ class AudioPlayer {
     if (audioCommand.stopAllSounds) {
       Howler.stop();
     }
+  }
+
+  // Sets global volume of the player.
+  setGlobalVolume(volume) {
+    this.currentVolume = volume;
+    Howler.volume(this.currentVolume);
   }
 
   // Stops all currently playing sounds.
