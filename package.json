@@ -8,7 +8,7 @@
     "express": "^4.17.1",
     "howler": "^2.2.0",
     "request": "^2.88.2",
-    "sanitize-html": "^1.23.0",
+    "sanitize-html": "^2.3.2",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
