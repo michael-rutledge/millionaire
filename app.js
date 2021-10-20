@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + "/client/index.html");
 });
 app.use('/client', express.static(__dirname + '/client'));
-serv.listen(process.env.PORT || 3000);
+serv.listen(process.env.PORT);
 Logger.logInfo('Server started.');
 
 var roomPool = new RoomPool(sio);
