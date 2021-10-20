@@ -79,5 +79,95 @@
       "Sporty Spice",
       "Ginger Spice"
     ]
+  },
+  {
+    "text": "According to IMDb, arrange these movies from the LOWEST rated to the HIGHEST rated",
+    "orderedChoices": [
+      "Memento",
+      "Parasite",
+      "Saving Private Ryan",
+      "Forest Gump"
+    ]
+  },
+  {
+    "text": "According to a survey of 700+ American kids under 14, arrange these candies from WORST HALLOWEEN TREAT to BEST HALLOWEEN TREAT",
+    "orderedChoices": [
+      "Snickers",
+      "Twix",
+      "Milky Way",
+      "Reese's"
+    ]
+  },
+  {
+    "text": "Arrange the following Star Wars characters from LEAST SCREEN TIME to MOST SCREEN TIME in the saga",
+    "orderedChoices": [
+      "Chewbacca",
+      "C-3PO",
+      "Princess Leia",
+      "Luke Skywalker"
+    ]
+  },
+  {
+    "text": "Arrange the following social media platforms from LEAST USERS to MOST USERS",
+    "orderedChoices": [
+      "Reddit",
+      "Tiktok",
+      "Youtube",
+      "Facebook"
+    ]
+  },
+  {
+    "text": "Arrange these countries by LEAST to MOST Nuclear Weapons",
+    "orderedChoices": [
+      "UK",
+      "France",
+      "China",
+      "Russia"
+    ]
+  },
+  {
+    "text": "Arrange these Will Ferrel movies from OLDEST to NEWEST",
+    "orderedChoices": [
+      "Elf",
+      "Anchorman",
+      "Blades of Glory",
+      "Step Brothers"
+    ]
+  },
+  {
+    "text": "Arrange these Disney movies from OLDEST to NEWEST",
+    "orderedChoices": [
+      "Bambi",
+      "The Jungle Book",
+      "Aladdin",
+      "Toy Story"
+    ]
+  },
+  {
+    "text": "According to 2020's The Billboard Top 100, arrange these songs from the LOWEST to HIGHEST on the list",
+    "orderedChoices": [
+      "Savage",
+      "Say So",
+      "The Box",
+      "Blinding Lights"
+    ]
+  },
+  {
+    "text": "Arrange the following UK cities from LEAST POPULATED to MOST POPULATED",
+    "orderedChoices": [
+      "Manchester",
+      "Glasgow",
+      "Liverpool",
+      "London"
+    ]
+  },
+  {
+    "text": "According to the NFL Power Rankings of 2021, arrange these NFL teams from WORST to BEST",
+    "orderedChoices": [
+      "Kansas City Chiefs",
+      "Baltimore Ravens",
+      "Arizona Cardinals",
+      "Tampa Bay Buccaneers"
+    ]
   }
 ]
