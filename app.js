@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const serv = require('https').Server(app);
+const serv = require('http').Server(app);
 const sio = require('socket.io')(serv, {});
 
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
