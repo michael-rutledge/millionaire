@@ -11,10 +11,10 @@
   {
     "text": "Order these Simpson characters from YOUNGEST to OLDEST",
     "orderedChoices": [
-      "Homer",
-      "Marge",
+      "Lisa",
       "Bart",
-      "Lisa"
+      "Marge",
+      "Homer"
     ]
   },
   {
