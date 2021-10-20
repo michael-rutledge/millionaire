@@ -1,6 +1,6 @@
 [
   {
-    "Starting with the smallest put these mountains in order of height above sea level": "The answer is Eiger, Kilimanjaro, Ben Nevis, Everest",
+    "text": "Starting with the smallest put these mountains in order of height above sea level",
     "orderedChoices": [
       "Eiger",
       "Kilimanjaro",
@@ -9,39 +9,75 @@
     ]
   },
   {
-    "text": "The answer is 2,1,3,4",
+    "text": "Order these Simpson characters from YOUNGEST to OLDEST",
     "orderedChoices": [
-      "2",
-      "1",
-      "3",
-      "4"
+      "Homer",
+      "Marge",
+      "Bart",
+      "Lisa"
     ]
   },
   {
-    "text": "The answer is 3,1,2,4",
+    "text": "Arrange these countries from furthest WEST to furthest EAST",
     "orderedChoices": [
-      "3",
-      "1",
-      "2",
-      "4"
+      "Guatemala",
+      "Nicaragua",
+      "Uganda",
+      "Kenya"
     ]
   },
   {
-    "text": "The answer is 4,1,3,2",
+    "text": "Arrange these actors from YOUNGEST to OLDEST",
     "orderedChoices": [
-      "4",
-      "1",
-      "3",
-      "2"
+      "Brad Pitt",
+      "George Clooney",
+      "Liam Neeson",
+      "Morgan Freeman"
     ]
   },
   {
-    "text": "The answer is 1,2,3,4",
+    "text": "Arrange these capitals from furthest NORTH to furthest SOUTH",
     "orderedChoices": [
-      "1",
-      "2",
-      "3",
-      "4"
+      "Oslo",
+      "Ottawa",
+      "Dubai",
+      "Hong Kong"
+    ]
+  },
+  {
+    "text": "Arrange these Brad Pitt movies from OLDEST to NEWEST",
+    "orderedChoices": [
+      "Fight Club",
+      "Troy",
+      "Mr. & Mrs. Smith",
+      "War Machine"
+    ]
+  },
+  {
+    "text": "Arrange these George Clooney movies from OLDEST to NEWEST",
+    "orderedChoices": [
+      "O Brother, Where Art Thou?",
+      "Ocean's Twelve",
+      "Gravity",
+      "Tomorrowland"
+    ]
+  },
+  {
+    "text": "Arrange these TV shows from OLDEST to NEWEST",
+    "orderedChoices": [
+      "Full House",
+      "The Big Bang Theory",
+      "Breaking Bad",
+      "Game of Thrones"
+    ]
+  },
+  {
+    "text": "Arrange the Spice Girls from YOUNGEST to OLDEST",
+    "orderedChoices": [
+      "Emma Bunton - Baby Spice",
+      "Mel B - Scary Spice",
+      "Mel C - Sporty Spice",
+      "Geri Halliwell - Ginger Spice"
     ]
   }
 ]
