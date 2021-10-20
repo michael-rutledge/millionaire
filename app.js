@@ -1,11 +1,6 @@
 const express = require('express');
-const express = require('express')
-const PORT = process.env.PORT || 5000  # Fall back to port 5000 if process.env.PORT is not set
-
-express()
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 const app = express();
-const serv = require('http').Server(app);
+const serv = require('https').Server(app);
 const sio = require('socket.io')(serv, {});
 
 const Logger = require(process.cwd() + '/server/logging/Logger.js');
@@ -21,5 +16,4 @@ app.get('/', (req, res) => {
 app.use('/client', express.static(__dirname + '/client'));
 serv.listen(process.env.PORT);
 Logger.logInfo('Server started.');
-
 var roomPool = new RoomPool(sio);
