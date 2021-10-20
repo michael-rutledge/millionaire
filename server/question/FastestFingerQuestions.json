@@ -90,7 +90,7 @@
     ]
   },
   {
-    "text": "According to a survey of 700+ American kids under 14, arrange these candies from WORST HALLOWEEN TREAT to BEST HALLOWEEN TREAT",
+    "text": "According to 700+ American kids, arrange these candies from WORST HALLOWEEN TREAT to BEST HALLOWEEN TREAT",
     "orderedChoices": [
       "Snickers",
       "Twix",
@@ -162,12 +162,12 @@
     ]
   },
   {
-    "text": "According to the 2021 NFL Power Rankings, arrange these NFL teams from WORST to BEST",
+    "text": "Arrange these elements in the order they appear on the periodic table",
     "orderedChoices": [
-      "Kansas City Chiefs",
-      "Baltimore Ravens",
-      "Arizona Cardinals",
-      "Tampa Bay Buccaneers"
+      "Lithium",
+      "Carbon",
+      "Neon",
+      "Zinc"
     ]
   },
   {
@@ -240,6 +240,42 @@
       "Cancer",
       "Leo",
       "Scorpio"
+    ]
+  },
+  {
+    "text": "Arrange these planets in order from closest to furthest from the Sun",
+    "orderedChoices": [
+      "Earth",
+      "Jupiter",
+      "Uranus",
+      "Neptune"
+    ]
+  },
+  {
+    "text": "Arrange these Morgan Freeman movies from OLDEST to NEWEST",
+    "orderedChoices": [
+      "Se7en",
+      "Bruce Almighty",
+      "The Bucket List",
+      "London Has Fallen"
+    ]
+  },
+  {
+    "text": "Arrange these actresses from YOUNGEST to OLDEST",
+    "orderedChoices": [
+      "Emma Watson",
+      "Megan Fox",
+      "Jessica Alba",
+      "Angelina Jolie"
+    ]
+  },
+  {
+    "text": "Arrange these chefs from LEAST WEALTHY to MOST WEALTHY",
+    "orderedChoices": [
+      "Guy Fieri",
+      "Gordon Ramsay",
+      "Rachel Ray",
+      "Wolfgang Puck"
     ]
   }
 ]
