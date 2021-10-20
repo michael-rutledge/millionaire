@@ -1,69 +1,69 @@
 [
   {
-    "text": "Arrange these countries from LEAST POPULATED to MOST POPULATED",
+    "text": "Arrange these countries from furthest north to furthest south",
     "orderedChoices": [
-      "Ukraine",
-      "Japan",
-      "Mexico",
-      "India"
+      "Denmark",
+      "Greece",
+      "Cuba",
+      "Jamaica"
     ]
   },
   {
-    "text": "Order these Simpson characters from YOUNGEST to OLDEST",
+    "text": "Order these colors in the order they appear in the rainbow",
     "orderedChoices": [
-      "Lisa",
-      "Bart",
-      "Marge",
-      "Homer"
+      "Yellow",
+      "Blue",
+      "Indigo",
+      "Violet"
     ]
   },
   {
-    "text": "Arrange these countries from furthest WEST to furthest EAST",
+    "text": "Arrange these countries from furthest west to furthest east",
     "orderedChoices": [
-      "Guatemala",
-      "Nicaragua",
-      "Uganda",
-      "Kenya"
+      "Ireland",
+      "Spain",
+      "Nepal",
+      "Taiwan"
     ]
   },
   {
-    "text": "Arrange these actors from YOUNGEST to OLDEST",
+    "text": "Arrange these world capitals from least to most populated",
     "orderedChoices": [
-      "Brad Pitt",
-      "George Clooney",
-      "Liam Neeson",
-      "Morgan Freeman"
+      "New Delhi",
+      "Madrid",
+      "Berlin",
+      "Seoul"
     ]
   },
   {
-    "text": "Arrange these capitals from furthest NORTH to furthest SOUTH",
+    "text": "Arrange these countries by their beer consumption, from least to most",
     "orderedChoices": [
-      "Oslo",
-      "Ottawa",
-      "Dubai",
-      "Hong Kong"
+      "Canada",
+      "Brazil",
+      "Spain",
+      "Germany"
     ]
   },
   {
-    "text": "Arrange these Brad Pitt movies from OLDEST to NEWEST",
+    "text": "Arrange these Brad Pitt movies from oldest to newest",
     "orderedChoices": [
-      "Fight Club",
-      "Troy",
-      "Mr. & Mrs. Smith",
-      "War Machine"
+      "Thelma & Louise",
+      "12 Monkeys",
+      "The Departed",
+      "World War Z"
     ]
   },
   {
-    "text": "Arrange these George Clooney movies from OLDEST to NEWEST",
+    "text": "Arrange these George Clooney movies from oldest to newest",
     "orderedChoices": [
-      "O Brother, Where Art Thou?",
-      "Ocean's Twelve",
-      "Gravity",
-      "Tomorrowland"
+      "Batman & Robin",
+      "Spy Kids",
+      "Fantastic Mr. Fox",
+      "Hail, Caesar!"
     ]
   },
   {
-    "text": "Arrange these TV shows from OLDEST to NEWEST",
+    "text": "Arrange these TV shows from oldest to newest",
     "orderedChoices": [
       "Full House",
       "The Big Bang Theory",
@@ -72,7 +72,7 @@
     ]
   },
   {
-    "text": "Arrange the Spice Girls from YOUNGEST to OLDEST",
+    "text": "Arrange the Spice Girls from youngest to oldest",
     "orderedChoices": [
       "Baby Spice",
       "Scary Spice",
@@ -90,16 +90,16 @@
     ]
   },
   {
-    "text": "According to 700+ American kids, arrange these candies from WORST HALLOWEEN TREAT to BEST HALLOWEEN TREAT",
+    "text": "Arrange these Canadian cities from least to most populated",
     "orderedChoices": [
-      "Snickers",
-      "Twix",
-      "Milky Way",
-      "Reese's"
+      "Quebec",
+      "Vancouver",
+      "Ottawa",
+      "Toronto"
     ]
   },
   {
-    "text": "Arrange the following Star Wars characters from LEAST SCREEN TIME to MOST SCREEN TIME in the saga",
+    "text": "Arrange the following Star Wars characters from least screen time to most in the saga",
     "orderedChoices": [
       "Chewbacca",
       "C-3PO",
@@ -108,21 +108,21 @@
     ]
   },
   {
-    "text": "Arrange the following social media platforms from LEAST USERS to MOST USERS",
+    "text": "Arrange the following Leonardo Dicaprio movies from oldest to newest",
     "orderedChoices": [
-      "Reddit",
-      "Tiktok",
-      "Youtube",
-      "Facebook"
+      "Titanic",
+      "Inception",
+      "The Wolf of Wall Street",
+      "The Revenant"
     ]
   },
   {
-    "text": "Arrange these countries by LEAST to MOST Nuclear Weapons",
+    "text": "Arrange these countries from smallest to largest (area)",
     "orderedChoices": [
-      "UK",
-      "France",
-      "China",
-      "Russia"
+      "Cuba",
+      "South Africa",
+      "Argentina",
+      "Canada"
     ]
   },
   {
