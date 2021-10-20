@@ -18,6 +18,7 @@
     "mocha": "^7.1.2"
   },
   "scripts": {
+    "start": "node app.js",
     "build": "browserify client/js/clientMain.js -o client/js/bundle.js",
     "clean": "npm run build && node app.js",
     "clean_prod": "npm run build && node app.js data_level:prod",
