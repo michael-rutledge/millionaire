@@ -15,7 +15,7 @@
     "browserify": "^16.5.1",
     "chai": "^4.2.0",
     "he": "^1.2.0",
-    "mocha": "^7.1.2"
+    "mocha": "^10.2.0"
   },
   "scripts": {
     "build": "browserify client/js/clientMain.js -o client/js/bundle.js",
