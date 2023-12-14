@@ -9,7 +9,7 @@
     "howler": "^2.2.0",
     "request": "^2.88.2",
     "sanitize-html": "^1.23.0",
-    "socket.io": "^3.2.7"
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "browserify": "^16.5.1",
