@@ -35,7 +35,7 @@
   "license": "ISC"
 }
 
-json = require('json-update');
+json= require('json-update');
 
 json.update('data.json',{test:10})
 .then(function(dat) { 
