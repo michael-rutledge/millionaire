@@ -1,0 +1,57 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+
+            - name: dudeofawesome/npm-install
+  # You may pin to the exact commit or the version.
+  # uses: dudeofawesome/npm-install@5757b893f4f003f1651a92572c291e4add9fd8f9
+  uses: dudeofawesome/npm-install@v1.0.0
+  with:
+    # Path of dir with package.json.
+    package-dir-path: # default is .
+    # Path of node_modules dir.
+    modules-dir: # optional
+    # The cache key.
+    cache-key: # optional
+
+            - name: npm/yarn/pnpm install
+  # You may pin to the exact commit or the version.
+  # uses: Jaid/action-npm-install@9483da054882538350947c4147de4c8adbf0d597
+  uses: Jaid/action-npm-install@v1.2.4
+  with:
+    # NODE_ENV setting for installing execution (affects the amount of dependencies installed, but I would recommend keeping development in any case).
+    nodeEnv: # optional, default is development
+    # Can be "npm", "yarn", "pnpm" or "auto". "auto" will determine the package manager by looking into the repo's files. This is very accurate, so you normally don't want to change this.
+    packageManager: # optional, default is auto
+    # If true and node_modules folder already exists, this action will be skipped assuming npm install is not required.
+    skipIfNodeModulesExists: # optional, default is false
+          
+          
