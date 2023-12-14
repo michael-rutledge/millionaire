@@ -1,0 +1,4835 @@
+[
+  {
+    "text": "George Orwell wrote this book, which is often considered a statement on government oversight.",
+    "orderedChoices": [
+      "1984",
+      "The Old Man and the Sea",
+      "Catcher and the Rye",
+      "To Kill a Mockingbird"
+    ]
+  },
+  {
+    "text": "Which famous book is sub-titled 'The Modern Prometheus'?",
+    "orderedChoices": [
+      "Frankenstein",
+      "Dracula",
+      "The Strange Case of Dr. Jekyll and Mr. Hyde ",
+      "The Legend of Sleepy Hollow"
+    ]
+  },
+  {
+    "text": "Which of the following is the world's best-selling book?",
+    "orderedChoices": [
+      "The Lord of the Rings",
+      "The Little Prince",
+      "Harry Potter and the Philosopher's Stone",
+      "The Da Vinci Code"
+    ]
+  },
+  {
+    "text": "Which famous spy novelist wrote the childrens' story \"Chitty-Chitty-Bang-Bang\"?",
+    "orderedChoices": [
+      "Ian Fleming",
+      "Joseph Conrad",
+      "John Buchan",
+      "Graham Greene"
+    ]
+  },
+  {
+    "text": "How many Harry Potter books are there?",
+    "orderedChoices": [
+      "7",
+      "8",
+      "5",
+      "6"
+    ]
+  },
+  {
+    "text": "Who wrote the young adult novel \"The Fault in Our Stars\"?",
+    "orderedChoices": [
+      "John Green",
+      "Stephenie Meyer",
+      "Suzanne Collins",
+      "Stephen Chbosky"
+    ]
+  },
+  {
+    "text": "Who was the author of the 1954 novel, \"Lord of the Flies\"?",
+    "orderedChoices": [
+      "William Golding",
+      "Stephen King",
+      "F. Scott Fitzgerald",
+      "Hunter Fox"
+    ]
+  },
+  {
+    "text": "What is the name of the three headed dog in Harry Potter and the Sorcerer's Stone?",
+    "orderedChoices": [
+      "Fluffy",
+      "Spike",
+      "Poofy",
+      "Spot"
+    ]
+  },
+  {
+    "text": "What is the name of Sherlock Holmes's brother?",
+    "orderedChoices": [
+      "Mycroft Holmes",
+      "Mederi Holmes",
+      "Martin Holmes",
+      "Herbie Hancock Holmes"
+    ]
+  },
+  {
+    "text": "Which is NOT a book in the Harry Potter Series?",
+    "orderedChoices": [
+      "The House Elf",
+      "The Chamber of Secrets",
+      "The Prisoner of Azkaban",
+      "The Deathly Hallows"
+    ]
+  },
+  {
+    "text": "In the novel 1984, written by George Orwell, what is the name of the totalitarian regime that controls Oceania?",
+    "orderedChoices": [
+      "INGSOC",
+      "Neo-Bolshevism",
+      "Obliteration of the Self",
+      "Earth Alliance"
+    ]
+  },
+  {
+    "text": "Who wrote \"A Tale of Two Cities\"?",
+    "orderedChoices": [
+      "Charles Dickens",
+      "Charles Darwin",
+      "Mark Twain",
+      "Roald Dahl"
+    ]
+  },
+  {
+    "text": "In past times, what would a gentleman keep in his fob pocket?",
+    "orderedChoices": [
+      "Watch",
+      "Money",
+      "Keys",
+      "Notebook"
+    ]
+  },
+  {
+    "text": "What is the shape of the toy invented by Hungarian professor Ernő Rubik?",
+    "orderedChoices": [
+      "Cube",
+      "Sphere",
+      "Cylinder",
+      "Pyramid"
+    ]
+  },
+  {
+    "text": "Which sign of the zodiac comes between Virgo and Scorpio?",
+    "orderedChoices": [
+      "Libra",
+      "Gemini",
+      "Taurus",
+      "Capricorn"
+    ]
+  },
+  {
+    "text": "What company developed the vocaloid Hatsune Miku?",
+    "orderedChoices": [
+      "Crypton Future Media",
+      "Sega",
+      "Sony",
+      "Yamaha Corporation"
+    ]
+  },
+  {
+    "text": "What is Cynophobia the fear of?",
+    "orderedChoices": [
+      "Dogs",
+      "Birds",
+      "Flying",
+      "Germs"
+    ]
+  },
+  {
+    "text": "Terry Gilliam was an animator that worked with which British comedy group?",
+    "orderedChoices": [
+      "Monty Python",
+      "The Goodies‎",
+      "The League of Gentlemen‎",
+      "The Penny Dreadfuls"
+    ]
+  },
+  {
+    "text": "If you are caught \"Goldbricking\", what are you doing wrong?",
+    "orderedChoices": [
+      "Slacking",
+      "Smoking",
+      "Stealing",
+      "Cheating"
+    ]
+  },
+  {
+    "text": "How many furlongs are there in a mile?",
+    "orderedChoices": [
+      "Eight",
+      "Two",
+      "Four",
+      "Six"
+    ]
+  },
+  {
+    "text": "What are Panama hats made out of?",
+    "orderedChoices": [
+      "Straw",
+      "Silk",
+      "Hemp",
+      "Flax"
+    ]
+  },
+  {
+    "text": "Who is the youngest person to recieve a Nobel Prize?",
+    "orderedChoices": [
+      "Malala Yousafzai",
+      "Lawrence Bragg",
+      "Werner Heisenberg",
+      "Yasser Arafat"
+    ]
+  },
+  {
+    "text": "Which of the following is not an Ivy League University?",
+    "orderedChoices": [
+      "Stanford",
+      "University of Pennsylvania",
+      "Harvard",
+      "Princeton"
+    ]
+  },
+  {
+    "text": "The drug cartel run by Pablo Escobar originated in which South American city?",
+    "orderedChoices": [
+      "Medellín",
+      "Bogotá",
+      "Quito",
+      "Cali"
+    ]
+  },
+  {
+    "text": "Which of the following blood component forms a plug at the site of injuries?",
+    "orderedChoices": [
+      "Platelets",
+      "Red blood cells",
+      "White blood cells",
+      "Blood plasma"
+    ]
+  },
+  {
+    "text": "What is the French word for \"fish\"?",
+    "orderedChoices": [
+      "poisson",
+      "fiche",
+      "escargot",
+      "mer"
+    ]
+  },
+  {
+    "text": "What was the name of the police officer in the cartoon \"Top Cat\"?",
+    "orderedChoices": [
+      "Dibble",
+      "Barbrady",
+      "Mahoney",
+      "Murphy"
+    ]
+  },
+  {
+    "text": "In the TV show \"Cheers\", Sam Malone was a former relief pitcher for which baseball team?",
+    "orderedChoices": [
+      "Boston Red Sox",
+      "New York Mets",
+      "Baltimore Orioles",
+      "Milwaukee Brewers"
+    ]
+  },
+  {
+    "text": "In the TV show 'M*A*S*H', what was the nickname of Corporal Walter O'Reilly?",
+    "orderedChoices": [
+      "Radar",
+      "Hawkeye",
+      "Hot Lips",
+      "Trapper"
+    ]
+  },
+  {
+    "text": "Grant Gustin plays which superhero on the CW show of the same name?",
+    "orderedChoices": [
+      "The Flash",
+      "The Arrow",
+      "Black Canary",
+      "Daredevil"
+    ]
+  },
+  {
+    "text": "Which of these characters in \"Stranger Things\" has the power of Telekinesis?",
+    "orderedChoices": [
+      "Eleven",
+      "Mike",
+      "Lucas",
+      "Karen"
+    ]
+  },
+  {
+    "text": "In the show, Doctor Who, what does T.A.R.D.I.S stand for?",
+    "orderedChoices": [
+      "Time And Relative Dimensions In Space",
+      "Time And Resting Dimensions In Space",
+      "Time And Relative Dimensions In Style",
+      "Toilet Aid Rope Dog Is Soup"
+    ]
+  },
+  {
+    "text": "Which company has exclusive rights to air episodes of the \"The Grand Tour\"?",
+    "orderedChoices": [
+      "Amazon",
+      "Netflix",
+      "BBC",
+      "CCTV"
+    ]
+  },
+  {
+    "text": "What country is Cory in the House set in?",
+    "orderedChoices": [
+      "The United States of America",
+      "Canada",
+      "Venezuala",
+      "England"
+    ]
+  },
+  {
+    "text": "When did the TV show Rick and Morty first air on Adult Swim?",
+    "orderedChoices": [
+      "2013",
+      "2014",
+      "2016",
+      "2015"
+    ]
+  },
+  {
+    "text": "In DuckTales, what is the name of the city where all the main characters live?",
+    "orderedChoices": [
+      "Duckburg",
+      "Duckwing",
+      "Tailspin",
+      "Wingford"
+    ]
+  },
+  {
+    "text": "What is the name of the main character in \"The Flash\" TV series?",
+    "orderedChoices": [
+      "Barry Allen",
+      "Oliver Queen",
+      "Bart Allen",
+      "Bruce Wayne"
+    ]
+  },
+  {
+    "text": "Which show is known for the songs \"You are a Pirate\", \"Cooking by the Book\" and \"We Are Number One\"?",
+    "orderedChoices": [
+      "LazyTown",
+      "Sofia the First",
+      "DuckTales",
+      "Tom and Jerry"
+    ]
+  },
+  {
+    "text": "Who won Big Brother 2014 UK?",
+    "orderedChoices": [
+      "Helen Wood",
+      "Christopher Hall",
+      "Pauline Bennett",
+      "Pavandeep \"Pav\" Paul"
+    ]
+  },
+  {
+    "text": "Which of these Disney shows is classified as an anime?",
+    "orderedChoices": [
+      "Stitch!",
+      "Cory in the House",
+      "The Emperor's New School",
+      "Hannah Montana"
+    ]
+  },
+  {
+    "text": "How many seasons did the Sci-Fi television show \"Stargate Universe\" have?",
+    "orderedChoices": [
+      "2",
+      "10",
+      "5",
+      "3"
+    ]
+  },
+  {
+    "text": "Which of the following won the first season of American Idol in 2002?",
+    "orderedChoices": [
+      "Kelly Clarkson",
+      "Justin Guarini",
+      "Ruben Studdard",
+      "Chris Daughtry"
+    ]
+  },
+  {
+    "text": "In AMC's TV Series \"The Walking Dead\" what are \"Zombies\" referred to as?",
+    "orderedChoices": [
+      "Walkers",
+      "Creepers",
+      "Maggots",
+      "Hell Pigs"
+    ]
+  },
+  {
+    "text": "In which state of America was the Fresh Prince of Bel-Air born and raised in?",
+    "orderedChoices": [
+      "Pennsylvania",
+      "Florida",
+      "California",
+      "New Jersey"
+    ]
+  },
+  {
+    "text": "In the cartoon 'SpongeBob SquarePants', what did the acronym E.V.I.L stand for?",
+    "orderedChoices": [
+      "Every Villain Is Lemons",
+      "Every Villain Is Lemonade",
+      "Every Villain Is Limes",
+      "Each Villain Is Lemonade"
+    ]
+  },
+  {
+    "text": "In the show \"Futurama\" what is Fry's full name?",
+    "orderedChoices": [
+      "Philip J. Fry",
+      "Fry J. Philip",
+      "Fry Rodríguez",
+      "Fry Philip"
+    ]
+  },
+  {
+    "text": "Who was the villain of ''The Lion King''?",
+    "orderedChoices": [
+      "Scar",
+      "Fred",
+      "Jafar",
+      "Vada"
+    ]
+  },
+  {
+    "text": "Which of the following did not feature in the cartoon 'Wacky Races'?",
+    "orderedChoices": [
+      "The Dragon Wagon",
+      "The Bouldermobile",
+      "The Crimson Haybailer",
+      "The Compact Pussycat"
+    ]
+  },
+  {
+    "text": "In South Park, what is Stan's surname?",
+    "orderedChoices": [
+      "Marsh",
+      "Stotch",
+      "Broflovski",
+      "Tweak"
+    ]
+  },
+  {
+    "text": "Which 'Family Guy' character got his own spin-off show in 2009?",
+    "orderedChoices": [
+      "Cleveland Brown",
+      "Glenn Quagmire",
+      "Joe Swanson",
+      "The Greased-up Deaf Guy"
+    ]
+  },
+  {
+    "text": "The song 'Little April Shower' features in which Disney cartoon film?",
+    "orderedChoices": [
+      "Bambi",
+      "Cinderella",
+      "Pinocchio",
+      "The Jungle Book"
+    ]
+  },
+  {
+    "text": "Which of these is NOT a catchphrase used by Rick Sanchez in the TV show \"Rick and Morty\"?",
+    "orderedChoices": [
+      "Slam dunk, nothing but net!",
+      "Hit the sack, Jack!",
+      "Rikki-Tikki-Tavi, biatch!",
+      "Wubba-lubba-dub-dub!"
+    ]
+  },
+  {
+    "text": "Butters Stotch, Pip Pirrup, and Wendy Testaburger are all characters in which long running animated TV series?",
+    "orderedChoices": [
+      "South Park",
+      "The Simpsons",
+      "Family Guy",
+      "Bob's Burgers"
+    ]
+  },
+  {
+    "text": "Who is the only voice actor to have a speaking part in all of the Disney Pixar feature films? ",
+    "orderedChoices": [
+      "John Ratzenberger",
+      "Tom Hanks",
+      "Dave Foley",
+      "Geoffrey Rush"
+    ]
+  },
+  {
+    "text": "Which of these is NOT a Disney cartoon character?",
+    "orderedChoices": [
+      "Daffy Duck",
+      "Donald Duck",
+      "Daisy Duck",
+      "Scrooge McDuck"
+    ]
+  },
+  {
+    "text": "What is the relationship between Rick and Morty in the show \"Rick and Morty\"?",
+    "orderedChoices": [
+      "Grandfather and Grandson",
+      "Father and Son",
+      "Best Friends",
+      "Crimefighting Partners"
+    ]
+  },
+  {
+    "text": "When did the last episode of \"Futurama\" air?",
+    "orderedChoices": [
+      "September 4, 2013",
+      "December 25, 2010",
+      "March 28, 1999",
+      "On Going"
+    ]
+  },
+  {
+    "text": "Who voices for Ruby in the animated series RWBY?",
+    "orderedChoices": [
+      "Lindsay Jones",
+      "Tara Strong",
+      "Jessica Nigri",
+      "Hayden Panettiere"
+    ]
+  },
+  {
+    "text": "What was the first Disney movie to use CGI?",
+    "orderedChoices": [
+      "The Black Cauldron",
+      "Tron",
+      "Toy Story",
+      "Fantasia"
+    ]
+  },
+  {
+    "text": "In the 1993 Disney animated series \"Bonkers\", what is the name of Bonker's second partner?",
+    "orderedChoices": [
+      "Miranda Wright",
+      "Dick Tracy",
+      "Eddie Valiant",
+      "Dr. Ludwig von Drake"
+    ]
+  },
+  {
+    "text": "Which of the following is not a Flintstones character?",
+    "orderedChoices": [
+      "Lord Rockingham IX",
+      "Rockhead Slate",
+      "The Great Gazoo",
+      "Barney Rubble"
+    ]
+  },
+  {
+    "text": "Which Teenage Mutant Ninja Turtle traditionally wears an orange bandana?",
+    "orderedChoices": [
+      "Michelangelo",
+      "Leonardo",
+      "Donatello",
+      "Raphael"
+    ]
+  },
+  {
+    "text": "In the show \"Foster's Home For Imaginary Friends\", which character had an obsession with basketball?",
+    "orderedChoices": [
+      "Wilt",
+      "Coco",
+      "Mac",
+      "Cheese"
+    ]
+  },
+  {
+    "text": "Which of these characters from \"SpongeBob SquarePants\" is not a squid?",
+    "orderedChoices": [
+      "Gary",
+      "Orvillie",
+      "Squidward",
+      "Squidette"
+    ]
+  },
+  {
+    "text": "In The Simpsons, which war did Seymour Skinner serve in the USA Army as a Green Beret?",
+    "orderedChoices": [
+      "Vietnam War",
+      "World War 2",
+      "World War 1",
+      "Cold War"
+    ]
+  },
+  {
+    "text": "Wendy O. Koopa appeared in the Super Mario DIC Cartoons, but what was she known as?",
+    "orderedChoices": [
+      "Kootie Pie",
+      "Sweetie Pie",
+      "Wendy Pie",
+      "Honey Pie"
+    ]
+  },
+  {
+    "text": "Virgin Trains, Virgin Atlantic and Virgin Racing, are all companies owned by which famous entrepreneur?   ",
+    "orderedChoices": [
+      "Richard Branson",
+      "Alan Sugar",
+      "Donald Trump",
+      "Bill Gates"
+    ]
+  },
+  {
+    "text": "Where is the train station \"Llanfair­pwllgwyngyll­gogery­chwyrn­drobwll­llan­tysilio­gogo­goch\"?",
+    "orderedChoices": [
+      "Wales",
+      "Moldova",
+      "Czech Republic",
+      "Denmark"
+    ]
+  },
+  {
+    "text": "Area 51 is located in which US state?",
+    "orderedChoices": [
+      "Nevada",
+      "Arizona",
+      "New Mexico",
+      "Utah"
+    ]
+  },
+  {
+    "text": "Which sign of the zodiac is represented by the Crab?",
+    "orderedChoices": [
+      "Cancer",
+      "Libra",
+      "Virgo",
+      "Sagittarius"
+    ]
+  },
+  {
+    "text": "What was the nickname given to the Hughes H-4 Hercules, a heavy transport flying boat which achieved flight in 1947?",
+    "orderedChoices": [
+      "Spruce Goose",
+      "Noah's Ark",
+      "Fat Man",
+      "Trojan Horse"
+    ]
+  },
+  {
+    "text": "Which of these colours is NOT featured in the logo for Google?",
+    "orderedChoices": [
+      "Pink",
+      "Yellow",
+      "Blue",
+      "Green"
+    ]
+  },
+  {
+    "text": "Five dollars is worth how many nickles?",
+    "orderedChoices": [
+      "100",
+      "50",
+      "25",
+      "69"
+    ]
+  },
+  {
+    "text": "Which one of these is not a typical European sword design?",
+    "orderedChoices": [
+      "Scimitar",
+      "Falchion",
+      "Ulfberht",
+      "Flamberge"
+    ]
+  },
+  {
+    "text": "Which American-owned brewery led the country in sales by volume in 2015?",
+    "orderedChoices": [
+      "D. G. Yuengling and Son, Inc",
+      "Anheuser Busch",
+      "Boston Beer Company",
+      "Miller Coors"
+    ]
+  },
+  {
+    "text": "Which restaurant's mascot is a clown?",
+    "orderedChoices": [
+      "McDonald's",
+      "Whataburger",
+      "Burger King",
+      "Sonic"
+    ]
+  },
+  {
+    "text": "When someone is inexperienced they are said to be what color?",
+    "orderedChoices": [
+      "Green",
+      "Red",
+      "Blue",
+      "Yellow"
+    ]
+  },
+  {
+    "text": "What is the name of NASA’s most famous space telescope?",
+    "orderedChoices": [
+      "Hubble Space Telescope",
+      "Big Eye",
+      "Death Star",
+      "Millenium Falcon"
+    ]
+  },
+  {
+    "text": "Earth is located in which galaxy?",
+    "orderedChoices": [
+      "The Milky Way Galaxy",
+      "The Mars Galaxy",
+      "The Galaxy Note",
+      "The Black Hole"
+    ]
+  },
+  {
+    "text": "The Canadian $1 coin is colloquially known as a what?",
+    "orderedChoices": [
+      "Loonie",
+      "Boolie",
+      "Foolie",
+      "Moodie"
+    ]
+  },
+  {
+    "text": "Who is the author of Jurrasic Park?",
+    "orderedChoices": [
+      "Michael Crichton",
+      "Peter Benchley",
+      "Chuck Paluhniuk",
+      "Irvine Welsh"
+    ]
+  },
+  {
+    "text": "What airline was the owner of the plane that crashed off the coast of Nova Scotia in 1998?",
+    "orderedChoices": [
+      "Swiss Air",
+      "Air France",
+      "British Airways",
+      "TWA"
+    ]
+  },
+  {
+    "text": "Which character was played by Dustin Diamond in the sitcom 'Saved by the Bell'?",
+    "orderedChoices": [
+      "Screech",
+      "Zack",
+      "Mr. Belding",
+      "A.C. Slater"
+    ]
+  },
+  {
+    "text": "Who is the star of the AMC series Breaking Bad?",
+    "orderedChoices": [
+      "Walter White",
+      "Saul Goodman",
+      "Jesse Pinkman",
+      "Skyler White"
+    ]
+  },
+  {
+    "text": "In which British seaside town was the BBC sitcom \"Fawlty Towers\" set?",
+    "orderedChoices": [
+      "Torquay",
+      "Blackpool",
+      "Bournemouth",
+      "Great Yarmouth"
+    ]
+  },
+  {
+    "text": "In the show Stranger Things, what is Eleven's favorite breakfast food?",
+    "orderedChoices": [
+      "Eggo Waffles",
+      "Toast",
+      "Captain Crunch",
+      "Bacon and Eggs"
+    ]
+  },
+  {
+    "text": "In the Star Trek universe, what color is Vulcan blood?",
+    "orderedChoices": [
+      "Green",
+      "Blue",
+      "Red",
+      "Purple"
+    ]
+  },
+  {
+    "text": "On the show \"Rick and Morty\", in episode \"Total Rickall\", who was a parasite?",
+    "orderedChoices": [
+      "Pencilvester",
+      "Beth Smith",
+      "Summer Smith",
+      "Mr. Poopy Butthole"
+    ]
+  },
+  {
+    "text": "In Game of Thrones, what is Littlefinger's real name?",
+    "orderedChoices": [
+      "Petyr Baelish",
+      "Podrick Payne",
+      "Lancel Lannister",
+      "Torrhen Karstark"
+    ]
+  },
+  {
+    "text": "In Supernatural, what's is Sam's brothers name?",
+    "orderedChoices": [
+      "Dean",
+      "Dave",
+      "Steve",
+      "Mike"
+    ]
+  },
+  {
+    "text": "What was the name of the the first episode of Doctor Who to air in 1963?",
+    "orderedChoices": [
+      "An Unearthly Child",
+      "The Daleks",
+      "The Aztecs",
+      "The Edge of Destruction"
+    ]
+  },
+  {
+    "text": "In the show \"Tengen Toppa Gurren Lagann\" what is the name of the character who force everyone to live underground?",
+    "orderedChoices": [
+      "Lordgenome",
+      "Kingloname",
+      "Lord Genome",
+      "King Loname"
+    ]
+  },
+  {
+    "text": "In \"Breaking Bad\", Walter White is a high school teacher diagnosed with which form of cancer?",
+    "orderedChoices": [
+      "Lung Cancer",
+      "Prostate Cancer",
+      "Brain Cancer",
+      "Testicular Cancer"
+    ]
+  },
+  {
+    "text": "When Donkey Kong died in the \"Donkey Kong Country\" episode \"It's a Wonderful Life\", who was his guardian angel?",
+    "orderedChoices": [
+      "Eddie the Mean Old Yeti",
+      "Kiddy Kong",
+      "Diddy Kong",
+      "King K. Rool"
+    ]
+  },
+  {
+    "text": "How many seasons did the Sci-Fi television show \"Stargate Atlantis\" have?",
+    "orderedChoices": [
+      "5",
+      "10",
+      "2",
+      "7"
+    ]
+  },
+  {
+    "text": "Who played the Waitress in the Spam sketch of \"Monty Python's Flying Circus\"?",
+    "orderedChoices": [
+      "Terry Jones",
+      "Eric Idle",
+      "Graham Chapman",
+      "John Cleese"
+    ]
+  },
+  {
+    "text": "In \"Star Trek: Voyager\", which episode did Voyager establish real-time communication with Starfleet Headquarters?",
+    "orderedChoices": [
+      "Pathfinder",
+      "Message In A Bottle",
+      "Someone To Watch Over Me",
+      "Counterpoint"
+    ]
+  },
+  {
+    "text": "Who was the first ever actor to play \"The Doctor\" on \"Doctor Who\"?",
+    "orderedChoices": [
+      "William Hartnell",
+      "David Tennant",
+      "Peter Capaldi",
+      "Tom Baker"
+    ]
+  },
+  {
+    "text": "Which actor portrays \"Walter White\" in the series \"Breaking Bad\"?",
+    "orderedChoices": [
+      " Bryan Cranston",
+      "Andrew Lincoln",
+      "Aaron Paul",
+      "RJ Mitte"
+    ]
+  },
+  {
+    "text": "What NBC sitcom once saw two of its characters try to pitch NBC on a sitcom about nothing?",
+    "orderedChoices": [
+      "Seinfeld",
+      "Frasier",
+      "Becker",
+      "Friends"
+    ]
+  },
+  {
+    "text": "What is the name of Chris's brother in \"Everybody Hates Chris\"?",
+    "orderedChoices": [
+      "Drew",
+      "Jerome",
+      "Greg",
+      "Joe"
+    ]
+  },
+  {
+    "text": "The HBO series \"Game of Thrones\" is based on which series of books?",
+    "orderedChoices": [
+      "A Song of Ice and Fire",
+      "The Wheel of Time",
+      "Harry Potter",
+      "The Notebook"
+    ]
+  },
+  {
+    "text": "In \"Rick And Morty\", who shot \"Mr. Poopybutthole\" in the episode \"Total Rickall\"?",
+    "orderedChoices": [
+      "Beth",
+      "Rick",
+      "Jerry",
+      "Morty"
+    ]
+  },
+  {
+    "text": "What TV show is about a grandfather dragging his grandson around on adventures?",
+    "orderedChoices": [
+      "Rick & Morty",
+      "Family Guy",
+      "South Park",
+      "American Dad"
+    ]
+  },
+  {
+    "text": "In the show \"Dragonball Z\", what is the name of Cell's most powerful attack?",
+    "orderedChoices": [
+      "Solar Kamehameha",
+      "Super Kamehameha",
+      "Cell Kamehameha",
+      "Android Kamehameha"
+    ]
+  },
+  {
+    "text": "In Two and a Half Men, what is Alan Harper's son's name?",
+    "orderedChoices": [
+      "Jake",
+      "John",
+      "Jeremy",
+      "James"
+    ]
+  },
+  {
+    "text": "In the video-game franchise Kingdom Hearts, the main protagonist, carries a weapon with what shape?",
+    "orderedChoices": [
+      "Key",
+      "Sword",
+      "Pen",
+      "Cellphone"
+    ]
+  },
+  {
+    "text": "How would one say goodbye in Spanish?",
+    "orderedChoices": [
+      "Adiós",
+      " Hola",
+      "Au Revoir",
+      "Salir"
+    ]
+  },
+  {
+    "text": "What is the largest organ of the human body?",
+    "orderedChoices": [
+      "Skin",
+      "Heart",
+      "large Intestine",
+      "Liver"
+    ]
+  },
+  {
+    "text": "Which American president appears on a one dollar bill?",
+    "orderedChoices": [
+      "George Washington",
+      "Thomas Jefferson",
+      "Abraham Lincoln",
+      "Benjamin Franklin"
+    ]
+  },
+  {
+    "text": "What is \"dabbing\"?",
+    "orderedChoices": [
+      "A dance",
+      "A medical procedure",
+      "A sport",
+      "A language"
+    ]
+  },
+  {
+    "text": "What type of animal was Harambe, who was shot after a child fell into it's enclosure at the Cincinnati Zoo?",
+    "orderedChoices": [
+      "Gorilla",
+      "Tiger",
+      "Panda",
+      "Crocodile"
+    ]
+  },
+  {
+    "text": "How many colors are there in a rainbow?",
+    "orderedChoices": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ]
+  },
+  {
+    "text": "What is the name of Poland in Polish?",
+    "orderedChoices": [
+      "Polska",
+      "Pupcia",
+      "Polszka",
+      "Póland"
+    ]
+  },
+  {
+    "text": "The New York Times slogan is, “All the News That’s Fit to…”",
+    "orderedChoices": [
+      "Print",
+      "Digest",
+      "Look",
+      "Read"
+    ]
+  },
+  {
+    "text": "What was the first ever London Underground line to be built?",
+    "orderedChoices": [
+      "Metropolitan Line",
+      "Circle Line",
+      "Bakerloo Line",
+      "Victoria Line"
+    ]
+  },
+  {
+    "text": "Which of the following presidents is not on Mount Rushmore?",
+    "orderedChoices": [
+      "John F. Kennedy",
+      "Theodore Roosevelt",
+      "Abraham Lincoln",
+      "Thomas Jefferson"
+    ]
+  },
+  {
+    "text": "In which fast food chain can you order a Jamocha Shake?",
+    "orderedChoices": [
+      "Arby's",
+      "McDonald's",
+      "Burger King",
+      "Wendy's"
+    ]
+  },
+  {
+    "text": "What zodiac sign is represented by a pair of scales?",
+    "orderedChoices": [
+      "Libra",
+      "Aries",
+      "Capricorn",
+      "Sagittarius"
+    ]
+  },
+  {
+    "text": "When one is \"envious\", they are said to be what color?",
+    "orderedChoices": [
+      "Green",
+      "Red",
+      "Blue",
+      "Yellow"
+    ]
+  },
+  {
+    "text": "Which of the following is not the host of a program on NPR?",
+    "orderedChoices": [
+      "Ben Shapiro",
+      "Terry Gross",
+      "Ira Glass",
+      "Peter Sagal"
+    ]
+  },
+  {
+    "text": "What is the profession of Elon Musk's mom, Maye Musk?",
+    "orderedChoices": [
+      "Model",
+      "Professor",
+      "Biologist",
+      "Musician"
+    ]
+  },
+  {
+    "text": "What kind of aircraft was developed by Igor Sikorsky in the United States in 1942?",
+    "orderedChoices": [
+      "Helicopter",
+      "Stealth Blimp",
+      "Jet",
+      "Space Capsule"
+    ]
+  },
+  {
+    "text": "Who played Agent Fox Mulder in the TV sci-fi drama \"The X-Files\"?",
+    "orderedChoices": [
+      "David Duchovny",
+      "Gillian Anderson",
+      "Robert Patrick",
+      "Mitch Pileggi"
+    ]
+  },
+  {
+    "text": "In the original Star Trek TV series, what was Captain James T. Kirk's middle name?",
+    "orderedChoices": [
+      "Tiberius",
+      "Trevor",
+      "Travis",
+      "Tyrone"
+    ]
+  },
+  {
+    "text": "Which of these Bojack Horseman characters is a human?",
+    "orderedChoices": [
+      "Todd Chavez",
+      "Lennie Turtletaub",
+      "Princess Carolyn",
+      "Tom Jumbo-Grumbo"
+    ]
+  },
+  {
+    "text": "Guy's Grocery Games is hosted by which presenter?",
+    "orderedChoices": [
+      "Guy Fieri",
+      "Guy Martin",
+      "Guy Ritchie",
+      "Ainsley Harriott"
+    ]
+  },
+  {
+    "text": "The \"Psycho\" series of videos on YouTube was created by which of the following?",
+    "orderedChoices": [
+      "RiDGiD STUDiOS",
+      "Dan Bell",
+      "Billy Familia",
+      "VeganGainz"
+    ]
+  },
+  {
+    "text": "How many seasons did \"Stargate SG-1\" have?",
+    "orderedChoices": [
+      "10",
+      "3",
+      "7",
+      "12"
+    ]
+  },
+  {
+    "text": "Who is the main character in the show \"Burn Notice\"?",
+    "orderedChoices": [
+      "Michael Westen",
+      "Sam Axe",
+      "Fiona Glenanne",
+      "Madeline Westen"
+    ]
+  },
+  {
+    "text": "In Game of Thrones, what continent lies across the Narrow Sea from Westeros?",
+    "orderedChoices": [
+      "Essos",
+      "Easteros",
+      "Westereast",
+      "Esuntos"
+    ]
+  },
+  {
+    "text": "In the television show Breaking Bad, what is the street name of Walter and Jesse's notorious product?",
+    "orderedChoices": [
+      "Blue Sky",
+      "Baby Blue",
+      "Rock Candy",
+      "Pure Glass"
+    ]
+  },
+  {
+    "text": "What is the real name of the famous spanish humorist, El Risitas?",
+    "orderedChoices": [
+      "Juan Joya Borga",
+      "Gabriel Garcia Marquez",
+      "Jesus Quintero",
+      "Ernesto Guevara"
+    ]
+  },
+  {
+    "text": "In Star Trek: The Next Generation, what is the name of Data's cat?",
+    "orderedChoices": [
+      "Spot",
+      "Mittens",
+      "Tom",
+      "Kitty"
+    ]
+  },
+  {
+    "text": "In season one of the Netflix political drama \"House of Cards\", what government position does Frank Underwood hold?",
+    "orderedChoices": [
+      "House Majority Whip",
+      "Attorney General",
+      "President",
+      "Chief of Staff"
+    ]
+  },
+  {
+    "text": "British actor David Morrissey stars as which role in \"The Walking Dead\"?",
+    "orderedChoices": [
+      "The Governor",
+      "Negan",
+      "Rick Grimes",
+      "Daryl Dixon"
+    ]
+  },
+  {
+    "text": "What is the name of the planet that the Doctor from television series \"Doctor Who\" comes from?",
+    "orderedChoices": [
+      "Gallifrey",
+      "Sontar",
+      "Skaro",
+      "Mondas"
+    ]
+  },
+  {
+    "text": "In the TV show \"Mad Men\", what was Donald Draper's birthname?",
+    "orderedChoices": [
+      "Richard \"Dick\" Whitman",
+      "Donald Draper",
+      "John Ashbury",
+      "Michael \"Mikey\" Wilhelm"
+    ]
+  },
+  {
+    "text": "On the NBC show Community, whose catch-phrase was \"Pop! Pop!\"?",
+    "orderedChoices": [
+      "Magnitude",
+      "Star Burns",
+      "Leonard",
+      "Senoir Chang"
+    ]
+  },
+  {
+    "text": "What was the name of the teenage witch played by Melisa Joan Hart who lives with her witch aunts Hilda and Zelda?",
+    "orderedChoices": [
+      "Sabrina",
+      "Hermione",
+      "Dorothy",
+      "Dahlia"
+    ]
+  },
+  {
+    "text": "What Nickelodeon game show featured a house on the set that the contestants would ransack to find hidden objects?",
+    "orderedChoices": [
+      "Finders Keepers",
+      "Double Dare",
+      "Nickelodeon Guts",
+      "Nick Arcade"
+    ]
+  },
+  {
+    "text": "Which of the following awards do Matt Stone and Trey Parker NOT have?",
+    "orderedChoices": [
+      "Oscar",
+      "Emmy",
+      "Tony",
+      "Grammy"
+    ]
+  },
+  {
+    "text": "What is the first book of the Old Testament?",
+    "orderedChoices": [
+      "Genesis",
+      "Exodus",
+      "Leviticus",
+      "Numbers"
+    ]
+  },
+  {
+    "text": "Which best selling toy of 1983 caused hysteria, resulting in riots breaking out in stores?",
+    "orderedChoices": [
+      "Cabbage Patch Kids",
+      "Transformers",
+      "Care Bears",
+      "Rubik’s Cube"
+    ]
+  },
+  {
+    "text": "What does a funambulist walk on?",
+    "orderedChoices": [
+      "A Tight Rope",
+      "Broken Glass",
+      "Balls",
+      "The Moon"
+    ]
+  },
+  {
+    "text": "On a dartboard, what number is directly opposite No. 1?",
+    "orderedChoices": [
+      "19",
+      "20",
+      "12",
+      "15"
+    ]
+  },
+  {
+    "text": "What does the 'S' stand for in the abbreviation SIM, as in SIM card? ",
+    "orderedChoices": [
+      "Subscriber",
+      "Single",
+      "Secure",
+      "Solid"
+    ]
+  },
+  {
+    "text": "What alcoholic drink is made from molasses?",
+    "orderedChoices": [
+      "Rum",
+      "Gin",
+      "Vodka",
+      "Whisky"
+    ]
+  },
+  {
+    "text": "What geometric shape is generally used for stop signs?",
+    "orderedChoices": [
+      "Octagon",
+      "Hexagon",
+      "Circle",
+      "Triangle"
+    ]
+  },
+  {
+    "text": "Which one of the following rhythm games was made by Harmonix?",
+    "orderedChoices": [
+      "Rock Band",
+      "Meat Beat Mania",
+      "Guitar Hero Live",
+      "Dance Dance Revolution"
+    ]
+  },
+  {
+    "text": "Who is depicted on the US hundred dollar bill?",
+    "orderedChoices": [
+      "Benjamin Franklin",
+      "George Washington",
+      "Abraham Lincoln",
+      "Thomas Jefferson"
+    ]
+  },
+  {
+    "text": "What do the letters in the GMT time zone stand for?",
+    "orderedChoices": [
+      "Greenwich Mean Time",
+      "Global Meridian Time",
+      "General Median Time",
+      "Glasgow Man Time"
+    ]
+  },
+  {
+    "text": "According to Sherlock Holmes, \"If you eliminate the impossible, whatever remains, however improbable, must be the...\"",
+    "orderedChoices": [
+      "Truth",
+      "Answer",
+      "Cause",
+      "Source"
+    ]
+  },
+  {
+    "text": "What do the letters of the fast food chain KFC stand for?",
+    "orderedChoices": [
+      "Kentucky Fried Chicken",
+      "Kentucky Fresh Cheese",
+      "Kibbled Freaky Cow",
+      "Kiwi Food Cut"
+    ]
+  },
+  {
+    "text": "How tall is the Burj Khalifa?",
+    "orderedChoices": [
+      "2,722 ft",
+      "2,717 ft",
+      "2,546 ft",
+      "3,024 ft"
+    ]
+  },
+  {
+    "text": "What machine element is located in the center of fidget spinners?",
+    "orderedChoices": [
+      "Bearings",
+      "Axles",
+      "Gears",
+      "Belts"
+    ]
+  },
+  {
+    "text": "What is Tasmania?",
+    "orderedChoices": [
+      "An Australian State",
+      "A flavor of Ben and Jerry's ice-cream",
+      "A Psychological Disorder",
+      "The Name of a Warner Brothers Cartoon Character"
+    ]
+  },
+  {
+    "text": "Which of the following is the IATA code for Manchester Airport?",
+    "orderedChoices": [
+      "MAN",
+      "EGLL",
+      "LHR",
+      "EGCC"
+    ]
+  },
+  {
+    "text": "The likeness of which president is featured on the rare $2 bill of USA currency?",
+    "orderedChoices": [
+      "Thomas Jefferson",
+      "Martin Van Buren",
+      "Ulysses Grant",
+      "John Quincy Adams"
+    ]
+  },
+  {
+    "text": "According to the nursery rhyme, what fruit did Little Jack Horner pull out of his Christmas pie?",
+    "orderedChoices": [
+      "Plum",
+      "Apple",
+      "Peach",
+      "Pear"
+    ]
+  },
+  {
+    "text": "What is the famous Papa John's last name?",
+    "orderedChoices": [
+      "Schnatter",
+      "Chowder",
+      "Williams",
+      "ANDERSON"
+    ]
+  },
+  {
+    "text": "Which country has the union jack in its flag?",
+    "orderedChoices": [
+      "New Zealand",
+      "South Africa",
+      "Canada",
+      "Hong Kong"
+    ]
+  },
+  {
+    "text": "Carcassonne is based on which French town?",
+    "orderedChoices": [
+      "Carcassonne",
+      "Paris",
+      "Marseille",
+      "Clermont-Ferrand"
+    ]
+  },
+  {
+    "text": "In a standard game of Monopoly, what colour are the two cheapest properties?",
+    "orderedChoices": [
+      "Brown",
+      "Green",
+      "Yellow",
+      "Blue"
+    ]
+  },
+  {
+    "text": "How many spaces are there on a standard Monopoly board?",
+    "orderedChoices": [
+      "40",
+      "28",
+      "55",
+      "36"
+    ]
+  },
+  {
+    "text": "How many dice are used in the game of Yahtzee?",
+    "orderedChoices": [
+      "Five",
+      "Four",
+      "Six",
+      "Eight"
+    ]
+  },
+  {
+    "text": "How many pieces are there on the board at the start of a game of chess?",
+    "orderedChoices": [
+      "32",
+      "16",
+      "20",
+      "36"
+    ]
+  },
+  {
+    "text": "On a standard Monopoly board, which square is diagonally opposite 'Go'? ",
+    "orderedChoices": [
+      "Free Parking",
+      "Go to Jail",
+      "Jail",
+      "The Electric Company"
+    ]
+  },
+  {
+    "text": "How many dots are on a single die?",
+    "orderedChoices": [
+      "21",
+      "24",
+      "15",
+      "18"
+    ]
+  },
+  {
+    "text": "Which of these games includes the phrase \"Do not pass Go, do not collect $200\"?",
+    "orderedChoices": [
+      "Monopoly",
+      "Pay Day",
+      "Cluedo",
+      "Coppit"
+    ]
+  },
+  {
+    "text": "Which one of these is not a real game in the Dungeons & Dragons series?",
+    "orderedChoices": [
+      "Extreme Dungeons & Dragons",
+      "Advanced Dungeons & Dragons",
+      "Dungeons & Dragons 3.5th edition",
+      "Advanced Dungeons & Dragons 2nd edition"
+    ]
+  },
+  {
+    "text": "The board game Monopoly takes its street names from which real American city?",
+    "orderedChoices": [
+      "Atlantic City, New Jersey",
+      "Las Vegas, Nevada",
+      "Duluth, Minnesota",
+      "Charleston, South Carolina"
+    ]
+  },
+  {
+    "text": "In which year was the pen and paper RPG \"Deadlands\" released?",
+    "orderedChoices": [
+      "1996",
+      "2003",
+      "1999",
+      "1993"
+    ]
+  },
+  {
+    "text": "When was the board game Twister, released to the public?",
+    "orderedChoices": [
+      "April 1966",
+      "September 1965",
+      "January 1969",
+      "February 1966"
+    ]
+  },
+  {
+    "text": "In board games, an additional or ammended rule that applies to a certain group or place is informally known as a \"what\" rule?",
+    "orderedChoices": [
+      "House",
+      "Custom",
+      "Extra",
+      "Change"
+    ]
+  },
+  {
+    "text": "What is the maximum level you can have in a single class in Dungeons and Dragons (5e)?",
+    "orderedChoices": [
+      "20",
+      "30",
+      "15",
+      "25"
+    ]
+  },
+  {
+    "text": "What is the fastest  land animal?",
+    "orderedChoices": [
+      "Cheetah",
+      "Lion",
+      "Thomson’s Gazelle",
+      "Pronghorn Antelope"
+    ]
+  },
+  {
+    "text": "What is the scientific name for modern day humans?",
+    "orderedChoices": [
+      "Homo Sapiens",
+      "Homo Ergaster",
+      "Homo Erectus",
+      "Homo Neanderthalensis"
+    ]
+  },
+  {
+    "text": "The Kākāpō is a large, flightless, nocturnal parrot native to which country?",
+    "orderedChoices": [
+      "New Zealand",
+      "South Africa",
+      "Australia",
+      "Madagascar"
+    ]
+  },
+  {
+    "text": "Hippocampus is the Latin name for which marine creature?",
+    "orderedChoices": [
+      "Seahorse",
+      "Dolphin",
+      "Whale",
+      "Octopus"
+    ]
+  },
+  {
+    "text": "How many legs do butterflies have?",
+    "orderedChoices": [
+      "6",
+      "2",
+      "4",
+      "0"
+    ]
+  },
+  {
+    "text": "What do you call a baby bat?",
+    "orderedChoices": [
+      "Pup",
+      "Cub",
+      "Chick",
+      "Kid"
+    ]
+  },
+  {
+    "text": "What is Grumpy Cat's real name?",
+    "orderedChoices": [
+      "Tardar Sauce",
+      "Sauce",
+      "Minnie",
+      "Broccoli"
+    ]
+  },
+  {
+    "text": "Which class of animals are newts members of?",
+    "orderedChoices": [
+      "Amphibian",
+      "Fish",
+      "Reptiles",
+      "Mammals"
+    ]
+  },
+  {
+    "text": "What is the collective noun for a group of crows?",
+    "orderedChoices": [
+      "Murder",
+      "Pack",
+      "Gaggle",
+      "Herd"
+    ]
+  },
+  {
+    "text": "By definition, where does an abyssopelagic animal live?",
+    "orderedChoices": [
+      "At the bottom of the ocean",
+      "In the desert",
+      "On top of a mountain",
+      "Inside a tree"
+    ]
+  },
+  {
+    "text": "What colour is the female blackbird?",
+    "orderedChoices": [
+      "Brown",
+      "Black",
+      "White",
+      "Yellow"
+    ]
+  },
+  {
+    "text": "How many teeth does an adult rabbit have?",
+    "orderedChoices": [
+      "28",
+      "30",
+      "26",
+      "24"
+    ]
+  },
+  {
+    "text": "What is the name of a rabbit's abode?",
+    "orderedChoices": [
+      "Burrow",
+      "Nest",
+      "Den",
+      "Dray"
+    ]
+  },
+  {
+    "text": "Which movie contains the quote, \"Say hello to my little friend!\"?",
+    "orderedChoices": [
+      "Scarface",
+      "Reservoir Dogs",
+      "Heat",
+      "Goodfellas"
+    ]
+  },
+  {
+    "text": "What was the title of the first Bond movie, released in 1962?",
+    "orderedChoices": [
+      "Dr. No",
+      "From Russia with Love",
+      "Goldfinger",
+      "Thunderball"
+    ]
+  },
+  {
+    "text": "This movie contains the quote, \"Houston, we have a problem.\"",
+    "orderedChoices": [
+      "Apollo 13",
+      "The Right Stuff",
+      "Capricorn One",
+      "Marooned"
+    ]
+  },
+  {
+    "text": "What was the first James Bond film?",
+    "orderedChoices": [
+      "Dr. No",
+      "Goldfinger",
+      "From Russia With Love",
+      "Thunderball"
+    ]
+  },
+  {
+    "text": "Who plays Alice in the Resident Evil movies?",
+    "orderedChoices": [
+      "Milla Jovovich",
+      "Madison Derpe",
+      "Milla Johnson",
+      "Kim Demp"
+    ]
+  },
+  {
+    "text": "What is the oldest Disney film?",
+    "orderedChoices": [
+      "Snow White and the Seven Dwarfs",
+      "Pinocchio",
+      "Dumbo",
+      "Fantasia"
+    ]
+  },
+  {
+    "text": "Who is the main protagonist in, the 1985 film, Back to the Future?",
+    "orderedChoices": [
+      "Marty McFly",
+      "Emmett \"Doc\" Brown",
+      "Biff Tannen",
+      "George McFly"
+    ]
+  },
+  {
+    "text": "Who in Pulp Fiction says \"No, they got the metric system there, they wouldn't know what the fuck a Quarter Pounder is.\"",
+    "orderedChoices": [
+      "Vincent Vega",
+      "Jules Winnfield",
+      "Jimmie Dimmick",
+      "Butch Coolidge"
+    ]
+  },
+  {
+    "text": "In \"Jurassic World\", what is the name of the dinosaur that is a genetic hybrid?",
+    "orderedChoices": [
+      "Indominus Rex",
+      "Mosasaurus",
+      "Pteranodon",
+      "Tyrannosaurus Rex "
+    ]
+  },
+  {
+    "text": "In the movie \"Spaceballs\", what are the Spaceballs attempting to steal from Planet Druidia?",
+    "orderedChoices": [
+      "Air",
+      "The Schwartz",
+      "Princess Lonestar",
+      "Meatballs"
+    ]
+  },
+  {
+    "text": "What was the first monster to appear alongside Godzilla?",
+    "orderedChoices": [
+      "Anguirus",
+      "King Kong",
+      "Mothra",
+      "King Ghidora"
+    ]
+  },
+  {
+    "text": "\"The first rule is: you don't talk about it\" is a reference to which movie?",
+    "orderedChoices": [
+      "Fight Club",
+      "The Island",
+      "Unthinkable",
+      "American Pie"
+    ]
+  },
+  {
+    "text": "Who plays the character of Po in the Kung Fu Panda movies?",
+    "orderedChoices": [
+      "Jack Black",
+      "Mirana Jonnes",
+      "McConahey Ramses",
+      "Jim Petersson"
+    ]
+  },
+  {
+    "text": "In the movie \"Blade Runner\", what is the term used for human-like androids ?",
+    "orderedChoices": [
+      "Replicants",
+      "Cylons",
+      "Synthetics",
+      "Skinjobs"
+    ]
+  },
+  {
+    "text": "In the 1995 film \"Balto\", who are Steele's accomplices?",
+    "orderedChoices": [
+      "Kaltag, Nikki, and Star",
+      "Dusty, Kirby, and Ralph",
+      "Nuk, Yak, and Sumac",
+      "Jenna, Sylvie, and Dixie"
+    ]
+  },
+  {
+    "text": "What is the name of the island that \"Jurassic Park\" is built on?",
+    "orderedChoices": [
+      "Isla Nublar",
+      "Isla Sorna",
+      "Isla Muerta",
+      "Isla Pena"
+    ]
+  },
+  {
+    "text": "What was Bruce Campbell's iconic one-liner after getting a chainsaw hand in Evil Dead 2?",
+    "orderedChoices": [
+      "Groovy.",
+      "Gnarly.",
+      "Perfect.",
+      "Nice."
+    ]
+  },
+  {
+    "text": "What was the first feature-length computer-animated movie?",
+    "orderedChoices": [
+      "Toy Story",
+      "Tron",
+      "Lion king",
+      "101 Dalmatians"
+    ]
+  },
+  {
+    "text": "What historical time period was the center of the Assassin’s Creed movie (2016)?",
+    "orderedChoices": [
+      "Spanish Inquisition",
+      "Victorian England",
+      "French Revolution",
+      "Colonial America"
+    ]
+  },
+  {
+    "text": "Who wrote the Sinead O`Connor hit 'Nothing Compares 2 U'?",
+    "orderedChoices": [
+      "Prince",
+      "Michael Jackson",
+      "Cameo",
+      "Rick James"
+    ]
+  },
+  {
+    "text": "Who is the lead singer of Pearl Jam?",
+    "orderedChoices": [
+      "Eddie Vedder",
+      "Ozzy Osbourne",
+      "Stone Gossard",
+      "Kurt Cobain"
+    ]
+  },
+  {
+    "text": "Which famous rapper is featured in Jack Ü (Skrillex and Diplo)'s 2015 single called \"Febreze\"?",
+    "orderedChoices": [
+      "2 Chainz",
+      "Kendrick Lamar",
+      "Future",
+      "Fatman Scoop"
+    ]
+  },
+  {
+    "text": "Which Twitch streamer is the vocalist for Red Vox?",
+    "orderedChoices": [
+      "Vinesauce",
+      "The8BitDrummer",
+      "LIRIK",
+      "Sodapoppin"
+    ]
+  },
+  {
+    "text": "Which artist released the 2012 single \"Harlem Shake\", which was used in numerous YouTube videos in 2013?",
+    "orderedChoices": [
+      "Baauer",
+      "RL Grime",
+      "NGHTMRE",
+      "Flosstradamus"
+    ]
+  },
+  {
+    "text": "Who is the lead singer of the British pop rock band Coldplay?",
+    "orderedChoices": [
+      "Chris Martin",
+      "Jonny Buckland",
+      "Guy Berryman",
+      "Will Champion"
+    ]
+  },
+  {
+    "text": "Which of these is NOT the name of an album released by English singer-songwriter Adele?",
+    "orderedChoices": [
+      "12",
+      "19",
+      "21",
+      "25"
+    ]
+  },
+  {
+    "text": "What was Rage Against the Machine's debut album?",
+    "orderedChoices": [
+      "Rage Against the Machine",
+      "Evil Empire",
+      "Bombtrack",
+      "The Battle Of Los Angeles"
+    ]
+  },
+  {
+    "text": "Which band released songs suchs as \"Rio\", \"Girls on Film\", and \"The Reflex\"?",
+    "orderedChoices": [
+      "Duran Duran",
+      "The Cure",
+      "New Order",
+      "Depeche Mode"
+    ]
+  },
+  {
+    "text": "What was Daft Punk's first studio album?",
+    "orderedChoices": [
+      "Homework",
+      "Discovery",
+      "Random Access Memories",
+      "Human After All"
+    ]
+  },
+  {
+    "text": "What was the best selling album of 2015?",
+    "orderedChoices": [
+      "Adele, 25",
+      "Fetty Wap, Fetty Wap",
+      "Taylor Swift, 1989",
+      "Justin Bieber, Purpose"
+    ]
+  },
+  {
+    "text": "Who is the lead singer of Green Day?",
+    "orderedChoices": [
+      "Billie Joe Armstrong",
+      "Mike Dirnt",
+      "Sean Hughes",
+      "Tré Cool"
+    ]
+  },
+  {
+    "text": "Who performed \"I Took A Pill In Ibiza\"?",
+    "orderedChoices": [
+      "Mike Posner",
+      "Avicii",
+      "Robbie Williams",
+      "Harry Styles"
+    ]
+  },
+  {
+    "text": "The Rush song \"YYZ\" derives its name from the IATA aiport identification code for which city?",
+    "orderedChoices": [
+      "Toronto",
+      "Vancouver",
+      "Ottawa",
+      "Calgary"
+    ]
+  },
+  {
+    "text": "\"Grande Valse\" is a phrase from the song \"Gran Vals\". What is that song segment known as?",
+    "orderedChoices": [
+      "Nokia Tune",
+      "Hello Moto [Motorola Ringtone]",
+      "Droid Ringtone",
+      "Microsoft Ringtone"
+    ]
+  },
+  {
+    "text": "Which of the following is an album by punk rock band Anti-Flag?",
+    "orderedChoices": [
+      "For Blood And Empire",
+      "Infinity On High",
+      "21st Century Breakdown",
+      "No Pads, No Helmets...Just Balls"
+    ]
+  },
+  {
+    "text": "The body of the Egyptian Sphinx was based on which animal?",
+    "orderedChoices": [
+      "Lion",
+      "Bull",
+      "Horse",
+      "Dog"
+    ]
+  },
+  {
+    "text": "What colour is the circle on the Japanese flag?",
+    "orderedChoices": [
+      "Red",
+      "White",
+      "Yellow",
+      "Black"
+    ]
+  },
+  {
+    "text": "Which of the following former Yugoslavian states is landlocked?",
+    "orderedChoices": [
+      "Serbia",
+      "Bosnia and Herzegovina",
+      "Montenegro",
+      "Croatia"
+    ]
+  },
+  {
+    "text": "Which of the following languages does NOT use the Latin alphabet?",
+    "orderedChoices": [
+      "Georgian",
+      "Turkish",
+      "Swahili",
+      "Vietnamese"
+    ]
+  },
+  {
+    "text": "Which nation claims ownership of Antarctica?",
+    "orderedChoices": [
+      "No one, but there are claims.",
+      "United States of America",
+      "United Nations",
+      "Australia"
+    ]
+  },
+  {
+    "text": "Which of these African countries list \"Spanish\" as an official language?",
+    "orderedChoices": [
+      "Equatorial Guinea",
+      "Guinea",
+      "Cameroon",
+      "Angola"
+    ]
+  },
+  {
+    "text": "What is the nickname for the US state Delaware?",
+    "orderedChoices": [
+      "The First State",
+      "The Fiftieth State",
+      "The Second State",
+      "The Sixteenth State"
+    ]
+  },
+  {
+    "text": "What is the Polish city known to Germans as Danzig?",
+    "orderedChoices": [
+      "Gdańsk",
+      "Warsaw",
+      "Zakopane",
+      "Poznań"
+    ]
+  },
+  {
+    "text": "How many countries does Mexico border?",
+    "orderedChoices": [
+      "3",
+      "2",
+      "4",
+      "1"
+    ]
+  },
+  {
+    "text": "Which small country is located between the borders of France and Spain?",
+    "orderedChoices": [
+      "Andorra",
+      "San Marino",
+      "Vatican City",
+      "Lichtenstein"
+    ]
+  },
+  {
+    "text": "Which one of these was not a beach landing site in the Invasion of Normandy?",
+    "orderedChoices": [
+      "Silver",
+      "Gold",
+      "Juno",
+      "Sword"
+    ]
+  },
+  {
+    "text": "How many manned moon landings have there been?",
+    "orderedChoices": [
+      "6",
+      "1",
+      "3",
+      "7"
+    ]
+  },
+  {
+    "text": "Which one of these tanks was designed and operated by the United Kingdom?",
+    "orderedChoices": [
+      "Tog II",
+      "M4 Sherman",
+      "Tiger H1",
+      "T-34"
+    ]
+  },
+  {
+    "text": "Which of the following ancient peoples was NOT classified as Hellenic (Greek)?",
+    "orderedChoices": [
+      "Illyrians",
+      "Dorians",
+      "Achaeans",
+      "Ionians"
+    ]
+  },
+  {
+    "text": "Which of these countries remained neutral during World War II?",
+    "orderedChoices": [
+      "Switzerland",
+      "United Kingdom",
+      "France",
+      "Italy"
+    ]
+  },
+  {
+    "text": "The collapse of the Soviet Union took place in which year?",
+    "orderedChoices": [
+      "1991",
+      "1992",
+      "1891",
+      "1990"
+    ]
+  },
+  {
+    "text": "Who was the first president of the United States?",
+    "orderedChoices": [
+      "George Washington",
+      "James Madison",
+      "Thomas Jefferson",
+      "James K. Polk"
+    ]
+  },
+  {
+    "text": "How was Socrates executed?",
+    "orderedChoices": [
+      "Poison",
+      "Decapitation",
+      "Firing squad",
+      "Crucifixion "
+    ]
+  },
+  {
+    "text": "What year did World War I begin?",
+    "orderedChoices": [
+      "1914",
+      "1905",
+      "1919",
+      "1925"
+    ]
+  },
+  {
+    "text": "Which of the following was Brazil was a former colony under?",
+    "orderedChoices": [
+      "Portugal",
+      "Spain",
+      "The Netherlands",
+      "France"
+    ]
+  },
+  {
+    "text": "What was the name commonly given to the ancient trade routes that connected the East and West of Eurasia?",
+    "orderedChoices": [
+      "Silk Road",
+      "Spice Road",
+      "Clay Road",
+      "Salt Road"
+    ]
+  },
+  {
+    "text": "In what year was the M1911 pistol designed?",
+    "orderedChoices": [
+      "1911",
+      "1907",
+      "1899",
+      "1917"
+    ]
+  },
+  {
+    "text": "Which of the following movies was not based on a novel by Stephen King? ",
+    "orderedChoices": [
+      "The Thing",
+      "Carrie",
+      "Misery",
+      "The Green Mile"
+    ]
+  },
+  {
+    "text": "Who starred as Bruce Wayne and Batman in Tim Burton's 1989 movie \"Batman\"?",
+    "orderedChoices": [
+      "Michael Keaton",
+      "George Clooney",
+      "Val Kilmer",
+      "Adam West"
+    ]
+  },
+  {
+    "text": "Who directed \"E.T. the Extra-Terrestrial\" (1982)?",
+    "orderedChoices": [
+      "Steven Spielberg",
+      "Stanley Kubrick",
+      "James Cameron",
+      "Tim Burton"
+    ]
+  },
+  {
+    "text": "Who played Deputy Marshal Samuel Gerard in the 1993 film \"The Fugitive\"?",
+    "orderedChoices": [
+      "Tommy Lee Jones",
+      "Harrison Ford",
+      "Harvey Keitel",
+      "Martin Landau"
+    ]
+  },
+  {
+    "text": "What was Dorothy's surname in 'The Wizard Of Oz'?",
+    "orderedChoices": [
+      "Gale",
+      "Perkins",
+      "Day",
+      "Parker"
+    ]
+  },
+  {
+    "text": "Which of these movies did Jeff Bridges not star in?",
+    "orderedChoices": [
+      "The Hateful Eight",
+      "Tron: Legacy",
+      "The Giver",
+      "True Grit"
+    ]
+  },
+  {
+    "text": "The 2016 Disney animated film 'Moana' is based on which culture?",
+    "orderedChoices": [
+      "Polynesian",
+      "Native American",
+      "Japanese",
+      "Nordic"
+    ]
+  },
+  {
+    "text": "For the film \"Raiders of The Lost Ark\", what was Harrison Ford sick with during the filming of the Cairo chase?",
+    "orderedChoices": [
+      "Dysentery",
+      "Anemia",
+      "Constipation",
+      "Acid Reflux "
+    ]
+  },
+  {
+    "text": "In which film does Humphrey Bogart say the famous line, \"Here's looking at you, kid\"?",
+    "orderedChoices": [
+      "Casablanca",
+      "The Maltese Falcon",
+      "The Treasure of the Sierra Madre",
+      "Citizen Kane"
+    ]
+  },
+  {
+    "text": "Which of these Movies was NOT released in 1996?",
+    "orderedChoices": [
+      "Gladiator",
+      "Independence Day",
+      "The Rock",
+      "Mission: Impossible"
+    ]
+  },
+  {
+    "text": "In the movie \"V for Vendetta,\" what is the date that masked vigilante \"V\" urges people to remember?",
+    "orderedChoices": [
+      "November 5th",
+      "November 6th",
+      "November 4th",
+      "September 5th"
+    ]
+  },
+  {
+    "text": "Who had a 1983 hit with the song 'Africa'?",
+    "orderedChoices": [
+      "Toto",
+      "Foreigner",
+      "Steely Dan",
+      "Journey"
+    ]
+  },
+  {
+    "text": "Ringo Starr of The Beatles mainly played what instrument?",
+    "orderedChoices": [
+      "Drums",
+      "Bass",
+      "Guitar",
+      "Piano"
+    ]
+  },
+  {
+    "text": "Which country does the band Rammstein hail from?",
+    "orderedChoices": [
+      "Germany",
+      "Austria",
+      "Armenia",
+      "Belgium"
+    ]
+  },
+  {
+    "text": "How many members are there in the band Nirvana?",
+    "orderedChoices": [
+      "Three",
+      "Two",
+      "Four",
+      "Five"
+    ]
+  },
+  {
+    "text": "What is the name of Finnish DJ Darude's hit single released in October 1999?",
+    "orderedChoices": [
+      "Sandstorm",
+      "Dust Devil",
+      "Sirocco",
+      "Khamsin"
+    ]
+  },
+  {
+    "text": "Finish these lyrics from the 2016 song \"Panda\" by Desiigner: \"I got broads in _______\".",
+    "orderedChoices": [
+      "Atlanta",
+      "Savannah",
+      "Augusta",
+      "Marietta"
+    ]
+  },
+  {
+    "text": "The 2016 song \"Starboy\" by Canadian singer The Weeknd features which prominent electronic artist?",
+    "orderedChoices": [
+      "Daft Punk",
+      "deadmau5",
+      "Disclosure",
+      "DJ Shadow"
+    ]
+  },
+  {
+    "text": "Which 80s band is fronted by singer/guitarist Robert Smith?",
+    "orderedChoices": [
+      "The Cure",
+      "The Smiths",
+      "Echo & the Bunnymen",
+      "New Order"
+    ]
+  },
+  {
+    "text": "According to a song by Belinda Carlisle, Heaven is a place on what?",
+    "orderedChoices": [
+      "Earth",
+      "Venus",
+      "Mars",
+      "Uranus"
+    ]
+  },
+  {
+    "text": "Kanye West's \"Gold Digger\" featured which Oscar-winning actor?",
+    "orderedChoices": [
+      "Jamie Foxx",
+      "Alec Baldwin",
+      "Dwayne Johnson",
+      " Bruce Willis"
+    ]
+  },
+  {
+    "text": "How many strings are there on a cello?",
+    "orderedChoices": [
+      "4",
+      "5",
+      "6",
+      "8"
+    ]
+  },
+  {
+    "text": "Which music publication is often abbreviated to NME?",
+    "orderedChoices": [
+      "New Musical Express",
+      "New Metro Entertainment",
+      "Next Musical Enterprise",
+      "North Manchester Express"
+    ]
+  },
+  {
+    "text": "What is the name of Rivers Cuomo's wife?",
+    "orderedChoices": [
+      "Kyoko Ito",
+      "Yoko Ono",
+      "Kyary Pamyu Pamyu",
+      "LiSA"
+    ]
+  },
+  {
+    "text": "Which of these is NOT an Australian state or territory?",
+    "orderedChoices": [
+      "Alberta",
+      "New South Wales",
+      "Victoria",
+      "Queensland"
+    ]
+  },
+  {
+    "text": "If soccer is called football in England, what is American football called in England?",
+    "orderedChoices": [
+      "American football",
+      "Combball",
+      "Handball",
+      "Touchdown"
+    ]
+  },
+  {
+    "text": "All of the following are classified as Finno-Ugric languages EXCEPT:",
+    "orderedChoices": [
+      "Samoyedic",
+      "Hungarian",
+      "Finnish",
+      "Estonian"
+    ]
+  },
+  {
+    "text": "The derisive acronym \"PIIGS\" refers to which of the following European countries and their economic statuses?",
+    "orderedChoices": [
+      "Portugal, Ireland, Italy, Greece, Spain",
+      "Poland, Iceland, Italy, Greece, Serbia",
+      "Poland, Iceland, Italy, Greenland, Spain",
+      "Portugal, Iceland, Ireland, Greece, Serbia"
+    ]
+  },
+  {
+    "text": "What is the only state in the United States that does not have a flag in a shape with 4 edges?",
+    "orderedChoices": [
+      "Ohio",
+      "Florida",
+      "Idaho",
+      "New Mexico"
+    ]
+  },
+  {
+    "text": "What is the official language of Costa Rica?",
+    "orderedChoices": [
+      "Spanish",
+      "English",
+      "Portuguese",
+      "Creole"
+    ]
+  },
+  {
+    "text": "Harvard University is located in which city?",
+    "orderedChoices": [
+      "Cambridge",
+      "Providence",
+      "New York",
+      "Washington D.C."
+    ]
+  },
+  {
+    "text": "Which of the following Japanese islands is the biggest?",
+    "orderedChoices": [
+      "Honshu",
+      "Hokkaido",
+      "Shikoku",
+      "Kyushu"
+    ]
+  },
+  {
+    "text": "Which of the following countries has a flag featuring a yellow lion wielding a sword on a dark red background?",
+    "orderedChoices": [
+      "Sri Lanka",
+      "Kiribati",
+      "Scotland",
+      "Bhutan"
+    ]
+  },
+  {
+    "text": "Which ocean borders the west coast of the United States?",
+    "orderedChoices": [
+      "Pacific",
+      "Atlantic",
+      "Indian",
+      "Arctic"
+    ]
+  },
+  {
+    "text": "The Alps are a mountain range on which continent?",
+    "orderedChoices": [
+      "Europe",
+      "North America",
+      "Asia",
+      "Africa"
+    ]
+  },
+  {
+    "text": "What is the largest country in the world ?",
+    "orderedChoices": [
+      "Russian Federation",
+      "China",
+      "Canada",
+      "Brazil"
+    ]
+  },
+  {
+    "text": "Which of the following African countries was most successful in resisting colonization?",
+    "orderedChoices": [
+      "Ethiopia",
+      "Côte d’Ivoire",
+      "Congo",
+      "Namibia"
+    ]
+  },
+  {
+    "text": "The original Roman alphabet lacked the following letters EXCEPT:",
+    "orderedChoices": [
+      "X",
+      "W",
+      "U",
+      "J"
+    ]
+  },
+  {
+    "text": "What was Manfred von Richthofen's nickname?",
+    "orderedChoices": [
+      "The Red Baron",
+      "The High Flying Ace",
+      "The Blue Serpent ",
+      "The Germany Gunner"
+    ]
+  },
+  {
+    "text": "When did the Battle of the Somme begin?",
+    "orderedChoices": [
+      "July 1st, 1916",
+      "August 1st, 1916",
+      "July 2nd, 1916",
+      "June 30th, 1916"
+    ]
+  },
+  {
+    "text": "In 1939, Britain and France declared war on Germany after it invaded which country?",
+    "orderedChoices": [
+      "Poland",
+      "Czechoslovakia",
+      "Austria",
+      "Hungary"
+    ]
+  },
+  {
+    "text": "What is the historical name of Sri Lanka?",
+    "orderedChoices": [
+      "Ceylon",
+      "Myanmar",
+      "Colombo",
+      "Badulla"
+    ]
+  },
+  {
+    "text": "In 1453, which important city fell?",
+    "orderedChoices": [
+      "Constantinople",
+      "Rome",
+      "Hamburg",
+      "Athens"
+    ]
+  },
+  {
+    "text": "On what street did the 1666 Great Fire of London start?",
+    "orderedChoices": [
+      "Pudding Lane",
+      "Baker Street",
+      "Houses of Parliament",
+      "St Paul's Cathedral"
+    ]
+  },
+  {
+    "text": "Abolitionist John Brown raided the arsenal in which Virginia Town?",
+    "orderedChoices": [
+      "Harper's Ferry",
+      "Richmond",
+      "Harrisonburg",
+      "Martinsburg"
+    ]
+  },
+  {
+    "text": "The Ottoman Empire was dissolved after their loss in which war?",
+    "orderedChoices": [
+      "World War I",
+      "Crimean War",
+      "Serbian Revolution",
+      "Second Balkan War"
+    ]
+  },
+  {
+    "text": "What is the best selling album of all time from 1976 to 2018?",
+    "orderedChoices": [
+      "Thriller",
+      "Back in Black",
+      "Abbey Road",
+      "The Dark Side of the Moon"
+    ]
+  },
+  {
+    "text": "Who is the lead singer of the band Coldplay?",
+    "orderedChoices": [
+      "Chris Martin",
+      "Chris Isaak",
+      "Chris Wallace",
+      "Chris Connelly"
+    ]
+  },
+  {
+    "text": "Which member of the Foo Fighters was previously the drummer for Nirvana?",
+    "orderedChoices": [
+      "Dave Grohl",
+      "Taylor Hawkins",
+      "Nate Mendel",
+      "Chris Shiflett"
+    ]
+  },
+  {
+    "text": "What is the name of the album released in 2014 by American band Maroon 5?",
+    "orderedChoices": [
+      "V",
+      "X",
+      "III",
+      "IV"
+    ]
+  },
+  {
+    "text": "Which of these songs by Skrillex features Fatman Scoop as a side artist?",
+    "orderedChoices": [
+      "Recess",
+      "All is Fair in Love and Brostep",
+      "Rock N Roll (Will Take You to the Mountain)",
+      "Scary Monsters and Nice Sprites"
+    ]
+  },
+  {
+    "text": "Which brass instrument has the lowest pitch in an orchestra?",
+    "orderedChoices": [
+      "Tuba",
+      "Trumpet",
+      "Saxophone",
+      "Trombone"
+    ]
+  },
+  {
+    "text": "Which one of these songs did the group \"Men At Work\" NOT make?",
+    "orderedChoices": [
+      "Safety Dance",
+      "Down Under",
+      "Who Can It Be Now?",
+      "It's a Mistake"
+    ]
+  },
+  {
+    "text": "Kanye West at 2009 VMA's interrupted which celebrity?",
+    "orderedChoices": [
+      "Taylor Swift",
+      "MF DOOM",
+      "Beyonce",
+      "Beck"
+    ]
+  },
+  {
+    "text": "\"The Singing Cowboy\" Gene Autry is credited with the first recording for all but which classic Christmas jingle?",
+    "orderedChoices": [
+      "White Christmas",
+      "Frosty the Snowman",
+      "Rudolph the Red-Nosed Reindeer",
+      "Here Comes Santa Claus"
+    ]
+  },
+  {
+    "text": "Which former boy-band star released hit solo single \"Angels\" in 1997?",
+    "orderedChoices": [
+      "Robbie Williams",
+      "Justin Timberlake",
+      "Harry Styles",
+      "Gary Barlow"
+    ]
+  },
+  {
+    "text": "Which of the following songs did Elton John perform following Princess Diane's passing?",
+    "orderedChoices": [
+      "Candles in the Wind",
+      "I Guess That's Why They Call It The Blues",
+      "Your Song",
+      "Island Girl"
+    ]
+  },
+  {
+    "text": "Which of the following is not a studio album by the band Pink Floyd?",
+    "orderedChoices": [
+      "Moving Pictures",
+      "The Dark Side of the Moon",
+      "Wish You Were Here",
+      "Animals"
+    ]
+  },
+  {
+    "text": "Which of these are NOT a Men at Work song?",
+    "orderedChoices": [
+      "Basket Case",
+      "Dr. Heckyll and Mr. Jive",
+      "Who Can It Be Now?",
+      "Be Good Johnny"
+    ]
+  },
+  {
+    "text": "Which of the following is not the name of a \"Bond Girl\"? ",
+    "orderedChoices": [
+      "Vanessa Kensington",
+      "Pam Bouvier",
+      "Mary Goodnight",
+      "Wai Lin"
+    ]
+  },
+  {
+    "text": "Which movie released in 2016 features Superman and Batman fighting?",
+    "orderedChoices": [
+      "Batman v Superman: Dawn of Justice",
+      "Batman v Superman: Superapocalypse",
+      "Batman v Superman: Black of Knight",
+      "Batman v Superman: Knightfall"
+    ]
+  },
+  {
+    "text": "Daniel Radcliffe became a global star in the film industry due to his performance in which film franchise?",
+    "orderedChoices": [
+      "Harry Potter",
+      "Ted",
+      "Spy Kids",
+      "Pirates of the Caribbean "
+    ]
+  },
+  {
+    "text": "What name did Tom Hanks give to his volleyball companion in the film `Cast Away`?",
+    "orderedChoices": [
+      "Wilson",
+      "Friday",
+      "Jones",
+      "Billy"
+    ]
+  },
+  {
+    "text": "When was the movie 'Con Air' released?",
+    "orderedChoices": [
+      "1997",
+      "1985",
+      "1999",
+      "1990"
+    ]
+  },
+  {
+    "text": "Who played the female lead in the 1933 film \"King Kong\"?",
+    "orderedChoices": [
+      "Fay Wray",
+      "Jean Harlow",
+      "Vivien Leigh",
+      "Mae West"
+    ]
+  },
+  {
+    "text": "Who starred in the film 1973 movie \"Enter The Dragon\"?",
+    "orderedChoices": [
+      "Bruce Lee",
+      "Jackie Chan",
+      "Jet Li",
+      " Yun-Fat Chow"
+    ]
+  },
+  {
+    "text": "Who directed the movies \"Pulp Fiction\", \"Reservoir Dogs\" and \"Django Unchained\"?",
+    "orderedChoices": [
+      "Quentin Tarantino",
+      "Martin Scorcese",
+      "Steven Spielberg",
+      "James Cameron"
+    ]
+  },
+  {
+    "text": "When does \"Rogue One: A Star Wars Story\" take place chronologically in the series?",
+    "orderedChoices": [
+      "Between Episode 3 and 4",
+      "After Episode 6",
+      "Before Episode 1",
+      "Between Episode 4 and 5"
+    ]
+  },
+  {
+    "text": "In the 2012 film, \"The Lorax\", who is the antagonist?",
+    "orderedChoices": [
+      "Aloysius O'Hare",
+      "Ted Wiggins",
+      "The Once-Ler",
+      "Grammy Norma"
+    ]
+  },
+  {
+    "text": "In the 1992 film \"Army of Darkness\", what name does Ash give to his double-barreled shotgun?",
+    "orderedChoices": [
+      "Boomstick",
+      "Bloomstick",
+      "Blastbranch",
+      "2-Pump Chump"
+    ]
+  },
+  {
+    "text": "In Big Hero 6, what fictional city is the Big Hero 6 from?",
+    "orderedChoices": [
+      "San Fransokyo",
+      "San Tokyo",
+      "Tokysisco",
+      "Sankyo"
+    ]
+  },
+  {
+    "text": "Where does the original Friday The 13th movie take place?",
+    "orderedChoices": [
+      "Camp Crystal Lake",
+      "Packanack",
+      "Higgins Haven",
+      "Camp Forest Green"
+    ]
+  },
+  {
+    "text": "Which city is the capital of the United States of America?",
+    "orderedChoices": [
+      "Washington D.C",
+      "Seattle",
+      "Albany",
+      "Los Angeles"
+    ]
+  },
+  {
+    "text": "What is the capital of the American state of Arizona?",
+    "orderedChoices": [
+      "Phoenix",
+      "Montgomery",
+      "Tallahassee",
+      "Raleigh"
+    ]
+  },
+  {
+    "text": "What state is the largest state of the United States of America?",
+    "orderedChoices": [
+      "Alaska",
+      "California",
+      "Texas",
+      "Washington"
+    ]
+  },
+  {
+    "text": "What is the capital of Indonesia?",
+    "orderedChoices": [
+      "Jakarta",
+      "Bandung",
+      "Medan",
+      "Palembang"
+    ]
+  },
+  {
+    "text": "What is the capital of Jamaica?",
+    "orderedChoices": [
+      "Kingston",
+      "San Juan",
+      "Port-au-Prince",
+      "Bridgetown"
+    ]
+  },
+  {
+    "text": "Which US state has the highest population?",
+    "orderedChoices": [
+      "California",
+      "New York",
+      "Texas",
+      "Florida"
+    ]
+  },
+  {
+    "text": "How many countries does the United States share a land border with?",
+    "orderedChoices": [
+      "2",
+      "1",
+      "3",
+      "4"
+    ]
+  },
+  {
+    "text": "What is the Capital of the United States?",
+    "orderedChoices": [
+      "Washington, D.C.",
+      "Los Angelas, CA",
+      "New York City, NY",
+      "Houston, TX"
+    ]
+  },
+  {
+    "text": "What is the name of the peninsula containing Spain and Portugal?",
+    "orderedChoices": [
+      "Iberian Peninsula",
+      "European Peninsula",
+      "Peloponnesian Peninsula",
+      "Scandinavian Peninsula"
+    ]
+  },
+  {
+    "text": "What is the capital of the US State of New York?",
+    "orderedChoices": [
+      "Albany",
+      "Buffalo",
+      "New York",
+      "Rochester"
+    ]
+  },
+  {
+    "text": "What is Canada's smallest province?",
+    "orderedChoices": [
+      "Prince Edward Island",
+      "New Brunswick",
+      "Nova Scotia",
+      "Yukon"
+    ]
+  },
+  {
+    "text": "How many stars are featured on New Zealand's flag?",
+    "orderedChoices": [
+      "4",
+      "5",
+      "2",
+      "0"
+    ]
+  },
+  {
+    "text": "What is the name of New Zealand's indigenous people?",
+    "orderedChoices": [
+      "Maori",
+      "Vikings",
+      "Polynesians",
+      "Samoans"
+    ]
+  },
+  {
+    "text": "What is the capital of Spain?",
+    "orderedChoices": [
+      "Madrid",
+      "Barcelona",
+      "Sevilla",
+      "Toledo"
+    ]
+  },
+  {
+    "text": "What is the largest country in the world?",
+    "orderedChoices": [
+      "Russia",
+      "Canada",
+      "China",
+      "United States"
+    ]
+  },
+  {
+    "text": "Where would you find the \"Spanish Steps\"?",
+    "orderedChoices": [
+      "Rome, Italy",
+      "Barcelona, Spain",
+      "Berlin, Germany",
+      "London, England"
+    ]
+  },
+  {
+    "text": "What is Laos?",
+    "orderedChoices": [
+      "Country",
+      "Region",
+      "River",
+      "City"
+    ]
+  },
+  {
+    "text": "What was William Frederick Cody better known as?",
+    "orderedChoices": [
+      "Buffalo Bill",
+      "Billy the Kid",
+      "Wild Bill Hickok",
+      "Pawnee Bill"
+    ]
+  },
+  {
+    "text": "In 1720, England was in massive debt, and became in involved in the South Sea Bubble. Who was the main mastermind behind it?",
+    "orderedChoices": [
+      "John Blunt",
+      "Daniel Defoe",
+      "Robert Harley",
+      "John Churchill"
+    ]
+  },
+  {
+    "text": "When was Google founded?",
+    "orderedChoices": [
+      "September 4, 1998",
+      "October 9, 1997",
+      "December 12, 1989",
+      "Feburary 7th, 2000"
+    ]
+  },
+  {
+    "text": "How long did World War II last?",
+    "orderedChoices": [
+      "6 years",
+      "4 years",
+      "5 years",
+      "7 years"
+    ]
+  },
+  {
+    "text": "Which of the following countries was not an axis power during World War II?",
+    "orderedChoices": [
+      " Soviet Union",
+      "Italy",
+      "Germany",
+      "Japan"
+    ]
+  },
+  {
+    "text": "Who was among those killed in the 2010 Smolensk, Russia plane crash tragedy?",
+    "orderedChoices": [
+      "The Polish President",
+      "Pope John Paul II",
+      "Bang-Ding Ow",
+      "Albert Putin"
+    ]
+  },
+  {
+    "text": "To what political party did Abraham Lincoln belong when elected POTUS?",
+    "orderedChoices": [
+      "Republican",
+      "Democrat",
+      "Independent",
+      "Whig"
+    ]
+  },
+  {
+    "text": "These two countries held a commonwealth from the 16th to 18th century.",
+    "orderedChoices": [
+      "Poland and Lithuania",
+      "Hutu and Rwanda",
+      "North Korea and South Korea",
+      "Bangladesh and Bhutan"
+    ]
+  },
+  {
+    "text": "How old was Adolf Hitler when he died?",
+    "orderedChoices": [
+      "56",
+      "43",
+      "65",
+      "47"
+    ]
+  },
+  {
+    "text": "Who led the Communist Revolution of Russia?",
+    "orderedChoices": [
+      "Vladimir Lenin",
+      "Joseph Stalin",
+      "Vladimir Putin",
+      "Mikhail Gorbachev"
+    ]
+  },
+  {
+    "text": "Which famous military commander marched an army, which included war elephants, over the Alps during the Second Punic War?",
+    "orderedChoices": [
+      "Hannibal",
+      "Garmanicus",
+      "Alexander the Great",
+      "Tiberius"
+    ]
+  },
+  {
+    "text": "Which of the following was not one of \"The Magnificent Seven\"?",
+    "orderedChoices": [
+      "Clint Eastwood",
+      "Steve McQueen",
+      "Charles Bronson",
+      "Robert Vaughn"
+    ]
+  },
+  {
+    "text": "Which animated movie was first to feature a celebrity as a voice actor?",
+    "orderedChoices": [
+      "Aladdin",
+      "Toy Story",
+      "James and the Giant Peach",
+      "The Hunchback of Notre Dame"
+    ]
+  },
+  {
+    "text": "Which actress danced the twist with John Travolta in 'Pulp Fiction'?",
+    "orderedChoices": [
+      "Uma Thurman",
+      "Kathy Griffin",
+      "Pam Grier",
+      "Bridget Fonda"
+    ]
+  },
+  {
+    "text": "Who directed the 2015 movie \"The Revenant\"?",
+    "orderedChoices": [
+      "Alejandro G. Iñárritu",
+      "Christopher Nolan",
+      "David Fincher",
+      "Wes Anderson"
+    ]
+  },
+  {
+    "text": "This movie contains the quote, \"I feel the need ... the need for speed!\"",
+    "orderedChoices": [
+      "Top Gun",
+      "Days of Thunder",
+      "The Color of Money",
+      "Cocktail"
+    ]
+  },
+  {
+    "text": "What is the orange and white bot's name in \"Star Wars: The Force Awakens\"?",
+    "orderedChoices": [
+      "BB-8",
+      "BB-3",
+      "AA-A",
+      "R2-D2"
+    ]
+  },
+  {
+    "text": "Which of these actors/actresses is NOT a part of the cast for the 2016 movie \"Suicide Squad\"?",
+    "orderedChoices": [
+      "Scarlett Johansson",
+      "Jared Leto",
+      "Will Smith",
+      "Margot Robbie"
+    ]
+  },
+  {
+    "text": "Which movie includes a giant bunny-like spirit who has magic powers including growing trees?",
+    "orderedChoices": [
+      "My Neighbor Totoro",
+      "Hop",
+      "Rise of the Guardians",
+      "Alice in Wonderland"
+    ]
+  },
+  {
+    "text": "Which actor plays Obi-Wan Kenobi in Star Wars Episodes I-lll?",
+    "orderedChoices": [
+      "Ewan McGregor",
+      "Alec Guinness",
+      "Hayden Christensen",
+      "Liam Neeson"
+    ]
+  },
+  {
+    "text": "The 2002 film \"28 Days Later\" is mainly set in which European country?",
+    "orderedChoices": [
+      "United Kingdom",
+      "France",
+      "Italy",
+      "Germany"
+    ]
+  },
+  {
+    "text": "At the end of the 2001 film \"Rat Race\", whose concert do the contestants crash?",
+    "orderedChoices": [
+      "Smash Mouth",
+      "Bowling for Soup",
+      "Sum 41",
+      "Linkin Park"
+    ]
+  },
+  {
+    "text": "What is the name of the fictional retro-mod band starring Austin Powers as the lead vocalist?",
+    "orderedChoices": [
+      "Ming Tea",
+      "Cough Fi",
+      "Spear Mint",
+      "Mister E"
+    ]
+  },
+  {
+    "text": "Who directed the Kill Bill movies?",
+    "orderedChoices": [
+      "Quentin Tarantino",
+      "Arnold Schwarzenegger",
+      "David Lean",
+      "Stanley Kubrick"
+    ]
+  },
+  {
+    "text": "In \"ALF\", what was ALF's real name?",
+    "orderedChoices": [
+      "Gordon Shumway",
+      "Gordon Milipp",
+      "Gordon Foster",
+      "Gordon von Gam"
+    ]
+  },
+  {
+    "text": "Which of the following actors has only been in a Quentin Tarantino directed film once?",
+    "orderedChoices": [
+      "John Travolta",
+      "Christoph Waltz",
+      "Harvey Keitel",
+      "Samuel L. Jackson"
+    ]
+  },
+  {
+    "text": "Who plays Jack Burton in the movie \"Big Trouble in Little China?\"",
+    "orderedChoices": [
+      "Kurt Russell",
+      "Patrick Swayze",
+      "John Cusack",
+      "Harrison Ford"
+    ]
+  },
+  {
+    "text": "The 1996 film 'Fargo' is primarily set in which US state?",
+    "orderedChoices": [
+      "Minnesota",
+      "North Dakota",
+      "South Dakota",
+      "Wisconsin"
+    ]
+  },
+  {
+    "text": "Which of these films is NOT set in Los Angeles?",
+    "orderedChoices": [
+      "RoboCop",
+      "Blade Runner",
+      "The Terminator",
+      "Predator 2"
+    ]
+  },
+  {
+    "text": "In the  Rossini opera, what was the name of 'The Barber of Seville'?",
+    "orderedChoices": [
+      "Figaro",
+      "Angelo",
+      "Fernando",
+      "Dave"
+    ]
+  },
+  {
+    "text": "Which Canadian reggae musician had a 1993 hit with the song 'Informer'?",
+    "orderedChoices": [
+      "Snow",
+      "Rain",
+      "Hail",
+      "Sleet"
+    ]
+  },
+  {
+    "text": "\"Some people call me the space cowboy\" is the first line from what song?",
+    "orderedChoices": [
+      "The Joker",
+      "Fandango",
+      "Take The Money and Run",
+      "Fly Like an Eagle"
+    ]
+  },
+  {
+    "text": "Who is the frontman of the band 30 Seconds to Mars?",
+    "orderedChoices": [
+      "Jared Leto",
+      "Gerard Way",
+      "Matthew Bellamy",
+      "Mike Shinoda"
+    ]
+  },
+  {
+    "text": "In Mean Girls, who has breasts that tell when it's raining?",
+    "orderedChoices": [
+      "Karen Smith",
+      "Gretchen Weiners",
+      "Janice Ian",
+      "Cady Heron"
+    ]
+  },
+  {
+    "text": "Which Beatles album does NOT feature any of the band members on it's cover?",
+    "orderedChoices": [
+      "The Beatles (White Album)",
+      "Rubber Soul",
+      "Abbey Road",
+      "Magical Mystery Tour"
+    ]
+  },
+  {
+    "text": "Which of these is the name of a song by Tears for Fears?",
+    "orderedChoices": [
+      "Shout",
+      "Scream",
+      "Yell",
+      "Shriek"
+    ]
+  },
+  {
+    "text": "Which Nirvana album had a naked baby on the cover?",
+    "orderedChoices": [
+      "Nevermind",
+      "Bleach",
+      "In Utero",
+      "Incesticide"
+    ]
+  },
+  {
+    "text": "What album did The Lumineers release in 2016?",
+    "orderedChoices": [
+      "Cleopatra",
+      "Winter",
+      "The Lumineers",
+      "Tracks From The Attic"
+    ]
+  },
+  {
+    "text": "When was Gangnam Style uploaded to YouTube?",
+    "orderedChoices": [
+      "2012",
+      "2013",
+      "2014",
+      "2011"
+    ]
+  },
+  {
+    "text": "Which classical composer wrote the \"Moonlight Sonata\"?",
+    "orderedChoices": [
+      "Ludvig Van Beethoven",
+      "Chief Keef",
+      "Wolfgang Amadeus Mozart",
+      "Johannes Brahms"
+    ]
+  },
+  {
+    "text": "The band Muse released their first album, Showbiz, in what year?",
+    "orderedChoices": [
+      "1999",
+      "1998",
+      "2000",
+      "2001"
+    ]
+  },
+  {
+    "text": "What is the frontman's name of the metal band Megadeth?",
+    "orderedChoices": [
+      "Dave Mustaine",
+      "Rob Halford",
+      "Vince Neil",
+      "James Hetfield"
+    ]
+  },
+  {
+    "text": "\"Doctor Jones\", \"Turn Back Time\" and \"Barbie Girl\" were UK number ones for which Eurodance group?",
+    "orderedChoices": [
+      "Aqua",
+      "Vengaboys",
+      "Eiffel 65",
+      "Sash!"
+    ]
+  },
+  {
+    "text": "Whose albums included \"Back in Black\" and \"Ballbreaker\"?",
+    "orderedChoices": [
+      "AC/DC",
+      "Iron Maiden",
+      "Black Sabbath",
+      "Metallica"
+    ]
+  },
+  {
+    "text": "Who is the lead singer of Foo Fighters?",
+    "orderedChoices": [
+      "Dave Grohl",
+      "Dave Mustaine",
+      "James Hetfield",
+      "Little Red Riding Hood"
+    ]
+  },
+  {
+    "text": "Which year was the album \"Year of the Snitch\" by Death Grips released?",
+    "orderedChoices": [
+      "2018",
+      "2013",
+      "2017",
+      "2011"
+    ]
+  },
+  {
+    "text": "What country is the second largest in the world by area?",
+    "orderedChoices": [
+      "Canada",
+      "Russia",
+      "China",
+      "United States of America"
+    ]
+  },
+  {
+    "text": "How many federal states does Germany have?",
+    "orderedChoices": [
+      "16",
+      "13",
+      "32",
+      "25"
+    ]
+  },
+  {
+    "text": "Which Russian oblast forms a border with Poland?",
+    "orderedChoices": [
+      "Kaliningrad",
+      "Samara",
+      "Nizhny Novgorod",
+      "Omsk"
+    ]
+  },
+  {
+    "text": "What is the 15th letter of the Greek alphabet?",
+    "orderedChoices": [
+      "Omicron (Ο)",
+      "Sigma (Σ)",
+      "Pi (Π)",
+      "Nu (Ν)"
+    ]
+  },
+  {
+    "text": "Which of the following Arab countries does NOT have a flag containing only Pan-Arab colours?",
+    "orderedChoices": [
+      "Qatar",
+      "Kuwait",
+      "United Arab Emirates",
+      "Jordan"
+    ]
+  },
+  {
+    "text": "What country has a horizontal bicolor red and white flag?",
+    "orderedChoices": [
+      "Monaco",
+      "Bahrain",
+      "Malta",
+      "Liechenstein"
+    ]
+  },
+  {
+    "text": "Which of these is the name of the largest city in the US state Tennessee?",
+    "orderedChoices": [
+      "Memphis",
+      "Thebes",
+      "Alexandria",
+      "Luxor"
+    ]
+  },
+  {
+    "text": "Which UK country features a dragon on their flag?",
+    "orderedChoices": [
+      "Wales",
+      "England",
+      "North Ireland",
+      "Scotland"
+    ]
+  },
+  {
+    "text": "Which country is the home of the largest Japanese population outside of Japan?",
+    "orderedChoices": [
+      "Brazil",
+      "China",
+      "Russia",
+      "The United States"
+    ]
+  },
+  {
+    "text": "What is the capital of India?",
+    "orderedChoices": [
+      "New Delhi",
+      "Bejing",
+      "Montreal",
+      "Tithi"
+    ]
+  },
+  {
+    "text": "The longest shared border in the world can be found between which two nations?",
+    "orderedChoices": [
+      "Canada and the United States",
+      "Chile and Argentina",
+      "Russia and China",
+      "India and Pakistan"
+    ]
+  },
+  {
+    "text": "Who discovered Penicillin?",
+    "orderedChoices": [
+      "Alexander Flemming",
+      "Marie Curie",
+      "Alfred Nobel",
+      "Louis Pasteur"
+    ]
+  },
+  {
+    "text": "During WWII, in 1945, the United States dropped atomic bombs on the two Japanese cities of Hiroshima and what other city?",
+    "orderedChoices": [
+      "Nagasaki",
+      "Kawasaki",
+      "Tokyo",
+      "Kagoshima"
+    ]
+  },
+  {
+    "text": "Which modern day country is the region that was known as Phrygia in ancient times?",
+    "orderedChoices": [
+      "Turkey",
+      "Syria",
+      "Greece",
+      "Egypt"
+    ]
+  },
+  {
+    "text": "In which year did the Invasion of Kuwait by Iraq occur?",
+    "orderedChoices": [
+      "1990",
+      "1992",
+      "1988",
+      "1986"
+    ]
+  },
+  {
+    "text": "What was the first sport to have been played on the moon?",
+    "orderedChoices": [
+      "Golf",
+      "Football",
+      "Tennis",
+      "Soccer"
+    ]
+  },
+  {
+    "text": "Who was the first prime minister of Canada?",
+    "orderedChoices": [
+      "John Macdonald",
+      "John Abbott",
+      "Alexander Mackenzie",
+      "Robert Borden"
+    ]
+  },
+  {
+    "text": "Which modern country is known as \"The Graveyard of Empires\"?",
+    "orderedChoices": [
+      "Afghanistan",
+      "China",
+      "Iraq",
+      "Russia"
+    ]
+  },
+  {
+    "text": "Which country was Josef Stalin born in?",
+    "orderedChoices": [
+      "Georgia",
+      "Russia",
+      "Germany",
+      "Poland"
+    ]
+  },
+  {
+    "text": "What does the United States of America celebrate during the 4th of July?",
+    "orderedChoices": [
+      "The signing of the Declaration of Independence",
+      "The anniversary of the Battle of Gettysburg",
+      "The crossing of the Delaware River",
+      "The ratification of the Constitution"
+    ]
+  },
+  {
+    "text": "Who rode on horseback to warn the Minutemen that the British were coming during the U.S. Revolutionary War?",
+    "orderedChoices": [
+      "Paul Revere",
+      "Thomas Paine",
+      "Henry Longfellow",
+      "Nathan Hale"
+    ]
+  },
+  {
+    "text": "Which rap group released the album \"Straight Outta Compton\"?",
+    "orderedChoices": [
+      "N.W.A",
+      "Wu-Tang Clan",
+      "Run-D.M.C.",
+      "Beastie Boys"
+    ]
+  },
+  {
+    "text": "The Red Hot Chili Pepper song \"Give It Away\" is from what album?",
+    "orderedChoices": [
+      "Blood Sugar Sex Magik",
+      "One Hot Minute",
+      "By the Way",
+      "Stadium Arcadium"
+    ]
+  },
+  {
+    "text": "How many studio albums have the duo Daft Punk released?",
+    "orderedChoices": [
+      "4",
+      "1",
+      "5",
+      "2"
+    ]
+  },
+  {
+    "text": "Whose signature guitar technique is called the \"windmill\"?",
+    "orderedChoices": [
+      "Pete Townshend",
+      "Jimmy Page",
+      "Eddie Van Halen",
+      "Jimi Hendrix"
+    ]
+  },
+  {
+    "text": "What was the name of singer Frank Ocean's second studio album, which was released on August 20, 2016?",
+    "orderedChoices": [
+      "Blonde",
+      "Brunette",
+      "Black",
+      "Burgundy"
+    ]
+  },
+  {
+    "text": "Brian May was the guitarist for which band?",
+    "orderedChoices": [
+      "Queen",
+      "Pink Floyd",
+      "Rolling Stones",
+      "The Doors"
+    ]
+  },
+  {
+    "text": "What is the stage name of English female rapper Mathangi Arulpragasam, who is known for the song \"Paper Planes\"?",
+    "orderedChoices": [
+      "M.I.A.",
+      "K.I.A.",
+      "C.I.A.",
+      "A.I.A."
+    ]
+  },
+  {
+    "text": "According to the American rapper Nelly, what should you do when its hot in here?",
+    "orderedChoices": [
+      "Take off all your clothes",
+      "Take a cool shower",
+      "Drink some water",
+      "Go skinny dipping"
+    ]
+  },
+  {
+    "text": "From which country did the song \"Gangnam Style\" originate from?",
+    "orderedChoices": [
+      "South Korea",
+      "Japan",
+      "North Korea",
+      "China"
+    ]
+  },
+  {
+    "text": "Which Disney character sings the song \"A Dream is a Wish Your Heart Makes\"?",
+    "orderedChoices": [
+      "Cinderella",
+      "Belle",
+      "Snow White",
+      "Pocahontas"
+    ]
+  },
+  {
+    "text": "What collaborative album was released by Kanye West and Jay-Z in 2011?",
+    "orderedChoices": [
+      "Watch the Throne",
+      "Distant Relatives",
+      "What a Time to be Alive",
+      "Unfinished Business"
+    ]
+  },
+  {
+    "text": "In 2006, which band released their debut album \"A Fever You Can't Sweat Out\"?",
+    "orderedChoices": [
+      "Panic! At the Disco",
+      "Twenty One Pilots",
+      "My Chemical Romance",
+      "Fall Out Boy"
+    ]
+  },
+  {
+    "text": "What album did Bon Iver release in 2016?",
+    "orderedChoices": [
+      "22, A Million",
+      "Bon Iver, Bon Iver",
+      "Blood Bank EP",
+      "For Emma, Forever Ago"
+    ]
+  },
+  {
+    "text": "Which group performs the song \"Crash into Me\"?",
+    "orderedChoices": [
+      "Dave Matthews Band",
+      "Phish",
+      "The Grateful Dead",
+      "Destiny's Child"
+    ]
+  },
+  {
+    "text": "The \"British Invasion\" was a cultural phenomenon in music where British boy bands became popular in the USA in what decade?",
+    "orderedChoices": [
+      "60's",
+      "50's",
+      "40's",
+      "30's"
+    ]
+  },
+  {
+    "text": "What Led Zeppelin album contains \"Stairway to Heaven\"?",
+    "orderedChoices": [
+      "Led Zeppelin IV",
+      "Houses of the Holy",
+      "Physical Graffiti",
+      "Led Zeppelin III"
+    ]
+  },
+  {
+    "text": "King Henry VIII was the second monarch of which European royal house?",
+    "orderedChoices": [
+      "Tudor",
+      "York",
+      "Stuart",
+      "Lancaster"
+    ]
+  },
+  {
+    "text": "Which German field marshal was known as the `Desert Fox`?",
+    "orderedChoices": [
+      "Erwin Rommel",
+      "Ernst Busch",
+      "Wolfram Freiherr von Richthofen",
+      "Wilhelm List"
+    ]
+  },
+  {
+    "text": "The idea of Socialism was articulated and advanced by whom?",
+    "orderedChoices": [
+      "Karl Marx",
+      "Vladimir Lenin",
+      "Joseph Stalin",
+      "Vladimir Putin"
+    ]
+  },
+  {
+    "text": "In what year did the Wall Street Crash take place?",
+    "orderedChoices": [
+      "1929",
+      "1932",
+      "1930",
+      "1925"
+    ]
+  },
+  {
+    "text": "Which famous world leader is famed for the saying, \"Let them eat cake\", yet is rumored that he/she never said it at all?",
+    "orderedChoices": [
+      "Marie Antoinette",
+      "Czar Nicholas II",
+      "Elizabeth I",
+      "Henry VIII"
+    ]
+  },
+  {
+    "text": "Who was the Prime Minister of Japan when Japan declared war on the US?",
+    "orderedChoices": [
+      "Hideki Tojo",
+      "Michinomiya Hirohito",
+      "Isoroku Yamamoto",
+      "Fumimaro Konoe"
+    ]
+  },
+  {
+    "text": "In what year did the Great Northern War, between Russia and Sweden, end?",
+    "orderedChoices": [
+      "1721",
+      "1726",
+      "1727",
+      "1724"
+    ]
+  },
+  {
+    "text": "What is not a wind instrument?",
+    "orderedChoices": [
+      "Viola",
+      "Oboe",
+      "Trombone",
+      "Duduk"
+    ]
+  },
+  {
+    "text": "Who had a 1969 top 5 hit with the song,  'A Boy Named Sue'?",
+    "orderedChoices": [
+      "Johnny Cash",
+      "Bob Dylan",
+      "Willie Nelson",
+      "Kris Kristofferson"
+    ]
+  },
+  {
+    "text": "Where does the Mac part of the name Fleetwood Mac come from?",
+    "orderedChoices": [
+      "John McVie",
+      "Christine McVie",
+      "Mac McAnally",
+      "David Tennant"
+    ]
+  },
+  {
+    "text": "The \"K\" in \"K-Pop\" stands for which word?",
+    "orderedChoices": [
+      "Korean",
+      "Kenyan",
+      "Kazakhstan",
+      "Kuwaiti"
+    ]
+  },
+  {
+    "text": "In an orchestra, what is the lowest member of the brass family?",
+    "orderedChoices": [
+      "Tuba",
+      "Trombone",
+      "Contrabass",
+      "Bassoon"
+    ]
+  },
+  {
+    "text": "Who was featured in the song \"Words\" by Feint? ",
+    "orderedChoices": [
+      "Laura Brehm",
+      "Anna Yvette ",
+      "Danyka Nadeau",
+      "Veela"
+    ]
+  },
+  {
+    "text": "Which song on Daft Punk's \"Random Access Memories\" features Pharrell Williams?",
+    "orderedChoices": [
+      "Get Lucky",
+      "Doin' It Right",
+      "Instant Crush",
+      "The Game of Love"
+    ]
+  },
+  {
+    "text": "What 1970's American ballad referred to the 1959 plane crash as the \"the day the music died\"?",
+    "orderedChoices": [
+      "American Pie",
+      "Kentucky Rain",
+      "I Will Always Love You",
+      "Rock 'n' Roll Suicide"
+    ]
+  },
+  {
+    "text": "Who was \"Kung Fu Fighting\" in 1974?",
+    "orderedChoices": [
+      "Carl Douglas",
+      "The Bee Gees",
+      "Heatwave",
+      "Kool & the Gang"
+    ]
+  },
+  {
+    "text": "According to the International System of Units, how many bytes are in a kilobyte of RAM?",
+    "orderedChoices": [
+      "1000",
+      "512",
+      "1024",
+      "500"
+    ]
+  },
+  {
+    "text": "What does GHz stand for?",
+    "orderedChoices": [
+      "Gigahertz",
+      "Gigahotz",
+      "Gigahetz",
+      "Gigahatz"
+    ]
+  },
+  {
+    "text": "HTML is what type of language?",
+    "orderedChoices": [
+      "Markup Language",
+      "Macro Language",
+      "Programming Language",
+      "Scripting Language"
+    ]
+  },
+  {
+    "text": "What amount of bits commonly equals one byte?",
+    "orderedChoices": [
+      "8",
+      "1",
+      "2",
+      "64"
+    ]
+  },
+  {
+    "text": "In the programming language Java, which of these keywords would you put on a variable to make sure it doesn't get modified?",
+    "orderedChoices": [
+      "Final",
+      "Static",
+      "Private",
+      "Public"
+    ]
+  },
+  {
+    "text": "What does the Prt Sc button do?",
+    "orderedChoices": [
+      "Captures what's on the screen and copies it to your clipboard",
+      "Nothing",
+      "Saves a .png file of what's on the screen in your screenshots folder in photos",
+      "Closes all windows"
+    ]
+  },
+  {
+    "text": "The series of the Intel HD graphics generation succeeding that of the 5000 and 6000 series (Broadwell) is called:",
+    "orderedChoices": [
+      "HD Graphics 500",
+      "HD Graphics 700 ",
+      "HD Graphics 600",
+      "HD Graphics 7000"
+    ]
+  },
+  {
+    "text": "What is the most preferred image format used for logos in the Wikimedia database?",
+    "orderedChoices": [
+      ".svg",
+      ".png",
+      ".jpeg",
+      ".gif"
+    ]
+  },
+  {
+    "text": "What is the domain name for the country Tuvalu?",
+    "orderedChoices": [
+      ".tv",
+      ".tu",
+      ".tt",
+      ".tl"
+    ]
+  },
+  {
+    "text": "How many kilobytes in one gigabyte (in decimal)?",
+    "orderedChoices": [
+      "1000000",
+      "1024",
+      "1000",
+      "1048576"
+    ]
+  },
+  {
+    "text": "On Twitter, what was the original character limit for a Tweet?",
+    "orderedChoices": [
+      "140",
+      "120",
+      "160",
+      "100"
+    ]
+  },
+  {
+    "text": "Which computer language would you associate Django framework with?",
+    "orderedChoices": [
+      "Python",
+      "C#",
+      "C++",
+      "Java"
+    ]
+  },
+  {
+    "text": "How many values can a single byte represent?",
+    "orderedChoices": [
+      "256",
+      "8",
+      "1",
+      "1024"
+    ]
+  },
+  {
+    "text": "Which programming language shares its name with an island in Indonesia?",
+    "orderedChoices": [
+      "Java",
+      "Python",
+      "C",
+      "Jakarta"
+    ]
+  },
+  {
+    "text": "How long is an IPv6 address?",
+    "orderedChoices": [
+      "128 bits",
+      "32 bits",
+      "64 bits",
+      "128 bytes"
+    ]
+  },
+  {
+    "text": "In computing, what does MIDI stand for?",
+    "orderedChoices": [
+      "Musical Instrument Digital Interface",
+      "Musical Interface of Digital Instruments",
+      "Modular Interface of Digital Instruments",
+      "Musical Instrument Data Interface"
+    ]
+  },
+  {
+    "text": "In computing, what does LAN stand for?",
+    "orderedChoices": [
+      "Local Area Network",
+      "Long Antenna Node",
+      "Light Access Node",
+      "Land Address Navigation"
+    ]
+  },
+  {
+    "text": "What does the computer software acronym JVM stand for?",
+    "orderedChoices": [
+      "Java Virtual Machine",
+      "Java Vendor Machine",
+      "Java Visual Machine",
+      "Just Virtual Machine"
+    ]
+  },
+  {
+    "text": "Which of the following bones is not in the leg?",
+    "orderedChoices": [
+      "Radius",
+      "Patella",
+      "Tibia",
+      "Fibula "
+    ]
+  },
+  {
+    "text": "What name is given to all baby marsupials?",
+    "orderedChoices": [
+      "Joey",
+      "Calf",
+      "Pup",
+      "Cub"
+    ]
+  },
+  {
+    "text": "What is the \"powerhouse\" of the Eukaryotic animal cell?",
+    "orderedChoices": [
+      "Mitochondria",
+      "Nucleus",
+      "Chloroplast",
+      "Endoplasmic Reticulum"
+    ]
+  },
+  {
+    "text": "What is the hottest planet in the Solar System?",
+    "orderedChoices": [
+      "Venus",
+      "Mars",
+      "Mercury",
+      "Jupiter"
+    ]
+  },
+  {
+    "text": "Alzheimer's disease primarily affects which part of the human body?",
+    "orderedChoices": [
+      "Brain",
+      "Lungs",
+      "Skin",
+      "Heart"
+    ]
+  },
+  {
+    "text": "The human heart has how many chambers?",
+    "orderedChoices": [
+      "4",
+      "2",
+      "6",
+      "3"
+    ]
+  },
+  {
+    "text": "Human cells typically have how many copies of each gene?",
+    "orderedChoices": [
+      "2",
+      "1",
+      "4",
+      "3"
+    ]
+  },
+  {
+    "text": "Which element has the highest melting point?",
+    "orderedChoices": [
+      "Carbon",
+      "Tungsten",
+      "Platinum",
+      "Osmium"
+    ]
+  },
+  {
+    "text": "What is the speed of light in a vacuum?",
+    "orderedChoices": [
+      "299,792,458 m/s",
+      "50,461 m/s",
+      "308,215,043 m/s",
+      "751,665,014,151 m/s"
+    ]
+  },
+  {
+    "text": "What is the official name of the star located closest to the North Celestial Pole?",
+    "orderedChoices": [
+      "Polaris",
+      "Eridanus",
+      "Gamma Cephei",
+      "Iota Cephei"
+    ]
+  },
+  {
+    "text": "Which of the following sports is not part of the triathlon?",
+    "orderedChoices": [
+      "Horse-Riding",
+      "Cycling",
+      "Swimming",
+      "Running"
+    ]
+  },
+  {
+    "text": "In what sport is a \"shuttlecock\" used?",
+    "orderedChoices": [
+      "Badminton",
+      "Table Tennis",
+      "Rugby",
+      "Cricket"
+    ]
+  },
+  {
+    "text": "Which team won the 2015-16 English Premier League?",
+    "orderedChoices": [
+      "Leicester City",
+      "Liverpool",
+      "Cheslea",
+      "Manchester United"
+    ]
+  },
+  {
+    "text": "Which country has hosted the 2018 FIFA World Cup?",
+    "orderedChoices": [
+      "Russia",
+      "Germany",
+      "United States",
+      "Saudi Arabia"
+    ]
+  },
+  {
+    "text": "Who won the 2015 Formula 1 World Championship?",
+    "orderedChoices": [
+      "Lewis Hamilton",
+      "Nico Rosberg",
+      "Sebastian Vettel",
+      "Jenson Button"
+    ]
+  },
+  {
+    "text": "Which driver has been the Formula 1 world champion for a record 7 times?",
+    "orderedChoices": [
+      "Michael Schumacher",
+      "Ayrton Senna",
+      "Fernando Alonso",
+      "Jim Clark"
+    ]
+  },
+  {
+    "text": "What was the final score of the Germany vs. Brazil 2014 FIFA World Cup match?",
+    "orderedChoices": [
+      "7 - 1",
+      "0 - 1",
+      "3 - 4",
+      "16 - 0"
+    ]
+  },
+  {
+    "text": "Who won the 2016 Formula 1 World Driver's Championship?",
+    "orderedChoices": [
+      "Nico Rosberg",
+      "Lewis Hamilton",
+      "Max Verstappen",
+      "Kimi Raikkonen"
+    ]
+  },
+  {
+    "text": "What team won the 2016 MLS Cup?",
+    "orderedChoices": [
+      "Seattle Sounders",
+      "Colorado Rapids",
+      "Toronto FC",
+      "Montreal Impact"
+    ]
+  },
+  {
+    "text": "What team did England beat to win in the 1966 World Cup final?",
+    "orderedChoices": [
+      "West Germany",
+      "Soviet Union",
+      "Portugal",
+      "Brazil"
+    ]
+  },
+  {
+    "text": "Who is often called \"the Maestro\" in the men's tennis circuit?",
+    "orderedChoices": [
+      "Roger Federer",
+      "Bill Tilden",
+      "Boris Becker",
+      "Pete Sampras"
+    ]
+  },
+  {
+    "text": "Which African American is in part responsible for integrating  Major League baseball?",
+    "orderedChoices": [
+      "Jackie Robinson",
+      "Curt Flood",
+      "Roy Campanella",
+      "Satchell Paige"
+    ]
+  },
+  {
+    "text": "Who won the premier league title in the 2015-2016 season following a fairy tale run?",
+    "orderedChoices": [
+      "Leicester City",
+      "Tottenham Hotspur",
+      "Watford",
+      "Stoke City"
+    ]
+  },
+  {
+    "text": "Who did Steven Gerrard win the Champions League with?",
+    "orderedChoices": [
+      "Liverpool",
+      "Real Madrid",
+      "Chelsea",
+      "Man City"
+    ]
+  },
+  {
+    "text": "Who won the 2017 Formula One World Drivers' Championship?",
+    "orderedChoices": [
+      "Lewis Hamilton",
+      "Sebastian Vettel",
+      "Nico Rosberg",
+      "Max Verstappen"
+    ]
+  },
+  {
+    "text": "Who won the UEFA Champions League in 2017?",
+    "orderedChoices": [
+      "Real Madrid C.F.",
+      "Atletico Madrid",
+      "AS Monaco FC",
+      "Juventus F.C."
+    ]
+  },
+  {
+    "text": "Who won the UEFA Champions League in 2016?",
+    "orderedChoices": [
+      "Real Madrid C.F.",
+      "FC Bayern Munich",
+      "Atletico Madrid",
+      "Manchester City F.C."
+    ]
+  },
+  {
+    "text": "Which two teams played in Super Bowl XLII?",
+    "orderedChoices": [
+      "The New York Giants & The New England Patriots",
+      "The Green Bay Packers & The Pittsburgh Steelers",
+      "The Philadelphia Eagles & The New England Patriots",
+      "The Seattle Seahawks & The Denver Broncos"
+    ]
+  },
+  {
+    "text": "Which company was established on April 1st, 1976 by Steve Jobs, Steve Wozniak and Ronald Wayne?",
+    "orderedChoices": [
+      "Apple",
+      "Microsoft",
+      "Atari",
+      "Commodore"
+    ]
+  },
+  {
+    "text": "In any programming language, what is the most common way to iterate through an array?",
+    "orderedChoices": [
+      "'For' loops",
+      "'If' Statements",
+      "'Do-while' loops",
+      "'While' loops"
+    ]
+  },
+  {
+    "text": "What does CPU stand for?",
+    "orderedChoices": [
+      "Central Processing Unit",
+      "Central Process Unit",
+      "Computer Personal Unit",
+      "Central Processor Unit"
+    ]
+  },
+  {
+    "text": "What does the \"MP\" stand for in MP3?",
+    "orderedChoices": [
+      "Moving Picture",
+      "Music Player",
+      "Multi Pass",
+      "Micro Point"
+    ]
+  },
+  {
+    "text": "When Gmail first launched, how much storage did it provide for your email?",
+    "orderedChoices": [
+      "1GB",
+      "512MB",
+      "5GB",
+      "Unlimited"
+    ]
+  },
+  {
+    "text": "The programming language 'Swift' was created to replace what other programming language?",
+    "orderedChoices": [
+      "Objective-C",
+      "C#",
+      "Ruby",
+      "C++"
+    ]
+  },
+  {
+    "text": "If you were to code software in this language you'd only be able to type 0's and 1's.",
+    "orderedChoices": [
+      "Binary",
+      "JavaScript",
+      "C++",
+      "Python"
+    ]
+  },
+  {
+    "text": "In web design, what does CSS stand for?",
+    "orderedChoices": [
+      "Cascading Style Sheet",
+      "Counter Strike: Source",
+      "Corrective Style Sheet",
+      "Computer Style Sheet"
+    ]
+  },
+  {
+    "text": "The numbering system with a radix of 16 is more commonly referred to as ",
+    "orderedChoices": [
+      "Hexidecimal",
+      "Binary",
+      "Duodecimal",
+      "Octal"
+    ]
+  },
+  {
+    "text": "This mobile OS held the largest market share in 2012.",
+    "orderedChoices": [
+      "iOS",
+      "Android",
+      "BlackBerry",
+      "Symbian"
+    ]
+  },
+  {
+    "text": "What language does Node.js use?",
+    "orderedChoices": [
+      "JavaScript",
+      "Java",
+      "Java Source",
+      "Joomla Source Code"
+    ]
+  },
+  {
+    "text": "Which Apollo mission was the first one to land on the Moon?",
+    "orderedChoices": [
+      "Apollo 11",
+      "Apollo 10",
+      "Apollo 9",
+      "Apollo 13"
+    ]
+  },
+  {
+    "text": "What is the largest animal currently on Earth?",
+    "orderedChoices": [
+      "Blue Whale",
+      "Orca",
+      "Colossal Squid",
+      "Giraffe"
+    ]
+  },
+  {
+    "text": "Which element has the chemical symbol 'Fe'?",
+    "orderedChoices": [
+      "Iron",
+      "Gold",
+      "Silver",
+      "Tin"
+    ]
+  },
+  {
+    "text": "Which type of rock is created by intense heat AND pressure?",
+    "orderedChoices": [
+      "Metamorphic",
+      "Sedimentary",
+      "Igneous",
+      "Diamond"
+    ]
+  },
+  {
+    "text": "What is the elemental symbol for mercury?",
+    "orderedChoices": [
+      "Hg",
+      "Me",
+      "Mc",
+      "Hy"
+    ]
+  },
+  {
+    "text": "What is the powerhouse of the cell?",
+    "orderedChoices": [
+      "Mitochondria",
+      "Ribosome",
+      "Redbull",
+      "Nucleus"
+    ]
+  },
+  {
+    "text": "How many planets make up our Solar System?",
+    "orderedChoices": [
+      "8",
+      "7",
+      "9",
+      "6"
+    ]
+  },
+  {
+    "text": "The asteroid belt is located between which two planets?",
+    "orderedChoices": [
+      "Mars and Jupiter",
+      "Jupiter and Saturn",
+      "Mercury and Venus",
+      "Earth and Mars"
+    ]
+  },
+  {
+    "text": "The medical term for the belly button is which of the following?",
+    "orderedChoices": [
+      "Umbilicus",
+      "Nevus",
+      "Nares",
+      "Paxillus"
+    ]
+  },
+  {
+    "text": "71% of the Earth's surface is made up of",
+    "orderedChoices": [
+      "Water",
+      "Deserts",
+      "Continents",
+      "Forests"
+    ]
+  },
+  {
+    "text": "What animal takes part in Schrödinger's most famous thought experiment?",
+    "orderedChoices": [
+      "Cat",
+      "Dog",
+      "Bat",
+      "Butterfly"
+    ]
+  },
+  {
+    "text": "Which noble gas has the lowest atomic number?",
+    "orderedChoices": [
+      "Helium",
+      "Neon",
+      "Argon",
+      "Krypton"
+    ]
+  },
+  {
+    "text": "Dry ice is the solid form of what substance?",
+    "orderedChoices": [
+      "Carbon dioxide",
+      "Nitrogen",
+      "Ammonia",
+      "Oxygen"
+    ]
+  },
+  {
+    "text": "Which English football club has the nickname 'The Foxes'?",
+    "orderedChoices": [
+      "Leicester City",
+      "Northampton Town",
+      "Bradford City",
+      "West Bromwich Albion"
+    ]
+  },
+  {
+    "text": "How many soccer players should be on the field at the same time?",
+    "orderedChoices": [
+      "22",
+      "20",
+      "24",
+      "26"
+    ]
+  },
+  {
+    "text": "In baseball, how many fouls are an out?",
+    "orderedChoices": [
+      "0",
+      "5",
+      "3",
+      "2"
+    ]
+  },
+  {
+    "text": "Which team won 2014 FIFA World Cup in Brazil?",
+    "orderedChoices": [
+      "Germany",
+      "Argentina",
+      "Brazil",
+      "Netherlands"
+    ]
+  },
+  {
+    "text": "How many points did LeBron James score in his first NBA game?",
+    "orderedChoices": [
+      "25",
+      "19",
+      "69",
+      "41"
+    ]
+  },
+  {
+    "text": "In Baseball, how many times does the ball have to be pitched outside of the strike zone before the batter is walked?",
+    "orderedChoices": [
+      "4",
+      "1",
+      "2",
+      "3"
+    ]
+  },
+  {
+    "text": "Which city did the former NHL team \"The Nordiques\" originiate from?",
+    "orderedChoices": [
+      "Quebec City",
+      "Houston",
+      "Montreal",
+      "New York"
+    ]
+  },
+  {
+    "text": "What year did the New Orleans Saints win the Super Bowl?",
+    "orderedChoices": [
+      "2010",
+      "2008",
+      "2009",
+      "2011"
+    ]
+  },
+  {
+    "text": "Which team has won the most Stanley Cups in the NHL?",
+    "orderedChoices": [
+      "Montreal Canadians",
+      "Chicago Blackhawks",
+      "Toronto Maple Leafs",
+      "Detroit Red Wings"
+    ]
+  },
+  {
+    "text": "When was the first official international game played?",
+    "orderedChoices": [
+      "1872",
+      "1880",
+      "1863",
+      "1865"
+    ]
+  },
+  {
+    "text": "Which boxer was banned for taking a bite out of Evander Holyfield's ear in 1997?",
+    "orderedChoices": [
+      "Mike Tyson",
+      "Roy Jones Jr.",
+      "Evander Holyfield",
+      "Lennox Lewis"
+    ]
+  },
+  {
+    "text": "What is the most common type of pitch thrown by pitchers in baseball?",
+    "orderedChoices": [
+      "Fastball",
+      "Slowball",
+      "Screwball",
+      "Palmball"
+    ]
+  },
+  {
+    "text": "In bowling, what is the term used for getting three consecutive strikes?",
+    "orderedChoices": [
+      "Turkey",
+      "Flamingo",
+      "Birdie",
+      "Eagle"
+    ]
+  },
+  {
+    "text": "Which player holds the NHL record of 2,857 points?",
+    "orderedChoices": [
+      "Wayne Gretzky",
+      "Mario Lemieux ",
+      "Sidney Crosby",
+      "Gordie Howe"
+    ]
+  },
+  {
+    "text": "What is the name of Manchester United's home stadium?",
+    "orderedChoices": [
+      "Old Trafford",
+      "Anfield",
+      "City of Manchester Stadium",
+      "St James Park"
+    ]
+  },
+  {
+    "text": "When was the FC Schalke 04 founded?",
+    "orderedChoices": [
+      "1904",
+      "1909",
+      "2008",
+      "1999"
+    ]
+  },
+  {
+    "text": "\"Stadium of Light\" is the home stadium for which soccer team?",
+    "orderedChoices": [
+      "Sunderland FC",
+      "Barcelona FC",
+      "Paris Saints-Germain",
+      "Manchester United"
+    ]
+  },
+  {
+    "text": "Which year did Jenson Button won his first ever Formula One World Drivers' Championship?",
+    "orderedChoices": [
+      "2009",
+      "2010",
+      "2007",
+      "2006"
+    ]
+  },
+  {
+    "text": "In the 2014 FIFA World Cup, what was the final score in the match Brazil - Germany?",
+    "orderedChoices": [
+      "1-7",
+      "1-5",
+      "1-6",
+      "2-6"
+    ]
+  },
+  {
+    "text": "What does the letter 'S' stand for in 'NASA'?",
+    "orderedChoices": [
+      "Space",
+      "Science",
+      "Society",
+      "Star"
+    ]
+  },
+  {
+    "text": "Rhinoplasty is a surgical procedure on what part of the human body?",
+    "orderedChoices": [
+      "Nose",
+      "Ears",
+      "Chin",
+      "Neck"
+    ]
+  },
+  {
+    "text": "Which is the longest bone in the human body? ",
+    "orderedChoices": [
+      "Femur",
+      "Scapula",
+      "Fibula",
+      "Ulna"
+    ]
+  },
+  {
+    "text": "This element, when overcome with extreme heat and pressure, creates diamonds.",
+    "orderedChoices": [
+      "Carbon",
+      "Nitrogen",
+      "Oxygen",
+      "Hydrogen"
+    ]
+  },
+  {
+    "text": "How many planets are in our Solar System?",
+    "orderedChoices": [
+      "Eight",
+      "Nine",
+      "Seven",
+      "Ten"
+    ]
+  },
+  {
+    "text": "What is the first element on the periodic table?",
+    "orderedChoices": [
+      "Hydrogen",
+      "Helium",
+      "Oxygen",
+      "Lithium"
+    ]
+  },
+  {
+    "text": "What was the name of the first artificial Earth satellite, launched by the Soviet Union in 1957?",
+    "orderedChoices": [
+      "Sputnik 1",
+      "Soyuz 7K-OK",
+      "Zenit-2",
+      "Voskhod 3KV"
+    ]
+  },
+  {
+    "text": "What does DNA stand for?",
+    "orderedChoices": [
+      "Deoxyribonucleic Acid",
+      "Deoxyribogenetic Acid",
+      "Deoxyribogenetic Atoms",
+      "Detoxic Acid"
+    ]
+  },
+  {
+    "text": "Who is the chemical element Curium named after?",
+    "orderedChoices": [
+      "Marie & Pierre Curie",
+      "The Curiosity Rover",
+      "Curious George",
+      "Stephen Curry"
+    ]
+  },
+  {
+    "text": "Which is the most abundant element in the universe?",
+    "orderedChoices": [
+      "Hydrogen",
+      "Helium",
+      "Lithium",
+      "Oxygen"
+    ]
+  },
+  {
+    "text": "How many chromosomes are in your body cells?",
+    "orderedChoices": [
+      "23",
+      "21",
+      "22",
+      "24"
+    ]
+  },
+  {
+    "text": "What is the standard atomic weight of a Plutonium nucleus?",
+    "orderedChoices": [
+      "244",
+      "94",
+      "481",
+      "128"
+    ]
+  },
+  {
+    "text": "What is the unit of electrical resistance?",
+    "orderedChoices": [
+      "Ohm",
+      "Mho",
+      "Tesla",
+      "Joule"
+    ]
+  },
+  {
+    "text": "What lies at the center of our galaxy?",
+    "orderedChoices": [
+      "A black hole",
+      "A wormhole",
+      "A supernova",
+      "A quasar"
+    ]
+  }
+]

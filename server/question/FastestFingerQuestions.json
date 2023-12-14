@@ -1,0 +1,281 @@
+[
+  {
+    "text": "Arrange these countries from furthest north to furthest south",
+    "orderedChoices": [
+      "Denmark",
+      "Greece",
+      "Cuba",
+      "Jamaica"
+    ]
+  },
+  {
+    "text": "Order these colors in the order they appear in the rainbow",
+    "orderedChoices": [
+      "Yellow",
+      "Blue",
+      "Indigo",
+      "Violet"
+    ]
+  },
+  {
+    "text": "Arrange these countries from furthest west to furthest east",
+    "orderedChoices": [
+      "Ireland",
+      "Spain",
+      "Nepal",
+      "Taiwan"
+    ]
+  },
+  {
+    "text": "Arrange these world capitals from least to most populated",
+    "orderedChoices": [
+      "New Delhi",
+      "Madrid",
+      "Berlin",
+      "Seoul"
+    ]
+  },
+  {
+    "text": "Arrange these countries by their beer consumption, from least to most",
+    "orderedChoices": [
+      "Canada",
+      "Brazil",
+      "Spain",
+      "Germany"
+    ]
+  },
+  {
+    "text": "Arrange these Brad Pitt movies from oldest to newest",
+    "orderedChoices": [
+      "Thelma & Louise",
+      "12 Monkeys",
+      "The Departed",
+      "World War Z"
+    ]
+  },
+  {
+    "text": "Arrange these George Clooney movies from oldest to newest",
+    "orderedChoices": [
+      "Batman & Robin",
+      "Spy Kids",
+      "Fantastic Mr. Fox",
+      "Hail, Caesar!"
+    ]
+  },
+  {
+    "text": "Arrange these TV shows from oldest to newest",
+    "orderedChoices": [
+      "Full House",
+      "The Big Bang Theory",
+      "Breaking Bad",
+      "Game of Thrones"
+    ]
+  },
+  {
+    "text": "Arrange the Spice Girls from youngest to oldest",
+    "orderedChoices": [
+      "Baby Spice",
+      "Scary Spice",
+      "Sporty Spice",
+      "Ginger Spice"
+    ]
+  },
+  {
+    "text": "According to IMDb, arrange these movies from the LOWEST rated to the HIGHEST rated",
+    "orderedChoices": [
+      "Memento",
+      "Parasite",
+      "Saving Private Ryan",
+      "Forest Gump"
+    ]
+  },
+  {
+    "text": "Arrange these Canadian cities from least to most populated",
+    "orderedChoices": [
+      "Quebec",
+      "Vancouver",
+      "Ottawa",
+      "Toronto"
+    ]
+  },
+  {
+    "text": "Arrange the following Star Wars characters from least screen time to most in the saga",
+    "orderedChoices": [
+      "Chewbacca",
+      "C-3PO",
+      "Princess Leia",
+      "Luke Skywalker"
+    ]
+  },
+  {
+    "text": "Arrange the following Leonardo Dicaprio movies from oldest to newest",
+    "orderedChoices": [
+      "Titanic",
+      "Inception",
+      "The Wolf of Wall Street",
+      "The Revenant"
+    ]
+  },
+  {
+    "text": "Arrange these countries from smallest to largest (area)",
+    "orderedChoices": [
+      "Cuba",
+      "South Africa",
+      "Argentina",
+      "Canada"
+    ]
+  },
+  {
+    "text": "Arrange these Will Ferrel movies from OLDEST to NEWEST",
+    "orderedChoices": [
+      "Elf",
+      "Anchorman",
+      "Blades of Glory",
+      "Step Brothers"
+    ]
+  },
+  {
+    "text": "Arrange these animated Disney movies from OLDEST to NEWEST",
+    "orderedChoices": [
+      "Bambi",
+      "The Jungle Book",
+      "Aladdin",
+      "Toy Story"
+    ]
+  },
+  {
+    "text": "According to 2020 Billboard Top 100, arrange these songs from the LOWEST to HIGHEST on the list",
+    "orderedChoices": [
+      "Savage",
+      "Say So",
+      "The Box",
+      "Blinding Lights"
+    ]
+  },
+  {
+    "text": "Arrange the following UK cities from LEAST POPULATED to MOST POPULATED",
+    "orderedChoices": [
+      "Manchester",
+      "Glasgow",
+      "Liverpool",
+      "London"
+    ]
+  },
+  {
+    "text": "Arrange these elements in the order they appear on the periodic table",
+    "orderedChoices": [
+      "Lithium",
+      "Carbon",
+      "Neon",
+      "Zinc"
+    ]
+  },
+  {
+    "text": "Arrange these planets from SMALLEST to LARGEST",
+    "orderedChoices": [
+      "Mercury",
+      "Venus",
+      "Earth",
+      "Neptune"
+    ]
+  },
+  {
+    "text": "Arrange these NBA players from SHORTEST to TALLEST",
+    "orderedChoices": [
+      "Steph Curry",
+      "Michael Jordan",
+      "Shaquille O'Neal",
+      "Kareem Abdul-Jabbar"
+    ]
+  },
+  {
+    "text": "Arrange these US cities by population from LEAST to MOST",
+    "orderedChoices": [
+      "Philadelphia, PA",
+      "Phoenix, AZ",
+      "Houston, TX",
+      "New York, NY"
+    ]
+  },
+  {
+    "text": "Arrange these Spotify’s Top Global Songs of Summer 2021 from LEAST LISTENED TO to MOST LISTENED TO",
+    "orderedChoices": [
+      "Butter - BTS",
+      "Stay - LAROI",
+      "Beggin - MANESKIN",
+      "Good 4 U - RODRIGO"
+    ]
+  },
+  {
+    "text": "Arrange these consoles from LEAST SOLD to MOST SOLD",
+    "orderedChoices": [
+      "Xbox 360",
+      "Wii",
+      "PLaystation 4",
+      "Playstation 2"
+    ]
+  },
+  {
+    "text": "Arrange the following celebrities from LEAST WEALTHY to MOST WEALTHY",
+    "orderedChoices": [
+      "Warren Buffet",
+      "Mark Zuckerberg",
+      "Bill Gates",
+      "Elon Musk"
+    ]
+  },
+  {
+    "text": "Arrange these Pixar movies from OLDEST to NEWEST",
+    "orderedChoices": [
+      "Cars",
+      "Ratatouille",
+      "WALL-E",
+      "Up"
+    ]
+  },
+  {
+    "text": "Arrange these horoscopes in the order they appear in the calendar",
+    "orderedChoices": [
+      "Gemini",
+      "Cancer",
+      "Leo",
+      "Scorpio"
+    ]
+  },
+  {
+    "text": "Arrange these planets in order from closest to furthest from the Sun",
+    "orderedChoices": [
+      "Earth",
+      "Jupiter",
+      "Uranus",
+      "Neptune"
+    ]
+  },
+  {
+    "text": "Arrange these Morgan Freeman movies from OLDEST to NEWEST",
+    "orderedChoices": [
+      "Se7en",
+      "Bruce Almighty",
+      "The Bucket List",
+      "London Has Fallen"
+    ]
+  },
+  {
+    "text": "Arrange these actresses from YOUNGEST to OLDEST",
+    "orderedChoices": [
+      "Emma Watson",
+      "Megan Fox",
+      "Jessica Alba",
+      "Angelina Jolie"
+    ]
+  },
+  {
+    "text": "Arrange these chefs from LEAST WEALTHY to MOST WEALTHY",
+    "orderedChoices": [
+      "Guy Fieri",
+      "Gordon Ramsay",
+      "Rachel Ray",
+      "Wolfgang Puck"
+    ]
+  }
+]
